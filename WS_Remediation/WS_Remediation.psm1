@@ -1,38 +1,41 @@
 ﻿Function Clear-Patches {
-<# 
-    .Synopsis 
-        Clears the C:\Patches folder
-    .Description
-        Removes everything in the C:\Patches folder on the local or remote computer. #DevSkim: ignore DS104456 
-    .Example 
-        Clear-Patches
-        Clears C:\Patches folder on the local computer.  
-    .Example 
-        Clear-Patches -ComputerName COMP1 
-        Clears C:\Patches folder on the computer COMP1
-    .Example 
-        Clear-Space -ComputerName (gc c:\complist.txt)
-        Clears C:\Patches folder on the computers listed in the file c:\complist.txt
-    .Example 
-        Clear-Space -ComputerName (gc c:\complist.txt) -InvokeMethod
-        Clears C:\Patches folder on the computers listed in the file c:\complist.txt using the Invoke-WMIMethod command. #DevSkim: ignore DS104456 
-    .Parameter ComputerName
-        Specifies the computer or computers to clear the patches folder on
-    .Parameter InvokeMethod
-        Specifies the computer or computers to clear the patches folder on using the Invoke-WMIMethod command #DevSkim: ignore DS104456 
-    .Notes 
-        NAME: Clear-Patches 
-        AUTHOR: Skyler Hart
-        CREATED: 11/29/2017 17:21:35  
-        LASTEDIT: 07/22/2019 21:12:59     
-        KEYWORDS: Delete, temp, patches
-        REMARKS: Needs to be ran as a user that has administrator rights
-        REQUIRES: 
-            Requires -RunAsAdministrator
-    .Link 
-        https://www.skylerhart.com
-        https://www.wanderingstag.com
-#>   
+<#
+.SYNOPSIS
+    Clears the C:\Patches folder.
+.DESCRIPTION
+    Removes items in the C:\Patches folder on the local or remote computer.
+.PARAMETER ComputerName
+    Specifies the name of one or more computers.
+.PARAMETER Recursive
+    Removes all files and folders in the Patches folder on the specified computer.
+.PARAMETER Old
+    Removes files in the root of the C:\Patches folder (except Install.ps1) that are older than 28 days.
+.EXAMPLE
+    C:\PS>Clear-Patches
+    Clears C:\Patches folder on the local computer (but not the inidividual program folders.)
+.EXAMPLE
+    C:\PS>Clear-Patches -ComputerName COMP1 
+    Clears C:\Patches folder on the computer COMP1.
+.EXAMPLE
+    C:\PS>Clear-Patches -ComputerName (gc c:\complist.txt) -Recursive
+    Clears all files and folders in C:\Patches on the computers listed in the file c:\complist.txt.
+.EXAMPLE
+    C:\PS>Clear-Patches -ComputerName (gc c:\complist.txt) -Old
+    Clears files in the root of C:\Patches that are older than 28 days on the computers listed in the file c:\complist.txt.
+.NOTES
+    Author: Skyler Hart
+    Created: 2020-08-18 09:58:51
+    Last Edit: 2020-08-18 09:58:51
+    Keywords: Delete, temp, patches
+    Other: Needs to be ran as a user that has administrator rights
+    Requires:
+        -RunAsAdministrator
+.LINK
+    https://www.skylerhart.com
+.LINK
+    https://www.wanderingstag.com
+#>
+  
     [CmdletBinding()]
     Param (
         [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
@@ -43,6 +46,12 @@
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
     
+        [Parameter()]
+        [switch]$Recursive,
+
+        [Parameter()]
+        [switch]$Old,
+        
         [Parameter()]
         $InputParam = $null,
             
@@ -56,59 +65,151 @@
         $MaxResultTime = 1200
     )
     
-    Begin{
+    Begin {
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
             
-        $Code = {
-            [CmdletBinding()]
-            Param (
-                [Parameter(Mandatory=$true,
-                Position=0,
-                ValueFromPipeline = $true,
-                ValueFromPipelineByPropertyName = $true)]
-                [string]$comp
-            )
+        if ($Recursive) {
+            $Code = {
+                [CmdletBinding()]
+                Param (
+                    [Parameter(Mandatory=$true,
+                    Position=0,
+                    ValueFromPipeline = $true,
+                    ValueFromPipelineByPropertyName = $true)]
+                    [string]$comp
+                )
             
-            $psdpath = "\\$comp\c$"
-            $dn = $comp + "CS"
-            $patches = $dn + ":\Patches"
-            try {
-                New-PSDrive -Name $dn -PSProvider FileSystem -root "$psdpath" -ErrorAction Stop | Out-Null
-                #Remove C:\Temp files
-                if (Test-Path $patches) {
-                    Set-Location $patches -ErrorAction Stop
-                    if ((Get-Location).Path -eq $patches) {
-                        Remove-Item * -recurse -force -ErrorAction Stop
+                $psdpath = "\\$comp\c$"
+                $dn = $comp + "CS"
+                $patches = $dn + ":\Patches"
+                try {
+                    New-PSDrive -Name $dn -PSProvider FileSystem -root "$psdpath" -ErrorAction Stop | Out-Null
+                    if (Test-Path $patches) {
+                        Set-Location $patches -ErrorAction Stop
+                        if ((Get-Location).Path -eq $patches) {
+                            Remove-Item * -Recurse -force -ErrorAction SilentlyContinue
+                        }
+                        $info = New-Object -TypeName PSObject -Property @{
+                            ComputerName = $Comp
+                            Status = "Cleared"
+                        }#new object 
                     }
+                    else {
+                        $info = New-Object -TypeName PSObject -Property @{
+                            ComputerName = $Comp
+                            Status = "No patches folder"
+                        }#new object
+                    }
+                    Remove-PSDrive -Name $dn -ErrorAction SilentlyContinue -Force | Out-Null
+                }#try
+                catch {
                     $info = New-Object -TypeName PSObject -Property @{
                         ComputerName = $Comp
-                        Status = "Cleared"
-                    }#new object 
-                }
-                else {
-                    $info = New-Object -TypeName PSObject -Property @{
-                        ComputerName = $Comp
-                        Status = "No patches folder"
+                        Status = "Unable to clear"
                     }#new object
-                }
-                Remove-PSDrive -Name $dn -ErrorAction SilentlyContinue -Force | Out-Null
-            }#try
-            catch {
-                $info = New-Object -TypeName PSObject -Property @{
-                    ComputerName = $Comp
-                    Status = "Unable to clear"
-                }#new object
-            }#catch
+                }#catch
 
-            $info
-        }#end code block
+                $info
+            }#end code block
+        }#if recursive
+        elseif ($Old) {
+            $Code = {
+                [CmdletBinding()]
+                Param (
+                    [Parameter(Mandatory=$true,
+                    Position=0,
+                    ValueFromPipeline = $true,
+                    ValueFromPipelineByPropertyName = $true)]
+                    [string]$comp
+                )
+            
+                $psdpath = "\\$comp\c$"
+                $dn = $comp + "CS"
+                $patches = $dn + ":\Patches"
+                try {
+                    New-PSDrive -Name $dn -PSProvider FileSystem -root "$psdpath" -ErrorAction Stop | Out-Null
+                    if (Test-Path $patches) {
+                        Set-Location $patches -ErrorAction Stop
+                        $op = Get-ChildItem $patches | Where-Object {$_.Attributes -ne "Directory" -and $_.Name -notmatch "Install.ps1" -and $_.LastWriteTime -gt ((Get-Date).AddDays(-28))} | Select-Object FullName -ExpandProperty FullName
+
+                        foreach ($p in $op) {
+                            Remove-Item -Path $p -Force -ErrorAction SilentlyContinue
+                        }
+                        $info = New-Object -TypeName PSObject -Property @{
+                            ComputerName = $Comp
+                            Status = "Cleared"
+                        }#new object 
+                    }
+                    else {
+                        $info = New-Object -TypeName PSObject -Property @{
+                            ComputerName = $Comp
+                            Status = "No patches folder"
+                        }#new object
+                    }
+                    Remove-PSDrive -Name $dn -ErrorAction SilentlyContinue -Force | Out-Null
+                }#try
+                catch {
+                    $info = New-Object -TypeName PSObject -Property @{
+                        ComputerName = $Comp
+                        Status = "Unable to clear"
+                    }#new object
+                }#catch
+
+                $info
+            }#end code block
+        }#elseif Old
+        else {
+            $Code = {
+                [CmdletBinding()]
+                Param (
+                    [Parameter(Mandatory=$true,
+                    Position=0,
+                    ValueFromPipeline = $true,
+                    ValueFromPipelineByPropertyName = $true)]
+                    [string]$comp
+                )
+            
+                $psdpath = "\\$comp\c$"
+                $dn = $comp + "CS"
+                $patches = $dn + ":\Patches"
+                try {
+                    New-PSDrive -Name $dn -PSProvider FileSystem -root "$psdpath" -ErrorAction Stop | Out-Null
+                    if (Test-Path $patches) {
+                        Set-Location $patches -ErrorAction Stop
+                        if ((Get-Location).Path -eq $patches) {
+                            Remove-Item * -force -ErrorAction SilentlyContinue
+                            Remove-Item .\cab\* -Recurse -Force -ErrorAction SilentlyContinue
+                        }
+                        $info = New-Object -TypeName PSObject -Property @{
+                            ComputerName = $Comp
+                            Status = "Cleared"
+                        }#new object 
+                    }
+                    else {
+                        $info = New-Object -TypeName PSObject -Property @{
+                            ComputerName = $Comp
+                            Status = "No patches folder"
+                        }#new object
+                    }
+                    Remove-PSDrive -Name $dn -ErrorAction SilentlyContinue -Force | Out-Null
+                }#try
+                catch {
+                    $info = New-Object -TypeName PSObject -Property @{
+                        ComputerName = $Comp
+                        Status = "Unable to clear"
+                    }#new object
+                }#catch
+
+                $info
+            }#end code block
+        }#else not recursive or old
             
         $Jobs = @()
     }
      
-    Process{
+    Process {
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
         ForEach ($Object in $ObjectList){
             $PowershellThread = [powershell]::Create().AddScript($Code)
@@ -125,7 +226,7 @@
             
    }
      
-    End{
+    End {
         $ResultTimer = Get-Date
         While (@($Jobs | Where-Object {$null -ne $_.Handle}).count -gt 0)  {            
             $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
