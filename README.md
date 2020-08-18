@@ -1,6 +1,13 @@
 # Install and Configuration of WSTools
 
-## After downloading or copying to computer
+## Download WSTools
+
+> Intended only for Windows computers.
+
+1. On the left side, hover over the **Repos** menu item and then select **Files**
+2. On the right side next to the Clone button, click on the **More actions** (three dots) button and select **Download as Zip**
+
+## After downloading  to computer
 
 1. Uncompress the WSTools.zip file.
 2. Make available globally or just for single user.
