@@ -88,7 +88,7 @@
     #Show file extensions ($true) or do not show file extensions ($false - Windows default.)
     FileExtensions = $true
 
-    #Add "Shortcut - " text to any new shortcut
+    #Add "Shortcut - " text to any new shortcut. Requires you to log off then log back on before changes take effect.
     ShortcutText = $false
 
     ###########################################################################################################################################
