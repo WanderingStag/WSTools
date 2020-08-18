@@ -16,6 +16,7 @@ New features and other changes:
 4. Moved repo from self-hosted server to Azure DevOps.
 5. Updated text in config.ps1 and README files.
 6. Added MIT License file.
+7. Added OneDriveSetup execution to InstallRemote.ps1
 
 ######################
 #                    #
