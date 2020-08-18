@@ -1,0 +1,91 @@
+######################
+#                    #
+#      v1.2.3 unpublished        #
+#                    #
+######################
+Known issues:
+1. Get-OperatingSystem displays computers as 32-bit when running the command against a computer the logged in user does not have admin rights on.
+
+Bug fixes:
+1. Fixed issues with variables in Test-EmailRelay conflicting with built-in variables in newer versions of PowerShell.
+
+New features and other changes:
+1. Added Get-DirectoryStats.
+2. Updated Get-USBStorageDevices to show historically connected devices also removed unnecessary code and reformatted output.
+3. Cleaned up some unnecessary/excessive code.
+
+######################
+#                    #
+#      v1.2.2        #
+#                    #
+######################
+Known issues:
+1. Get-OperatingSystem displays computers as 32-bit when running the command against a computer the logged in user does not have admin rights on.
+
+Bug fixes:
+1. Fixed issue with Install-Patches using an incorrect file path.
+2. Changed the InstallRemote.ps1 Windows and Office cab file install so that it doesn't automatically restart computers.
+
+New features and other changes:
+1. Added Save-UpdateHistory.
+2. Added Save-MaintenanceReport.
+3. Added $UHpath to config file for setting path on Save-UpdateHistory and Save-MaintenanceReport. Bumped config file to version 1.0.3.
+4. Added compatability for Windows 10 v2004 (Build 19041 May 2020 release) to Get-OperatingSystem.
+5. Added Ignore list to config file.
+6. Added AppRepo to config file.
+7. Changed Get-UpTime to also show total hours up, days, hours, minutes, and seconds.
+
+######################
+#                    #
+#      v1.2.1        #
+#                    #
+######################
+Known issues:
+1. Get-OperatingSystem displays computers as 32-bit when running the command against a computer the logged in user does not have admin rights on.
+
+Bug fixes:
+1. Cleared a lot of issues relating to syntax of commands, $null syntax, as well as the way variables are cleared in some functions.
+2. Fixed issues with Get-OperatingSystem displaying the OS twice for remote computers. Also fixed issue with
+    Windows 10 v1909 not displaying properly in some instances.
+3. Fixed a variable name in Get-ENSStatus that was causing issues getting the status of remote computers.
+
+New features and other changes:
+1. Copy-PowerShellJSON: copies the powershell.json file from %ModulePath% to %AppData%\Roaming\Code\User\Snippets for the currently logged on user
+    allowing them to easily setup the Visual Studio Code Snippets.
+2. Added the README markdown file.
+3. Started a changelog.
+4. Added a config file for the WSTools module so settings can be modified easily. Mainly for use internally in functions. Started converting 
+    some functions to work with the new config file.
+5. Added Set-WSToolsConfig function with aliases Open-WSToolsConfig and Update-WSToolsConfig.
+6. Modified Install-Patches to use the InstallRemote.ps1 file in the WSTools module folder instead of a file on a file server. Also copied the
+    updated Get-InstalledPrograms and Join-File functions to InstallRemote.ps1.
+7. Added Set-Preferences function (pulls from values in config.ps1.)
+8. Wrote Get-NetworkLevelAuthentication and Set-NetworkLevelAuthentication (aliases Get-NLA and Set-NLA respectively) using registry key methods. 
+    Removed the 3rd party functions with same names that used CimInstance methods as they were unreliable on secure networks and could not get 
+    WMIInstance methods to work.
+9. Added Get-Errors function which will display information on errors in the current session. Removed the Get-PowerShellErrorLog function as it was inop.
+10. Added error checking to some functions and more detailed error checking to some that previously had error checking.
+11. Added Register-ADSIEdit function. Changed Open-ADSIEdit to try registering the dll automatically if it is not registered already but installed.
+12. Added Get-Drives which just does a Get-PSDrive -Name *. Mainly so the alias Drives can be used to show all drives without typing extra text.
+13. Added aliases to several functions. To many to list.
+14. Added function Get-LocalUsers which works on local and remote computers (not to be confused with the built-in Get-LocalUser that only works on a 
+    local computer.)
+15. Added Get-BitLockerStatus which uses the built-in manage-bde.exe unstructured data reported and makes it structured.
+16. Added Set-DirtyShutdown which will clear a dirty shutdown and prevent the Shutdown Tracker from continually showing up.
+17. Import-MOF (added alias New-WMIFilter) was changed to now add a WMI Filter to Active Directory instead of just read the file.
+18. Added Set-LAPSshortcut function.
+19. Added Set-NetworkConnectionsShortcut function.
+20. Added Disable-ServerManager function.
+21. Added Enable-RDP function.
+22. Added Open-DiscDrive function with Eject-Disc alias.
+23. Changed Get-MTU so that it pulls the MTU value from the registry since WMI doesn't pull the actual value.
+24. Added Set-MTU which will set the MTU size on all IPv4 network interfaces.
+25. Changed Get-ComputerWMIClasses to Get-WMIClasses and Get-ComputerWMINamespaces to Get-WMINameSpaces.
+26. Added Get-UpdateHistory which will get the update history of the local computer, defaults to 7 days back and newer.
+
+######################
+#                    #
+#      v1.2.0        #
+#                    #
+######################
+After over 5 years of development and being used by several organizations it is finally being released to the Public.

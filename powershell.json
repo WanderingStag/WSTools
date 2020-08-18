@@ -1,0 +1,381 @@
+{
+	"Do...while loop": {
+		"prefix": "do",
+		"body": [
+			"do {",
+			"\t$0",
+			"} while (${$variable});"
+		],
+		"description": "Do...while loop"
+	},
+	"Do...until loop": {
+		"prefix": "do",
+		"body": [
+			"do {",
+			"\t$0",
+			"} until (${$variable});"
+		],
+		"description": "Do...until loop"
+	},
+	"Else statement": {
+		"prefix": "else",
+		"body": [
+			"else {",
+			"\t$0",
+			"}"
+		],
+		"description": "Else statement"
+	},
+	"ElseIf statement": {
+		"prefix": "elseif",
+		"body": [
+			"elseif (${variable}) {",
+			"\t$0",
+			"}"
+		],
+		"description": "Elseif statement"
+	},
+	"Foreach statement": {
+		"prefix": "foreach",
+		"body": [
+			"foreach (${item} in ${collection}) {",
+			"\t$0",
+			"}"
+		],
+		"description": "Foreach statement"
+	},
+	"If statement": {
+		"prefix": "if",
+		"body": [
+			"if (${variable}) {",
+			"\t$0",
+			"}"
+		],
+		"description": "If statement"
+	},
+	"Try catch": {
+		"prefix": "try",
+		"body": [
+			"try {",
+			"\t${_}",
+			"}",
+			"catch [${System.Exception}] {",
+			"\t# Exception is stored in the automatic variable $_",
+			"\t$0",
+			"}"
+		],
+		"description": "Try catch"
+	},
+	"Try catch finally": {
+		"prefix": "trycf",
+		"body": [
+			"try {",
+			"\t${_}",
+			"}",
+			"catch [${System.Exception}] {",
+			"\t# Exception is stored in the automatic variable $_",
+			"\t$0",
+			"}",
+			"finally {",
+			"\t$1",
+			"}"
+		],
+		"description": "Try catch finally"
+	},
+	"Function": {
+		"prefix": "func",
+		"body": [
+			"function ${verb}-${noun}() {",
+			"\t$0",
+			"}"
+		],
+		"description": "Function"
+	},
+	"Function General": {
+		"prefix": "funcgen",
+		"body": [
+			"function ${verb}-${noun} {",
+			"\t[CmdletBinding()]",
+			"\tparam(",
+			"\t\t[Parameter(Mandatory=\\$true)]",
+			"\t\t[${string}]",
+			"\t)\r",
+			"\t$0",
+			"}"
+		],
+		"description": "General function"
+	},
+	"Help": {
+		"prefix": "help",
+		"body": [
+			"<#",
+			".SYNOPSIS",
+			"\tShort description",
+			".DESCRIPTION",
+			"\tLong description",
+			".PARAMETER ComputerName",
+			"\tSpecifies the name of one or more computers.",
+			".EXAMPLE",
+			"\tC:\\PS>Verb-Noun",
+			"\tExample of how to use this cmdlet",
+			".EXAMPLE",
+			"\tC:\\PS>Verb-Noun -PARAMETER",
+			"\tAnother example of how to use this cmdlet but with a parameter or switch.",
+			".NOTES",
+			"\tAuthor: Name",
+			"\tCreated: $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE $CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND",
+			"\tLast Edit: $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE $CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND",
+			"\tKeywords: ",
+			"\tOther: ",
+			"\tRequires:",
+			"\t\t-Module ActiveDirectory",
+			"\t\t-PSSnapin Microsoft.Exchange.Management.PowerShell.Admin",
+			"\t\t-RunAsAdministrator",
+			".COMPONENT",
+			"\tThe component this cmdlet belongs to",
+			".ROLE",
+			"\tThe role this cmdlet belongs to",
+			".FUNCTIONALITY",
+			"\tThe functionality that best describes this cmdlet",
+			".LINK",
+			"\thttps://www.example.com",
+			"#>"
+		],
+		"description": "Generic Help comment block"
+	},
+	"HelpWS": {
+		"prefix": "helpws",
+		"body": [
+			"<#",
+			".SYNOPSIS",
+			"\tShort description",
+			".DESCRIPTION",
+			"\tLong description",
+			".PARAMETER ComputerName",
+			"\tSpecifies the name of one or more computers.",
+			".PARAMETER Path",
+			"\tSpecifies a path to one or more locations.",
+			".EXAMPLE",
+			"\tC:\\PS>Verb-Noun",
+			"\tExample of how to use this cmdlet",
+			".EXAMPLE",
+			"\tC:\\PS>Verb-Noun -PARAMETER",
+			"\tAnother example of how to use this cmdlet but with a parameter or switch.",
+			".NOTES",
+			"\tAuthor: Skyler Hart",
+			"\tCreated: $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE $CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND",
+			"\tLast Edit: $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE $CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND",
+			"\tKeywords: ",
+			"\tOther: ",
+			"\tRequires:",
+			"\t\t-Module ActiveDirectory",
+			"\t\t-PSSnapin Microsoft.Exchange.Management.PowerShell.Admin",
+			"\t\t-RunAsAdministrator",
+			".LINK",
+			"\thttps://www.skylerhart.com",
+			".LINK",
+			"\thttps://www.wanderingstag.com",
+			"#>"
+		],
+		"description": "WSTools Help comment block"
+	},
+	"Date": {
+		"prefix": "date",
+		"body": [
+			"$CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE $CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND"
+		],
+		"description": "Adds current time in YYYY-MM-DD HH:MM:SS format"
+	},
+	"BrowserBlock": {
+		"prefix": "browserblock",
+		"body": [
+			"if ($${name:Chrome}) {Start-Process \"chrome.exe\" $${name:URL}}",
+			"elseif ($${name:Edge}) {Start-Process shell:AppsFolder\\Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge $${name:URL}}",
+			"elseif ($${name:Firefox}) {Start-Process \"firefox.exe\" $${name:URL}}",
+			"elseif ($${name:InternetExplorer}) {Start-Process \"iexplore.exe\" $${name:URL}}",
+			"else {",
+			"\t#open in default browser",
+			"\t(New-Object -com Shell.Application).Open($${name:URL})",
+			"}"
+		],
+		"description": "Adds a browser switch check to the body"
+	},
+	"Link": {
+		"prefix": "link",
+		"body": [
+			".LINK",
+			"\thttps://www.skylerhart.com",
+			".LINK",
+			"\thttps://www.wanderingstag.com"
+		],
+		"description": "Link section for help block"
+	},
+	"CreatedBefore2017": {
+		"prefix": "createdbefore2017",
+		"body": [
+			"Sometime before 8/7/2017"
+		],
+		"description": "Add sometime before 2017 text"
+	},
+	"DomainCheck": {
+		"prefix": "domaincheck",
+		"body": [
+			"if (\\$env:USERDNSDOMAIN -match \"skylerhart\") {",
+			"\t",
+			"}#if skynet",
+			"elseif (\\$env:USERDNSDOMAIN -match \"area52\") {",
+			"\t",
+			"}#if afnet",
+			"elseif (\\$env:USERDNSDOMAIN -like \"*.ogn.af.mil\") {",
+			"\t",
+			"}#if tic",
+			"elseif (\\$env:USERDNSDOMAIN -eq \"lab.local\") {",
+			"\t",
+			"}#if virtual lab",
+			"elseif (\\$env:USERDNSDOMAIN -match \".smil.mil\") {",
+			"\t",
+			"}#if SIPR",
+			"elseif (\\$env:USERDNSDOMAIN -match \"ceo\") {",
+			"\t",
+			"}#if SAP"
+		],
+		"description": "Adds if statements to check domain"
+	},
+	"Function WSTools": {
+		"prefix": "funcws",
+		"body": [
+			"function ${Verb}-${Noun} {",
+			"<#",
+			".SYNOPSIS",
+			"\tShort description",
+			".DESCRIPTION",
+			"\tLong description",
+			".PARAMETER ComputerName",
+			"\tSpecifies the name of one or more computers.",
+			".PARAMETER Path",
+			"\tSpecifies a path to one or more locations.",
+			".EXAMPLE",
+			"\tC:\\PS>${Verb}-${Noun}",
+			"\tExample of how to use this cmdlet",
+			".EXAMPLE",
+			"\tC:\\PS>${Verb}-${Noun} -PARAMETER",
+			"\tAnother example of how to use this cmdlet but with a parameter or switch.",
+			".NOTES",
+			"\tAuthor: Skyler Hart",
+			"\tCreated: $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE $CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND",
+			"\tLast Edit: $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE $CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND",
+			"\tKeywords: ",
+			"\tOther: ",
+			"\tRequires:",
+			"\t\t-Module ActiveDirectory",
+			"\t\t-PSSnapin Microsoft.Exchange.Management.PowerShell.Admin",
+			"\t\t-RunAsAdministrator",
+			".LINK",
+			"\thttps://www.skylerhart.com",
+			".LINK",
+			"\thttps://www.wanderingstag.com",
+			"#>",
+			"\t[CmdletBinding()]",
+			"\tparam(",
+			"\t\t[Parameter(#HelpMessage = \"Enter one or more computer names separated by commas.\",",
+			"\t\t\tMandatory=\\$false,",
+			"\t\t\t#Position=0,",
+			"\t\t\t#ValueFromPipelineByPropertyName = \\$true,",
+			"\t\t\tValueFromPipeline = \\$true",
+			"\t\t)]",
+			"\t\t[ValidateSet('Info','Error','Warning')]",
+			"\t\t[ValidateNotNullOrEmpty()]",
+			"\t\t[Alias('Host','Name','Computer','CN')]",
+			"\t\t[string[]]\\$ComputerName = \"\\$env:COMPUTERNAME\"",
+			"\t)",
+			"",
+			"\tforeach (\\$Comp in \\$ComputerName) {",
+			"\t\t$0",
+			"\t}",
+			"}"
+		],
+		"description": "Adds WSTools function format"
+	},
+	"ParamBlock": {
+		"prefix": "paramblock",
+		"body": [
+			"\t[CmdletBinding()]",
+			"\tParam (",
+			"\t\t[Parameter(HelpMessage = \"Enter one or more computer names separated by commas.\",",
+			"\t\t\tMandatory=\\$false,",
+			"\t\t\tPosition=0,",
+			"\t\t\tValueFromPipeline = \\$true,",
+			"\t\t\tValueFromPipelineByPropertyName = \\$true",
+			"\t\t)]",
+			"\t\t[ValidateSet('Info','Error','Warning')]",
+			"\t\t[ValidateNotNullOrEmpty()]",
+			"\t\t[Alias('Host','Name','Computer','CN')]",
+			"\t\t[string[]]\\$ComputerName = \"\\$env:COMPUTERNAME\",",
+			"",
+			"\t\t[Parameter()]",
+			"\t\t[Switch]\\$Switch",
+			"\t)"
+		],
+		"description": "Adds a param block with several options"
+	},
+	"ParamInternetBlock": {
+		"prefix": "paraminternet",
+		"body": [
+			"\t\t[Parameter(Mandatory=\\$false)]",
+			"\t\t[Switch]\\$Chrome,",
+			"",
+			"\t\t[Parameter(Mandatory=\\$false)]",
+			"\t\t[Switch]\\$Edge,",
+			"",
+			"\t\t[Parameter(Mandatory=\\$false)]",
+			"\t\t[Switch]\\$Firefox,\r",
+			"",
+			"\t\t[Parameter(Mandatory=\\$false)]",
+			"\t\t[Switch]\\$InternetExplorer"
+		],
+		"description": "Adds browser switches to the param block"
+	},
+	"ProgressBar": {
+		"prefix": "progbar",
+		"body": [
+			"\\$$i = 0",
+			"\\$number = \\$$ComputerName.${1|length,count|}",
+			"",
+			"#Progress Bar",
+			"if (\\$number -gt \"1\") {",
+			"\t\\$$i++",
+			"\t\\$amount = (\\$$i / \\$number)",
+			"\t\\$perc1 = \\$amount.ToString(\"P\")",
+			"\tWrite-Progress -activity \"$CurrentlyDoingSomething\" -status \"$Computer \\$$i of \\$number. Percent complete:  \\$perc1\" -PercentComplete ((\\$$i / \\$$ComputerName.length)  * 100)",
+			"}#if length"
+		],
+		"description": "Adds code for a progress bar."
+	},
+	"PSObject": {
+		"prefix": "psobject",
+		"body": [
+			"New-Object -TypeName PSObject -Property @{",
+			"\t$ComputerName = $value$0",
+			"}#new object"
+		],
+		"description": "Adds PSObject code"
+	},
+	"Switch statement": {
+		"prefix": "switchws",
+		"body": [
+			"switch (${1:variable}) {",
+			"\t{${value}} {${variable} = ${AnotherValue}}",
+			"\t{'${value2}','${value3}' -contains \\$_} {${variable} = ${AnotherValue2}}",
+			"\t{${value4} -match ${1:variable}} {${variable} = ${AnotherValue3}}",
+			"}"
+		],
+		"description": "Switch statement"
+	},
+	"config": {
+		"prefix": "config",
+		"body": [
+			"\\$config = Import-WSToolsConfig\r"
+		],
+		"description": "Adds config statement"
+	}
+}
