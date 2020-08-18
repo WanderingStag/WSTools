@@ -26,7 +26,7 @@ General Configuration
 
 Remote installation of .msu files and a select few other things:
 
-1. Open WSTools Module Path (typically _C:\Program Files\WindowsPowerShell\Modules\WSTools_ or _C:\Users\<USERNAME>\Documents\WindowsPowerShell\Modules\WSTools_) then edit InstallRemote.ps1.
+1. Open WSTools Module Path (typically _C:\Program Files\WindowsPowerShell\Modules\WSTools_ or _C:\Users\USERNAME\Documents\WindowsPowerShell\Modules\WSTools_) then edit InstallRemote.ps1.
 2. On Line 221 of InstallRemote.ps1 change the value of $PatchFolderPath to the directory on remote computers you store windows updates. This is predefined as "C:\Patches".
 
 ## Visual Studio Code setup
@@ -39,7 +39,7 @@ For adding the Visual Studio Code PowerShell Snippets do the following:
 
 **_or_**
 
-1. Open the WSTools folder (typically _C:\Program Files\WindowsPowerShell\Modules\WSTools_ or _C:\Users\<USERNAME>\Documents\WindowsPowerShell\Modules\WSTools_).
+1. Open the WSTools folder (typically _C:\Program Files\WindowsPowerShell\Modules\WSTools_ or _C:\Users\USERNAME\Documents\WindowsPowerShell\Modules\WSTools_).
 2. Cut and paste powershell.json to **%AppData%\Roaming\Code\User\Snippets** directory.
 
 **_or_**
