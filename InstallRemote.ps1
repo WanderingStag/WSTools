@@ -248,6 +248,8 @@ $teams = $PatchFolderPath + "\Teams"
 $titus = $PatchFolderPath + "\Titus"
 $vlc = $PatchFolderPath + "\vlc"
 
+$onedrive = $PatchFolderPath + "\OneDriveSetup.exe"
+
 $datu = Get-ChildItem -Path $PatchFolderPath | Where-Object {$_.Name -like "CM-*xdat.exe"}
 $datun = $datu.Count
 
@@ -491,6 +493,10 @@ if (Test-Path $java) {
         Start-Process c:\Patches\Java\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 400
     }
+}
+
+if (Test-Path $onedrive) {
+    Start-Process $onedrive -ArgumentList "/AllUsers /Silent" -NoNewWindow -Wait
 }
 
 #if (Test-Path $shockwave) {
