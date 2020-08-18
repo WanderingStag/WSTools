@@ -7,13 +7,13 @@
 
 ### Global
 
-    Copy the WSTools folder to **C:\Program Files\WindowsPowerShell\Modules**
-    > Requires admin rights.
+Copy the WSTools folder to **C:\Program Files\WindowsPowerShell\Modules**
+> Requires admin rights.
   
 ### User only
   
-    Copy the WSTools folder to **C:\Users\\_USERNAME_\Documents\WindowsPowerShell\Modules**
-    > If the folder already exists or you get a message saying _"The destination has # files with the same names."_ you can either delete the folder that already exists *(prefered)* or you can *Replace the files in the destination*
+Copy the WSTools folder to **C:\Users\\_USERNAME_\Documents\WindowsPowerShell\Modules**
+> If the folder already exists or you get a message saying _"The destination has # files with the same names."_ you can either delete the folder that already exists *(prefered)* or you can *Replace the files in the destination*
 
 ## Initial changes to make after copying to computer
 
