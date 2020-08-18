@@ -1,12 +1,12 @@
 ﻿$Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
-    # WSTools config v1.0.3
+    # WSTools config v1.0.4
     # Remove the # symbol infront of a line to enable it
 
     ###########################################################################################################################################
-    #Path to where module files are stored on a central server. Used in Install-OSITools (aka Copy-OSITools) and Update-OSITools
+    #Path to where module files are stored on a central server. Used in Install-WSTools (aka Copy-WSTools) and Update-WSTools
     UpdatePath = "J:\PowerShell\Modules\WSTools"
 
-    #Update computer. Used when you have a computer you module on then push it out to the update path from that computers local repository (hardcoded to $env:ProgramFiles\WindowsPowerShell\Modules\WSTools).
+    #Update computer. Used when you have a computer you modify the module on then push it out to the update path from that computers local repository (hardcoded to $env:ProgramFiles\WindowsPowerShell\Modules\WSTools).
     #Additional paths is used for pushing out to folders in addtion to UpdatePath.
     UpdateComp = "snib1" #do not use the fqdn, only the shortname
     AdditionalUpdatePaths = @('J:\PowerShell\Modules\WSTools','D:\OneDrive\Scripts\Modules\WSTools')
@@ -15,13 +15,13 @@
     ##        Ignore List         ##
     ################################
     #Computers, users, and groups to ignore that cause issues. Objects such as clustered object computer names, non-windows systems, and other such things. Uses -match in some places and -eq in others so be as precise as possible.
-    #Ignore = @('comp1','comp2','user1','user2')
+    #Ignore = @('comp1','comp2','user1','user2','group1','group2')
     
 
     ################################
     ##    App/Patching settings   ##
     ################################
-    #Network App Repository
+    #Location on network where you store applications
     AppRepo = "J:\"
 
     #Network Patch Repository
