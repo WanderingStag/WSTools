@@ -132,7 +132,7 @@
                     New-PSDrive -Name $dn -PSProvider FileSystem -root "$psdpath" -ErrorAction Stop | Out-Null
                     if (Test-Path $patches) {
                         Set-Location $patches -ErrorAction Stop
-                        $op = Get-ChildItem $patches | Where-Object {$_.Attributes -ne "Directory" -and $_.Name -notmatch "Install.ps1" -and $_.LastWriteTime -gt ((Get-Date).AddDays(-28))} | Select-Object FullName -ExpandProperty FullName
+                        $op = Get-ChildItem $patches | Where-Object {$_.Attributes -ne "Directory" -and $_.Name -notmatch "Install.ps1" -and $_.LastWriteTime -lt ((Get-Date).AddDays(-28))} | Select-Object FullName -ExpandProperty FullName
 
                         foreach ($p in $op) {
                             Remove-Item -Path $p -Force -ErrorAction SilentlyContinue
