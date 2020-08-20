@@ -2242,22 +2242,22 @@ Function Get-SysInternals {
         Downloads the SysInternals Suite. Several customizable options included.
     .Example
         Get-SysInternals
-        Downloads the most recent zip file to c:\temp\SysinternalsSuite.zip, extracts it to c:\temp\SysInt, copies the files to $env:userprofile\Downloads\SysInternals.
+        Downloads the most recent zip file to c:\temp\SysinternalsSuite.zip, extracts it to c:\temp\SysInternalsSuite, copies the files to $env:userprofile\Downloads\SysInternals.
     .Example
         Get-SysInternals -PlaceIn "C:\Windows\System32"
-        Downloads the most recent zip file to c:\temp\SysinternalsSuite.zip, extracts it to c:\temp\SysInt, copies the files to C:\Windows\System32.
+        Downloads the most recent zip file to c:\temp\SysinternalsSuite.zip, extracts it to c:\temp\SysInternalsSuite, copies the files to C:\Windows\System32.
     .Parameter zipPath
-        Specifies where to save the zip file to. Must end filename with .zip
+        Specifies the folder path to save the zip file to.
     .Parameter tempFolder
         Specifies where to save the extracted temporary files to
     .Parameter PlaceIn
-        Specifies where to save the extracted files
+        Specifies the folder path of where to save the extracted files
     .Parameter url
         Specifies the download link for the SysInternals Suite.
     .Notes 
         AUTHOR: Skyler Hart
         CREATED: 2017-08-19 19:11:47
-        LASTEDIT: 2020-04-13 19:11:41
+        LASTEDIT: 2020-08-20 10:43:45
         KEYWORDS: SysInternals, tools, utilities
         REQUIRES: 
             #Requires running as administrator in some instances, primarily if saving to a system path
@@ -2284,9 +2284,9 @@ Function Get-SysInternals {
         $zipname = $zipPath + "\SysinternalsSuite.zip"
         $continue = $false
         
-        if (!(Test-Path $PlaceIn)) {mkdir $PlaceIn}
-        if (!(Test-Path $zipPath)) {mkdir $zipPath}
-        if (!(Test-Path $tempFolder)) {mkdir $tempFolder}
+        if (!(Test-Path $PlaceIn)) {mkdir $PlaceIn | Out-Null}
+        if (!(Test-Path $zipPath)) {mkdir $zipPath | Out-Null}
+        if (!(Test-Path $tempFolder)) {mkdir $tempFolder | Out-Null}
     
         $ErrorActionPreference = "Stop"
         Write-Host 'Downloading' $url 'to' $zipPath
@@ -2826,7 +2826,8 @@ function Get-WSToolsConfig {
 #>
     $Global:WSToolsConfig
 }
-
+New-Alias -Name "Import-WSToolsConfig" -Value Get-WSToolsConfig
+New-Alias -Name "WSToolsConfig" -Value Get-WSToolsConfig
 
 Function Get-WSToolsVersion {
 <# 
@@ -2920,41 +2921,6 @@ Function Get-WSToolsVersion {
     }
 }
 New-Alias -Name "WSToolsVersion" -Value Get-WSToolsVersion
-
-
-function Import-WSToolsConfig {
-<#
-.SYNOPSIS
-    Short description
-.DESCRIPTION
-    Long description
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.PARAMETER Path
-    Specifies a path to one or more locations.
-.EXAMPLE
-    C:\PS>Import-WSToolsConfig
-    Example of how to use this cmdlet
-.EXAMPLE
-    C:\PS>Import-WSToolsConfig -PARAMETER
-    Another example of how to use this cmdlet but with a parameter or switch.
-.NOTES
-    Author: Skyler Hart
-    Created: 2020-04-17 14:12:42
-    Last Edit: 2020-04-17 14:12:42
-    Keywords: 
-    Other: 
-    Requires:
-        -Module ActiveDirectory
-        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        -RunAsAdministrator
-.LINK
-    https://www.skylerhart.com
-.LINK
-    https://www.wanderingstag.com
-#>
-    powershell.exe $PSScriptRoot\config.ps1
-}
 
 
 Function Import-DRAModule {
