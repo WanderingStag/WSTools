@@ -73,6 +73,8 @@
     #DRAHostPort = 11192 #if not specified 11192 is used by default
     #DRARESTServer = "server.somedomain.com"
     #DRARESTPort = 8755 #if not specified 8755 is used by default
+    #DRAInstallLocation = "C:\Program Files (x86)\netiq\DRA Extensions\modules\NetIQ.DRA.PowerShellExtensions"
+    #DRAInstallFile = "J:\Microsoft\PowerShell\Modules\DRA"
 
     ####
     #### Preferences (will be set when using Set-Preferences)

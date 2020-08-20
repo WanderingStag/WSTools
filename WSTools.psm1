@@ -2615,7 +2615,7 @@ function Save-UpdateHistory {
     https://www.wanderingstag.com
 #>
     $UHPath = ($Global:WSToolsConfig).UHPath + "\" + $env:computername + ".csv"
-    $info = Get-UpdateHistory -Days 6
+    $info = Get-UpdateHistory -Days 30
     $info | Export-Csv $UHPath -Force
 }
 
@@ -2949,7 +2949,7 @@ Function Import-DRAModule {
         NAME: FUNCTIONNAME 
         AUTHOR: Skyler Hart
         CREATED: 10/17/2019 13:47:31
-        LASTEDIT: 03/19/2020 12:06:33  
+        LASTEDIT: 2020-08-20 14:42:59 
         KEYWORDS: 
         REMARKS: 
         REQUIRES: 
@@ -2961,12 +2961,16 @@ Function Import-DRAModule {
         https://www.skylerhart.com
         https://www.wanderingstag.com
     #>
-        
-    if (Test-Path 'C:\Program Files (x86)\netiq\DRA Extensions\modules\NetIQ.DRA.PowerShellExtensions') {
-        Import-Module 'C:\Program Files (x86)\netiq\DRA Extensions\modules\NetIQ.DRA.PowerShellExtensions'
+    
+    $config = $Global:WSToolsConfig
+    $ip = $config.DRAInstallLocation
+    $if = $config.DRAInstallFile
+
+    if (Test-Path $ip) {
+        Import-Module $ip
     }
     else {
-        Write-Host "DRA module not found. Please install it from J:\Microsoft\PowerShell\Modules\DRA"
+        Write-Host "DRA module not found. Please install it from $if"
     }
 }
 
