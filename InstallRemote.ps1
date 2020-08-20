@@ -1,46 +1,40 @@
 ﻿Function Get-InstalledPrograms {
 <#
-.Synopsis
-Generates a list of installed programs on a computer
-    
+.SYNOPSIS
+    Displays installed programs on a computer.
 .DESCRIPTION
-This function generates a list by querying the registry and returning the installed programs of a local or remote computer.
-    
-.NOTES   
-Name: Get-RemoteProgram
-Author: Jaap Brasser
-Version: 1.2.1
-DateCreated: 2013-08-23
-DateUpdated: 2015-02-28
-DateLastUpdatedBySkylerHart: 08/29/2019 11:41:59 
-Blog: https://www.jaapbrasser.com
-    
-.LINK
-https://www.jaapbrasser.com
-    
+    Displays a list of installed programs on a local or remote computer by querying the registry.
 .PARAMETER ComputerName
-The computer to which connectivity will be checked
-    
-.PARAMETER Property
-Additional values to be loaded from the registry. Can contain a string or an array of string that will be attempted to retrieve from the registry for each program entry
-    
+    Specifies the name of one or more computers.
+.PARAMETER Path
+    Specifies a path to one or more locations.
 .EXAMPLE
-Get-RemoteProgram
-    
-Description:
-Will generate a list of installed programs on local machine
-    
+    C:\PS>Get-InstalledPrograms
+    Shows the installed programs on the local computer.
 .EXAMPLE
-Get-RemoteProgram -ComputerName server01,server02
-    
-Description:
-Will generate a list of installed programs on server01 and server02
-    
+    C:\PS>Get-InstalledPrograms -ComputerName COMPUTER1
+    Shows the installed programs on the remote computer COMPUTER1.
 .EXAMPLE
-Get-RemoteProgram -ComputerName Server01 -Property DisplayVersion,VersionMajor
-    
+    C:\PS>Get-InstalledPrograms -ComputerName COMPUTER1,COMPUTER2
+    Shows the installed programs on the remote computers COMPUTER1 and COMPUTER2.
 .EXAMPLE
-'server01','server02' | Get-RemoteProgram -Property Uninstallstring
+    C:\PS>Get-InstalledPrograms (gc C:\Temp\computers.txt)
+    Shows the installed programs on the remote computers listed in the computers.txt file (each computer name on a new line.)
+.EXAMPLE
+    C:\PS>Get-InstalledPrograms COMPUTER1 -Property InstallSource
+    Shows the installed programs on the remote computer COMPUTER1 and also shows the additional property InstallSource from the registry.
+.EXAMPLE
+    C:\PS>Get-InstalledPrograms COMPUTER1,COMPUTER2 -Property InstallSource,Comments
+    Shows the installed programs on the remote computers COMPUTER1 and COMPUTER2. Also shows the additional properties InstallSource and Comments from the registry.
+.NOTES
+    Author: Skyler Hart
+    Created: Sometime prior to 2017-08
+    Last Edit: 2020-08-19 23:03:32
+    Keywords: 
+.LINK
+    https://www.skylerhart.com
+.LINK
+    https://www.wanderingstag.com
 #>
     [CmdletBinding(SupportsShouldProcess=$true)]
     param(
@@ -49,11 +43,12 @@ Get-RemoteProgram -ComputerName Server01 -Property DisplayVersion,VersionMajor
             Position=0)]
         [Alias('Host','Name','DNSHostName','Computer')]
         [string[]]$ComputerName = $env:COMPUTERNAME,
+    
         [Parameter(Position=1)]
         [string[]]$Property 
     )
     
-    begin {
+    Begin {
         $RegistryLocation = 'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\',
                             'SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\'
         $HashProperty = @{}
@@ -61,9 +56,9 @@ Get-RemoteProgram -ComputerName Server01 -Property DisplayVersion,VersionMajor
         if ($Property) {
             $SelectProperty += $Property
         }
-    }
+    }#begin
     
-    process {
+    Process {
         foreach ($Computer in $ComputerName) {
             $RegBase = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine,$Computer)
             $installed = @()
@@ -94,13 +89,13 @@ Get-RemoteProgram -ComputerName Server01 -Property DisplayVersion,VersionMajor
                             $InstallDate | Out-Null
                             $UninstallString | Out-Null
                             $Comments | Out-Null
-                        }
-                    }
-                }
-            }
+                        }#foreach object
+                    }#if currentregkey
+                }#if regbase
+            }#foreach registry entry in registry location
             $installed | Select-Object $SelectProperty | Sort-Object ProgramName
-        }
-    }
+        }#foreach computer
+    }#process
 }
 
 Function Join-File {
