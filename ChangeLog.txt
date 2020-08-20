@@ -32,6 +32,7 @@ Removed items:
 1. Get-202001UpdateStatus: We are in August 2020 now so if computers don't newer cumulative updates there is a problem.
 2. Get-DNSInfo: Not functioning and redundant.
 3. Removed Import-WSToolsConfig function.
+4. Removed Open-WSToolsManifests and Open-WSToolsModules.
 
 ######################
 #                    #

@@ -3272,60 +3272,6 @@ Function Global:Show-MessageBox {
 New-Alias -Name "message" -Value Global:Show-MessageBox
 
 
-function Open-WSToolsManifests {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
-    AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 21:06:39 
-    KEYWORDS: 
-    REMARKS: 
-   .Link 
-    https://www.skylerhart.com
-#> 
-    $items = (Get-ChildItem $env:ProgramFiles\WindowsPowerShell\Modules\WSTools -Recurse | Where-Object {$_.Name -like "*.psd1"} | Select-Object FullName).FullName
-    foreach ($item in $items) {
-        start-process "$env:windir\system32\WindowsPowerShell\v1.0\PowerShell_ISE.exe" $item
-    }
-}
-
-
-function Open-WSToolsModules {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
-    AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 21:06:44 
-    KEYWORDS: 
-    REMARKS: 
-   .Link 
-    https://www.skylerhart.com
-#> 
-    $items = (Get-ChildItem $env:ProgramFiles\WindowsPowerShell\Modules\WSTools -Recurse | Where-Object {$_.Name -like "*.psm1"} | Select-Object FullName).FullName
-    foreach ($item in $items) {
-        start-process "$env:windir\system32\WindowsPowerShell\v1.0\PowerShell_ISE.exe" $item
-    }
-}
-
-
 Function Test-EmailRelay {
     <# 
        .Synopsis 
