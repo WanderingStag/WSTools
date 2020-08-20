@@ -27,7 +27,8 @@ New features and other changes:
 15. Updated Install-Patches to work on the local computer and added help content.
 16. Added days switch to Save-MaintenanceReport and the default is now 20 days instead of 6.
 17. Changed Import-DRAModule to use config file settings.
-18. Added admintools and admin aliases to Open-AdminTools
+18. Added admintools and admin aliases to Open-AdminTools.
+19. Added BitLocker alias to Open-BitLocker
 
 Removed items:
 1. Get-202001UpdateStatus: We are in August 2020 now so if computers don't newer cumulative updates there is a problem.

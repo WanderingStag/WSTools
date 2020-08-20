@@ -4073,6 +4073,7 @@ function Open-BitLocker {
 #>
     control.exe /name Microsoft.BitLockerDriveEncryption
 }
+New-Alias -Name "BitLocker" -Value Open-BitLocker
 
 
 function Open-CertificatesComputer {
