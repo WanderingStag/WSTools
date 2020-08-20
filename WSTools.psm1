@@ -2242,10 +2242,10 @@ Function Get-SysInternals {
         Downloads the SysInternals Suite. Several customizable options included.
     .Example
         Get-SysInternals
-        Downloads the most recent zip file to c:\temp\SysinternalsSuite.zip, extracts it to c:\temp\SysInt, copies the files to $env:userprofile\Downloads\SysInternals, then removes the zip and temp files.
+        Downloads the most recent zip file to c:\temp\SysinternalsSuite.zip, extracts it to c:\temp\SysInt, copies the files to $env:userprofile\Downloads\SysInternals.
     .Example
         Get-SysInternals -PlaceIn "C:\Windows\System32"
-        Downloads the most recent zip file to c:\temp\SysinternalsSuite.zip, extracts it to c:\temp\SysInt, copies the files to C:\Windows\System32, then removes the zip and temp files.
+        Downloads the most recent zip file to c:\temp\SysinternalsSuite.zip, extracts it to c:\temp\SysInt, copies the files to C:\Windows\System32.
     .Parameter zipPath
         Specifies where to save the zip file to. Must end filename with .zip
     .Parameter tempFolder
@@ -2255,12 +2255,10 @@ Function Get-SysInternals {
     .Parameter url
         Specifies the download link for the SysInternals Suite.
     .Notes 
-        NAME: Get-SysInternals 
-        AUTHOR: Skyler Hart, Tommy Carlier
-        CREATED: 08/19/2017 19:11:47
+        AUTHOR: Skyler Hart
+        CREATED: 2017-08-19 19:11:47
         LASTEDIT: 2020-04-13 19:11:41
         KEYWORDS: SysInternals, tools, utilities
-        REMARKS: Most of this function was taken from Tommy Carlier's blog and repurposed.
         REQUIRES: 
             #Requires running as administrator in some instances, primarily if saving to a system path
     .LINK
@@ -2271,10 +2269,10 @@ Function Get-SysInternals {
         [CmdletBinding()]
         Param (
             [Parameter(ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
-            [string]$zipPath = "c:\temp\SysinternalsSuite.zip",
+            [string]$zipPath = "c:\temp",
     
             [Parameter(ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
-            [string]$tempFolder = "c:\temp\SysInt",
+            [string]$tempFolder = "c:\temp\SysInternalsSuite",
     
             [Parameter(ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
             [string]$PlaceIn = "$env:userprofile\Downloads\SysInternals",
@@ -2283,24 +2281,55 @@ Function Get-SysInternals {
             [string]$url = "https://download.sysinternals.com/files/SysinternalsSuite.zip"
         )
     
+        $zipname = $zipPath + "\SysinternalsSuite.zip"
+        $continue = $false
+        
         if (!(Test-Path $PlaceIn)) {mkdir $PlaceIn}
         if (!(Test-Path $zipPath)) {mkdir $zipPath}
         if (!(Test-Path $tempFolder)) {mkdir $tempFolder}
     
+        $ErrorActionPreference = "Stop"
         Write-Host 'Downloading' $url 'to' $zipPath
-        $web = New-Object System.Net.WebClient
-        $web.DownloadFile($url, $zipPath)
+        try {
+            Write-Host "--Trying System.Net.WebClinet"
+            $web = New-Object System.Net.WebClient
+            $web.DownloadFile($url, $zipPath)
+            $continue = $true
+        }
+        catch {
+            try {
+                Write-Host "--Trying BitsTransfer"
+                Start-BitsTransfer -Source $url -Destination $zipPath -ErrorAction Stop
+                $continue = $true
+            }
+            catch {
+                Write-Host "--Trying Invoke WebRequest"
+                Invoke-WebRequest -Uri $url -OutFile $zipPath
+                $continue = $true
+            }
+        }
     
-        Write-Host 'Extracting' $zipPath 'to' $tempFolder
-        Add-Type -assembly 'System.IO.Compression.FileSystem'
-        [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $tempFolder)
-    
-        Write-Host 'Copying files from' $tempFolder 'to' $PlaceIn
-        Copy-Item "$tempFolder\*.*" $PlaceIn
-    
-        Write-Host 'Removing temporary files'
-        Remove-Item $zipPath
-        Remove-Item $tempFolder -Recurse
+        if ($continue) {
+            Write-Host 'Extracting' $zipname 'to' $tempFolder
+            try {
+                Add-Type -assembly 'System.IO.Compression.FileSystem'
+                [System.IO.Compression.ZipFile]::ExtractToDirectory($zipname, $tempFolder)
+
+                try {
+                    Write-Host 'Copying files from' $tempFolder 'to' $PlaceIn
+                    Copy-Item "$tempFolder\*.*" $PlaceIn
+                }
+                catch {
+                    Write-Host "Failed to copy items from $tempFolder to $PlaceIn" -ForegroundColor Red
+                }
+            }
+            catch {
+                Write-Host "Failed extracting zip file" -ForegroundColor Red
+            }
+        }#continue
+        else {
+            Write-Host "Failed to download SysInternalsSuite from https://docs.microsoft.com/en-us/sysinternals/downloads/sysinternals-suite" -ForegroundColor Red
+        }
 }
 
 
