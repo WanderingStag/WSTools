@@ -4041,6 +4041,8 @@ function Open-AdminTools {
     control.exe admintools
 }
 New-Alias -Name "tools" -Value Open-AdminTools
+New-Alias -Name "admintools" -Value Open-AdminTools
+New-Alias -Name "admin" -Value Open-AdminTools
 
 
 function Open-BitLocker {
