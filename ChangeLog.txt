@@ -25,6 +25,7 @@ New features and other changes:
 13. Updated help on Install-WSTools and also changed it to use the UpdatePath config setting.
 14. Added LocalPatches config setting.
 15. Updated Install-Patches to work on the local computer and added help content.
+16. Added days switch to Save-MaintenanceReport and the default is now 20 days instead of 6.
 
 Removed items:
 1. Get-202001UpdateStatus: We are in August 2020 now so if computers don't newer cumulative updates there is a problem.

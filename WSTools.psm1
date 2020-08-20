@@ -2551,7 +2551,7 @@ function Save-MaintenanceReport {
 .NOTES
     Author: Skyler Hart
     Created: 2020-06-16 14:39:04
-    Last Edit: 2020-06-16 15:00:22
+    Last Edit: 2020-08-20 14:31:30
     Keywords: 
     Other: 
     Requires:
@@ -2563,10 +2563,21 @@ function Save-MaintenanceReport {
 .LINK
     https://www.wanderingstag.com
 #>
+	[CmdletBinding()]
+    Param (
+        [Parameter(
+            Mandatory=$false,
+            Position=0,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [int32]$Days = 20
+    ) 
+
     $UHPath = ($Global:WSToolsConfig).UHPath
     $dt = get-date -Format yyyyMMdd
     $sp = $UHPath + "\" + $dt + "_MaintenanceReport.csv"
-    $stime = (Get-Date) - (New-TimeSpan -Day 6)
+    $stime = (Get-Date) - (New-TimeSpan -Day $Days)
     $info = Get-ChildItem $UHPath | Where-Object {$_.LastWriteTime -gt $stime} | Select-Object FullName -ExpandProperty FullName
     $finfo = @()
     foreach ($file in $info) {
