@@ -1,7 +1,7 @@
 ######################
 #                    #
-#      v1.2.3 unpublished        #
-#                    #
+#      v1.3.0 unpublished        #
+#    August 2020     #
 ######################
 Known issues:
 1. Get-OperatingSystem displays computers as 32-bit when running the command against a computer the logged in user does not have admin rights on.
@@ -32,15 +32,15 @@ New features and other changes:
 20. Added help to Get-DefaultBrowserPath and added command to remove the PSDrive that is created.
 
 Removed items:
-1. Get-202001UpdateStatus: We are in August 2020 now so if computers don't newer cumulative updates there is a problem.
+1. Get-202001UpdateStatus: We are in August 2020 now so if computers don't have newer cumulative updates there is a problem.
 2. Get-DNSInfo: Not functioning and redundant.
-3. Removed Import-WSToolsConfig function.
-4. Removed Open-WSToolsManifests and Open-WSToolsModules.
+3. Import-WSToolsConfig changed process for editing the module so this is no longer needed.
+4. Open-WSToolsManifests and Open-WSToolsModules changed process for editing the module so this is no longer needed.
 
 ######################
 #                    #
 #      v1.2.2        #
-#                    #
+#    June 2020       #
 ######################
 Known issues:
 1. Get-OperatingSystem displays computers as 32-bit when running the command against a computer the logged in user does not have admin rights on.
@@ -61,7 +61,7 @@ New features and other changes:
 ######################
 #                    #
 #      v1.2.1        #
-#                    #
+#     May 2020       #
 ######################
 Known issues:
 1. Get-OperatingSystem displays computers as 32-bit when running the command against a computer the logged in user does not have admin rights on.
@@ -109,6 +109,6 @@ New features and other changes:
 ######################
 #                    #
 #      v1.2.0        #
-#                    #
+#    March 2020      #
 ######################
-After over 5 years of development and being used by several organizations it is finally being released to the Public.
+After over 10 years of development and being used by several organizations it is finally being released to the Public.
