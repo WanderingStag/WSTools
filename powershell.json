@@ -374,8 +374,17 @@
 	"config": {
 		"prefix": "config",
 		"body": [
-			"\\$config = Import-WSToolsConfig\r"
+			"\\$config = \\$Global:WSToolsConfig\r"
 		],
 		"description": "Adds config statement"
+	},
+	"admincheck": {
+		"prefix": "AdminCheck",
+		"body": [
+			"\\$currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())",
+			"if (\\$currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {\\$Role = 'Admin'}",
+			"else {\\$Role = 'User'}"
+		],
+		"description": "Adds admin check code (checks the Security roles to see what the user is running the window as."
 	}
 }
