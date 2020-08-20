@@ -11,13 +11,14 @@ Bug fixes:
 
 New features and other changes:
 1. Added Get-DirectoryStats.
-2. Updated Get-USBStorageDevices to show historically connected devices also removed unnecessary code and reformatted output.
+2. Updated Get-USBStorageDevices to show historically connected devices also reformatted output.
 3. Cleaned up some unnecessary/excessive code.
 4. Moved repo from self-hosted server to Azure DevOps.
 5. Updated text in config.ps1 and README files.
 6. Added MIT License file.
 7. Added OneDriveSetup execution to InstallRemote.ps1
 8. Get-InstalledPrograms: Updated help and added additional comments in function.
+9. Modified Clear-Patches so it is no longer recursive by default, it will only delete files in the root of the patches folder. Added a recursive switch. Also added a Old switch which only deletes files older than 28 days in the root of the patches folder.
 
 ######################
 #                    #
