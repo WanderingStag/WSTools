@@ -23,6 +23,7 @@ New features and other changes:
 11. Updated Get-SysInternals with various methods to download and error checking.
 12. Added Import-WSToolsConfig as an alias on Get-WSToolsConfig. Also added alias WSToolsConfig on Get-WSToolsConfig.
 13. Updated help on Install-WSTools and also changed it to use the UpdatePath config setting.
+14. Added LocalPatches config setting.
 
 Removed items:
 1. Get-202001UpdateStatus: We are in August 2020 now so if computers don't newer cumulative updates there is a problem.

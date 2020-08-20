@@ -1,5 +1,5 @@
 ﻿$Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
-    # WSTools config v1.0.4
+    # WSTools config v1.0.5
     # Remove the # symbol infront of a line to enable it
 
     ###########################################################################################################################################
@@ -23,6 +23,9 @@
     ################################
     #Location on network where you store applications
     AppRepo = "J:\"
+
+    #Local Patches folder on machines
+    LocalPatches = "C:\Patches"
 
     #Network Patch Repository
     PatchRepo = "J:\Patches"
