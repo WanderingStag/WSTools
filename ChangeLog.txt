@@ -17,6 +17,7 @@ New features and other changes:
 5. Updated text in config.ps1 and README files.
 6. Added MIT License file.
 7. Added OneDriveSetup execution to InstallRemote.ps1
+8. Get-InstalledPrograms: Updated help and added additional comments in function.
 
 ######################
 #                    #
