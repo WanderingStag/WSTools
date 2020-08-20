@@ -2812,7 +2812,7 @@ function Get-WSToolsConfig {
 .NOTES
     Author: Skyler Hart
     Created: 2020-05-23 12:27:36
-    Last Edit: 2020-05-23 12:27:36
+    Last Edit: 2020-08-20 11:18:58
     Keywords: 
     Other: 
     Requires:
@@ -3048,30 +3048,28 @@ New-Alias -Name "New-WMIFilter" -Value Import-MOF
 
 
 Function Install-WSTools {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter ComputerName
-    Specifies the computer or computers
-   .Notes 
-    NAME: FUNCTIONNAME 
-    AUTHOR: Skyler Hart
-    CREATED: 06/13/2018 14:17:09
-    LASTEDIT: 06/13/2018 14:17:09 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+<#
+.SYNOPSIS
+    Installs/copies the WSTools PowerShell module to a remote computer.
+.DESCRIPTION
+    Copies the WSTools module from the location specified in the WSTools config file (config.ps1) for UpdatePath to the C:\Program Files\WindowsPowerShell\Modules\WSTools folder on the remote computer.
+.PARAMETER ComputerName
+    Specifies the name of one or more computers.
+.EXAMPLE
+    C:\PS>Install-WSTools COMPNAME
+    How to install the WSTools PowerShell module on the remote computer COMPNAME.
+.EXAMPLE
+    C:\PS>Install-WSTools -ComputerName COMPNAME1,COMPNAME2
+    How to install the WSTools PowerShell module on the remote computers COMPNAME1 and COMPNAME2.
+.NOTES
+    Author: Skyler Hart
+    Created: 06/13/2018 14:17:09
+    Last Edit: 2020-08-20 11:18:30
+    Keywords: 
+.LINK
+    https://www.skylerhart.com
+.LINK
+    https://www.wanderingstag.com
 #>
     [CmdletBinding()]
     Param (
