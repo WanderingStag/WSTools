@@ -213,7 +213,7 @@
 	"CreatedBefore2017": {
 		"prefix": "createdbefore2017",
 		"body": [
-			"Sometime before 8/7/2017"
+			"Sometime before 2017-08-07"
 		],
 		"description": "Add sometime before 2017 text"
 	},
