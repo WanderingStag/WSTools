@@ -261,34 +261,33 @@
 Function Install-Patches {
 <#
 .SYNOPSIS
-    Short description
+    Will install patches in the local patches folder.
 .DESCRIPTION
-    Long description
+    Installes patches in the LocalPatches config setting path (default is C:\Patches.)
 .PARAMETER ComputerName
-    Specifies the name of one or more computers.
+    Specifies the name of one or more computers to install patches on.
 .PARAMETER Path
     Specifies a path to one or more locations.
 .EXAMPLE
-    C:\PS>Verb-Noun
-    Example of how to use this cmdlet
+    C:\PS>Install-Patches
+    Will install patches in the LocalPatches config setting path (default is C:\Patches.)
 .EXAMPLE
-    C:\PS>Verb-Noun -PARAMETER
-    Another example of how to use this cmdlet but with a parameter or switch.
+    C:\PS>Install-Patches -ComputerName COMP1,COMP2
+    Will install patches in the LocalPatches config setting path (default is C:\Patches) on COMP1 and COMP2.
 .NOTES
     Author: Skyler Hart
-    Created: 03/25/2017 08:30:23
-    Last Edit: 2020-06-24 17:41:15
-    Keywords: WSTools
+    Created: 2017-03-25 08:30:23
+    Last Edit: 2020-08-20 12:17:46
+    Keywords: 
     Other: 
     Requires:
         -RunAsAdministrator
-.FUNCTIONALITY
-    The functionality that best describes this cmdlet
 .LINK
     https://www.skylerhart.com
 .LINK
     https://www.wanderingstag.com
-#> 
+#>
+ 
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory=$false, Position=0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)] 
@@ -296,9 +295,17 @@ Function Install-Patches {
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
     
-    $fp = $PSScriptRoot.Substring(0,($PSScriptRoot.Length-15)) + "\InstallRemote.ps1"
-    Invoke-Command -ComputerName $ComputerName -FilePath $fp -ErrorAction Stop  #DevSkim: ignore DS104456 
+    $config = $Global:WSToolsConfig
+    $Patches = $config.LocalPatches
 
+    if ($ComputerName -eq $env:COMPUTERNAME) {
+        Copy-Item -LiteralPath "$PSScriptRoot\InstallRemote.ps1" -Destination $Patches
+        & "$Patches\InstallRemote.ps1"
+    }
+    else {
+        $fp = $PSScriptRoot.Substring(0,($PSScriptRoot.Length-15)) + "\InstallRemote.ps1"
+        Invoke-Command -ComputerName $ComputerName -FilePath $fp -ErrorAction Stop  #DevSkim: ignore DS104456
+    }
 }#install patches
 New-Alias -Name "Install-Updates" -Value Install-Patches
 
