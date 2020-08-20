@@ -5030,11 +5030,41 @@ Retrieves  certificates from a local or remote system.
 } 
 
 
-Function GET-DefaultBrowserPath {
-    #Get the default Browser path</span>
+Function Get-DefaultBrowserPath {
+<#
+.SYNOPSIS
+    Short description
+.DESCRIPTION
+    Long description
+.PARAMETER ComputerName
+    Specifies the name of one or more computers.
+.PARAMETER Path
+    Specifies a path to one or more locations.
+.EXAMPLE
+    C:\PS>Verb-Noun
+    Example of how to use this cmdlet
+.EXAMPLE
+    C:\PS>Verb-Noun -PARAMETER
+    Another example of how to use this cmdlet but with a parameter or switch.
+.NOTES
+    Author: Skyler Hart
+    Created: Sometime before 2017-08-07
+    Last Edit: 2020-08-20 15:09:53
+    Keywords: 
+    Other: 
+    Requires:
+        -Module ActiveDirectory
+        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        -RunAsAdministrator
+.LINK
+    https://www.skylerhart.com
+.LINK
+    https://www.wanderingstag.com
+#>
     New-PSDrive -Name HKCR -PSProvider Registry -Root Hkey_Classes_Root | Out-Null
-    $browserPath = ((Get-ItemProperty 'HKCR:\http\shell\open\command').'(default)').Split('"')[1]          
-    return $browserPath
+    $BrowserPath = ((Get-ItemProperty 'HKCR:\http\shell\open\command').'(default)').Split('"')[1]          
+    return $BrowserPath
+    Remove-PSDrive -Name HKCR -Force -ErrorAction SilentlyContinue | Out-Null
 }
 
 
@@ -5101,114 +5131,6 @@ Function Get-FileMetaData {
     } #end foreach $file 
   } #end foreach $sfolder 
 } #end Get-FileMetaData
-
-
-function Get-IPrange { 
-<#
-.SYNOPSIS
-    Lists IPs within a range, subnet, or CIDR block.
-.DESCRIPTION
-    Long description
-.PARAMETER CIDR
-    Specifies what CIDR block notation you want to list IPs from.
-.PARAMETER End
-    The ending IP in a range.
-.PARAMETER IP
-    An IP from the subnet mask or CIDR block you want a range for.
-.PARAMETER Start
-    Specifies a path to one or more locations.
-.PARAMETER Subnet
-    The subnet mask you want a range for.
-.EXAMPLE
-    C:\PS>Get-IPrange -ip 192.168.0.3 -subnet 255.255.255.192
-    Will show all IPs within the 192.168.0.0 space with a subnet mask of 255.255.255.192 (CIDR 26.)
-.EXAMPLE
-    C:\PS>Get-IPrange -PARAMETER
-    Another example of how to use this cmdlet but with a parameter or switch.
-.NOTES
-    Author: Skyler Hart
-    Created: Sometime before 8/7/2017
-    Last Edit: 2020-08-20 09:11:46
-    Keywords: 
-.LINK
-    https://www.skylerhart.com
-.LINK
-    https://www.wanderingstag.com
-#> 
-	[CmdletBinding()]
-    Param (
-        [Parameter(
-            Mandatory=$false,
-            Position=0,
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true
-        )]
-        [Alias('IPv4','Address','IPv4Address')]
-        [string]$IP,
-
-        [Parameter(
-            Mandatory=$false,
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true
-        )]
-        [Alias('Notation','Block')]
-        [string]$CIDR,
-
-        [Parameter(
-            Mandatory=$false,
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true
-        )]
-        [Alias('Mask')]
-        [string]$Subnet,
-
-        [Parameter(
-            Mandatory=$false,
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true
-        )]
-        [string]$Start,
-
-        [Parameter(
-            Mandatory=$false,
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true
-        )]
-        [string]$End
-    )
-  
-    function Convert-IPtoINT64 () {  
-        param ($IP)  
-  
-        $octets = $IP.split(".")  
-        return [int64]([int64]$octets[0]*16777216 +[int64]$octets[1]*65536 +[int64]$octets[2]*256 +[int64]$octets[3])  
-    }  
-  
-    function Convert-INT64toIP() {  
-        param ([int64]$int)  
- 
-        return (([math]::truncate($int/16777216)).tostring()+"."+([math]::truncate(($int%16777216)/65536)).tostring()+"."+([math]::truncate(($int%65536)/256)).tostring()+"."+([math]::truncate($int%256)).tostring() ) 
-    }  
-  
-    if ($IP) {$ipaddr = [Net.IPAddress]::Parse($IP)}  
-    if ($CIDR) {$maskaddr = [Net.IPAddress]::Parse((Convert-INT64toIP -int ([convert]::ToInt64(("1"*$CIDR+"0"*(32-$CIDR)),2)))) }  
-    if ($Subnet) {$maskaddr = [Net.IPAddress]::Parse($Subnet)}  
-    if ($IP) {$networkaddr = new-object net.ipaddress ($maskaddr.address -band $ipaddr.address)}  
-    if ($IP) {$broadcastaddr = new-object net.ipaddress (([system.net.ipaddress]::parse("255.255.255.255").address -bxor $maskaddr.address -bor $networkaddr.address))}  
-  
-    if ($IP) {  
-        $startaddr = Convert-IPtoINT64 -IP $networkaddr.ipaddresstostring  
-        $endaddr = Convert-IPtoINT64 -IP $broadcastaddr.ipaddresstostring  
-    } else {  
-        $startaddr = Convert-IPtoINT64 -IP $start  
-        $endaddr = Convert-IPtoINT64 -IP $end  
-    }  
-  
-  
-    for ($i = $startaddr; $i -le $endaddr; $i++) {  
-        Convert-INT64toIP -int $i  
-    } 
-}
 
 
 function Get-LocalUsers {
@@ -5513,6 +5435,112 @@ Function Get-InstalledPrograms {
             $installed | Select-Object $SelectProperty | Sort-Object ProgramName
         }#foreach computer
     }#process
+}
+
+
+function Get-IPrange { 
+<#
+.SYNOPSIS
+    Lists IPs within a range, subnet, or CIDR block.
+.DESCRIPTION
+    Lists IPs within a range, subnet, or CIDR block.
+.PARAMETER CIDR
+    Specifies what CIDR block notation you want to list IPs from.
+.PARAMETER End
+    The ending IP in a range.
+.PARAMETER IP
+    An IP from the subnet mask or CIDR block you want a range for.
+.PARAMETER Start
+    Specifies a path to one or more locations.
+.PARAMETER Subnet
+    The subnet mask you want a range for.
+.EXAMPLE
+    C:\PS>Get-IPrange -ip 192.168.0.3 -subnet 255.255.255.192
+    Will show all IPs within the 192.168.0.0 space with a subnet mask of 255.255.255.192 (CIDR 26.)
+.EXAMPLE
+    C:\PS>Get-IPrange -PARAMETER
+    Another example of how to use this cmdlet but with a parameter or switch.
+.NOTES
+    Author: Skyler Hart
+    Created: Sometime before 8/7/2017
+    Last Edit: 2020-08-20 09:11:46
+    Keywords: 
+.LINK
+    https://www.skylerhart.com
+.LINK
+    https://www.wanderingstag.com
+#> 
+    [CmdletBinding()]
+    Param (
+        [Parameter(
+            Mandatory=$false,
+            Position=0,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [Alias('IPv4','Address','IPv4Address')]
+        [string]$IP,
+    
+        [Parameter(
+            Mandatory=$false,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [Alias('Notation','Block')]
+        [string]$CIDR,
+    
+        [Parameter(
+            Mandatory=$false,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [Alias('Mask')]
+        [string]$Subnet,
+    
+        [Parameter(
+            Mandatory=$false,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [string]$Start,
+    
+        [Parameter(
+            Mandatory=$false,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [string]$End
+    )
+      
+    function Convert-IPtoINT64 () {  
+        param ($IP)    
+        $octets = $IP.split(".")  
+        return [int64]([int64]$octets[0]*16777216 +[int64]$octets[1]*65536 +[int64]$octets[2]*256 +[int64]$octets[3])  
+    }  
+      
+    function Convert-INT64toIP() {  
+        param ([int64]$int)  
+        return (([math]::truncate($int/16777216)).tostring()+"."+([math]::truncate(($int%16777216)/65536)).tostring()+"."+([math]::truncate(($int%65536)/256)).tostring()+"."+([math]::truncate($int%256)).tostring() ) 
+    }  
+      
+    if ($IP) {$ipaddr = [Net.IPAddress]::Parse($IP)}  
+    if ($CIDR) {$maskaddr = [Net.IPAddress]::Parse((Convert-INT64toIP -int ([convert]::ToInt64(("1"*$CIDR+"0"*(32-$CIDR)),2)))) }  
+    if ($Subnet) {$maskaddr = [Net.IPAddress]::Parse($Subnet)}  
+    if ($IP) {$networkaddr = new-object net.ipaddress ($maskaddr.address -band $ipaddr.address)}  
+    if ($IP) {$broadcastaddr = new-object net.ipaddress (([system.net.ipaddress]::parse("255.255.255.255").address -bxor $maskaddr.address -bor $networkaddr.address))}  
+      
+    if ($IP) {  
+        $startaddr = Convert-IPtoINT64 -IP $networkaddr.ipaddresstostring  
+        $endaddr = Convert-IPtoINT64 -IP $broadcastaddr.ipaddresstostring  
+    } else {  
+        $startaddr = Convert-IPtoINT64 -IP $start  
+        $endaddr = Convert-IPtoINT64 -IP $end  
+    }  
+      
+      
+    for ($i = $startaddr; $i -le $endaddr; $i++) {  
+        Convert-INT64toIP -int $i  
+    } 
 }
 
 

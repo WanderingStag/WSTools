@@ -29,6 +29,7 @@ New features and other changes:
 17. Changed Import-DRAModule to use config file settings.
 18. Added admintools and admin aliases to Open-AdminTools.
 19. Added BitLocker alias to Open-BitLocker
+20. Added help to Get-DefaultBrowserPath and added command to remove the PSDrive that is created.
 
 Removed items:
 1. Get-202001UpdateStatus: We are in August 2020 now so if computers don't newer cumulative updates there is a problem.
