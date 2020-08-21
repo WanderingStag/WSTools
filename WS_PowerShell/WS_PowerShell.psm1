@@ -1,37 +1,4 @@
-﻿Function Add-CreatedPriorTo2017 {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
-    AUTHOR: Skyler Hart
-    CREATED: 08/07/2018 16:12:36
-    LASTEDIT: 08/07/2018 16:12:36 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
-#> 
-    $createdText = @" 
-CREATED: Sometime before 8/7/2017 
-"@
-    $psise.CurrentFile.Editor.InsertText($createdText) 
-}
-
-
-Function Add-DateTime {
+﻿Function Add-DateTime {
 <# 
    .Synopsis 
     This function adds the date and time at current insertion point  
@@ -84,15 +51,15 @@ Function Add-DomainCheck {
 #>
 
     $domainText = @" 
-    if (`$env:USERDNSDOMAIN -match "skylerhart") {
+    if (`$env:USERDNSDOMAIN -match "skynet") {
         
     }#if skynet
 
-    elseif (`$env:USERDNSDOMAIN -match "area52") {
+    elseif (`$env:USERDNSDOMAIN -match "area") {
         
-    }#if NIPR
+    }#if area
 
-    elseif (`$env:USERDNSDOMAIN -like "*.ogn.af.*") {
+    elseif (`$env:USERDNSDOMAIN -like "*.ogn.*") {
         
     }#if tic
 
@@ -102,7 +69,7 @@ Function Add-DomainCheck {
 
     elseif (`$env:USERDNSDOMAIN -like "*.smil.mil") {
         
-    }#if SIPR
+    }#
 "@
     $psise.CurrentFile.Editor.InsertText($domainText)
 }
@@ -243,7 +210,7 @@ Function {
     Specifies the computer or computers$userHelp$browserHelp
    .Notes 
     NAME: FUNCTIONNAME 
-    AUTHOR: Skyler Hart
+    AUTHOR: 
     CREATED: $(Get-Date)
     LASTEDIT: $(Get-Date) 
     KEYWORDS: 
@@ -254,8 +221,7 @@ Function {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
    .Link 
-    https://www.skylerhart.com
-    https://www.wanderingstag.com
+    https://www.example.com
 #>
     [CmdletBinding()]
     Param (
@@ -293,14 +259,13 @@ Function Add-Help {
     Adds comment based help at current insertion point in a PowerShell ISE window 
    .Notes 
     NAME: Add-Help 
-    AUTHOR: Ed Wilson, MSFT and Skyler Hart
+    AUTHOR: Skyler Hart
     CREATED: 09/07/2010 17:32:34
     LASTEDIT: 10/04/2018 20:26:05 
     KEYWORDS: Scripting Techniques, Windows PowerShell ISE, Help
     REQUIRES: 
         #Requires -Version 2.0
    .Link
-    https://devblogs.microsoft.com/scripting/
     https://www.skylerhart.com
     https://www.wanderingstag.com
 #> 
@@ -317,7 +282,7 @@ Function Add-Help {
     The parameter does this
    .Notes 
     NAME: FUNCTIONNAME 
-    AUTHOR: Skyler Hart
+    AUTHOR: 
     CREATED: $(Get-Date)
     LASTEDIT: $(Get-Date) 
     KEYWORDS: 
@@ -328,8 +293,7 @@ Function Add-Help {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
    .Link 
-    https://www.skylerhart.com
-    https://www.wanderingstag.com
+    https://www.example.com
 #> 
 "@
     $psise.CurrentFile.Editor.InsertText($helpText) 
@@ -373,34 +337,6 @@ Function Add-InternetBrowsersBlock {
     }
 "@
     $psise.CurrentFile.Editor.InsertText($browserblockText) 
-}
-
-
-Function Add-Link {
-<# 
-   .Synopsis 
-    This function adds Skyler's websites into the link section of the help text at current insertion point  
-   .Example
-    Add-Link
-    Adds Skyler's websites at current insertion point in a PowerShell ISE window 
-   .Notes 
-    NAME: Add-Link 
-    AUTHOR: Skyler Hart
-    CREATED: 10/04/2018 20:32:01 
-    LASTEDIT: 10/04/2018 20:26:05 
-    KEYWORDS: Windows PowerShell ISE, Help
-    REQUIRES: 
-        #Requires -Version 2.0
-   .Link
-    https://www.skylerhart.com
-    https://www.wanderingstag.com
-#> 
-    $LinkText = @" 
-   .Link 
-    https://www.skylerhart.com
-    https://www.wanderingstag.com
-"@
-    $psise.CurrentFile.Editor.InsertText($LinkText) 
 }
 
 

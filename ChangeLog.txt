@@ -38,6 +38,7 @@ Removed items:
 2. Get-DNSInfo: Not functioning and redundant.
 3. Import-WSToolsConfig changed process for editing the module so this is no longer needed.
 4. Open-WSToolsManifests and Open-WSToolsModules changed process for editing the module so this is no longer needed.
+5. Add-CreatedPriorTo2017 and Add-Link. These are no longer needed since moving to Visual Studio Code for editing.
 
 ######################
 #                    #
