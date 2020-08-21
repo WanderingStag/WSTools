@@ -1,4 +1,12 @@
-# Install and Configuration of WSTools
+# WSTools Download, Install, and Configuration
+
+## Prerequisites
+
+1. **PowerShell:** version 2 for most functions but some individual functions require version 3 or version 5. Some plans have been made to add some functions that require version 7. Check your version of PowerShell by entering the following command: **$host** Then look at the _Version_ attribute.
+2. **Active Directory PowerShell module:** Not needed for everything but is necessary for 30+ functions.
+3. **NetIQ DRA PowerShell REST Extensions:** Not needed for many functions at the moment but there are plans to add more.
+4. **Local Admin Password Solution (LAPS):** There are a handful of functions that require the full install of LAPS and not just the basic install. However, if you are not using LAPS on your network then there are no worries.
+5. **Microsoft.Exchange.Management.PowerShell.Admin PSSnapin:** Required for the very few Exchange server related functions.
 
 ## Download WSTools
 
