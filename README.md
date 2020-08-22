@@ -1,5 +1,10 @@
 # WSTools Download, Install, and Configuration
 
+![alt text](https://static.wixstatic.com/media/5c389c_b18a4314851f4edf8f2c666e3d9b2940~mv2.jpg "WSTools PowerShell Module logo")
+
+##Feedback
+Please [submit feedback](https://www.wanderingstag.com/feedback "WSTools Feedback") about any issues here. Also, submit feedback if you have comments, suggestions, or would like to contribute.
+
 ## Prerequisites
 
 1. **PowerShell:** version 2 for most functions but some individual functions require version 3 or version 5. Some plans have been made to add some functions that require version 7. Check your version of PowerShell by entering the following command: **$host** Then look at the _Version_ attribute.
