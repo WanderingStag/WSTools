@@ -42,6 +42,7 @@ General Configuration
 
 1. Open PowerShell (after WSTools has been added to one of the locations above)
 2. Type the following command and then press Enter. In the file that opens you will need to update the values so they work on your network.
+
 **```Set-WSToolsConfig```**
     > Recommend copying this file (config.ps1) to another location so if you download a newer version of WSTools you can just paste the config file back unless there are changes in the config file.
 
@@ -55,7 +56,8 @@ Remote installation of .msu files and a select few other things:
 For adding the Visual Studio Code PowerShell Snippets do the following:
 
 1. Open PowerShell (after WSTools has been added to one of the locations above)
-2. Type the following command
+2. Type the following command:
+
 **```Set-PowerShellJSON```**
 
 **_or_**
