@@ -67,9 +67,9 @@ Function Add-DomainCheck {
         
     }#if virtual lab
 
-    elseif (`$env:USERDNSDOMAIN -like "*.smil.mil") {
+    elseif (`$env:USERDNSDOMAIN -match ".smil.") {
         
-    }#
+    }#secure
 "@
     $psise.CurrentFile.Editor.InsertText($domainText)
 }

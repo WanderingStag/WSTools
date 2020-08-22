@@ -220,24 +220,21 @@
 	"DomainCheck": {
 		"prefix": "domaincheck",
 		"body": [
-			"if (\\$env:USERDNSDOMAIN -match \"skylerhart\") {",
+			"if (\\$env:USERDNSDOMAIN -match \"skynet\") {",
 			"\t",
 			"}#if skynet",
-			"elseif (\\$env:USERDNSDOMAIN -match \"area52\") {",
+			"elseif (\\$env:USERDNSDOMAIN -match \"area\") {",
 			"\t",
-			"}#if afnet",
-			"elseif (\\$env:USERDNSDOMAIN -like \"*.ogn.af.mil\") {",
+			"}#if area",
+			"elseif (\\$env:USERDNSDOMAIN -like \"*.ogn.*\") {",
 			"\t",
 			"}#if tic",
 			"elseif (\\$env:USERDNSDOMAIN -eq \"lab.local\") {",
 			"\t",
 			"}#if virtual lab",
-			"elseif (\\$env:USERDNSDOMAIN -match \".smil.mil\") {",
+			"elseif (\\$env:USERDNSDOMAIN -match \".smil.\") {",
 			"\t",
-			"}#if SIPR",
-			"elseif (\\$env:USERDNSDOMAIN -match \"ceo\") {",
-			"\t",
-			"}#if SAP"
+			"}#if secure"
 		],
 		"description": "Adds if statements to check domain"
 	},
