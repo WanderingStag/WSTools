@@ -4,7 +4,7 @@
 
 ## Feedback
 
-Please **_[submit feedback](https://www.wanderingstag.com/feedback "WSTools Feedback")_** about any issues here. Also, submit feedback if you have comments, suggestions, or would like to contribute.
+Please **_[submit feedback](https://www.wanderingstag.com/feedback "WSTools Feedback")_** about any issues here. Also, submit feedback if you have comments, suggestions, or would like to contribute to the development of WSTools.
 
 ## Prerequisites
 
