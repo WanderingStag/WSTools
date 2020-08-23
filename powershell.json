@@ -138,13 +138,13 @@
 			".FUNCTIONALITY",
 			"\tThe functionality that best describes this cmdlet",
 			".LINK",
-			"\thttps://www.example.com",
+			"\thttps://wstools.dev",
 			"#>"
 		],
 		"description": "Generic Help comment block"
 	},
-	"HelpWS": {
-		"prefix": "helpws",
+	"WSHelp": {
+		"prefix": "wshelp",
 		"body": [
 			"<#",
 			".SYNOPSIS",
@@ -172,9 +172,9 @@
 			"\t\t-PSSnapin Microsoft.Exchange.Management.PowerShell.Admin",
 			"\t\t-RunAsAdministrator",
 			".LINK",
-			"\thttps://www.skylerhart.com",
+			"\thttps://wstools.dev",
 			".LINK",
-			"\thttps://www.wanderingstag.com",
+			"\thttps://www.skylerhart.com",
 			"#>"
 		],
 		"description": "WSTools Help comment block"
@@ -204,9 +204,9 @@
 		"prefix": "link",
 		"body": [
 			".LINK",
-			"\thttps://www.skylerhart.com",
+			"\thttps://wstools.dev",
 			".LINK",
-			"\thttps://www.wanderingstag.com"
+			"\thttps://www.skylerhart.com"
 		],
 		"description": "Link section for help block"
 	},
@@ -238,8 +238,8 @@
 		],
 		"description": "Adds if statements to check domain"
 	},
-	"Function WSTools": {
-		"prefix": "funcws",
+	"WSTools Function": {
+		"prefix": "wsfunction",
 		"body": [
 			"function ${Verb}-${Noun} {",
 			"<#",
@@ -268,9 +268,9 @@
 			"\t\t-PSSnapin Microsoft.Exchange.Management.PowerShell.Admin",
 			"\t\t-RunAsAdministrator",
 			".LINK",
-			"\thttps://www.skylerhart.com",
+			"\thttps://wstools.dev",
 			".LINK",
-			"\thttps://www.wanderingstag.com",
+			"\thttps://www.skylerhart.com",
 			"#>",
 			"\t[CmdletBinding()]",
 			"\tparam(",
@@ -358,7 +358,7 @@
 		"description": "Adds PSObject code"
 	},
 	"Switch statement": {
-		"prefix": "switchws",
+		"prefix": "wsswitch",
 		"body": [
 			"switch (${1:variable}) {",
 			"\t{${value}} {${variable} = ${AnotherValue}}",
@@ -368,8 +368,8 @@
 		],
 		"description": "Switch statement"
 	},
-	"config": {
-		"prefix": "config",
+	"wsconfig": {
+		"prefix": "wsconfig",
 		"body": [
 			"\\$config = \\$Global:WSToolsConfig\r"
 		],
