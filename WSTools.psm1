@@ -2934,9 +2934,8 @@ Function Get-WSToolsVersion {
         }
     }
     else {
+        $path = "$PSScriptRoot\WSTools.psd1"
         try {
-            if (Test-Path $env:ProgramFiles\WindowsPowerShell\Modules\WSTools) {$path = "$env:ProgramFiles\WindowsPowerShell\Modules\WSTools\WSTools.psd1"}
-            else {$path = "$env:USERPROFILE\Documents\WindowsPowerShell\Modules\WSTools\WSTools.psd1"}
             $info = Test-ModuleManifest $path
             $ver = $info.Version
         }
@@ -2945,9 +2944,7 @@ Function Get-WSToolsVersion {
         }
 
         try {
-            if (Test-Path $env:ProgramFiles\WindowsPowerShell\Modules\WSTools) {$path2 = "$env:ProgramFiles\WindowsPowerShell\Modules\WSTools\WSTools.psd1"}
-            else {$path2 = "$env:USERPROFILE\Documents\WindowsPowerShell\Modules\WSTools\WSTools.psd1"}
-            $info2 = Get-Item $path2
+            $info2 = Get-Item $path
             $i2 = $info2.LastWriteTime
         }
         catch {
