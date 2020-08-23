@@ -9,7 +9,7 @@
     #Update computer. Used when you have a computer you modify the module on then push it out to the update path from that computers local repository (hardcoded to $env:ProgramFiles\WindowsPowerShell\Modules\WSTools).
     #Additional paths is used for pushing out to folders in addtion to UpdatePath.
     UpdateComp = "snib1" #do not use the fqdn, only the shortname
-    AdditionalUpdatePaths = @('D:\OneDrive\Scripts\Modules\WSTools')
+    AdditionalUpdatePaths = @('\\$env:USERDNSDOMAIN\netlogon\Modules\WSTools','D:\OneDrive\Scripts\Modules\WSTools')
 
     ################################
     ##        Ignore List         ##

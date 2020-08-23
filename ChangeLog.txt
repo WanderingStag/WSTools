@@ -33,7 +33,8 @@ New features and other changes:
 21. Updated wsconfig snippet.
 22. Added AdminCheck snippet.
 23. Changed links to https://wstools.dev
-
+24. Added some extra validation text to the wsfunction snippet.
+25. Updated config file with additional update path - should be replaced by users unless they want to use the netlogon path for the domain for a location to push/pull module updates from.
 
 Removed items:
 1. Get-202001UpdateStatus: We are in August 2020 now so if computers don't have newer cumulative updates there is a problem.
