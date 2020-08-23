@@ -1,10 +1,10 @@
 # WSTools Download, Install, and Configuration
 
-![alt text](https://static.wixstatic.com/media/5c389c_b18a4314851f4edf8f2c666e3d9b2940~mv2.jpg "WSTools PowerShell Module logo")
+![alt text](https://wstools.dev/wp-content/uploads/2020/08/20200821-WSTools-Logo-small.jpg "WSTools PowerShell Module logo")
 
 ## Feedback
 
-Please **_[submit feedback](https://www.wanderingstag.com/feedback "WSTools Feedback")_** about any issues here. Also, submit feedback if you have comments, suggestions, or would like to contribute to the development of WSTools.
+Please **_[submit feedback](https://wstools.dev/contact "WSTools Feedback")_** about any issues here. Also, submit feedback if you have comments, suggestions, or would like to contribute to the development of WSTools.
 
 ## Prerequisites
 

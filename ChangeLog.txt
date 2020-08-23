@@ -30,8 +30,10 @@ New features and other changes:
 18. Added admintools and admin aliases to Open-AdminTools.
 19. Added BitLocker alias to Open-BitLocker
 20. Added help to Get-DefaultBrowserPath and added command to remove the PSDrive that is created.
-21. Updated config snippet.
+21. Updated wsconfig snippet.
 22. Added AdminCheck snippet.
+23. Changed links to https://wstools.dev
+
 
 Removed items:
 1. Get-202001UpdateStatus: We are in August 2020 now so if computers don't have newer cumulative updates there is a problem.

@@ -20,9 +20,9 @@
     Last Edit: 2019-03-20 10:40:11
     Keywords: Java, Exception
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     param(
@@ -55,9 +55,9 @@ function Copy-PowerShellJSON {
     Last Edit: 2020-04-17 14:24:07
     Keywords: WSTools, Visual Studio Code, PowerShell, JSON, Preferences
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #>
 
     Copy-Item -Path $PSScriptRoot\powershell.json -Destination $env:APPDATA\Code\User\snippets\powershell.json
@@ -90,9 +90,10 @@ function Clear-ImproperProfileCopy {
     KEYWORDS: user, profile, app data, application data, cleanup, clear, improper
     REMARKS: 
     REQUIRES:
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #> 
     [CmdletBinding()]
     Param (
@@ -170,9 +171,10 @@ Function Clear-Space {
     LASTEDIT: 07/22/2019 14:21:15  
     KEYWORDS: Delete, temp, patches, cache, prefetch, SCCM
     REMARKS: Needs to be ran as a user that has administrator rights
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #> 
     [CmdletBinding()]
     Param (
@@ -377,9 +379,9 @@ function Disable-ServerManager {
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #>
     Get-ScheduledTask -TaskName ServerManager | Disable-ScheduledTask
 }
@@ -412,9 +414,9 @@ function Enable-RDP {
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #>
     Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -value 0
 }
@@ -442,7 +444,9 @@ Function Get-ComputerHWInfo {
     KEYWORDS: hardware, information, computer
     REQUIRES: 
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com 
 #> 
     [CmdletBinding()]
@@ -501,7 +505,9 @@ Function Get-ComputerType {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com 
 #>
     [CmdletBinding()]
@@ -588,9 +594,9 @@ function Get-DirectoryStats {
         Keywords: 
         Other: 
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     param(
@@ -661,8 +667,10 @@ Function Get-WMIClasses {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #> 
     [CmdletBinding()]
     Param (
@@ -698,8 +706,10 @@ Function Get-WMINameSpaces {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #> 
     [CmdletBinding()]
     Param (
@@ -739,9 +749,9 @@ function Get-Drives {
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #>
     Get-PSDrive -Name *
 }
@@ -770,9 +780,9 @@ function Get-Errors {
     Last Edit: 2020-04-18 19:08:44
         Keywords: 
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     param(
@@ -836,9 +846,10 @@ Function Get-ExpiredCertsComputer {
     REQUIRES: 
         #Requires -Version 2.0
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #>
     $cd = Get-Date
     $certs = Get-ChildItem -Path Cert:\LocalMachine -Recurse | Select-Object *
@@ -874,9 +885,10 @@ Function Get-ExpiredCertsUser {
     REMARKS: 
     REQUIRES: 
         #Requires -Version 2.0
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #>
     $cd = Get-Date
     $certs = Get-ChildItem -Path Cert:\CurrentUser -Recurse | Select-Object *
@@ -912,9 +924,10 @@ Function Get-FeaturesOnDemand {
     REMARKS: 
     REQUIRES: 
         Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #>
     $ninfo = @()
     
@@ -959,7 +972,9 @@ Function Get-IEVersion {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com 
 #>  
     [CmdletBinding()]
@@ -1004,9 +1019,10 @@ Function Get-ComputerModel {
     KEYWORDS: 
     REMARKS: 
     REQUIRES: 
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #>
     [CmdletBinding()]
     Param (
@@ -1089,8 +1105,10 @@ Function Get-MTU {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #> 
     [CmdletBinding()]
     Param (
@@ -1178,8 +1196,10 @@ Function Get-NICInfo {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #> 
     [CmdletBinding()]
     Param (
@@ -1389,9 +1409,10 @@ Function Get-OperatingSystem {
     LASTEDIT: 2020-04-18 22:22:07      
     KEYWORDS: Operating System, OS
     REMARKS: For local computer it can be ran as user. For remote computers, it needs to be ran as a user who has administrative rights on the remote computer.
-   .Link 
-    https://www.skylerhart.com
-    https://www.wanderingstag.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com 
 #> 
     [CmdletBinding()]
     Param (
@@ -1666,9 +1687,9 @@ function Get-BitLockerStatus {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     param(
@@ -1813,9 +1834,9 @@ Function Get-ProcessorCapability {
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #> 
     [CmdletBinding()]
     Param (
@@ -1909,9 +1930,10 @@ Function Get-PSVersion {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #>
     [CmdletBinding()]
     Param (
@@ -2022,11 +2044,13 @@ Function Get-PublicIP {
             #Requires -Modules ActiveDirectory
             #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
             #Requires -RunAsAdministrator
-       .Link 
-        https://www.skylerhart.com
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
     #> 
         (Resolve-DnsName -Name myip.opendns.com -Server resolver1.opendns.com).IPAddress
-    }
+}
 
 
 Function Get-SerialNumber {
@@ -2048,9 +2072,10 @@ Function Get-SerialNumber {
     KEYWORDS: 
     REMARKS: 
     REQUIRES: 
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #>
     [CmdletBinding()]
     Param (
@@ -2117,9 +2142,10 @@ Function Get-ShutdownLogs {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #>
     [CmdletBinding()]
     Param (
@@ -2261,10 +2287,10 @@ Function Get-SysInternals {
         KEYWORDS: SysInternals, tools, utilities
         REQUIRES: 
             #Requires running as administrator in some instances, primarily if saving to a system path
-    .LINK
-        https://www.skylerhart.com
-    .LINK
-        https://www.wanderingstag.com
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #> 
         [CmdletBinding()]
         Param (
@@ -2360,9 +2386,9 @@ Function Get-UpTime {
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #> 
     [CmdletBinding()]
     Param (
@@ -2431,9 +2457,9 @@ function Get-UpdateHistory {
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     param(
@@ -2559,9 +2585,9 @@ function Save-MaintenanceReport {
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #>
 	[CmdletBinding()]
     Param (
@@ -2610,9 +2636,9 @@ function Save-UpdateHistory {
     Last Edit: 2020-06-16 14:38:42
     Keywords: 
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #>
     $UHPath = ($Global:WSToolsConfig).UHPath + "\" + $env:computername + ".csv"
     $info = Get-UpdateHistory -Days 30
@@ -2643,9 +2669,10 @@ function Get-WindowsSetupLog {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #> 
     [CmdletBinding()]
     Param (
@@ -2764,8 +2791,10 @@ Function Get-WSToolsAliases {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #>
     Get-Alias | Where-Object {$_.Source -eq "WSTools"}
 }
@@ -2795,7 +2824,9 @@ Function Get-WSToolsCommands {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com 
 #>
     $commands = (Get-Module WSTools | Select-Object ExportedCommands).ExportedCommands
@@ -2831,9 +2862,9 @@ function Get-WSToolsConfig {
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #>
     $Global:WSToolsConfig
 }
@@ -2859,8 +2890,10 @@ Function Get-WSToolsVersion {
     KEYWORDS: 
     REMARKS: 
     REQUIRES: 
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (
@@ -2957,9 +2990,10 @@ Function Import-DRAModule {
             #Requires -Modules ActiveDirectory
             #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
             #Requires -RunAsAdministrator
-       .Link 
-        https://www.skylerhart.com
-        https://www.wanderingstag.com
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
     #>
     
     $config = $Global:WSToolsConfig
@@ -2993,8 +3027,10 @@ Function Import-XML {
     LASTEDIT: 10/25/2017 17:03:54 
     KEYWORDS: 
     REMARKS: 
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (
@@ -3033,9 +3069,9 @@ Function Import-MOF {
     Requires:
         -Module ActiveDirectory
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (
@@ -3082,9 +3118,9 @@ Function Install-WSTools {
     Last Edit: 2020-08-20 11:18:30
     Keywords: 
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (
@@ -3125,7 +3161,9 @@ Function Set-SpeakerVolume {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     [CmdletBinding()]
@@ -3169,7 +3207,9 @@ Function Global:Show-BalloonTip {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     [CmdletBinding()]
@@ -3223,7 +3263,9 @@ Function Global:Show-MessageBox {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
 #info: https://msdn.microsoft.com/en-us/library/x83z1d9f(v=vs.84).aspx
@@ -3290,9 +3332,10 @@ Function Test-EmailRelay {
         LASTEDIT: 2020-08-09 21:36:41
         KEYWORDS: E-mail, email, relay, smtp
         REMARKS: On secure networks, port 25 has to be open
-       .Link 
-        https://www.skylerhart.com
-        https://www.wanderingstag.com
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
     #>  
     [CmdletBinding()]
     Param (
@@ -3337,7 +3380,9 @@ Function Test-Online {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     [CmdletBinding()]
@@ -3405,8 +3450,10 @@ Function Test-RegistryValue {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (
@@ -3443,9 +3490,10 @@ Function Update-WSTools {
     LASTEDIT: 10/17/2019 23:14:22    
     KEYWORDS: PowerShell, module, WSTools, personal
     REMARKS: 
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #> 
     $config = $Global:WSToolsConfig
     $UPath = $config.UpdatePath
@@ -3490,9 +3538,10 @@ Function Join-File {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #>
     [CmdletBinding()]
     Param (
@@ -3611,9 +3660,10 @@ Function Split-File {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #>
     [CmdletBinding()]
     Param (
@@ -3710,9 +3760,9 @@ function Set-Preferences {
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #>
     $config = $Global:WSToolsConfig
     $explorer = $config.Explorer
@@ -3835,8 +3885,10 @@ Function Set-Explorer {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (
@@ -3872,9 +3924,9 @@ Function Set-ShortcutText {
     Last Edit: 2020-04-18 20:44:39
     Keywords: 
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #>
         [CmdletBinding()]
         Param (
@@ -3911,8 +3963,10 @@ Function Set-StoreLookup {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #> 
     [CmdletBinding()]
     Param (
@@ -3949,8 +4003,10 @@ Function Show-HiddenFiles {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #> 
     [CmdletBinding()]
     Param (
@@ -3987,7 +4043,9 @@ Function Show-FileExtensions {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com 
 #> 
     [CmdletBinding()]
@@ -4035,7 +4093,9 @@ function Open-AdminTools {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     control.exe admintools
@@ -4068,7 +4128,9 @@ function Open-BitLocker {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #>
     control.exe /name Microsoft.BitLockerDriveEncryption
@@ -4099,8 +4161,10 @@ function Open-CertificatesComputer {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #> 
     certlm.msc
 }
@@ -4129,8 +4193,10 @@ function Open-CertificatesUser {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #> 
     certmgr.msc
 }
@@ -4158,7 +4224,9 @@ function Open-ComputerManagement {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     [CmdletBinding()]
@@ -4193,7 +4261,9 @@ function Open-DeviceManager {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     [CmdletBinding()]
@@ -4228,7 +4298,9 @@ function Open-DevicesAndPrinters {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     control.exe printers
@@ -4263,9 +4335,9 @@ function Open-DiscDrive {
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #>
     $sh = New-Object -ComObject "Shell.Application"
     $sh.Namespace(17).Items() | Where-Object {$_.Type -eq "CD Drive"} | ForEach-Object {$_.InvokeVerb("Eject")}
@@ -4296,7 +4368,9 @@ function Open-DiskManagement {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com 
 #> 
     [CmdletBinding()]
@@ -4331,7 +4405,9 @@ function Open-EventViewer {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     [CmdletBinding()]
@@ -4368,13 +4444,15 @@ Function Open-FirewallLog {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com 
 #> 
     [CmdletBinding()]
     Param (
         [Parameter()] 
-        [Switch]$Domain = $false,
+        [Switch]$Domain,
 
         [Parameter()] 
         [Switch]$Private,
@@ -4412,8 +4490,10 @@ function Open-LocalGPeditor {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #>
     gpedit.msc
 }
@@ -4443,7 +4523,9 @@ Function Open-NetworkConnections {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     control.exe ncpa.cpl
@@ -4474,7 +4556,9 @@ function Open-ProgramsAndFeatures {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     Start-Process appwiz.cpl
@@ -4505,7 +4589,9 @@ function Connect-RDP {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     [CmdletBinding()]
@@ -4539,9 +4625,10 @@ Function Open-Remedy {
         KEYWORDS: 
         REMARKS: 
         REQUIRES: 
-       .Link 
-        https://www.skylerhart.com
-        https://www.wanderingstag.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
     #> 
     [CmdletBinding()]
     Param (
@@ -4598,8 +4685,10 @@ Function Open-Services {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (
@@ -4634,7 +4723,9 @@ Function Open-SystemProperties {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     control.exe sysdm.cpl
@@ -4664,9 +4755,9 @@ function Set-DirtyShutdown {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     param(
@@ -4724,9 +4815,9 @@ function Set-LAPSshortcut {
     Created: 2020-05-08 22:34:49
     Last Edit: 2020-05-08 22:34:49
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     param(
@@ -4786,9 +4877,9 @@ function Set-MTU {
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #>
 	[CmdletBinding()]
     Param (
@@ -4831,9 +4922,9 @@ function Set-NetworkConnectionsShortcut {
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     param(
@@ -4889,7 +4980,9 @@ function Set-Reboot0100 {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     [CmdletBinding()]
@@ -5057,9 +5150,9 @@ Function Get-DefaultBrowserPath {
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #>
     New-PSDrive -Name HKCR -PSProvider Registry -Root Hkey_Classes_Root | Out-Null
     $BrowserPath = ((Get-ItemProperty 'HKCR:\http\shell\open\command').'(default)').Split('"')[1]          
@@ -5156,9 +5249,9 @@ function Get-LocalUsers {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     param(
@@ -5371,9 +5464,9 @@ Function Get-InstalledPrograms {
     Last Edit: 2020-08-19 23:03:32
     Keywords: 
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #>
     [CmdletBinding(SupportsShouldProcess=$true)]
     param(
@@ -5466,9 +5559,9 @@ function Get-IPrange {
     Last Edit: 2020-08-20 09:11:46
     Keywords: 
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #> 
     [CmdletBinding()]
     Param (
@@ -5562,9 +5655,9 @@ function Set-WSToolsConfig {
     Created: 2020-04-17 15:00:06
     Last Edit: 2020-04-17 15:00:06
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #>
 
     PowerShell_Ise "$PSScriptRoot\config.ps1"

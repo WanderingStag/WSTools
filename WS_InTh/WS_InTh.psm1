@@ -19,9 +19,10 @@
     REQUIRES: 
         #Requires -Version 3.0
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #>
     [CmdletBinding()]
     Param (
@@ -92,7 +93,9 @@ function Find-UserProfile {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     [CmdletBinding()]
@@ -207,7 +210,9 @@ function Find-UserProfileWithPSTSearch {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     [CmdletBinding()]
@@ -359,7 +364,9 @@ function Export-MessagesToPST {
     REQUIRES: 
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #>
     [CmdletBinding()]
@@ -414,7 +421,9 @@ function Get-ExchangeLastLoggedOnUser {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
  #Get-ADUser -Filter {EmailAddress -like "*"} -properties * | select EmailAddress | Export-Csv .\users.csv -NoTypeInformation
@@ -452,7 +461,9 @@ function Get-CurrentUser {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     [CmdletBinding()]
@@ -517,7 +528,9 @@ function Get-LoggedOnUser {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     [CmdletBinding()]
@@ -600,9 +613,10 @@ function Get-RecentUsers {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #> 
     [CmdletBinding()]
     Param (
@@ -751,7 +765,9 @@ function Get-USBDevices {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     [CmdletBinding()]
@@ -795,9 +811,9 @@ function Get-USBStorageDevices {
     Keywords: 
     Other: 
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #> 
     [CmdletBinding()]
     Param (
@@ -1032,7 +1048,9 @@ function Get-UserLogonLogoffTimes {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     [CmdletBinding()]

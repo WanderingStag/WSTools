@@ -11,7 +11,9 @@
     CREATED: 08/19/2017 19:51:23
     LASTEDIT: 10/26/2017 09:48:00  
     KEYWORDS: Scripting Techniques, Windows PowerShell ISE
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #Requires -Version 2.0 
 #> 
@@ -45,9 +47,10 @@ Function Add-DomainCheck {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #>
 
     $domainText = @" 
@@ -98,9 +101,10 @@ Function Add-Function {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #> 
     [CmdletBinding()]
     Param (
@@ -221,7 +225,7 @@ Function {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
    .Link 
-    https://www.example.com
+    https://wstools.dev
 #>
     [CmdletBinding()]
     Param (
@@ -265,9 +269,10 @@ Function Add-Help {
     KEYWORDS: Scripting Techniques, Windows PowerShell ISE, Help
     REQUIRES: 
         #Requires -Version 2.0
-   .Link
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #> 
     $helpText = @" 
 <# 
@@ -293,7 +298,7 @@ Function Add-Help {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
    .Link 
-    https://www.example.com
+    https://wstools.dev
 #> 
 "@
     $psise.CurrentFile.Editor.InsertText($helpText) 
@@ -323,8 +328,10 @@ Function Add-InternetBrowsersBlock {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #> 
     $browserblockText = @" 
     if (`$Chrome) {Start-Process "chrome.exe" `$URL}
@@ -359,9 +366,10 @@ Function Add-ParamBlock {
     KEYWORDS: 
     REMARKS: 
     REQUIRES: 
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #> 
     $paramblockText = @" 
     [CmdletBinding()]
@@ -408,7 +416,9 @@ Function Add-ParamInternetBrowsers {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com 
 #>
     $paramIBText = @" 
@@ -451,9 +461,10 @@ Function Add-ParamSwitchWithOptions {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #> 
 
     $switchText = @"
@@ -492,7 +503,9 @@ Function Add-ProgressBar {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com 
 #>
     $objectText = @"
@@ -534,9 +547,10 @@ Function Add-PSObject {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #> 
     [CmdletBinding()]
     Param (
@@ -589,9 +603,10 @@ Function Add-Switch {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #> 
     $objectText = @"
 switch (`$variable) {
@@ -626,9 +641,10 @@ Function Get-Accelerators {
     REMARKS: 
     REQUIRES: 
         Requires -Version 2.0
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #>
     [psobject].Assembly.GetType(“System.Management.Automation.TypeAccelerators”)::get | Sort-Object Key
 }
@@ -659,8 +675,10 @@ Function Get-FilePath {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #>  
     [System.Reflection.Assembly]::LoadWithPartialName("System.windows.forms") | Out-Null
     $OpenFileDialog = New-Object System.Windows.Forms.OpenFileDialog
@@ -695,8 +713,10 @@ Function Get-FolderPath {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #> 
     Write-Host "The folder selection window is open. It may be hidden behind windows." -ForegroundColor Yellow
     Add-Type -AssemblyName System.Windows.Forms
@@ -736,8 +756,10 @@ Function Get-FunctionsInModule {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #> 
     [CmdletBinding()]
     Param (
@@ -773,8 +795,10 @@ Function Get-Role {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #>
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
     
@@ -807,7 +831,9 @@ Function Set-AutoLoadPreference {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com 
 #>
     [CmdletBinding()]
@@ -842,7 +868,9 @@ Function Set-Profile {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     #If profile already exists, open for editing
@@ -897,7 +925,9 @@ Function Set-Title {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     [CmdletBinding()]
@@ -929,9 +959,10 @@ Function Start-PowerShell {
     LASTEDIT: 10/24/2017 16:41:21  
     KEYWORDS: 
     REMARKS: 
-
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (

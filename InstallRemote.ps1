@@ -32,9 +32,9 @@
     Last Edit: 2020-08-19 23:03:32
     Keywords: 
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #>
     [CmdletBinding(SupportsShouldProcess=$true)]
     param(
@@ -114,9 +114,10 @@ Function Join-File {
     AUTHOR: Skyler Hart
     CREATED: 04/30/2019 14:52:40
     LASTEDIT: 04/30/2019 17:17:50   
-.Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #>
     [CmdletBinding()]
     Param (

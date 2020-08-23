@@ -1,5 +1,4 @@
 ﻿#get more open commands here: https://sysadminstricks.com/tricks/most-useful-microsoft-management-console-snap-in-control-files-msc-files.html
-
 Function Find-EmptyGroups {
  <# 
    .Synopsis 
@@ -21,8 +20,10 @@ Function Find-EmptyGroups {
     REQUIRES: 
         #Requires -Version 2.0
         #Requires -Modules ActiveDirectory
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #> 
     [CmdletBinding()]
     Param (
@@ -66,8 +67,10 @@ Function Find-HiddenGALUsers {
     REQUIRES: 
         #Requires -Version 2.0
         #Requires -Modules ActiveDirectory
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #>  
     [CmdletBinding()]
     Param (
@@ -107,8 +110,10 @@ function Find-SID {
         KEYWORDS: SID
         REMARKS: 
         REQUIRES: 
-    .Link 
-        https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #>  
     [CmdletBinding()]
     Param (
@@ -143,8 +148,10 @@ Function Get-ComputerADSite {
     KEYWORDS: 
     REMARKS: 
     REQUIRES: 
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (
@@ -188,8 +195,10 @@ Function Get-DaysSinceLastLogon {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (
@@ -249,7 +258,9 @@ Function Get-FSMO {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     netdom /query FSMO
@@ -280,8 +291,10 @@ Function Get-LockedOutStatus {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #> 
     [CmdletBinding()]
     Param (
@@ -339,7 +352,9 @@ Function Get-NewADUsers {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     [CmdletBinding()]
@@ -376,7 +391,9 @@ Function Get-NewADGroups {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     [CmdletBinding()]
@@ -413,8 +430,10 @@ Function Get-ProtectedGroups {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #>
     $groups = (Get-ADGroup -filter {admincount -eq "1"}).Name | Sort-Object
     $groups
@@ -444,8 +463,10 @@ Function Get-ProtectedUsers {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #>
     $users = (Get-ADUser -filter {admincount -eq "1"}).Name | Sort-Object
     $users
@@ -474,7 +495,9 @@ Function Get-ReplicationStatus {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     repadmin /replsum
@@ -500,8 +523,10 @@ Function Get-UsersWithThumbnails {
     REMARKS: 
     REQUIRES: 
         #Requires -Modules ActiveDirectory
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #> 
     "Getting OU names . . ."
     $ous = (Get-ADOrganizationalUnit -Filter 'Name -like "*"' | Select-Object DistinguishedName).DistinguishedName
@@ -551,9 +576,9 @@ function Register-ADSIEdit {
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #>
     regsvr32.exe adsiedit.dll
 }
@@ -584,8 +609,10 @@ Function Open-ADDomainsAndTrusts {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #>
     domain.msc
 }
@@ -615,8 +642,10 @@ Function Open-ADSIEdit {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #>
     try {
         $ErrorActionPreference = "Stop"
@@ -659,8 +688,10 @@ Function Open-ADSitesAndServices {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #>
     dssite.msc
 }
@@ -689,8 +720,10 @@ Function Open-ADUsersAndComputers {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #>
     dsa.msc
 }
@@ -720,8 +753,10 @@ Function Open-DHCPmgmt {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #>
     dhcpmgmt.msc
 }
@@ -751,8 +786,10 @@ Function Open-DNSmgmt {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #>
     dnsmgmt.msc
 }
@@ -782,8 +819,10 @@ Function Open-GroupPolicyMgmt {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #>
     gpmc.msc
 }
@@ -814,8 +853,10 @@ Function Open-HyperVmgmt {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #>
     virtmgmt.msc
 }
@@ -838,8 +879,10 @@ function Open-iLO {
         AUTHOR: Skyler Hart
         CREATED: 02/02/2018 12:00:33
         LASTEDIT: 2020-04-17 15:36:02 
-       .Link 
-        https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
     #> 
     
     [CmdletBinding()]
@@ -895,7 +938,9 @@ Function Open-LAPS {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #>
     try {
@@ -940,8 +985,10 @@ Function Open-SharedFolders {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (
@@ -978,8 +1025,10 @@ Function Open-vCenter {
             #Requires -Modules ActiveDirectory
             #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
             #Requires -RunAsAdministrator
-       .Link 
-        https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
     #> 
     [CmdletBinding()]
     Param (
@@ -1034,8 +1083,10 @@ Function Register-Schema {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #>
     regsvr32 schmmgmt.dll
 }
@@ -1064,7 +1115,9 @@ Function Restart-ActiveDirectory {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     [CmdletBinding()]
@@ -1114,7 +1167,9 @@ Function Restart-DNS {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     [CmdletBinding()]
@@ -1164,7 +1219,9 @@ Function Restart-KDC {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     [CmdletBinding()]
@@ -1213,7 +1270,9 @@ function Set-ADProfilePicture {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     [CmdletBinding()]

@@ -31,9 +31,9 @@
     Requires:
         -RunAsAdministrator
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #>
   
     [CmdletBinding()]
@@ -283,9 +283,9 @@ Function Install-Patches {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #>
  
     [CmdletBinding()]
@@ -343,9 +343,10 @@ Function Uninstall-7Zip {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #> 
     [CmdletBinding()]
     Param (
@@ -479,9 +480,10 @@ Function Uninstall-90Meter {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #>  
     [CmdletBinding()]
     Param (
@@ -618,9 +620,10 @@ Function Uninstall-AdobeAir {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #> 
     [CmdletBinding()]
     Param (
@@ -754,9 +757,10 @@ Function Uninstall-AdobeFlash {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #> 
     [CmdletBinding()]
     Param (
@@ -891,9 +895,10 @@ Function Uninstall-AdobePro {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #> 
     [CmdletBinding()]
     Param (
@@ -1029,9 +1034,10 @@ Function Uninstall-AdobeReader {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #> 
     [CmdletBinding()]
     Param (
@@ -1165,9 +1171,10 @@ Function Uninstall-AdobeShockwave {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #> 
     [CmdletBinding()]
     Param (
@@ -1302,9 +1309,10 @@ Function Uninstall-GoogleChrome {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #> 
     [CmdletBinding()]
     Param (
@@ -1439,9 +1447,10 @@ Function Uninstall-HPInsightAgent {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #> 
     [CmdletBinding()]
     Param (
@@ -1575,9 +1584,10 @@ Function Uninstall-HPVersionControlAgent {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #> 
     [CmdletBinding()]
     Param (
@@ -1711,9 +1721,10 @@ Function Uninstall-IBMForms {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #> 
     [CmdletBinding()]
     Param (
@@ -1847,9 +1858,10 @@ Function Uninstall-McAfeeVSE {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #> 
     [CmdletBinding()]
     Param (
@@ -1983,9 +1995,10 @@ Function Uninstall-MozillaFirefox {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #> 
     [CmdletBinding()]
     Param (
@@ -2125,9 +2138,10 @@ Function Uninstall-MozillaMaintenanceService {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #>  
     [CmdletBinding()]
     Param (
@@ -2265,9 +2279,10 @@ Function Uninstall-OracleJava {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #> 
     [CmdletBinding()]
     Param (
@@ -2402,9 +2417,10 @@ Function Uninstall-VLC {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #>  
     [CmdletBinding()]
     Param (
@@ -2538,9 +2554,10 @@ Function Uninstall-WinSCP {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #> 
     [CmdletBinding()]
     Param (
@@ -2684,8 +2701,10 @@ Function Disable-3DES {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #>  
     [CmdletBinding()]
     Param (
@@ -2744,8 +2763,10 @@ Function Enable-3DES {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #>  
     [CmdletBinding()]
     Param (
@@ -2804,8 +2825,10 @@ Function Disable-DiffieHellman {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #>  
     [CmdletBinding()]
     Param (
@@ -2855,8 +2878,10 @@ Function Enable-DiffieHellman {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #>   
     [CmdletBinding()]
     Param (
@@ -2906,8 +2931,10 @@ Function Disable-RC4 {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
-    https://www.skylerhart.com 
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #>  
     [CmdletBinding()]
     Param (
@@ -2968,7 +2995,9 @@ Function Enable-RC4 {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com 
 #>   
     [CmdletBinding()]
@@ -3030,9 +3059,10 @@ Function Set-FeatureSettingsOverride {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #> 
     [CmdletBinding()]
     Param (
@@ -3109,7 +3139,9 @@ function Set-MS15124 {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com 
 #>  
     [CmdletBinding()]
@@ -3158,9 +3190,10 @@ Function Set-RemediationValues {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #> 
     [CmdletBinding()]
     Param (
@@ -3479,7 +3512,9 @@ function Set-SCHANNELsettings {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     [CmdletBinding()]
@@ -3693,7 +3728,9 @@ Function Set-SMBv1 {
     KEYWORDS: 
     REMARKS: 
     REQUIRES: 
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com 
 #>
     [CmdletBinding()]
@@ -3747,9 +3784,10 @@ Function Set-SMBv1Fix {
     REMARKS: 
     REQUIRES: 
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #>
     [CmdletBinding()]
     Param (
@@ -3807,9 +3845,9 @@ function Get-NetworkLevelAuthentication {
     Last Edit: 2020-04-18 15:28:10
     Keywords: Network, NLA, Network Level Authentication, RDP, Remote Desktop
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     param(
@@ -3889,9 +3927,9 @@ function Set-NetworkLevelAuthentication {
     Requires:
         #RunAsAdministrator
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     param(
@@ -3974,7 +4012,9 @@ function Open-ConfigurationManager {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     if (Test-Path "C:\Windows\SysWOW64\CCM\SMSCFGRC.cpl") {Start-Process C:\Windows\SysWOW64\CCM\SMSCFGRC.cpl}
@@ -4006,7 +4046,9 @@ function Open-RunAdvertisedPrograms {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     if (Test-Path "C:\Windows\SysWOW64\CCM\SMSRAP.cpl") {Start-Process C:\Windows\SysWOW64\CCM\SMSRAP.cpl}
@@ -4038,7 +4080,9 @@ function Open-SCCMLogsFolder {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
 <#--
@@ -4148,7 +4192,9 @@ function Open-WindowsUpdateLog {
     KEYWORDS: 
     REMARKS: 
     REQUIRES: 
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
 <#--
@@ -4230,9 +4276,10 @@ Function Get-ENSStatus {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #> 
     [CmdletBinding()]
     Param (
@@ -4391,9 +4438,10 @@ function Get-HBSSStatus {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #> 
     [CmdletBinding()]
     Param (
@@ -4625,7 +4673,9 @@ function Open-HBSSStatusMonitor {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #>
     if (Test-Path "$env:ProgramFiles\McAfee\Agent\cmdagent.exe") {
@@ -4667,7 +4717,9 @@ function Open-McAfeeVirusScanConsole {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     if (Test-Path "$env:ProgramFiles\McAfee\VirusScan Enterprise\mcconsol.exe") {
@@ -4700,7 +4752,9 @@ function Open-HIPSLogs {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
 #> 
     explorer "$env:ProgramData\McAfee\Host Intrusion Prevention"
@@ -4730,9 +4784,10 @@ Function Uninstall-HBSS {
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+.LINK
+    https://wstools.dev
+.LINK
     https://www.skylerhart.com
-    https://www.wanderingstag.com
 #> 
     [CmdletBinding()]
     Param (
@@ -4877,9 +4932,9 @@ function Sync-HBSSWithServer {
 .FUNCTIONALITY
     The functionality that best describes this cmdlet
 .LINK
-    https://www.skylerhart.com
+    https://wstools.dev
 .LINK
-    https://www.wanderingstag.com
+    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (
