@@ -858,7 +858,7 @@ function Get-USBStorageDevices {
                 $USBSTORSubKeys1  = $USBSTORKey.GetSubKeyNames()
             }
             catch {
-                #
+                #do nothing
             }
             
             foreach ($SubKey1 in $USBSTORSubKeys1) {
