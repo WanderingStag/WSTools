@@ -15,7 +15,7 @@ New features and other changes:
 3. Cleaned up some unnecessary/excessive code.
 4. Moved repo from self-hosted server to Azure DevOps.
 5. Updated text in config.ps1 and README files.
-6. Added MIT License file.
+6. Added License file.
 7. Added OneDriveSetup execution to InstallRemote.ps1
 8. Get-InstalledPrograms: Updated help and added additional comments in function.
 9. Modified Clear-Patches so it is no longer recursive by default, it will only delete files in the root of the patches folder. Added a recursive switch. Also added a Old switch which only deletes files older than 28 days in the root of the patches folder.
@@ -34,8 +34,8 @@ New features and other changes:
 22. Added AdminCheck snippet.
 23. Changed links to https://wstools.dev
 24. Added some extra validation text to the wsfunction snippet.
-25. Updated config file with additional update path - should be replaced by users unless they want to use the netlogon path for the domain for a location to push/pull module updates from.
-26. Changed Get-WSToolsVersion so that it is no longer hardcoded.
+25. Changed Get-WSToolsVersion so that it is no longer hardcoded.
+26. Updated comment text, tags, and Uri's in module manifest.
 
 Removed items:
 1. Get-202001UpdateStatus: We are in August 2020 now so if computers don't have newer cumulative updates there is a problem.
