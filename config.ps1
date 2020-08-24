@@ -16,7 +16,7 @@
     ################################
     #Computers, users, and groups to ignore that cause issues. Objects such as clustered object computer names, non-windows systems, and other such things. Uses -match in some places and -eq in others so be as precise as possible.
     #Ignore = @('comp1','comp2','user1','user2','group1','group2')
-    
+
 
     ################################
     ##    App/Patching settings   ##
@@ -56,10 +56,10 @@
 
     #HP iLO management in the WSTools\WS_DomainMgmt Open-iLO function
     #iLO = "https://iloaddress.somedomain.com"
-    
+
     #Open-Remedy. Because of the aliases (Open-EITSM, EITSM) this can be used for any ticketing system
     #Remedy = "https://remedy.somedomain.com"
-    
+
     #Open-vCenter
     #vCenter = "https://virtualcenter.somedomain.com/"
 
@@ -67,7 +67,7 @@
     #### NetIQ DRA Server info
     #### only remove the # in front of these and modify them if you have DRA Host/REST servers
     ####
-    
+
     #DRADomain = "somedomain.com"
     #DRAHostServer = "server.somedomain.com"
     #DRAHostPort = 11192 #if not specified 11192 is used by default

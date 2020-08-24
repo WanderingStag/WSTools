@@ -742,7 +742,7 @@ Process Name:"
 
 
 #Will show connected iPhones and other USB devices.
-function Get-USBDevices {
+function Get-USBDevice {
 <# 
    .Synopsis 
     This does that
@@ -784,26 +784,24 @@ function Get-USBDevices {
         Select-Object SystemName,Caption,DeviceID,Manufacturer,Name,Description | Sort-Object Caption
     }
 }
-New-Alias -Name "usb" -Value Get-USBDevices
+New-Alias -Name "usb" -Value Get-USBDevice
 
 
 #Write help
-function Get-USBStorageDevices {
+function Get-USBStorageDevice {
 <#
 .SYNOPSIS
-    Short description
+    Shows USB storage devices that have connected to a computer.
 .DESCRIPTION
-    Long description
+    Shows USB storage devices that have connected to a local or remote computer. Limitations apply. Only shows devices that are listed in the registry. Sometimes, depending on the computer that is only the most recent device.
 .PARAMETER ComputerName
     Specifies the name of one or more computers.
-.PARAMETER Path
-    Specifies a path to one or more locations.
 .EXAMPLE
-    C:\PS>Get-USBStorageDevices
-    Example of how to use this cmdlet
+    C:\PS>Get-USBStorageDevice
+    Example of how to use this cmdlet on a local computer.
 .EXAMPLE
-    C:\PS>Get-USBStorageDevices -PARAMETER
-    Another example of how to use this cmdlet but with a parameter or switch.
+    C:\PS>Get-USBStorageDevice -ComputerName COMP1
+    Shows the USB storage devices that have connected to the remote computer COMP1.
 .NOTES
     Author: Skyler Hart
     Created: Sometime before 8/7/2017 
@@ -824,9 +822,7 @@ function Get-USBStorageDevices {
             ValueFromPipeline = $true
         )]
         [Alias('Host','Name','Computer','CN')]
-        [string[]]$ComputerName = "$env:COMPUTERNAME",
-
-        [switch]$History
+        [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
 
     Begin {
@@ -1022,7 +1018,7 @@ function Get-USBStorageDevices {
     end {
         #
     }
-}#end get-usbstoragedevices
+}#end get-usbstoragedevice
 
 
 #Tested for InTh and it seems to work

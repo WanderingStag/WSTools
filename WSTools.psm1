@@ -198,7 +198,7 @@ Function Clear-Space {
                 if (Test-Path CS:\Temp) {
                     Set-Location "CS:\Temp"
                     if ((Get-Location).Path -eq "CS:\Temp") {
-                        Write-Host "Removing items in C:\Temp on $Comp"
+                        Write-Output "Removing items in C:\Temp on $Comp"
                         Remove-Item * -recurse -force
                     }
                 }
@@ -207,7 +207,7 @@ Function Clear-Space {
                 if (Test-Path CS:\Windows\Temp) {
                     Set-Location "CS:\Windows\Temp"
                     if ((Get-Location).Path -eq "CS:\Windows\Temp") {
-                        Write-Host "Removing items in C:\Windows\Temp on $Comp"
+                        Write-Output "Removing items in C:\Windows\Temp on $Comp"
                         Remove-Item * -recurse -force
                     }
                 }
@@ -216,7 +216,7 @@ Function Clear-Space {
                 if (Test-Path CS:\Windows\Prefetch) {
                     Set-Location "CS:\Windows\Prefetch"
                     if ((Get-Location).Path -eq "CS:\Windows\Prefetch") {
-                        Write-Host "Removing items in C:\Windows\Prefetch on $Comp"
+                        Write-Output "Removing items in C:\Windows\Prefetch on $Comp"
                         Remove-Item * -recurse -force
                     }
                 }
@@ -225,7 +225,7 @@ Function Clear-Space {
                 if (Test-Path CS:\Users) {
                     Set-Location "CS:\Users"
                     if ((Get-Location).Path -eq "CS:\Users") {
-                        Write-Host "Removing temp items in C:\Users on $Comp"
+                        Write-Output "Removing temp items in C:\Users on $Comp"
                         Remove-Item “.\*\Appdata\Local\Temp\*” -recurse -force
                     }
                 }
@@ -234,21 +234,21 @@ Function Clear-Space {
                 if (Test-Path CS:\Windows\SysWOW64\ccm\cache) {
                     Set-Location "CS:\Windows\SysWOW64\ccm\cache"
                     if ((Get-Location).Path -eq "CS:\Windows\SysWOW64\ccm\cache") {
-                        Write-Host "Removing items in C:\Windows\SysWOW64\ccm\cache on $Comp"
+                        Write-Output "Removing items in C:\Windows\SysWOW64\ccm\cache on $Comp"
                         Remove-Item * -recurse -force
                     }
                 }
                 if (Test-Path CS:\Windows\System32\ccm\cache) {
                     Set-Location "CS:\Windows\System32\ccm\cache"
                     if ((Get-Location).Path -eq "CS:\Windows\System32\ccm\cache") {
-                        Write-Host "Removing items in C:\Windows\System32\ccm\cache on $Comp"
+                        Write-Output "Removing items in C:\Windows\System32\ccm\cache on $Comp"
                         Remove-Item * -recurse -force
                     }
                 }
                 if (Test-Path CS:\Windows\ccmcache) {
                     Set-Location "CS:\Windows\ccmcache"
                     if ((Get-Location).Path -eq "CS:\Windows\ccmcache") {
-                        Write-Host "Removing items in CS:\Windows\ccmcache on $Comp"
+                        Write-Output "Removing items in CS:\Windows\ccmcache on $Comp"
                         Remove-Item * -recurse -force
                     }
                 }
@@ -257,7 +257,7 @@ Function Clear-Space {
                 if (Test-Path CS:\Windows\SoftwareDistribution\Download) {
                     Set-Location "CS:\Windows\SoftwareDistribution\Download"
                     if ((Get-Location).Path -eq "CS:\Windows\SoftwareDistribution\Download") {
-                        Write-Host "Removing items in C:\Windows\SoftwareDistribution\Download on $Comp"
+                        Write-Output "Removing items in C:\Windows\SoftwareDistribution\Download on $Comp"
                         Remove-Item * -recurse -force
                     }
                 }
@@ -266,7 +266,7 @@ Function Clear-Space {
                 if (Test-Path CS:\Patches) {
                     Set-Location "CS:\Patches"
                     if ((Get-Location).Path -eq "CS:\Patches") {
-                        Write-Host "Removing items in C:\Patches on $Comp"
+                        Write-Output "Removing items in C:\Patches on $Comp"
                         $ts = Get-Date
                         $items = Get-ChildItem -Recurse
                         foreach ($item in $items) {
@@ -283,7 +283,7 @@ Function Clear-Space {
                 Remove-PSDrive -Name CS -ErrorAction SilentlyContinue -Force | Out-Null
             }#try
             catch {
-                Write-Host "Unable to connect to computer: $Comp" -ForegroundColor Red
+                Write-Output "Unable to connect to computer: $Comp" -ForegroundColor Red
             }
         }#if Invoke False
 #endregion PSDrive Method
@@ -296,53 +296,53 @@ Function Clear-Space {
                 if ($wmiq -like "*64-bit*") {
                     $invoke = Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c del "C:\Windows\SysWOW64\ccm\cache\*.*" /f /q && FOR /D %p IN ("C:\Windows\SysWOW64\ccm\cache\*") DO rmdir "%p" /q' -ErrorAction SilentlyContinue #DevSkim: ignore DS104456 
                     $id32 = $invoke.ProcessId
-                    Write-Host "Waiting for deletion of files in C:\Windows\SysWOW64\ccm\cache to complete"
+                    Write-Output "Waiting for deletion of files in C:\Windows\SysWOW64\ccm\cache to complete"
                     do {(Start-Sleep -Seconds 10)}
                     until ((Get-WMIobject -Class Win32_process -ComputerName $Comp) | Where-Object {$_.ProcessID -eq $id32})
                 }#if64bit
                 else {
                     $invoke = Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c del "C:\Windows\System32\ccm\cache\*.*" /f /q && FOR /D %p IN ("C:\Windows\System32\ccm\cache\*") DO rmdir "%p" /q' -ErrorAction SilentlyContinue #DevSkim: ignore DS104456 
                     $id32 = $invoke.ProcessId
-                    Write-Host "Waiting for deletion of files in C:\Windows\System32\ccm\cache to complete"
+                    Write-Output "Waiting for deletion of files in C:\Windows\System32\ccm\cache to complete"
                     do {(Start-Sleep -Seconds 10)}
                     until ((Get-WMIobject -Class Win32_process -ComputerName $Comp) | Where-Object {$_.ProcessID -eq $id32})
                 }#elseif32bit
                 $invoke = Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c del "C:\Windows\ccmcache\*.*" /f /q && FOR /D %p IN ("C:\Windows\ccmcache\*") DO rmdir "%p" /q' -ErrorAction SilentlyContinue #DevSkim: ignore DS104456 
                 $id32 = $invoke.ProcessId
-                Write-Host "Waiting for deletion of files in C:\Windows\ccmcache to complete"
+                Write-Output "Waiting for deletion of files in C:\Windows\ccmcache to complete"
                 do {(Start-Sleep -Seconds 10)}
                 until ((Get-WMIobject -Class Win32_process -ComputerName $Comp) | Where-Object {$_.ProcessID -eq $id32})
 
                 #Remove C:\Temp files
                 $invoke = Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c del "C:\Temp\*.*" /f /q && FOR /D %p IN ("C:\Temp\*") DO rmdir "%p" /q' -ErrorAction SilentlyContinue #DevSkim: ignore DS104456 
                 $id32 = $invoke.ProcessId
-                Write-Host "Waiting for deletion of files in C:\Temp to complete"
+                Write-Output "Waiting for deletion of files in C:\Temp to complete"
                 do {(Start-Sleep -Seconds 10)}
                 until ((Get-WMIobject -Class Win32_process -ComputerName $Comp) | Where-Object {$_.ProcessID -eq $id32})
 
                 #Remove Windows Temp files
                 $invoke = Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c del "C:\Windows\Temp\*.*" /f /q && FOR /D %p IN ("C:\Windows\Temp\*") DO rmdir "%p" /q' -ErrorAction SilentlyContinue #DevSkim: ignore DS104456 
                 $id32 = $invoke.ProcessId
-                Write-Host "Waiting for deletion of files in C:\Windows\Temp to complete"
+                Write-Output "Waiting for deletion of files in C:\Windows\Temp to complete"
                 do {(Start-Sleep -Seconds 10)}
                 until ((Get-WMIobject -Class Win32_process -ComputerName $Comp) | Where-Object {$_.ProcessID -eq $id32})
 
                 #Remove Prefetch files
                 $invoke = Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c del "C:\Windows\Prefetch\*.*" /f /q && FOR /D %p IN ("C:\Windows\Prefetch\*") DO rmdir "%p" /q' -ErrorAction SilentlyContinue #DevSkim: ignore DS104456 
                 $id32 = $invoke.ProcessId
-                Write-Host "Waiting for deletion of files in C:\Windows\Prefetch to complete"
+                Write-Output "Waiting for deletion of files in C:\Windows\Prefetch to complete"
                 do {(Start-Sleep -Seconds 10)}
                 until ((Get-WMIobject -Class Win32_process -ComputerName $Comp) | Where-Object {$_.ProcessID -eq $id32})
 
                 #Remove Windows Update cache
                 $invoke = Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c del "C:\Windows\SoftwareDistribution\Download\*.*" /f /q && FOR /D %p IN ("C:\Windows\SoftwareDistribution\Download\*") DO rmdir "%p" /q' -ErrorAction SilentlyContinue #DevSkim: ignore DS104456 
                 $id32 = $invoke.ProcessId
-                Write-Host "Waiting for deletion of files in C:\Windows\SoftwareDistribution\Download to complete"
+                Write-Output "Waiting for deletion of files in C:\Windows\SoftwareDistribution\Download to complete"
                 do {(Start-Sleep -Seconds 10)}
                 until ((Get-WMIobject -Class Win32_process -ComputerName $Comp) | Where-Object {$_.ProcessID -eq $id32})
             }
             catch {
-                Write-Host "Unable to connect to computer: $Comp" -ForegroundColor Red
+                Write-Output "Unable to connect to computer: $Comp" -ForegroundColor Red
             }
         }#invoke method
     
@@ -571,7 +571,7 @@ Function Get-ComputerType {
 }
 
 
-function Get-DirectoryStats {
+function Get-DirectoryStat {
     <#
     .SYNOPSIS
         Short description
@@ -582,10 +582,10 @@ function Get-DirectoryStats {
     .PARAMETER Path
         Specifies a path to one or more locations.
     .EXAMPLE
-        C:\PS>Get-DirectoryStats
+        C:\PS>Get-DirectoryStat
         Example of how to use this cmdlet
     .EXAMPLE
-        C:\PS>Get-DirectoryStats -PARAMETER
+        C:\PS>Get-DirectoryStat -PARAMETER
         Another example of how to use this cmdlet but with a parameter or switch.
     .NOTES
         Author: Skyler Hart
@@ -644,7 +644,7 @@ function Get-DirectoryStats {
 
 
 #Look up "root\WMI" or "root\CCM" using Get-ComputerWMINamespaces
-Function Get-WMIClasses {
+Function Get-WMIClass {
 <# 
    .Synopsis 
     This does that
@@ -683,7 +683,7 @@ Function Get-WMIClasses {
 }
 
 
-Function Get-WMINameSpaces {
+Function Get-WMINameSpace {
 <# 
    .Synopsis 
     This does that
@@ -722,7 +722,7 @@ Function Get-WMINameSpaces {
 }
 
 
-function Get-Drives {
+function Get-Drive {
 <#
 .SYNOPSIS
     Short description
@@ -755,10 +755,10 @@ function Get-Drives {
 #>
     Get-PSDrive -Name *
 }
-New-Alias -Name "Drives" -Value Get-Drives
+New-Alias -Name "Drive" -Value Get-Drive
 
 
-function Get-Errors {
+function Get-Error {
 <#
 .SYNOPSIS
     Short description
@@ -822,7 +822,7 @@ function Get-Errors {
     
     $info
 }
-New-Alias -Name "Errors" -Value Get-Errors
+New-Alias -Name "Error" -Value Get-Error
 
 
 Function Get-ExpiredCertsComputer {
@@ -2119,7 +2119,7 @@ Function Get-SerialNumber {
 New-Alias -Name "Get-SN" -Value Get-SerialNumber
 
 
-Function Get-ShutdownLogs {
+Function Get-ShutdownLog {
 <# 
    .Synopsis 
     This does that
@@ -2315,7 +2315,7 @@ Function Get-SysInternals {
         if (!(Test-Path $tempFolder)) {mkdir $tempFolder | Out-Null}
     
         $ErrorActionPreference = "Stop"
-        Write-Host 'Downloading' $url 'to' $zipPath
+        Write-Host "Downloading $url to $zipPath"
         try {
             Write-Host "--Trying System.Net.WebClinet"
             $web = New-Object System.Net.WebClient
@@ -2336,13 +2336,13 @@ Function Get-SysInternals {
         }
     
         if ($continue) {
-            Write-Host 'Extracting' $zipname 'to' $tempFolder
+            Write-Host "Extracting $zipname to $tempFolder"
             try {
                 Add-Type -assembly 'System.IO.Compression.FileSystem'
                 [System.IO.Compression.ZipFile]::ExtractToDirectory($zipname, $tempFolder)
 
                 try {
-                    Write-Host 'Copying files from' $tempFolder 'to' $PlaceIn
+                    Write-Host "Copying files from $tempFolder to $PlaceIn"
                     Copy-Item "$tempFolder\*.*" $PlaceIn
                 }
                 catch {
@@ -2768,7 +2768,7 @@ New-Alias -Name "Get-UpdateStatus" -Value Get-WindowsSetupLog
 New-Alias -Name "Get-UpdateLog" -Value Get-WindowsSetupLog
 
 
-Function Get-WSToolsAliases {
+Function Get-WSToolsAlias {
 <# 
    .Synopsis 
     This does that
@@ -2798,10 +2798,10 @@ Function Get-WSToolsAliases {
 #>
     Get-Alias | Where-Object {$_.Source -eq "WSTools"}
 }
-New-Alias -Name "WSToolsAliases" -Value Get-WSToolsAliases
+New-Alias -Name "WSToolsAliases" -Value Get-WSToolsAlias
 
 
-Function Get-WSToolsCommands {
+Function Get-WSToolsCommand {
 <# 
    .Synopsis 
     This does that
@@ -2832,7 +2832,7 @@ Function Get-WSToolsCommands {
     $commands = (Get-Module WSTools | Select-Object ExportedCommands).ExportedCommands
     $commands.Values | Select-Object CommandType,Name,Source
 }
-New-Alias -Name "WSToolsCommands" -Value Get-WSToolsCommands
+New-Alias -Name "WSToolsCommands" -Value Get-WSToolsCommand
 
 
 function Get-WSToolsConfig {
@@ -3182,7 +3182,7 @@ Function Set-SpeakerVolume {
 New-Alias -Name "Volume" -Value Set-SpeakerVolume
 
 
-Function Global:Show-BalloonTip {
+Function Show-BalloonTip {
 <# 
    .Synopsis 
     This does that
@@ -3235,10 +3235,10 @@ Function Global:Show-BalloonTip {
     $PopUp.Visible = $true
     $PopUp.ShowBalloonTip($Timeout)
 }
-New-Alias -Name "tip" -Value Global:Show-BalloonTip
+New-Alias -Name "tip" -Value Show-BalloonTip
 
 
-Function Global:Show-MessageBox {
+Function Show-MessageBox {
 <# 
    .Synopsis 
     This does that
@@ -3308,7 +3308,7 @@ Function Global:Show-MessageBox {
 #10 Try Again button
 #11 Continue button
 }
-New-Alias -Name "message" -Value Global:Show-MessageBox
+New-Alias -Name "message" -Value Show-MessageBox
 
 
 Function Test-EmailRelay {
@@ -5006,120 +5006,6 @@ function Set-Reboot0100 {
 }
 
 
-###########################################################################
-###########################################################################
-##                                                                       ##
-##                               3rd Party                               ##
-##                                                                       ##
-###########################################################################
-###########################################################################
-
-#region 3rd party
-Function Get-Certificate  {
-  <#
-  .SYNOPSIS
-Retrieves  certificates from a local or remote system.
-        .DESCRIPTION
-Retrieves  certificates from a local or remote system.
-        .PARAMETER  Computername
-  A single or  list of computernames to perform search against
-        .PARAMETER  StoreName
-  The name of  the certificate store name that you want to search
-        .PARAMETER  StoreLocation
-  The location  of the certificate store.
-        .NOTES
-  Name:  Get-Certificate
-  Author: Boe  Prox
-  Version  History:
-  1.0 -  Initial Version
-        .EXAMPLE
-  Get-Certificate -Computername 'boe-pc' -StoreName My -StoreLocation  LocalMachine
-             Thumbprint                                 Subject                              
-  ----------                                 -------                              
-  F29B6CB248E3395B2EB45FCA6EA15005F64F2B4E   CN=SomeCert                          
-  B93BA840652FB8273CCB1ABD804B2A035AA39877   CN=YetAnotherCert                    
-  B1FF5E183E5C4F03559E80B49C2546BBB14CCB18   CN=BOE                               
-  65F5A012F0FE3DF8AC6B5D6E07817F05D2DF5104   CN=SomeOtherCert                     
-  63BD74490E182A341405B033DFE6768E00ECF21B   CN=www.example.com
-            Description
-  -----------
-  Lists all certificates
-        .EXAMPLE
-  Get-Certificate -Computername 'boe-pc' -StoreName My -StoreLocation  LocalMachine -DaysUntilExpired 14 |
-  Select  Subject, DaysUntilExpired,NotAfter
-            Subject                              DaysUntilExpired  NotAfter                 
-  -------                              ----------------  --------                 
-  CN=SomeCert                                        12  10/22/2014 12:00:00 AM   
-  CN=SomeOtherCert                                    4 10/14/2014  12:00:00 AM   
-  CN=www.example.com                            Expired 12/21/2011  11:00:00 PM
-            Description
-  -----------
-  Lists all  certificates that Expire in 14 days or has already expired
-        .EXAMPLE
-  Get-Certificate -Computername 'boe-pc' -StoreName My -StoreLocation  LocalMachine -DaysUntilExpired 14 -HideExpired |
-  Select  Subject, DaysUntilExpired,NotAfter
-            Subject                              DaysUntilExpired  NotAfter                 
-  -------                              ----------------  --------                 
-  CN=SomeCert                                        12  10/22/2014 12:00:00 AM   
-  CN=SomeOtherCert                                    4  10/14/2014 12:00:00 AM
-            Description
-  -----------
-  Lists all  certificates that Expire in 14 days and hides certificates that have expired
-    #> 
-
-  [cmdletbinding(
-  DefaultParameterSetName = 'All'
-  )]
-  Param (
-  [parameter(ValueFromPipeline=$True,ValueFromPipelineByPropertyName=$True)]
-  [Alias('PSComputername','__Server','IPAddress')]
-  [string[]]$Computername =  $env:COMPUTERNAME,
-  [System.Security.Cryptography.X509Certificates.StoreName]$StoreName = 'My',
-  [System.Security.Cryptography.X509Certificates.StoreLocation]$StoreLocation  = 'LocalMachine',
-  [parameter(ParameterSetName='Expire')]
-  [Int]$DaysUntilExpired,
-  [parameter(ParameterSetName='Expire')]
-  [Switch]$HideExpired
-  )
-
-  Process  {
-    ForEach  ($Computer in  $Computername) {
-        Try  {
-            Write-Verbose  ("Connecting to {0}\{1}" -f "\\$($Computername)\$($StoreName)",$StoreLocation)
-            $CertStore  = New-Object  System.Security.Cryptography.X509Certificates.X509Store  -ArgumentList "\\$($Computername)\$($StoreName)", $StoreLocation
-            $CertStore.Open('ReadOnly')
-            Write-Verbose  "ParameterSetName: $($PSCmdlet.ParameterSetName)"
-            Switch  ($PSCmdlet.ParameterSetName)  {
-                'All'  {
-                    $CertStore.Certificates
-                }
-                'Expire'  {
-                    $CertStore.Certificates | Where-Object {
-                        $_.NotAfter -lt (Get-Date).AddDays($DaysUntilExpired)
-                    } | ForEach-Object {
-                        $Days = Switch ((New-TimeSpan  -End $_.NotAfter).Days)  {
-                            {$_ -gt 0} {$_}
-                            Default {'Expired'}
-                        }
-                        $Cert = $_ | Add-Member -MemberType  NoteProperty -Name  DaysUntilExpired -Value  $Days -PassThru
-                        If ($HideExpired  -AND $_.DaysUntilExpired -ne  'Expired') {
-                            $Cert
-                        }
-                        ElseIf (-Not $HideExpired) {
-                            $Cert
-                        }
-                    }
-                }
-            }
-        }
-        Catch  {
-            Write-Warning  "$($Computer): $_"
-        }
-    }
-  }
-} 
-
-
 Function Get-DefaultBrowserPath {
 <#
 .SYNOPSIS
@@ -5223,7 +5109,7 @@ Function Get-FileMetaData {
 } #end Get-FileMetaData
 
 
-function Get-LocalUsers {
+function Get-User {
 <#
 .SYNOPSIS
     Short description
@@ -5234,10 +5120,10 @@ function Get-LocalUsers {
 .PARAMETER Path
     Specifies a path to one or more locations.
 .EXAMPLE
-    C:\PS>Get-LocalUsers
+    C:\PS>Get-User
     Example of how to use this cmdlet
 .EXAMPLE
-    C:\PS>Get-LocalUsers -PARAMETER
+    C:\PS>Get-User -PARAMETER
     Another example of how to use this cmdlet but with a parameter or switch.
 .NOTES
     Author: Skyler Hart
@@ -5427,7 +5313,7 @@ Function Get-LockedOutLocation {
 }#end function
 
 
-Function Get-InstalledPrograms {
+Function Get-InstalledProgram {
 <#
 .SYNOPSIS
     Displays installed programs on a computer.
@@ -5438,22 +5324,22 @@ Function Get-InstalledPrograms {
 .PARAMETER Path
     Specifies a path to one or more locations.
 .EXAMPLE
-    C:\PS>Get-InstalledPrograms
+    C:\PS>Get-InstalledProgram
     Shows the installed programs on the local computer.
 .EXAMPLE
-    C:\PS>Get-InstalledPrograms -ComputerName COMPUTER1
+    C:\PS>Get-InstalledProgram -ComputerName COMPUTER1
     Shows the installed programs on the remote computer COMPUTER1.
 .EXAMPLE
-    C:\PS>Get-InstalledPrograms -ComputerName COMPUTER1,COMPUTER2
+    C:\PS>Get-InstalledProgram -ComputerName COMPUTER1,COMPUTER2
     Shows the installed programs on the remote computers COMPUTER1 and COMPUTER2.
 .EXAMPLE
-    C:\PS>Get-InstalledPrograms (gc C:\Temp\computers.txt)
+    C:\PS>Get-InstalledProgram (gc C:\Temp\computers.txt)
     Shows the installed programs on the remote computers listed in the computers.txt file (each computer name on a new line.)
 .EXAMPLE
-    C:\PS>Get-InstalledPrograms COMPUTER1 -Property InstallSource
+    C:\PS>Get-InstalledProgram COMPUTER1 -Property InstallSource
     Shows the installed programs on the remote computer COMPUTER1 and also shows the additional property InstallSource from the registry.
 .EXAMPLE
-    C:\PS>Get-InstalledPrograms COMPUTER1,COMPUTER2 -Property InstallSource,Comments
+    C:\PS>Get-InstalledProgram COMPUTER1,COMPUTER2 -Property InstallSource,Comments
     Shows the installed programs on the remote computers COMPUTER1 and COMPUTER2. Also shows the additional properties InstallSource and Comments from the registry.
 .NOTES
     Author: Skyler Hart
@@ -6013,8 +5899,5 @@ Foreach ($obj in $users)
         }
     }
 }
-
-#endregion 3rd party
-
 
 Export-ModuleMember -Alias * -Function *

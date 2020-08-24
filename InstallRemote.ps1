@@ -1,4 +1,4 @@
-﻿Function Get-InstalledPrograms {
+﻿Function Get-InstalledProgram {
 <#
 .SYNOPSIS
     Displays installed programs on a computer.
@@ -9,22 +9,22 @@
 .PARAMETER Path
     Specifies a path to one or more locations.
 .EXAMPLE
-    C:\PS>Get-InstalledPrograms
+    C:\PS>Get-InstalledProgram
     Shows the installed programs on the local computer.
 .EXAMPLE
-    C:\PS>Get-InstalledPrograms -ComputerName COMPUTER1
+    C:\PS>Get-InstalledProgram -ComputerName COMPUTER1
     Shows the installed programs on the remote computer COMPUTER1.
 .EXAMPLE
-    C:\PS>Get-InstalledPrograms -ComputerName COMPUTER1,COMPUTER2
+    C:\PS>Get-InstalledProgram -ComputerName COMPUTER1,COMPUTER2
     Shows the installed programs on the remote computers COMPUTER1 and COMPUTER2.
 .EXAMPLE
-    C:\PS>Get-InstalledPrograms (gc C:\Temp\computers.txt)
+    C:\PS>Get-InstalledProgram (gc C:\Temp\computers.txt)
     Shows the installed programs on the remote computers listed in the computers.txt file (each computer name on a new line.)
 .EXAMPLE
-    C:\PS>Get-InstalledPrograms COMPUTER1 -Property InstallSource
+    C:\PS>Get-InstalledProgram COMPUTER1 -Property InstallSource
     Shows the installed programs on the remote computer COMPUTER1 and also shows the additional property InstallSource from the registry.
 .EXAMPLE
-    C:\PS>Get-InstalledPrograms COMPUTER1,COMPUTER2 -Property InstallSource,Comments
+    C:\PS>Get-InstalledProgram COMPUTER1,COMPUTER2 -Property InstallSource,Comments
     Shows the installed programs on the remote computers COMPUTER1 and COMPUTER2. Also shows the additional properties InstallSource and Comments from the registry.
 .NOTES
     Author: Skyler Hart
@@ -216,7 +216,7 @@ $comp = $env:COMPUTERNAME
 $cn = $env:COMPUTERNAME
 $PatchFolderPath = "C:\Patches"
 $cab = $PatchFolderPath + "\cab"
-$ip = Get-InstalledPrograms | Select-Object ProgramName,Version,Comment
+$ip = Get-InstalledProgram | Select-Object ProgramName,Version,Comment
 $hf = (Get-HotFix | Select-Object HotFixID).HotFixID
 
 #$scripts = Get-ChildItem -Path $PatchFolderPath | Where-Object {$_.Name -match ".ps1" -and $_.Name -notmatch "Install.ps1" -and $_.Name -notmatch "InstallRemote.ps1"}

@@ -51,9 +51,6 @@
 
         [Parameter()]
         [switch]$Old,
-        
-        [Parameter()]
-        $InputParam = $null,
             
         [Parameter()]
         [int32]$MaxThreads = 5,
@@ -357,9 +354,6 @@ Function Uninstall-7Zip {
         )] 
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-
-        [Parameter()]
-        $InputParam = $null,
         
         [Parameter()]
         [int32]$MaxThreads = 5,
@@ -494,9 +488,6 @@ Function Uninstall-90Meter {
         )] 
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-
-        [Parameter()]
-        $InputParam = $null,
         
         [Parameter()]
         [int32]$MaxThreads = 5,
@@ -634,9 +625,6 @@ Function Uninstall-AdobeAir {
         )] 
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-
-        [Parameter()]
-        $InputParam = $null,
         
         [Parameter()]
         [int32]$MaxThreads = 5,
@@ -771,9 +759,6 @@ Function Uninstall-AdobeFlash {
         )] 
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-
-        [Parameter()]
-        $InputParam = $null,
         
         [Parameter()]
         [int32]$MaxThreads = 5,
@@ -909,9 +894,6 @@ Function Uninstall-AdobePro {
         )] 
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-
-        [Parameter()]
-        $InputParam = $null,
         
         [Parameter()]
         [int32]$MaxThreads = 5,
@@ -1048,9 +1030,6 @@ Function Uninstall-AdobeReader {
         )] 
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-
-        [Parameter()]
-        $InputParam = $null,
         
         [Parameter()]
         [int32]$MaxThreads = 5,
@@ -1185,9 +1164,6 @@ Function Uninstall-AdobeShockwave {
         )] 
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-
-        [Parameter()]
-        $InputParam = $null,
         
         [Parameter()]
         [int32]$MaxThreads = 5,
@@ -1323,9 +1299,6 @@ Function Uninstall-GoogleChrome {
         )] 
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-
-        [Parameter()]
-        $InputParam = $null,
         
         [Parameter()]
         [int32]$MaxThreads = 5,
@@ -1461,9 +1434,6 @@ Function Uninstall-HPInsightAgent {
         )] 
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-
-        [Parameter()]
-        $InputParam = $null,
         
         [Parameter()]
         [int32]$MaxThreads = 5,
@@ -1598,9 +1568,6 @@ Function Uninstall-HPVersionControlAgent {
         )] 
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-
-        [Parameter()]
-        $InputParam = $null,
         
         [Parameter()]
         [int32]$MaxThreads = 5,
@@ -1735,9 +1702,6 @@ Function Uninstall-IBMForms {
         )] 
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-
-        [Parameter()]
-        $InputParam = $null,
         
         [Parameter()]
         [int32]$MaxThreads = 5,
@@ -1872,9 +1836,6 @@ Function Uninstall-McAfeeVSE {
         )] 
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-
-        [Parameter()]
-        $InputParam = $null,
         
         [Parameter()]
         [int32]$MaxThreads = 5,
@@ -2009,9 +1970,6 @@ Function Uninstall-MozillaFirefox {
         )] 
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-
-        [Parameter()]
-        $InputParam = $null,
         
         [Parameter()]
         [int32]$MaxThreads = 5,
@@ -2152,9 +2110,6 @@ Function Uninstall-MozillaMaintenanceService {
         )] 
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-
-        [Parameter()]
-        $InputParam = $null,
         
         [Parameter()]
         [int32]$MaxThreads = 5,
@@ -2293,9 +2248,6 @@ Function Uninstall-OracleJava {
         )] 
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-
-        [Parameter()]
-        $InputParam = $null,
         
         [Parameter()]
         [int32]$MaxThreads = 5,
@@ -2431,9 +2383,6 @@ Function Uninstall-VLC {
         )] 
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-
-        [Parameter()]
-        $InputParam = $null,
         
         [Parameter()]
         [int32]$MaxThreads = 5,
@@ -2568,9 +2517,6 @@ Function Uninstall-WinSCP {
         )] 
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-
-        [Parameter()]
-        $InputParam = $null,
         
         [Parameter()]
         [int32]$MaxThreads = 5,
@@ -4729,7 +4675,7 @@ function Open-McAfeeVirusScanConsole {
 }
 
 
-function Open-HIPSLogs {
+function Open-HIPSLog {
 <# 
    .Synopsis 
     This does that
@@ -4798,9 +4744,6 @@ Function Uninstall-HBSS {
         )] 
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-
-        [Parameter()]
-        $InputParam = $null,
         
         [Parameter()]
         [int32]$MaxThreads = 5,

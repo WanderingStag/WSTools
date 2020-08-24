@@ -393,7 +393,7 @@ Function Add-ParamBlock {
 }
 
 
-Function Add-ParamInternetBrowsers {
+Function Add-ParamInternetBrowser {
 <# 
    .Synopsis 
     This does that
@@ -438,7 +438,7 @@ Function Add-ParamInternetBrowsers {
 }
 
 
-Function Add-ParamSwitchWithOptions {
+Function Add-ParamSwitchWithOption {
 <# 
    .Synopsis 
     This does that

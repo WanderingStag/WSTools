@@ -1,5 +1,5 @@
 ﻿#get more open commands here: https://sysadminstricks.com/tricks/most-useful-microsoft-management-console-snap-in-control-files-msc-files.html
-Function Find-EmptyGroups {
+Function Find-EmptyGroup {
  <# 
    .Synopsis 
     This function will show empty groups.  
@@ -46,7 +46,7 @@ Function Find-EmptyGroups {
 }#find emptygroups
 
 
-Function Find-HiddenGALUsers {
+Function Find-HiddenGALUser {
 <# 
    .Synopsis 
     This function gets all users that are hidden from the GAL. 
@@ -329,7 +329,7 @@ Function Get-LockedOutStatus {
 }
 
 
-Function Get-NewADUsers {
+Function Get-NewADUser {
 <# 
    .Synopsis 
     This does that
@@ -368,7 +368,7 @@ Function Get-NewADUsers {
 }
 
 
-Function Get-NewADGroups {
+Function Get-NewADGroup {
 <# 
    .Synopsis 
     This does that
@@ -407,7 +407,7 @@ Function Get-NewADGroups {
 }
 
 
-Function Get-ProtectedGroups {
+Function Get-ProtectedGroup {
 <# 
    .Synopsis 
     This does that
@@ -440,7 +440,7 @@ Function Get-ProtectedGroups {
 }
 
 
-Function Get-ProtectedUsers {
+Function Get-ProtectedUser {
 <# 
    .Synopsis 
     This does that
@@ -505,7 +505,7 @@ Function Get-ReplicationStatus {
 New-Alias -Name "replsum" -Value Get-ReplicationStatus
 
 
-Function Get-UsersWithThumbnails {
+Function Get-UserWithThumbnail {
 <# 
    .Synopsis 
     This does that
@@ -956,7 +956,7 @@ Function Open-LAPS {
         }
     }
     catch {
-        Get-Errors -HowMany 1
+        Get-Error -HowMany 1
     }
 }
 New-Alias -Name "laps" -Value Open-LAPS
@@ -1128,7 +1128,7 @@ Function Restart-ActiveDirectory {
         [Switch]$All
     )
     if (!($All)) {
-        "Restarting Active Directory service on $DC"
+        Write-Information "Restarting Active Directory service on $DC"
         try {Restart-Service -inputobject $(Get-Service -ComputerName $DC -Name NTDS -ErrorAction Stop) -Force -ErrorAction Stop}
         catch {Throw "Unable to connect to $DC or failed to restart service."}
     }#if not all
