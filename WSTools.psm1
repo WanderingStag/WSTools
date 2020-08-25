@@ -38,11 +38,10 @@ function Copy-PowerShellJSON {
     Author: Skyler Hart
     Created: 2020-04-13 22:44:11
     Last Edit: 2020-04-17 14:24:07
-    Keywords: WSTools, Visual Studio Code, PowerShell, JSON, Preferences
+    Keywords: WSTools, Visual Studio Code, PowerShell, JSON, Preferences, snippets, code blocks
 .LINK
     https://wstools.dev
 #>
-
     Copy-Item -Path $PSScriptRoot\powershell.json -Destination $env:APPDATA\Code\User\snippets\powershell.json
 }
 New-Alias -Name "Update-PowerShellJSON" -Value Copy-PowerShellJSON
@@ -50,15 +49,15 @@ New-Alias -Name "Set-PowerShellJSON" -Value Copy-PowerShellJSON
 
 
 function Clear-ImproperProfileCopy {
-<# 
-   .Synopsis 
+<#
+   .Synopsis
     Clears Application Data folder that was improperly copied which happens when copy and pasting a profile.
    .Description
     Copies nested Application Data folders to a higher level (by default to C:\f2) and deletes them.
    .Example 
     Clear-ImproperProfileCopy -Source \\fileserver\example\user -Destination E:\f2
     Clears nested Application Data folders from \\fileserver\example\user. Uses E:\f2 as the folder for clearing.
-   .Example 
+   .Example
     Clear-ImproperProfileCopy E:\temp\Profile E:\f2
     Clears nested Application Data folders from E:\temp\Profile. Uses E:\f2 as the folder for clearing.
    .Parameter Source
@@ -72,16 +71,15 @@ function Clear-ImproperProfileCopy {
     KEYWORDS: user, profile, app data, application data, cleanup, clear, improper
 .LINK
     https://wstools.dev
-#> 
+#>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$true, Position=0)] 
+        [Parameter(Mandatory=$true, Position=0)]
         [string]$Source,
 
-        [Parameter(Mandatory=$true, Position=1)] 
+        [Parameter(Mandatory=$true, Position=1)]
         [string]$Destination
     ) 
-
 
     if (!($Destination)) {
         New-Item $Destination -ItemType Directory
@@ -112,7 +110,6 @@ function Clear-ImproperProfileCopy {
         Write-Host "Completed Pass $i" -ForegroundColor Gray
     }
     until (!(Test-Path $folder3))
-
 
     if ($cd) {
         Remove-Item -Path $Destination -Recurse -Force
@@ -358,23 +355,22 @@ function Enable-RDP {
 
 Function Get-ComputerHWInfo {
 <#
-   .Synopsis 
+   .Synopsis
     Gets hardware information of local or remote computer(s.)
    .Description
     Get Manufacturer, Model, Model Version, BIOS vendor, BIOS version, and release date of BIOS update on local or remote computer.
-   .Example 
+   .Example
     Get-ComputerHWInfo
     Get hardware information for local computer  
-   .Example 
+   .Example
     Get-ComputerHWInfo COMP1
     Get hardware information for computer COMP1
    .Parameter ComputerName
     Used to specify the computer or computers to get hardware information for.
-   .Notes 
-    NAME: Get-ComputerHWInfo 
+   .Notes
     AUTHOR: Skyler Hart
     CREATED: 3/15/2015 08:49:13
-    LASTEDIT: 09/21/2017 13:03:30  
+    LASTEDIT: 09/21/2017 13:03:30
     KEYWORDS: hardware, information, computer
     REQUIRES: 
         -RunAsAdministrator
@@ -383,12 +379,17 @@ Function Get-ComputerHWInfo {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(
+            Mandatory=$false,
+            Position=0,
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName = $true
+        )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
      
-    $keyname = 'HARDWARE\\DESCRIPTION\\System\\BIOS' 
+    $keyname = 'HARDWARE\\DESCRIPTION\\System\\BIOS'
     foreach ($comp in $ComputerName) {
         $reg = $null
         $key = $null
@@ -430,7 +431,12 @@ Function Get-ComputerType {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(
+            Mandatory=$false,
+            Position=0,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -495,13 +501,14 @@ function Get-DirectoryStat {
         Author: Skyler Hart
         Created: 2020-08-09 10:07:49
         Last Edit: 2020-08-09 21:35:14
-        Keywords: 
+        Keywords:
 .LINK
     https://wstools.dev
 #>
     [CmdletBinding()]
     param(
-        [Parameter(HelpMessage = "Enter the path of the folder you want stats on. Ex: C:\Temp or \\computername\c$\temp",
+        [Parameter(
+            HelpMessage = "Enter the path of the folder you want stats on. Ex: C:\Temp or \\computername\c$\temp",
             Mandatory=$true,
             Position=0,
             ValueFromPipelineByPropertyName = $true,
@@ -546,18 +553,23 @@ function Get-DirectoryStat {
 
 #Look up "root\WMI" or "root\CCM" using Get-ComputerWMINamespaces
 Function Get-WMIClass {
-<# 
- .Notes
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 09/21/2017 13:05:10
-    LASTEDIT: 09/21/2017 13:05:10 
-    KEYWORDS: 
+    LASTEDIT: 09/21/2017 13:05:10
+    KEYWORDS:
 .LINK
     https://wstools.dev
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(
+            Mandatory=$false,
+            Position=0,
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName = $true
+        )]
         [Alias('Host','Name','Computer','CN')]
         [string]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -567,18 +579,23 @@ Function Get-WMIClass {
 
 
 Function Get-WMINameSpace {
-<# 
+<#
 .Notes
     AUTHOR: Skyler Hart
     CREATED: 09/21/2017 13:05:21
-    LASTEDIT: 09/21/2017 13:05:21 
-    KEYWORDS: 
+    LASTEDIT: 09/21/2017 13:05:21
+    KEYWORDS:
 .LINK
     https://wstools.dev
-#> 
+#>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(
+            Mandatory=$false,
+            Position=0,
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName = $true
+        )]
         [Alias('Host','Name','Computer','CN')]
         [string]$ComputerName = "$env:COMPUTERNAME",
 
@@ -591,34 +608,13 @@ Function Get-WMINameSpace {
 
 function Get-Drive {
 <#
-.SYNOPSIS
-    Short description
-.DESCRIPTION
-    Long description
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.PARAMETER Path
-    Specifies a path to one or more locations.
-.EXAMPLE
-    C:\PS>Get-Drives
-    Example of how to use this cmdlet
-.EXAMPLE
-    C:\PS>Get-Drives -PARAMETER
-    Another example of how to use this cmdlet but with a parameter or switch.
 .NOTES
     Author: Skyler Hart
     Created: 2020-04-19 20:29:58
     Last Edit: 2020-04-19 20:29:58
-    Keywords: 
-    Other: 
-    Requires:
-        -Module ActiveDirectory
-        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        -RunAsAdministrator
+    Keywords:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     Get-PSDrive -Name *
 }
@@ -627,39 +623,23 @@ New-Alias -Name "Drive" -Value Get-Drive
 
 function Get-Error {
 <#
-.SYNOPSIS
-    Short description
-.DESCRIPTION
-    Long description
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.PARAMETER Path
-    Specifies a path to one or more locations.
-.EXAMPLE
-    C:\PS>Get-Errors
-    Example of how to use this cmdlet
-.EXAMPLE
-    C:\PS>Get-Errors -PARAMETER
-    Another example of how to use this cmdlet but with a parameter or switch.
 .NOTES
     Author: Skyler Hart
     Created: 2020-04-18 16:42:46
     Last Edit: 2020-04-18 19:08:44
-        Keywords: 
+    Keywords:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
-    [CmdletBinding()]
-    param(
+	[CmdletBinding()]
+    Param (
         [Parameter(
             Mandatory=$false,
             Position=0
         )]
         [int32]$HowMany
     )
-    
+
     $Errors = $Global:Error
 
     if ($null -eq $HowMany -or $HowMany -eq "") {
@@ -686,37 +666,20 @@ function Get-Error {
             Character = $char
         } | Select-Object Exception,Message,Script,Command,Line,Character
     }
-    
     $info
 }
 New-Alias -Name "Error" -Value Get-Error
 
 
 Function Get-ExpiredCertsComputer {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter ComputerName
-    Specifies the computer or computers
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 10/04/2018 20:46:38
-    LASTEDIT: 10/04/2018 21:08:31  
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        #Requires -Version 2.0
-        #Requires -RunAsAdministrator
+    LASTEDIT: 10/04/2018 21:08:31
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     $cd = Get-Date
     $certs = Get-ChildItem -Path Cert:\LocalMachine -Recurse | Select-Object *
@@ -733,29 +696,14 @@ Function Get-ExpiredCertsComputer {
 
 
 Function Get-ExpiredCertsUser {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter ComputerName
-    Specifies the computer or computers
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
-    CREATED: 10/04/2018 21:08:39 
-    LASTEDIT: 10/04/2018 21:09:34 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        #Requires -Version 2.0
+    CREATED: 10/04/2018 21:08:39
+    LASTEDIT: 10/04/2018 21:09:34
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     $cd = Get-Date
     $certs = Get-ChildItem -Path Cert:\CurrentUser -Recurse | Select-Object *
@@ -772,21 +720,11 @@ Function Get-ExpiredCertsUser {
 
 
 Function Get-FeaturesOnDemand {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter ComputerName
-    Specifies the computer or computers
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 09/25/2019 14:13:50
-    LASTEDIT: 09/25/2019 14:30:43 
+    LASTEDIT: 09/25/2019 14:30:43
     KEYWORDS: 
     REMARKS: 
     REQUIRES: 
@@ -798,67 +736,63 @@ Function Get-FeaturesOnDemand {
 #>
     $ninfo = @()
     
-    $info = (dism /online /get-capabilities | Where-Object {$_ -like "Capability Identity*" -or $_ -like "State*"})
-    $idents = ($info | Where-Object {$_ -like "Capa*"}).Split(' : ') | Where-Object {$_ -ne "Capability" -and $_ -ne "Identity" -and $_ -ne $null -and $_ -ne ""}
-    $state = $info | Where-Object {$_ -like "State*"}
-    $state = $state -replace "State : "
+    $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+    if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {$Role = 'Admin'}
+    else {$Role = 'User'}
 
-    $i = 0
-    foreach ($ident in $idents) {
-        $state2 = $state[$i]
-        $ninfo = New-Object -TypeName PSObject -Property @{
-            CapabilityIdentity = $ident
-            State = $state2
-        }#new object
-        $ninfo | Select-Object CapabilityIdentity,State
-        $i++
+    if ($Role -eq "Admin") {
+        $info = (dism /online /get-capabilities | Where-Object {$_ -like "Capability Identity*" -or $_ -like "State*"})
+        $idents = ($info | Where-Object {$_ -like "Capa*"}).Split(' : ') | Where-Object {$_ -ne "Capability" -and $_ -ne "Identity" -and $_ -ne $null -and $_ -ne ""}
+        $state = $info | Where-Object {$_ -like "State*"}
+        $state = $state -replace "State : "
+
+        $i = 0
+        foreach ($ident in $idents) {
+            $state2 = $state[$i]
+            $ninfo = New-Object -TypeName PSObject -Property @{
+                CapabilityIdentity = $ident
+                State = $state2
+            }#new object
+            $ninfo | Select-Object CapabilityIdentity,State
+            $i++
+        }
+    }#if admin
+    else {
+        Write-Error "Not admin. Please run PowerShell as admin."
     }
 }
 
 
 Function Get-IEVersion {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 09/21/2017 13:06:15
-    LASTEDIT: 09/21/2017 13:06:15 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
+    LASTEDIT: 09/21/2017 13:06:15
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com 
-#>  
+#>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(
+            Mandatory=$false,
+            Position=0,
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName = $true
+        )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
      
-    $keyname = 'SOFTWARE\\Microsoft\\Internet Explorer' 
+    $keyname = 'SOFTWARE\\Microsoft\\Internet Explorer'
     foreach ($comp in $ComputerName) {
         $reg = $null
         $key = $null
         $value = $null 
-        $reg = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey('LocalMachine', $comp) 
-        $key = $reg.OpenSubkey($keyname) 
-        $value = $key.GetValue('Version') 
+        $reg = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey('LocalMachine', $comp)
+        $key = $reg.OpenSubkey($keyname)
+        $value = $key.GetValue('Version')
         New-Object psobject -Property @{
             ComputerName = $comp
             IEVersion = $value
@@ -868,37 +802,23 @@ Function Get-IEVersion {
 
 
 Function Get-ComputerModel {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter ComputerName
-    Specifies the computer or computers
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
-    CREATED: 11/02/2018 14:13:59 
-    LASTEDIT: 10/16/2019 17:05:53   
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    CREATED: 11/02/2018 14:13:59
+    LASTEDIT: 10/16/2019 17:05:53
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
+        [Parameter(
             Mandatory=$false,
             Position=0,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
-        )] 
+        )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -950,36 +870,23 @@ New-Alias -Name "Get-Model" -Value Get-ComputerModel
 
 
 Function Get-MTU {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 09/21/2017 13:06:23
-    LASTEDIT: 2020-05-23 17:39:06 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
+    LASTEDIT: 2020-05-23 17:39:06
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(
+            Mandatory=$false,
+            Position=0,
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName = $true
+        )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -1041,39 +948,26 @@ Function Get-MTU {
 # Add check for autoipv6
 # Put subnet check under IP check so can move autoipv6 subnet
 Function Get-NICInfo {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 09/21/2017 13:06:33
-    LASTEDIT: 09/21/2017 13:06:33 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
+    LASTEDIT: 09/21/2017 13:06:33
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(
+            Mandatory=$false,
+            Position=0,
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName = $true
+        )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
-    ) 
+    )
 
     $i = 0
     $number = $ComputerName.length
@@ -1248,7 +1142,7 @@ Function Get-NICInfo {
 
 
 Function Get-OperatingSystem {
-<# 
+<#
    .Synopsis 
     Gets Operating System information
    .Description
@@ -1269,28 +1163,30 @@ Function Get-OperatingSystem {
     Specify computer or computer names to query
    .Parameter Registry
     Use Registry queries instead of WMI queries
-   .Notes 
-    NAME: Get-OperatingSystem 
+   .Notes
     AUTHOR: Skyler Hart
     CREATED: 06/06/2015 20:11:37
-    LASTEDIT: 2020-04-18 22:22:07      
+    LASTEDIT: 2020-04-18 22:22:07
     KEYWORDS: Operating System, OS
     REMARKS: For local computer it can be ran as user. For remote computers, it needs to be ran as a user who has administrative rights on the remote computer.
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com 
-#> 
+#>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(
+            Mandatory=$false,
+            Position=0,
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName = $true
+        )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME",
 
         [Parameter(Mandatory=$false, Position=1)] 
         [Switch]$Registry
     )
-    
+
     #Set Values
     $keyname = 'SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion'
     $64keyname = 'SOFTWARE\\Wow6432Node\\Microsoft\\Windows NT\\CurrentVersion'
@@ -1532,20 +1428,6 @@ Function Get-OperatingSystem {
 
 function Get-BitLockerStatus {
 <#
-.SYNOPSIS
-    Short description
-.DESCRIPTION
-    Long description
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.PARAMETER Path
-    Specifies a path to one or more locations.
-.EXAMPLE
-    C:\PS>Get-BitLockerStatus
-    Example of how to use this cmdlet
-.EXAMPLE
-    C:\PS>Get-BitLockerStatus -PARAMETER
-    Another example of how to use this cmdlet but with a parameter or switch.
 .NOTES
     Author: Skyler Hart
     Created: 2020-04-22 22:10:27
@@ -1555,8 +1437,6 @@ function Get-BitLockerStatus {
         -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     param(
@@ -1676,38 +1556,22 @@ function Get-BitLockerStatus {
 
 Function Get-ProcessorCapability {
 <#
-.SYNOPSIS
-    Short description
-.DESCRIPTION
-    Long description
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.PARAMETER Path
-    Specifies a path to one or more locations.
-.EXAMPLE
-    C:\PS>Verb-Noun
-    Example of how to use this cmdlet
-.EXAMPLE
-    C:\PS>Verb-Noun -PARAMETER
-    Another example of how to use this cmdlet but with a parameter or switch.
 .NOTES
     Author: Skyler Hart
     Created: Sometime before 8/7/2017
     Last Edit: 2020-04-18 22:46:31
-    Keywords: 
-    Other: 
-    Requires:
-        -Module ActiveDirectory
-        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        -RunAsAdministrator
+    Keywords:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(
+            Mandatory=$false,
+            Position=0,
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName = $true
+        )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -1775,32 +1639,14 @@ Function Get-ProcessorCapability {
 
 
 Function Get-PSVersion {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter ComputerName
-    Specifies the computer or computers
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 02/27/2019 12:35:00
-    LASTEDIT: 02/27/2019 12:35:00 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
+    LASTEDIT: 02/27/2019 12:35:00
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (
@@ -1889,60 +1735,28 @@ New-Alias -Name "Get-PowerShellVersion" -Value Get-PSVersion
 
 
 Function Get-PublicIP {
-    <# 
-       .Synopsis 
-        This does that
-       .Description
-        This does that
-       .Example 
-        Example- 
-        Example- accomplishes  
-       .Parameter PARAMETER
-        The parameter does this
-       .Notes 
-        NAME: FUNCTIONNAME 
-        AUTHOR: Skyler Hart
-        CREATED: 08/18/2017 05:25:00
-        LASTEDIT: 08/18/2017 20:44:24 
-        KEYWORDS: 
-        REMARKS: 
-        REQUIRES: 
-            #Requires -Version 3.0
-            #Requires -Modules ActiveDirectory
-            #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-            #Requires -RunAsAdministrator
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 08/18/2017 05:25:00
+    LASTEDIT: 08/18/2017 20:44:24
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-    #> 
+#>
         (Resolve-DnsName -Name myip.opendns.com -Server resolver1.opendns.com).IPAddress
 }
 
 
 Function Get-SerialNumber {
 <# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter ComputerName
-    Specifies the computer or computers
-   .Notes 
-    NAME: FUNCTIONNAME 
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 11/02/2018 12:11:03
-    LASTEDIT: 11/02/2018 12:20:44 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 11/02/2018 12:20:44
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (
@@ -1951,7 +1765,7 @@ Function Get-SerialNumber {
             Position=0,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
-        )] 
+        )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -1987,32 +1801,14 @@ New-Alias -Name "Get-SN" -Value Get-SerialNumber
 
 
 Function Get-ShutdownLog {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter ComputerName
-    Specifies the computer or computers
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 08/28/2019 22:13:23
-    LASTEDIT: 08/29/2019 00:17:09  
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
+    LASTEDIT: 08/29/2019 00:17:09
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (
@@ -2021,7 +1817,7 @@ Function Get-ShutdownLog {
             Position=0,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
-        )] 
+        )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME",
         
@@ -2128,7 +1924,7 @@ Function Get-ShutdownLog {
 
 
 Function Get-SysInternals {
-<# 
+<#
     .Synopsis 
         Download the SysInternals Suite
     .Description
@@ -2152,13 +1948,11 @@ Function Get-SysInternals {
         CREATED: 2017-08-19 19:11:47
         LASTEDIT: 2020-08-20 10:43:45
         KEYWORDS: SysInternals, tools, utilities
-        REQUIRES: 
+        REQUIRES:
             #Requires running as administrator in some instances, primarily if saving to a system path
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
         [CmdletBinding()]
         Param (
             [Parameter(ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
@@ -2228,38 +2022,22 @@ Function Get-SysInternals {
 
 Function Get-UpTime {
 <#
-.SYNOPSIS
-    Short description
-.DESCRIPTION
-    Long description
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.PARAMETER Path
-    Specifies a path to one or more locations.
-.EXAMPLE
-    C:\PS>Get-UpTime
-    Example of how to use this cmdlet
-.EXAMPLE
-    C:\PS>Get-UpTime -PARAMETER
-    Another example of how to use this cmdlet but with a parameter or switch.
 .NOTES
     Author: Skyler Hart
     Created: 2017-08-18 20:42:41
     Last Edit: 2020-07-07 15:29:12
-    Keywords: 
-    Other: 
-    Requires:
-        -Module ActiveDirectory
-        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        -RunAsAdministrator
+    Keywords:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(
+            Mandatory=$false,
+            Position=0,
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName = $true
+        )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -2299,52 +2077,21 @@ Function Get-UpTime {
 
 function Get-UpdateHistory {
 <#
-.SYNOPSIS
-    Short description
-.DESCRIPTION
-    Long description
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.PARAMETER Path
-    Specifies a path to one or more locations.
-.EXAMPLE
-    C:\PS>Get-UpdateHistory
-    Example of how to use this cmdlet
-.EXAMPLE
-    C:\PS>Get-UpdateHistory -PARAMETER
-    Another example of how to use this cmdlet but with a parameter or switch.
 .NOTES
     Author: Skyler Hart
     Created: 2020-05-23 20:44:28
     Last Edit: 2020-06-16 13:48:53
-    Keywords: 
-    Other: 
-    Requires:
-        -Module ActiveDirectory
-        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        -RunAsAdministrator
+    Keywords:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     param(
-        #[Parameter(#HelpMessage = "Enter one or more computer names separated by commas.",
-        #    Mandatory=$false,
-        #    Position=0,
-            #ValueFromPipelineByPropertyName = $true,
-        #    ValueFromPipeline = $true
-        #)]
-        #[Alias('Host','Name','Computer','CN')]
-        #[string[]]$ComputerName = "$env:COMPUTERNAME",
-
         [Parameter(Mandatory=$false, Position=0)]
         [Alias('DaysBackToSearch')]
         [int32]$Days = "7"
     )
 
-    
     $stime = (Get-Date) - (New-TimeSpan -Day $Days)
     $session = New-Object -ComObject 'Microsoft.Update.Session'
     $ec = ($session.CreateUpdateSearcher()).GetTotalHistoryCount()
@@ -2427,34 +2174,13 @@ function Get-UpdateHistory {
 
 function Save-MaintenanceReport {
 <#
-.SYNOPSIS
-    Short description
-.DESCRIPTION
-    Long description
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.PARAMETER Path
-    Specifies a path to one or more locations.
-.EXAMPLE
-    C:\PS>Save-MaintenanceReport
-    Example of how to use this cmdlet
-.EXAMPLE
-    C:\PS>Save-MaintenanceReport -PARAMETER
-    Another example of how to use this cmdlet but with a parameter or switch.
 .NOTES
     Author: Skyler Hart
     Created: 2020-06-16 14:39:04
     Last Edit: 2020-08-20 14:31:30
-    Keywords: 
-    Other: 
-    Requires:
-        -Module ActiveDirectory
-        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        -RunAsAdministrator
+    Keywords:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
 	[CmdletBinding()]
     Param (
@@ -2483,29 +2209,13 @@ function Save-MaintenanceReport {
 
 function Save-UpdateHistory {
 <#
-.SYNOPSIS
-    Short description
-.DESCRIPTION
-    Long description
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.PARAMETER Path
-    Specifies a path to one or more locations.
-.EXAMPLE
-    C:\PS>Save-UpdateHistory
-    Example of how to use this cmdlet
-.EXAMPLE
-    C:\PS>Save-UpdateHistory -PARAMETER
-    Another example of how to use this cmdlet but with a parameter or switch.
 .NOTES
     Author: Skyler Hart
     Created: 2020-06-15 13:03:22
     Last Edit: 2020-06-16 14:38:42
-    Keywords: 
+    Keywords:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     $UHPath = ($Global:WSToolsConfig).UHPath + "\" + $env:computername + ".csv"
     $info = Get-UpdateHistory -Days 30
@@ -2515,35 +2225,22 @@ function Save-UpdateHistory {
 
 function Get-WindowsSetupLog {
 <# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+   .Notes
     AUTHOR: Skyler Hart
     CREATED: 03/18/2019 15:43:03
-    LASTEDIT: 08/28/2019 22:06:44   
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
+    LASTEDIT: 08/28/2019 22:06:44
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(
+            Mandatory=$false,
+            Position=0,
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName = $true
+        )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME",
         
@@ -2555,10 +2252,8 @@ function Get-WindowsSetupLog {
         [int32]$MostRecent = 6
     )
 
-
     #Event ID(s) to search for
     [int32[]]$ID = @(1,2,3,4)
-
 
     #Setting initial values
     $i = 0
@@ -2636,32 +2331,14 @@ New-Alias -Name "Get-UpdateLog" -Value Get-WindowsSetupLog
 
 
 Function Get-WSToolsAlias {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter ComputerName
-    Specifies the computer or computers
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 01/31/2018 23:42:55
-    LASTEDIT: 01/31/2018 23:42:55 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
+    LASTEDIT: 01/31/2018 23:42:55
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     Get-Alias | Where-Object {$_.Source -eq "WSTools"}
 }
@@ -2669,32 +2346,14 @@ New-Alias -Name "WSToolsAliases" -Value Get-WSToolsAlias
 
 
 Function Get-WSToolsCommand {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter ComputerName
-    Specifies the computer or computers
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+   .Notes
     AUTHOR: Skyler Hart
     CREATED: 01/31/2018 23:52:54
-    LASTEDIT: 01/31/2018 23:52:54 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
+    LASTEDIT: 01/31/2018 23:52:54
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com 
 #>
     $commands = (Get-Module WSTools | Select-Object ExportedCommands).ExportedCommands
     $commands.Values | Select-Object CommandType,Name,Source
@@ -2704,34 +2363,13 @@ New-Alias -Name "WSToolsCommands" -Value Get-WSToolsCommand
 
 function Get-WSToolsConfig {
 <#
-.SYNOPSIS
-    Short description
-.DESCRIPTION
-    Long description
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.PARAMETER Path
-    Specifies a path to one or more locations.
-.EXAMPLE
-    C:\PS>Get-WSToolsConfig
-    Example of how to use this cmdlet
-.EXAMPLE
-    C:\PS>Get-WSToolsConfig -PARAMETER
-    Another example of how to use this cmdlet but with a parameter or switch.
 .NOTES
     Author: Skyler Hart
     Created: 2020-05-23 12:27:36
     Last Edit: 2020-08-20 11:18:58
-    Keywords: 
-    Other: 
-    Requires:
-        -Module ActiveDirectory
-        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        -RunAsAdministrator
+    Keywords:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     $Global:WSToolsConfig
 }
@@ -2739,35 +2377,21 @@ New-Alias -Name "Import-WSToolsConfig" -Value Get-WSToolsConfig
 New-Alias -Name "WSToolsConfig" -Value Get-WSToolsConfig
 
 Function Get-WSToolsVersion {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter ComputerName
-    Specifies the computer or computers
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 02/09/2018 00:23:25
-    LASTEDIT: 02/14/2018 11:05:37  
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 02/14/2018 11:05:37
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory=$false)]
         [Switch]$Remote,
         
-        [Parameter(Mandatory=$false, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName
     )
@@ -2832,33 +2456,15 @@ New-Alias -Name "WSToolsVersion" -Value Get-WSToolsVersion
 
 
 Function Import-DRAModule {
-    <# 
-       .Synopsis 
-        This does that
-       .Description
-        This does that
-       .Example 
-        Example- 
-        Example- accomplishes  
-       .Parameter ComputerName
-        Specifies the computer or computers
-       .Notes 
-        NAME: FUNCTIONNAME 
-        AUTHOR: Skyler Hart
-        CREATED: 10/17/2019 13:47:31
-        LASTEDIT: 2020-08-20 14:42:59 
-        KEYWORDS: 
-        REMARKS: 
-        REQUIRES: 
-            #Requires -Version 3.0
-            #Requires -Modules ActiveDirectory
-            #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-            #Requires -RunAsAdministrator
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 10/17/2019 13:47:31
+    LASTEDIT: 2020-08-20 14:42:59
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-    #>
+#>
     
     $config = $Global:WSToolsConfig
     $ip = $config.DRAInstallLocation
@@ -2868,33 +2474,20 @@ Function Import-DRAModule {
         Import-Module $ip
     }
     else {
-        Write-Host "DRA module not found. Please install it from $if"
+        Write-Output "DRA module not found. Please install it from $if"
     }
 }
 
 
 Function Import-XML {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter ComputerName
-    Specifies the computer or computers
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 10/25/2017 17:03:54
-    LASTEDIT: 10/25/2017 17:03:54 
-    KEYWORDS: 
-    REMARKS: 
+    LASTEDIT: 10/25/2017 17:03:54
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (
@@ -2909,10 +2502,6 @@ Function Import-XML {
 
 Function Import-MOF {
 <#
-.SYNOPSIS
-    Short description
-.DESCRIPTION
-    Long description
 .PARAMETER Path
     Specifies the path to the mof file intended to import.
 .EXAMPLE
@@ -2928,14 +2517,11 @@ Function Import-MOF {
     Author: Skyler Hart
     Created: 10/27/2017 15:54:18
     Last Edit: 2020-05-08 20:30:19
-    Keywords: 
-    Other: 
+    Keywords:
     Requires:
         -Module ActiveDirectory
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (
@@ -2945,7 +2531,7 @@ Function Import-MOF {
             Position=0,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
-        )] 
+        )]
         [Alias('mof','Name','File')]
         [string]$Path
     )
@@ -2980,11 +2566,9 @@ Function Install-WSTools {
     Author: Skyler Hart
     Created: 06/13/2018 14:17:09
     Last Edit: 2020-08-20 11:18:30
-    Keywords: 
+    Keywords:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (
@@ -3004,32 +2588,15 @@ New-Alias -Name "Copy-WSTools" -Value Install-WSTools
 
 
 Function Set-SpeakerVolume {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 20:47:06 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
+    CREATED: Sometime before 2017-08-07
+    LASTEDIT: 08/18/2017 20:47:06
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [switch]$min,
@@ -3050,32 +2617,15 @@ New-Alias -Name "Volume" -Value Set-SpeakerVolume
 
 
 Function Show-BalloonTip {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+   .Notes
     AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 20:47:33 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
+    CREATED: Sometime before 2017-08-07
+    LASTEDIT: 08/18/2017 20:47:33
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory=$true)]
@@ -3106,32 +2656,15 @@ New-Alias -Name "tip" -Value Show-BalloonTip
 
 
 Function Show-MessageBox {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+   .Notes
     AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 20:47:49 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
+    CREATED: Sometime before 2017-08-07
+    LASTEDIT: 08/18/2017 20:47:49
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
 #info: https://msdn.microsoft.com/en-us/library/x83z1d9f(v=vs.84).aspx
     [CmdletBinding()]
     Param (

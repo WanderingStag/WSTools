@@ -35,11 +35,12 @@ New features and other changes:
 23. Changed links to https://wstools.dev
 24. Added some extra validation text to the wsfunction snippet.
 25. Changed Get-WSToolsVersion so that it is no longer hardcoded.
-26. Updated comment text, tags, and Uri's in module manifest.
+26. Updated comment text, tags, and Uri's in module manifest based on Microsoft's PowerShell Gallery publishing guidelines.
 27. Fixed numerous PSScriptAnalyzer Warnings
 28. Re-wrote Get-UserWithThumbnail so it outputs objects.
 29. Fixed numerous PSScriptAnalyzer Information level Severity issues.
-30. Began preparing WS_DomainMgmt sub-module for external help.
+30. Prepared WS_DomainMgmt sub-module for external help.
+31. Began preparing WSTools root module for external help.
 
 Removed items:
 1. Get-202001UpdateStatus: We are in August 2020 now so if computers don't have newer cumulative updates there is a problem.
