@@ -258,7 +258,7 @@ Function Get-NewADUser {
 .Notes
     AUTHOR: Skyler Hart
     CREATED: 08/18/2017 02:34:40
-    LASTEDIT: 08/18/2017 20:59:08 
+    LASTEDIT: 08/18/2017 20:59:08
     KEYWORDS:
     REQUIRES:
         -Modules ActiveDirectory
@@ -524,31 +524,13 @@ New-Alias -Name "GroupPolicy" -Value Open-GroupPolicyMgmt
 
 Function Open-HyperVmgmt {
 <#
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 08/19/2017 22:32:48
     LASTEDIT: 08/19/2017 22:32:48
     KEYWORDS:
-    REMARKS:
-    REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     virtmgmt.msc
 }
@@ -560,7 +542,7 @@ function Open-iLO {
 .Notes
     AUTHOR: Skyler Hart
     CREATED: 02/02/2018 12:00:33
-    LASTEDIT: 2020-04-17 15:36:02 
+    LASTEDIT: 2020-04-17 15:36:02
 .LINK
     https://wstools.dev
 #>
@@ -568,20 +550,20 @@ function Open-iLO {
     Param (
         [Parameter(Mandatory=$false)]
         [Switch]$Chrome,
-          
+
         [Parameter(Mandatory=$false)]
         [Switch]$Edge,
-          
+    
         [Parameter(Mandatory=$false)]
         [Switch]$Firefox,
-            
+
         [Parameter(Mandatory=$false)]
         [Switch]$InternetExplorer
     )
-        
+
     $config = $Global:WSToolsConfig
     $URL = $config.iLO
-        
+
     if ($Chrome) {Start-Process "chrome.exe" $URL}
     elseif ($Edge) {Start-Process shell:AppsFolder\Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge $URL}
     elseif ($Firefox) {Start-Process "firefox.exe" $URL}
@@ -630,7 +612,7 @@ Function Open-SharedFolders {
    .Notes
     AUTHOR: Skyler Hart
     CREATED: 08/19/2017 22:14:08
-    LASTEDIT: 08/19/2017 22:14:08 
+    LASTEDIT: 08/19/2017 22:14:08
     KEYWORDS:
     REQUIRES:
         -RunAsAdministrator
@@ -639,7 +621,7 @@ Function Open-SharedFolders {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN')]
         [string]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -654,29 +636,29 @@ Function Open-vCenter {
 .Notes
     AUTHOR: Skyler Hart
     CREATED: 10/18/2017 10:34:22
-    LASTEDIT: 02/13/2018 11:05:06   
-    KEYWORDS: 
+    LASTEDIT: 02/13/2018 11:05:06
+    KEYWORDS:
 .LINK
     https://wstools.dev
-    #> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory=$false)]
         [Switch]$Chrome,
-          
+
         [Parameter(Mandatory=$false)]
         [Switch]$Edge,
-          
+
         [Parameter(Mandatory=$false)]
         [Switch]$Firefox,
-            
+
         [Parameter(Mandatory=$false)]
         [Switch]$InternetExplorer
     )
-        
+
     $config = $Global:WSToolsConfig
     $URL = $config.vCenter
-    
+
     if ($Chrome) {Start-Process "chrome.exe" $URL}
     elseif ($Edge) {Start-Process shell:AppsFolder\Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge $URL}
     elseif ($Firefox) {Start-Process "firefox.exe" $URL}
@@ -694,9 +676,9 @@ Function Register-Schema {
 .Notes
     AUTHOR: Skyler Hart
     CREATED: 02/12/2018 20:10:54
-    LASTEDIT: 02/12/2018 20:10:54 
+    LASTEDIT: 02/12/2018 20:10:54
     KEYWORDS:
-    REQUIRES: 
+    REQUIRES:
         -RunAsAdministrator
 .LINK
     https://wstools.dev
@@ -709,8 +691,8 @@ Function Restart-ActiveDirectory {
 <#
 .Notes
     AUTHOR: Skyler Hart
-    CREATED: 09/08/2017 16:03:23 
-    LASTEDIT: 09/08/2017 16:03:39  
+    CREATED: 09/08/2017 16:03:23
+    LASTEDIT: 09/08/2017 16:03:39
     KEYWORDS:
     REQUIRES:
         -Modules ActiveDirectory
@@ -720,7 +702,7 @@ Function Restart-ActiveDirectory {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string]$DC = "$env:COMPUTERNAME",
         [Switch]$All
@@ -746,8 +728,8 @@ Function Restart-DNS {
 <#
 .Notes
     AUTHOR: Skyler Hart
-    CREATED: 09/08/2017 17:23:43 
-    LASTEDIT: 09/08/2017 17:23:49 
+    CREATED: 09/08/2017 17:23:43
+    LASTEDIT: 09/08/2017 17:23:49
     KEYWORDS:
     REQUIRES:
         -Modules ActiveDirectory
@@ -757,7 +739,7 @@ Function Restart-DNS {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string]$DC = "$env:COMPUTERNAME",
         [Switch]$All
@@ -784,7 +766,7 @@ Function Restart-KDC {
 .Notes
     AUTHOR: Skyler Hart
     CREATED: 08/18/2017 02:45:00
-    LASTEDIT: 08/18/2017 20:46:32 
+    LASTEDIT: 08/18/2017 20:46:32
     KEYWORDS:
     REQUIRES:
         -Modules ActiveDirectory
@@ -794,7 +776,7 @@ Function Restart-KDC {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string]$DC = "$env:COMPUTERNAME",
         [Switch]$All
@@ -843,7 +825,7 @@ function Set-ADProfilePicture {
     $OpenFileDialog.filename
     $OpenFileDialog.ShowHelp = $true
     $ppath = $OpenFileDialog.FileName
-    
+
     $item = Get-Item $ppath
     if ($item.Length -gt 102400) {Throw "Unable to set $Username's picture. Picture must be less than 100 KB. Also recommend max size of 96 x 96 pixels."}
     else {
