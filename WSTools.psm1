@@ -1,19 +1,5 @@
 ﻿function Add-JavaException {
 <#
-.SYNOPSIS
-    Short description
-.DESCRIPTION
-    Long description
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.PARAMETER Path
-    Specifies a path to one or more locations.
-.EXAMPLE
-    C:\PS>Add-JavaException
-    Example of how to use this cmdlet
-.EXAMPLE
-    C:\PS>Add-JavaException -PARAMETER
-    Another example of how to use this cmdlet but with a parameter or switch.
 .NOTES
     Author: Skyler Hart
     Created: 2019-03-20 10:40:11
@@ -21,12 +7,11 @@
     Keywords: Java, Exception
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     param(
-        [Parameter(HelpMessage = "Enter the address of the website.",
+        [Parameter(
+            HelpMessage = "Enter the address of the website.",
             Mandatory=$true,
             ValueFromPipelineByPropertyName = $true,
             ValueFromPipeline = $true
@@ -35,7 +20,7 @@
         [Alias('Site','URL','Address')]
         [string]$Website
     )
-    
+
     Add-Content -Path "$env:USERPROFILE\AppData\LocalLow\Sun\Java\Deployment\security\exception.sites" -Value "$Website"
 }
 
@@ -56,8 +41,6 @@ function Copy-PowerShellJSON {
     Keywords: WSTools, Visual Studio Code, PowerShell, JSON, Preferences
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
 
     Copy-Item -Path $PSScriptRoot\powershell.json -Destination $env:APPDATA\Code\User\snippets\powershell.json
@@ -83,17 +66,12 @@ function Clear-ImproperProfileCopy {
    .Parameter Destination
     Specifies the folder that is used to copy the nested folders to and deletes them.
    .Notes 
-    NAME: Clear-ImproperProfileCopy 
     AUTHOR: Skyler Hart
     CREATED: 06/11/2016 20:37:14
     LASTEDIT: 2020-04-15 21:54:21 
     KEYWORDS: user, profile, app data, application data, cleanup, clear, improper
-    REMARKS: 
-    REQUIRES:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #> 
     [CmdletBinding()]
     Param (
@@ -143,39 +121,36 @@ function Clear-ImproperProfileCopy {
 
 
 Function Clear-Space {
-<# 
-   .Synopsis 
+<#
+   .Synopsis
     Clears harddrive space
    .Description
     Clears harddrive space by clearing temp files and caches. Invoke method does not clear as many locations. #DevSkim: ignore DS104456 
-   .Example 
+   .Example
     Clear-Space 
     Clears temp and cache data on the local computer  
-   .Example 
+   .Example
     Clear-Space -ComputerName COMP1 
     Clears temp and cache data on the computer COMP1
-   .Example 
+   .Example
     Clear-Space -ComputerName (gc c:\complist.txt)
     Clears temp and cache data on the computers listed in the file c:\complist.txt
-   .Example 
+   .Example
     Clear-Space -ComputerName (gc c:\complist.txt) -InvokeMethod
     Clears temp and cache data on the computers listed in the file c:\complist.txt using the Invoke-WMIMethod command. #DevSkim: ignore DS104456 
    .Parameter ComputerName
     Specifies the computer or computers to clear space on
    .Parameter InvokeMethod
     Specifies the computer or computers to clear space on using the Invoke-WMIMethod command #DevSkim: ignore DS104456 
-   .Notes 
-    NAME: Clear-Space 
+   .Notes
     AUTHOR: Skyler Hart
-    CREATED: 05/19/2017 20:16:47 
-    LASTEDIT: 07/22/2019 14:21:15  
+    CREATED: 05/19/2017 20:16:47
+    LASTEDIT: 07/22/2019 14:21:15
     KEYWORDS: Delete, temp, patches, cache, prefetch, SCCM
     REMARKS: Needs to be ran as a user that has administrator rights
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
@@ -187,7 +162,7 @@ Function Clear-Space {
     )
 
     $path = (Get-Location).Path
-    
+
     foreach ($Comp in $ComputerName) {
 #region PSDrive Method
         $psdpath = "\\$comp\c$"
@@ -345,7 +320,6 @@ Function Clear-Space {
                 Write-Output "Unable to connect to computer: $Comp" -ForegroundColor Red
             }
         }#invoke method
-    
 #endregion Invoke Method
     }#foreach computer
     Set-Location $path
@@ -354,34 +328,13 @@ Function Clear-Space {
 
 function Disable-ServerManager {
 <#
-.SYNOPSIS
-    Short description
-.DESCRIPTION
-    Long description
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.PARAMETER Path
-    Specifies a path to one or more locations.
-.EXAMPLE
-    C:\PS>Disable-ServerManager
-    Example of how to use this cmdlet
-.EXAMPLE
-    C:\PS>Disable-ServerManager -PARAMETER
-    Another example of how to use this cmdlet but with a parameter or switch.
 .NOTES
     Author: Skyler Hart
     Created: 2020-05-08 23:18:39
     Last Edit: 2020-05-08 23:18:39
     Keywords: 
-    Other: 
-    Requires:
-        -Module ActiveDirectory
-        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     Get-ScheduledTask -TaskName ServerManager | Disable-ScheduledTask
 }
@@ -389,41 +342,22 @@ function Disable-ServerManager {
 
 function Enable-RDP {
 <#
-.SYNOPSIS
-    Short description
-.DESCRIPTION
-    Long description
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.PARAMETER Path
-    Specifies a path to one or more locations.
-.EXAMPLE
-    C:\PS>Enable-RDP
-    Example of how to use this cmdlet
-.EXAMPLE
-    C:\PS>Enable-RDP -PARAMETER
-    Another example of how to use this cmdlet but with a parameter or switch.
 .NOTES
     Author: Skyler Hart
     Created: 2020-05-08 23:21:17
     Last Edit: 2020-05-08 23:21:17
     Keywords: 
-    Other: 
     Requires:
-        -Module ActiveDirectory
-        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -value 0
 }
 
 
 Function Get-ComputerHWInfo {
-<# 
+<#
    .Synopsis 
     Gets hardware information of local or remote computer(s.)
    .Description
@@ -443,12 +377,10 @@ Function Get-ComputerHWInfo {
     LASTEDIT: 09/21/2017 13:03:30  
     KEYWORDS: hardware, information, computer
     REQUIRES: 
-        #Requires -RunAsAdministrator
+        -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com 
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
@@ -483,32 +415,18 @@ Function Get-ComputerHWInfo {
 
 
 Function Get-ComputerType {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
+<#
    .Parameter ComputerName
     Specifies the computer or computers
-   .Notes 
-    NAME: FUNCTIONNAME 
+   .Notes
     AUTHOR: Skyler Hart
     CREATED: 06/20/2018 13:05:09
-    LASTEDIT: 06/20/2018 15:41:21 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
+    LASTEDIT: 06/20/2018 15:41:21
+    KEYWORDS:
+    REQUIRES:
+        -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com 
 #>
     [CmdletBinding()]
     Param (
@@ -572,31 +490,14 @@ Function Get-ComputerType {
 
 
 function Get-DirectoryStat {
-    <#
-    .SYNOPSIS
-        Short description
-    .DESCRIPTION
-        Long description
-    .PARAMETER ComputerName
-        Specifies the name of one or more computers.
-    .PARAMETER Path
-        Specifies a path to one or more locations.
-    .EXAMPLE
-        C:\PS>Get-DirectoryStat
-        Example of how to use this cmdlet
-    .EXAMPLE
-        C:\PS>Get-DirectoryStat -PARAMETER
-        Another example of how to use this cmdlet but with a parameter or switch.
+<#
     .NOTES
         Author: Skyler Hart
         Created: 2020-08-09 10:07:49
         Last Edit: 2020-08-09 21:35:14
         Keywords: 
-        Other: 
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     param(
@@ -646,32 +547,14 @@ function Get-DirectoryStat {
 #Look up "root\WMI" or "root\CCM" using Get-ComputerWMINamespaces
 Function Get-WMIClass {
 <# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+ .Notes
     AUTHOR: Skyler Hart
     CREATED: 09/21/2017 13:05:10
     LASTEDIT: 09/21/2017 13:05:10 
     KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
@@ -685,37 +568,21 @@ Function Get-WMIClass {
 
 Function Get-WMINameSpace {
 <# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 09/21/2017 13:05:21
     LASTEDIT: 09/21/2017 13:05:21 
     KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #> 
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
         [Alias('Host','Name','Computer','CN')]
-        [string]$ComputerName = "$env:COMPUTERNAME"
+        [string]$ComputerName = "$env:COMPUTERNAME",
+
+        [string]$Namespace = "root"
     )
 
     Get-WmiObject -Namespace "root" -Class "__Namespace" -ComputerName $ComputerName | Select-Object Name

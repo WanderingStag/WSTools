@@ -12,7 +12,7 @@ Please **_[submit feedback](https://wstools.dev/contact "WSTools Feedback")_** a
 Then look at the _`Version`_ attribute.
 2. **Active Directory PowerShell module:** Not needed for everything but is necessary for 30+ functions.
 3. **NetIQ DRA PowerShell REST Extensions:** Not needed for many functions at the moment but there are plans to add more.
-4. **Local Admin Password Solution (LAPS):** There are a handful of functions that require the full install of LAPS and not just the basic install. However, if you are not using LAPS on your network then there are no worries.
+4. **Local Admin Password Solution (LAPS):** Actual module name: AdmPwd.PS. There are a handful of functions that require the full install of LAPS to get the module and not just the basic install. However, if you are not using LAPS on your network then there are no worries.
 5. **Microsoft.Exchange.Management.PowerShell.Admin PSSnapin:** Required for the very few Exchange server related functions.
 
 ## Download WSTools
