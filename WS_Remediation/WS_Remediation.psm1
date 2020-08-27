@@ -32,17 +32,14 @@
         -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
-  
     [CmdletBinding()]
     Param (
         [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
             Mandatory=$true,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
-        )] 
+        )]
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
     
@@ -61,12 +58,12 @@
         [Parameter()]
         $MaxResultTime = 1200
     )
-    
+
     Begin {
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
-            
+
         if ($Recursive) {
             $Code = {
                 [CmdletBinding()]
@@ -167,7 +164,7 @@
                     ValueFromPipelineByPropertyName = $true)]
                     [string]$comp
                 )
-            
+
                 $psdpath = "\\$comp\c$"
                 $dn = $comp + "CS"
                 $patches = $dn + ":\Patches"
@@ -176,7 +173,7 @@
                     if (Test-Path $patches) {
                         Set-Location $patches -ErrorAction Stop
                         if ((Get-Location).Path -eq $patches) {
-                            Remove-Item * -force -ErrorAction SilentlyContinue
+                            Remove-Item .\*.* -force -ErrorAction SilentlyContinue
                             Remove-Item .\cab\* -Recurse -Force -ErrorAction SilentlyContinue
                         }
                         $info = New-Object -TypeName PSObject -Property @{
@@ -198,14 +195,11 @@
                         Status = "Unable to clear"
                     }#new object
                 }#catch
-
                 $info
             }#end code block
         }#else not recursive or old
-            
         $Jobs = @()
     }
-     
     Process {
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
         ForEach ($Object in $ObjectList){
@@ -220,9 +214,7 @@
             $Job.Object = $Object.ToString()
             $Jobs += $Job
         }
-            
-   }
-     
+    }
     End {
         $ResultTimer = Get-Date
         While (@($Jobs | Where-Object {$null -ne $_.Handle}).count -gt 0)  {            
@@ -247,13 +239,12 @@
                 Exit
             }
             Start-Sleep -Milliseconds $SleepTimer
-            
         } 
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
     }
 }
-    
+
 
 Function Install-Patches {
 <#
@@ -263,8 +254,6 @@ Function Install-Patches {
     Installes patches in the LocalPatches config setting path (default is C:\Patches.)
 .PARAMETER ComputerName
     Specifies the name of one or more computers to install patches on.
-.PARAMETER Path
-    Specifies a path to one or more locations.
 .EXAMPLE
     C:\PS>Install-Patches
     Will install patches in the LocalPatches config setting path (default is C:\Patches.)
@@ -275,32 +264,34 @@ Function Install-Patches {
     Author: Skyler Hart
     Created: 2017-03-25 08:30:23
     Last Edit: 2020-08-20 12:17:46
-    Keywords: 
-    Other: 
+    Keywords:
     Requires:
         -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
- 
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(
+            Mandatory=$false,
+            Position=0,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
-    
+
     $config = $Global:WSToolsConfig
     $Patches = $config.LocalPatches
 
+    $fp = $PSScriptRoot.Substring(0,($PSScriptRoot.Length-15)) + "\InstallRemote.ps1"
+
     if ($ComputerName -eq $env:COMPUTERNAME) {
-        Copy-Item -LiteralPath "$PSScriptRoot\InstallRemote.ps1" -Destination $Patches
+        Copy-Item -Path $fp -Destination $Patches
         & "$Patches\InstallRemote.ps1"
     }
     else {
-        $fp = $PSScriptRoot.Substring(0,($PSScriptRoot.Length-15)) + "\InstallRemote.ps1"
         Invoke-Command -ComputerName $ComputerName -FilePath $fp -ErrorAction Stop  #DevSkim: ignore DS104456
     }
 }#install patches
@@ -318,40 +309,25 @@ New-Alias -Name "Install-Updates" -Value Install-Patches
 
 
 Function Uninstall-7Zip {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 07/22/2019 20:52:09
-    LASTEDIT: 07/22/2019 20:53:01  
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
+    LASTEDIT: 07/22/2019 20:53:01
+    KEYWORDS:
+    REQUIRES:
+        -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
-        [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
+        [Parameter(
+            HelpMessage = "Enter one or more computer names separated by commas.",
             Mandatory=$true,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
-        )] 
+        )]
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
         
@@ -365,7 +341,7 @@ Function Uninstall-7Zip {
         $MaxResultTime = 1200
     )
 
-    Begin{
+    Begin {
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
@@ -395,13 +371,10 @@ Function Uninstall-7Zip {
                     Status = "Failed"
                 }#new object 
             }#catch
-
         }#end code block
-        
         $Jobs = @()
     }
- 
-    Process{
+    Process {
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
         ForEach ($Object in $ObjectList){
             $PowershellThread = [powershell]::Create().AddScript($Code)
@@ -415,10 +388,8 @@ Function Uninstall-7Zip {
             $Job.Object = $Object.ToString()
             $Jobs += $Job
         }
-        
     }
- 
-    End{
+    End {
         $ResultTimer = Get-Date
         While (@($Jobs | Where-Object {$null -ne $_.Handle}).count -gt 0)  {
         
@@ -452,40 +423,25 @@ Function Uninstall-7Zip {
 
 
 Function Uninstall-90Meter {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 08/29/2019 13:33:05
-    LASTEDIT: 08/29/2019 13:33:05 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
+    LASTEDIT: 08/29/2019 13:33:05
+    KEYWORDS:
+    REQUIRES:
+        -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#>  
+#>
     [CmdletBinding()]
     Param (
-        [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
+        [Parameter(
+            HelpMessage = "Enter one or more computer names separated by commas.",
             Mandatory=$true,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
-        )] 
+        )]
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
         
@@ -499,7 +455,7 @@ Function Uninstall-90Meter {
         $MaxResultTime = 1200
     )
 
-    Begin{
+    Begin {
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
