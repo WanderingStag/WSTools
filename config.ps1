@@ -87,7 +87,37 @@
     ################################
     ##         Remediation        ##
     ################################
+
+    #Install file locations - for normal installation files
+    a7Zip = "\\serverunc\apps\Tools\7zip"
+    Firefox = "\\serverunc\apps\Firefox"
+    SysInternals = "\\serverunc\apps\Tools\SysInternals"
+    VLC = "\\serverunc\apps\Tools\VLC"
+    Wireshark = "\\serverunc\apps\Tools\Wireshark"
+    WMF3 = "\\serverunc\apps\Microsoft\WMF3"
+    WMF4 = "\\serverunc\apps\Microsoft\WMF4"
+    WMF5 = "\\serverunc\apps\Microsoft\WMF5"
     
+    #Install file locations that use the PowerShell App Deployment Toolkit from https://psappdeploytoolkit.com/
+    a90Meter = "\\serverunc\apps\90Meter"
+    ActivClient = "\\serverunc\apps\ActivClient"
+    Acrobat = "\\serverunc\apps\Acrobat"
+    AxwayServer = "\\serverunc\apps\AxwayServer"
+    AxwayClient = "\\serverunc\apps\AxwayClient"
+    Chrome = "\\serverunc\apps\Chrome"
+    DSET = "\\serverunc\apps\DSET"
+    Encase = "\\serverunc\apps\Encase"
+    #Firefox = "\\serverunc\apps\Firefox"
+    Flash = "\\serverunc\apps\Flash"
+    Java = "\\serverunc\apps\Java"
+    NetBanner = "\\serverunc\apps\NetBanner"
+    Office2016 = "\\serverunc\apps\Office2016"
+    Silverlight = "\\serverunc\apps\Silverlight"
+    Tanium = "\\serverunc\apps\Tanium"
+    Teams = "\\serverunc\apps\Teams"
+    Titus = "\\serverunc\apps\Titus"
+    VPN = "\\serverunc\apps\VPN"
+
     #Ciphers - changes take effect immediately after change
     ##Set to 4294967295 to enable. Set to 0 to disable.
     RC2_56_56Enabled = 0
@@ -160,6 +190,6 @@
     ScriptWD = "C:\Scripts"
 
     #Privileged groups list - used for some monitoring and reporting features.
-    #PrivGroups = @()
+    #PrivGroups = @('group1','group2')
     ###########################################################################################################################################
 }#new object

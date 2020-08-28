@@ -43,6 +43,7 @@ New features and other changes:
 31. Began preparing WSTools root module for external help.
 32. Added some remediation value settings to config file.
 33. Added Sync-ENS to Sync-HBSSWithServer.
+34. Added apps to config file.
 
 Removed items:
 1. Get-202001UpdateStatus: We are in August 2020 now so if computers don't have newer cumulative updates there is a problem.
