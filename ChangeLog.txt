@@ -41,6 +41,7 @@ New features and other changes:
 29. Fixed numerous PSScriptAnalyzer Information level Severity issues.
 30. Prepared WS_DomainMgmt sub-module for external help.
 31. Began preparing WSTools root module for external help.
+32. Added some remediation value settings to config file.
 
 Removed items:
 1. Get-202001UpdateStatus: We are in August 2020 now so if computers don't have newer cumulative updates there is a problem.
