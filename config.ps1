@@ -88,9 +88,9 @@
     ##         Remediation        ##
     ################################
 
-    #Install file locations - for normal installation files
-    a7Zip = "\\serverunc\apps\Tools\7zip"
-    Firefox = "\\serverunc\apps\Firefox"
+    #Install file locations - for normal installation files.
+    a7Zip = "\\serverunc\apps\Tools\7zip" #64-bit only unless you change Copy-7Zip to use 32-bit
+    Firefox = "\\serverunc\apps\Firefox" #32-bit only unless you change Copy-Firefox to use 64-bit
     SysInternals = "\\serverunc\apps\Tools\SysInternals"
     VLC = "\\serverunc\apps\Tools\VLC"
     Wireshark = "\\serverunc\apps\Tools\Wireshark"
