@@ -4850,7 +4850,7 @@ function Sync-HBSSWithServer {
                 #Collecting and sending Props
                 Write-Host "Collecting and sending Props on $Comp"
                 Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c "C:\Program Files (x86)\McAfee\Common Framework\CmdAgent.exe" /P' -ErrorAction Continue | Out-Null #DevSkim: ignore DS104456 
-                Start-Sleep -s 30
+                Start-Sleep -s 10
 
                 #Checking for new policies
                 Write-Host "Checking for new policies on $Comp"
@@ -4869,7 +4869,7 @@ function Sync-HBSSWithServer {
                 #Collecting and sending Props
                 Write-Host "Collecting and sending Props on $Comp"
                 Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c "C:\Program Files\McAfee\Common Framework\CmdAgent.exe" /P' -ErrorAction Continue | Out-Null #DevSkim: ignore DS104456 
-                Start-Sleep -s 30
+                Start-Sleep -s 10
 
                 #Checking for new policies
                 Write-Host "Checking for new policies on $Comp"
@@ -4891,6 +4891,7 @@ function Sync-HBSSWithServer {
     }#foreach comp
 }
 New-Alias -Name "Sync-HBSS" -Value Sync-HBSSWithServer
+New-Alias -Name "Sync-ENS" -Value Sync-HBSSWithServer
 
 
 Export-ModuleMember -Alias * -Function *

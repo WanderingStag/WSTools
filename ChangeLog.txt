@@ -42,11 +42,12 @@ New features and other changes:
 30. Prepared WS_DomainMgmt sub-module for external help.
 31. Began preparing WSTools root module for external help.
 32. Added some remediation value settings to config file.
+33. Added Sync-ENS to Sync-HBSSWithServer.
 
 Removed items:
 1. Get-202001UpdateStatus: We are in August 2020 now so if computers don't have newer cumulative updates there is a problem.
 2. Get-DNSInfo: Not functioning and redundant.
-3. Import-WSToolsConfig changed process for editing the module so this is no longer needed.
+3. Import-WSToolsConfig not needed anymore with the change to a global variable for the config.
 4. Open-WSToolsManifests and Open-WSToolsModules changed process for editing the module so this is no longer needed.
 5. Add-CreatedPriorTo2017 and Add-Link. These are no longer needed since moving to Visual Studio Code for editing.
 
