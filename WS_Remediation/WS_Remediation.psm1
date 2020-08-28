@@ -4849,42 +4849,40 @@ function Sync-HBSSWithServer {
             if ($wmiq -like "*64-bit*") {
                 #Collecting and sending Props
                 Write-Host "Collecting and sending Props on $Comp"
-                Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c "C:\Program Files (x86)\McAfee\Common Framework\CmdAgent.exe" /P' -ErrorAction Continue | Out-Null #DevSkim: ignore DS104456 
+                Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c "C:\Program Files (x86)\McAfee\Common Framework\CmdAgent.exe" /P' -ErrorAction Stop | Out-Null #DevSkim: ignore DS104456 
                 Start-Sleep -s 10
 
                 #Checking for new policies
                 Write-Host "Checking for new policies on $Comp"
-                Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c "C:\Program Files (x86)\McAfee\Common Framework\CmdAgent.exe" /C' -ErrorAction Continue | Out-Null #DevSkim: ignore DS104456 
+                Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c "C:\Program Files (x86)\McAfee\Common Framework\CmdAgent.exe" /C' -ErrorAction Stop | Out-Null #DevSkim: ignore DS104456 
                 Start-Sleep -s 10
 
                 #Enforcing new policies
                 Write-Host "Enforcing new policies on $Comp"
-                Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c "C:\Program Files (x86)\McAfee\Common Framework\CmdAgent.exe" /E' -ErrorAction Continue | Out-Null #DevSkim: ignore DS104456 
+                Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c "C:\Program Files (x86)\McAfee\Common Framework\CmdAgent.exe" /E' -ErrorAction Stop | Out-Null #DevSkim: ignore DS104456 
                 Start-Sleep -s 15
 
                 Write-Host "HBSS client on $Comp should be updating." -ForegroundColor Green
             }#if wmiq 64bit
-
             else {
                 #Collecting and sending Props
                 Write-Host "Collecting and sending Props on $Comp"
-                Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c "C:\Program Files\McAfee\Common Framework\CmdAgent.exe" /P' -ErrorAction Continue | Out-Null #DevSkim: ignore DS104456 
+                Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c "C:\Program Files\McAfee\Common Framework\CmdAgent.exe" /P' -ErrorAction Stop | Out-Null #DevSkim: ignore DS104456 
                 Start-Sleep -s 10
 
                 #Checking for new policies
                 Write-Host "Checking for new policies on $Comp"
-                Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c "C:\Program Files\McAfee\Common Framework\CmdAgent.exe" /C' -ErrorAction Continue | Out-Null #DevSkim: ignore DS104456 
+                Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c "C:\Program Files\McAfee\Common Framework\CmdAgent.exe" /C' -ErrorAction Stop | Out-Null #DevSkim: ignore DS104456 
                 Start-Sleep -s 10
 
                 #Enforcing new policies
                 Write-Host "Enforcing new policies on $Comp"
-                Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c "C:\Program Files\McAfee\Common Framework\CmdAgent.exe" /E' -ErrorAction Continue | Out-Null #DevSkim: ignore DS104456 
+                Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c "C:\Program Files\McAfee\Common Framework\CmdAgent.exe" /E' -ErrorAction Stop | Out-Null #DevSkim: ignore DS104456 
                 Start-Sleep -s 15
 
                 Write-Host "HBSS client on $Comp should be updating." -ForegroundColor Green
             }#else 32bit
         }#try 32or64 bit
-
         catch {
             Throw "Unable to connect to $Comp"
         }#catch 32or64 bit
