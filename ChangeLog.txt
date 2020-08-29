@@ -44,6 +44,7 @@ New features and other changes:
 32. Added some remediation value settings to config file.
 33. Added Sync-ENS to Sync-HBSSWithServer.
 34. Added apps to config file.
+35. Added 24 Copy-ProgramName functions.
 
 Removed items:
 1. Get-202001UpdateStatus: We are in August 2020 now so if computers don't have newer cumulative updates there is a problem.
