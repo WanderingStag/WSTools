@@ -246,6 +246,3057 @@
 }
 
 
+Function Copy-7Zip {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 2019-07-23 20:37:02
+    LASTEDIT: 2020-08-28 14:40:13
+    KEYWORDS:
+    REQUIRES:
+        -RunAsAdministrator
+.Link
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    Param (
+        [Parameter(
+            Mandatory = $false,
+            Position = 0,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [Alias('Host','Name','Computer','CN')]
+        [string[]]$ComputerName = $env:COMPUTERNAME,
+
+        [Parameter()]
+        [int32]$MaxThreads = 5,
+
+        [Parameter()]
+        $SleepTimer = 200,
+
+        [Parameter()]
+        $MaxResultTime = 1200
+    )
+
+    Begin {
+        $config = $Global:WSToolsConfig
+        $app = $config.a7Zip
+        $appname = "7Zip"
+        if (!(Test-Path C:\Scripts)) {mkdir C:\Scripts}
+        if (!(Test-Path C:\Scripts\CopyStatus.csv)) {
+            $info = New-Object -TypeName PSObject -Property @{
+                ComputerName = "NA"
+                Program = "NA"
+                Status = "NA"
+                Time = "NA"
+            }#new object 
+            $info | Select-Object ComputerName,Program,Status,Time | export-csv C:\Scripts\CopyStatus.csv -NoTypeInformation
+        }
+
+        $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
+        $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
+        $RunspacePool.Open()
+        $Code = {
+            [CmdletBinding()]
+            Param (
+                [Parameter(Mandatory=$true,
+                    Position=0,
+                    ValueFromPipeline = $true,
+                    ValueFromPipelineByPropertyName = $true
+                )]
+                [string]$comp
+            )
+            try {
+                robocopy $app \\$comp\c$\Patches\$appname *x64.exe /mir /mt:3 /r:3 /w:15 /njh /njs
+                $end = Get-Date
+                $info = New-Object -TypeName PSObject -Property @{
+                    ComputerName = $comp
+                    Program = $appname
+                    Status = "Copied"
+                    Time = $end
+                }#new object 
+            }
+            catch {
+                $end = Get-Date
+                $info = New-Object -TypeName PSObject -Property @{
+                    ComputerName = $comp
+                    Program = $appname
+                    Status = "Failed"
+                    Time = $end
+                }#new object
+            }
+            $info | Select-Object ComputerName,Program,Status,Time | Export-Csv C:\Scripts\CopyStatus.csv -NoTypeInformation -Append
+        }#end code block
+        $Jobs = @()
+    }
+    Process {
+        Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
+        ForEach ($Object in $ComputerName){
+            $PowershellThread = [powershell]::Create().AddScript($Code)
+            $PowershellThread.AddArgument($Object.ToString()) | out-null
+            $PowershellThread.RunspacePool = $RunspacePool
+            $Handle = $PowershellThread.BeginInvoke()
+            $Job = "" | Select-Object Handle, Thread, object
+            $Job.Handle = $Handle
+            $Job.Thread = $PowershellThread
+            $Job.Object = $Object.ToString()
+            $Jobs += $Job
+        }    
+    }
+    End {
+        $ResultTimer = Get-Date
+        While (@($Jobs | Where-Object {$Null -ne $_.Handle}).count -gt 0)  {
+            $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
+            If ($Remaining.Length -gt 60){
+                $Remaining = $Remaining.Substring(0,60) + "..."
+            }
+            Write-Progress `
+                -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
+                -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+            ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
+                $Job.Thread.EndInvoke($Job.Handle)
+                $Job.Thread.Dispose()
+                $Job.Thread = $Null
+                $Job.Handle = $Null
+                $ResultTimer = Get-Date
+            }
+            If (($(Get-Date) - $ResultTimer).totalseconds -gt $MaxResultTime){
+                Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
+                Exit
+            }
+            Start-Sleep -Milliseconds $SleepTimer            
+        } 
+        $RunspacePool.Close() | Out-Null
+        $RunspacePool.Dispose() | Out-Null
+    }
+}
+    
+    
+Function Copy-90Meter {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 01/22/2019 13:47:08
+    LASTEDIT: 01/22/2019 13:47:08
+    KEYWORDS:
+    REQUIRES:
+        -RunAsAdministrator
+.Link
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    Param (
+        [Parameter(
+            Mandatory = $false,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [Alias('Host','Name','Computer','CN')]
+        [string[]]$ComputerName = $env:COMPUTERNAME,
+
+        [Parameter()]
+        [int32]$MaxThreads = 5,
+
+        [Parameter()]
+        $SleepTimer = 200,
+
+        [Parameter()]
+        $MaxResultTime = 1200
+    )
+
+    Begin {
+        $config = $Global:WSToolsConfig
+        $app = $config.a90Meter
+        $appname = "90Meter"
+        if (!(Test-Path C:\Scripts)) {mkdir C:\Scripts}
+        if (!(Test-Path C:\Scripts\CopyStatus.csv)) {
+            $info = New-Object -TypeName PSObject -Property @{
+                ComputerName = "NA"
+                Program = "NA"
+                Status = "NA"
+                Time = "NA"
+            }#new object 
+            $info | Select-Object ComputerName,Program,Status,Time | export-csv C:\Scripts\CopyStatus.csv -NoTypeInformation
+        }
+
+        $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
+        $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
+        $RunspacePool.Open()
+        $Code = {
+            [CmdletBinding()]
+            Param (
+                [Parameter(Mandatory=$true,
+                    Position=0,
+                    ValueFromPipeline = $true,
+                    ValueFromPipelineByPropertyName = $true
+                )]
+                [string]$comp
+            )
+            try {
+                robocopy $app \\$comp\c$\Patches\$appname /mir /mt:3 /r:3 /w:15 /njh /njs
+                $end = Get-Date
+                $info = New-Object -TypeName PSObject -Property @{
+                    ComputerName = $comp
+                    Program = $appname
+                    Status = "Copied"
+                    Time = $end
+                }#new object 
+            }
+            catch {
+                $end = Get-Date
+                $info = New-Object -TypeName PSObject -Property @{
+                    ComputerName = $comp
+                    Program = $appname
+                    Status = "Failed"
+                    Time = $end
+                }#new object
+            }
+            $info | Select-Object ComputerName,Program,Status,Time | Export-Csv C:\Scripts\CopyStatus.csv -NoTypeInformation -Append
+        }#end code block
+        $Jobs = @()
+    }
+    Process {
+        Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
+        ForEach ($Object in $ComputerName){
+            $PowershellThread = [powershell]::Create().AddScript($Code)
+            $PowershellThread.AddArgument($Object.ToString()) | out-null
+            $PowershellThread.RunspacePool = $RunspacePool
+            $Handle = $PowershellThread.BeginInvoke()
+            $Job = "" | Select-Object Handle, Thread, object
+            $Job.Handle = $Handle
+            $Job.Thread = $PowershellThread
+            $Job.Object = $Object.ToString()
+            $Jobs += $Job
+        }    
+    }
+    End {
+        $ResultTimer = Get-Date
+        While (@($Jobs | Where-Object {$Null -ne $_.Handle}).count -gt 0)  {
+            $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
+            If ($Remaining.Length -gt 60){
+                $Remaining = $Remaining.Substring(0,60) + "..."
+            }
+            Write-Progress `
+                -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
+                -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+            ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
+                $Job.Thread.EndInvoke($Job.Handle)
+                $Job.Thread.Dispose()
+                $Job.Thread = $Null
+                $Job.Handle = $Null
+                $ResultTimer = Get-Date
+            }
+            If (($(Get-Date) - $ResultTimer).totalseconds -gt $MaxResultTime){
+                Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
+                Exit
+            }
+            Start-Sleep -Milliseconds $SleepTimer            
+        } 
+        $RunspacePool.Close() | Out-Null
+        $RunspacePool.Dispose() | Out-Null
+    }
+}
+    
+    
+Function Copy-ActivClient {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 01/22/2019 13:47:08
+    LASTEDIT: 01/22/2019 13:47:08
+    KEYWORDS:
+    REQUIRES:
+        -RunAsAdministrator
+.Link
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    Param (
+        [Parameter(
+            Mandatory = $false,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [Alias('Host','Name','Computer','CN')]
+        [string[]]$ComputerName = $env:COMPUTERNAME,
+
+        [Parameter()]
+        [int32]$MaxThreads = 5,
+
+        [Parameter()]
+        $SleepTimer = 200,
+
+        [Parameter()]
+        $MaxResultTime = 1200
+    )
+    Begin {
+        $config = $Global:WSToolsConfig
+        $app = $config.ActivClient
+        $appname = "ActivClient"
+        if (!(Test-Path C:\Scripts)) {mkdir C:\Scripts}
+        if (!(Test-Path C:\Scripts\CopyStatus.csv)) {
+            $info = New-Object -TypeName PSObject -Property @{
+                ComputerName = "NA"
+                Program = "NA"
+                Status = "NA"
+                Time = "NA"
+            }#new object 
+            $info | Select-Object ComputerName,Program,Status,Time | export-csv C:\Scripts\CopyStatus.csv -NoTypeInformation
+        }
+
+        $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
+        $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
+        $RunspacePool.Open()
+        $Code = {
+            [CmdletBinding()]
+            Param (
+                [Parameter(Mandatory=$true,
+                    Position=0,
+                    ValueFromPipeline = $true,
+                    ValueFromPipelineByPropertyName = $true
+                )]
+                [string]$comp
+            )
+            try {
+                robocopy $app \\$comp\c$\Patches\$appname /mir /mt:3 /r:3 /w:15 /njh /njs
+                $end = Get-Date
+                $info = New-Object -TypeName PSObject -Property @{
+                    ComputerName = $comp
+                    Program = $appname
+                    Status = "Copied"
+                    Time = $end
+                }#new object 
+            }
+            catch {
+                $end = Get-Date
+                $info = New-Object -TypeName PSObject -Property @{
+                    ComputerName = $comp
+                    Program = $appname
+                    Status = "Failed"
+                    Time = $end
+                }#new object
+            }
+            $info | Select-Object ComputerName,Program,Status,Time | Export-Csv C:\Scripts\CopyStatus.csv -NoTypeInformation -Append
+        }#end code block
+        $Jobs = @()
+    }
+    Process {
+        Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
+        ForEach ($Object in $ComputerName){
+            $PowershellThread = [powershell]::Create().AddScript($Code)
+            $PowershellThread.AddArgument($Object.ToString()) | out-null
+            $PowershellThread.RunspacePool = $RunspacePool
+            $Handle = $PowershellThread.BeginInvoke()
+            $Job = "" | Select-Object Handle, Thread, object
+            $Job.Handle = $Handle
+            $Job.Thread = $PowershellThread
+            $Job.Object = $Object.ToString()
+            $Jobs += $Job
+        }    
+    }
+    End {
+        $ResultTimer = Get-Date
+        While (@($Jobs | Where-Object {$Null -ne $_.Handle}).count -gt 0)  {
+            $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
+            If ($Remaining.Length -gt 60){
+                $Remaining = $Remaining.Substring(0,60) + "..."
+            }
+            Write-Progress `
+                -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
+                -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+            ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
+                $Job.Thread.EndInvoke($Job.Handle)
+                $Job.Thread.Dispose()
+                $Job.Thread = $Null
+                $Job.Handle = $Null
+                $ResultTimer = Get-Date
+            }
+            If (($(Get-Date) - $ResultTimer).totalseconds -gt $MaxResultTime){
+                Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
+                Exit
+            }
+            Start-Sleep -Milliseconds $SleepTimer            
+        }
+        $RunspacePool.Close() | Out-Null
+        $RunspacePool.Dispose() | Out-Null
+    }
+}
+    
+    
+Function Copy-AdobeAcrobat {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 01/22/2019 13:47:08
+    LASTEDIT: 01/22/2019 13:47:08 
+    KEYWORDS:
+    REQUIRES:
+        -RunAsAdministrator
+.Link
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    Param (
+        [Parameter(
+            Mandatory = $false,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [Alias('Host','Name','Computer','CN')]
+        [string[]]$ComputerName = $env:COMPUTERNAME,
+
+        [Parameter()]
+        [int32]$MaxThreads = 5,
+
+        [Parameter()]
+        $SleepTimer = 200,
+
+        [Parameter()]
+        $MaxResultTime = 1200
+    )
+    Begin {
+        $config = $Global:WSToolsConfig
+        $app = $config.Acrobat
+        $appname = "Acrobat"
+        if (!(Test-Path C:\Scripts)) {mkdir C:\Scripts}
+        if (!(Test-Path C:\Scripts\CopyStatus.csv)) {
+            $info = New-Object -TypeName PSObject -Property @{
+                ComputerName = "NA"
+                Program = "NA"
+                Status = "NA"
+                Time = "NA"
+            }#new object 
+            $info | Select-Object ComputerName,Program,Status,Time | export-csv C:\Scripts\CopyStatus.csv -NoTypeInformation
+        }
+        $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
+        $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
+        $RunspacePool.Open()
+        $Code = {
+            [CmdletBinding()]
+            Param (
+                [Parameter(Mandatory=$true,
+                    Position=0,
+                    ValueFromPipeline = $true,
+                    ValueFromPipelineByPropertyName = $true
+                )]
+                [string]$comp
+            )
+            try {
+                robocopy $app \\$comp\c$\Patches\$appname /mir /mt:3 /r:3 /w:15 /njh /njs
+                $end = Get-Date
+                $info = New-Object -TypeName PSObject -Property @{
+                    ComputerName = $comp
+                    Program = $appname
+                    Status = "Copied"
+                    Time = $end
+                }#new object 
+            }
+            catch {
+                $end = Get-Date
+                $info = New-Object -TypeName PSObject -Property @{
+                    ComputerName = $comp
+                    Program = $appname
+                    Status = "Failed"
+                    Time = $end
+                }#new object
+            }
+            $info | Select-Object ComputerName,Program,Status,Time | Export-Csv C:\Scripts\CopyStatus.csv -NoTypeInformation -Append
+        }#end code block
+        $Jobs = @()
+    }
+    Process {
+        Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
+        ForEach ($Object in $ComputerName){
+            $PowershellThread = [powershell]::Create().AddScript($Code)
+            $PowershellThread.AddArgument($Object.ToString()) | out-null
+            $PowershellThread.RunspacePool = $RunspacePool
+            $Handle = $PowershellThread.BeginInvoke()
+            $Job = "" | Select-Object Handle, Thread, object
+            $Job.Handle = $Handle
+            $Job.Thread = $PowershellThread
+            $Job.Object = $Object.ToString()
+            $Jobs += $Job
+        }    
+    }
+    End {
+        $ResultTimer = Get-Date
+        While (@($Jobs | Where-Object {$Null -ne $_.Handle}).count -gt 0)  {
+            $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
+            If ($Remaining.Length -gt 60){
+                $Remaining = $Remaining.Substring(0,60) + "..."
+            }
+            Write-Progress `
+                -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
+                -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+            ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
+                $Job.Thread.EndInvoke($Job.Handle)
+                $Job.Thread.Dispose()
+                $Job.Thread = $Null
+                $Job.Handle = $Null
+                $ResultTimer = Get-Date
+            }
+            If (($(Get-Date) - $ResultTimer).totalseconds -gt $MaxResultTime){
+                Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
+                Exit
+            }
+            Start-Sleep -Milliseconds $SleepTimer            
+        } 
+        $RunspacePool.Close() | Out-Null
+        $RunspacePool.Dispose() | Out-Null
+    }
+}
+New-Alias -Name "Copy-Acrobat" -Value Copy-AdobeAcrobat
+    
+    
+Function Copy-Axway {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 01/22/2019 13:47:08
+    LASTEDIT: 01/22/2019 13:47:08
+    KEYWORDS:
+    REQUIRES:
+        -RunAsAdministrator
+.Link
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    Param (
+        [Parameter(
+            Mandatory = $false,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [Alias('Host','Name','Computer','CN')]
+        [string[]]$ComputerName = $env:COMPUTERNAME,
+
+        [Parameter()]
+        [int32]$MaxThreads = 5,
+
+        [Parameter()]
+        $SleepTimer = 200,
+
+        [Parameter()]
+        $MaxResultTime = 1200
+    )
+    Begin {
+        $config = $Global:WSToolsConfig
+        $app = $config.AxwayClient
+        $appserver = $config.AxwayServer
+        $appname = "Axway"
+        if (!(Test-Path C:\Scripts)) {mkdir C:\Scripts}
+        if (!(Test-Path C:\Scripts\CopyStatus.csv)) {
+            $info = New-Object -TypeName PSObject -Property @{
+                ComputerName = "NA"
+                Program = "NA"
+                Status = "NA"
+                Time = "NA"
+            }#new object 
+            $info | Select-Object ComputerName,Program,Status,Time | export-csv C:\Scripts\CopyStatus.csv -NoTypeInformation
+        }
+
+        $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
+        $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
+        $RunspacePool.Open()
+        $Code = {
+            [CmdletBinding()]
+            Param (
+                [Parameter(Mandatory=$true,
+                    Position=0,
+                    ValueFromPipeline = $true,
+                    ValueFromPipelineByPropertyName = $true
+                )]
+                [string]$comp
+            )
+            try {
+                $os = Get-OperatingSystem $comp | Select-Object OS -ExpandProperty OS
+                if ($os -match "Server") {
+                    robocopy $appserver \\$comp\c$\Patches\$appname /mir /mt:3 /r:3 /w:15 /njh /njs
+                }
+                else {
+                    robocopy $app \\$comp\c$\Patches\$appname /mir /mt:3 /r:3 /w:15 /njh /njs
+                }
+                $end = Get-Date
+                $info = New-Object -TypeName PSObject -Property @{
+                    ComputerName = $comp
+                    Program = $appname
+                    Status = "Copied"
+                    Time = $end
+                }#new object 
+            }
+            catch {
+                $end = Get-Date
+                $info = New-Object -TypeName PSObject -Property @{
+                    ComputerName = $comp
+                    Program = $appname
+                    Status = "Failed"
+                    Time = $end
+                }#new object
+            }
+            $info | Select-Object ComputerName,Program,Status,Time | Export-Csv C:\Scripts\CopyStatus.csv -NoTypeInformation -Append
+        }#end code block
+        $Jobs = @()
+    }
+    Process {
+        Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
+        ForEach ($Object in $ComputerName){
+            $PowershellThread = [powershell]::Create().AddScript($Code)
+            $PowershellThread.AddArgument($Object.ToString()) | out-null
+            $PowershellThread.RunspacePool = $RunspacePool
+            $Handle = $PowershellThread.BeginInvoke()
+            $Job = "" | Select-Object Handle, Thread, object
+            $Job.Handle = $Handle
+            $Job.Thread = $PowershellThread
+            $Job.Object = $Object.ToString()
+            $Jobs += $Job
+        }    
+    }
+    End {
+        $ResultTimer = Get-Date
+        While (@($Jobs | Where-Object {$Null -ne $_.Handle}).count -gt 0)  {
+            $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
+            If ($Remaining.Length -gt 60){
+                $Remaining = $Remaining.Substring(0,60) + "..."
+            }
+            Write-Progress `
+                -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
+                -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+            ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
+                $Job.Thread.EndInvoke($Job.Handle)
+                $Job.Thread.Dispose()
+                $Job.Thread = $Null
+                $Job.Handle = $Null
+                $ResultTimer = Get-Date
+            }
+            If (($(Get-Date) - $ResultTimer).totalseconds -gt $MaxResultTime){
+                Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
+                Exit
+            }
+            Start-Sleep -Milliseconds $SleepTimer            
+        }
+        $RunspacePool.Close() | Out-Null
+        $RunspacePool.Dispose() | Out-Null
+    }
+}
+
+
+Function Copy-Chrome {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 01/22/2019 13:47:08
+    LASTEDIT: 01/22/2019 13:47:08
+    KEYWORDS:
+    REQUIRES:
+        -RunAsAdministrator
+.Link
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    Param (
+        [Parameter(
+            Mandatory = $false,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [Alias('Host','Name','Computer','CN')]
+        [string[]]$ComputerName = $env:COMPUTERNAME,
+
+        [Parameter()]
+        [int32]$MaxThreads = 5,
+
+        [Parameter()]
+        $SleepTimer = 200,
+
+        [Parameter()]
+        $MaxResultTime = 1200
+    )
+    Begin {
+        $config = $Global:WSToolsConfig
+        $app = $config.Chrome
+        $appname = "Chrome"
+        if (!(Test-Path C:\Scripts)) {mkdir C:\Scripts}
+        if (!(Test-Path C:\Scripts\CopyStatus.csv)) {
+            $info = New-Object -TypeName PSObject -Property @{
+                ComputerName = "NA"
+                Program = "NA"
+                Status = "NA"
+                Time = "NA"
+            }#new object 
+            $info | Select-Object ComputerName,Program,Status,Time | export-csv C:\Scripts\CopyStatus.csv -NoTypeInformation
+        }
+        $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
+        $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
+        $RunspacePool.Open()
+        $Code = {
+            [CmdletBinding()]
+            Param (
+                [Parameter(Mandatory=$true,
+                    Position=0,
+                    ValueFromPipeline = $true,
+                    ValueFromPipelineByPropertyName = $true
+                )]
+                [string]$comp
+            )
+            try {
+                robocopy $app \\$comp\c$\Patches\$appname /mir /mt:3 /r:3 /w:15 /njh /njs
+                $end = Get-Date
+                $info = New-Object -TypeName PSObject -Property @{
+                    ComputerName = $comp
+                    Program = $appname
+                    Status = "Copied"
+                    Time = $end
+                }#new object 
+            }
+            catch {
+                $end = Get-Date
+                $info = New-Object -TypeName PSObject -Property @{
+                    ComputerName = $comp
+                    Program = $appname
+                    Status = "Failed"
+                    Time = $end
+                }#new object
+            }
+            $info | Select-Object ComputerName,Program,Status,Time | Export-Csv C:\Scripts\CopyStatus.csv -NoTypeInformation -Append
+        }#end code block
+        $Jobs = @()
+    }
+    Process {
+        Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
+        ForEach ($Object in $ComputerName){
+            $PowershellThread = [powershell]::Create().AddScript($Code)
+            $PowershellThread.AddArgument($Object.ToString()) | out-null
+            $PowershellThread.RunspacePool = $RunspacePool
+            $Handle = $PowershellThread.BeginInvoke()
+            $Job = "" | Select-Object Handle, Thread, object
+            $Job.Handle = $Handle
+            $Job.Thread = $PowershellThread
+            $Job.Object = $Object.ToString()
+            $Jobs += $Job
+        }    
+    }
+    End {
+        $ResultTimer = Get-Date
+        While (@($Jobs | Where-Object {$Null -ne $_.Handle}).count -gt 0)  {
+            $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
+            If ($Remaining.Length -gt 60){
+                $Remaining = $Remaining.Substring(0,60) + "..."
+            }
+            Write-Progress `
+                -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
+                -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+            ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
+                $Job.Thread.EndInvoke($Job.Handle)
+                $Job.Thread.Dispose()
+                $Job.Thread = $Null
+                $Job.Handle = $Null
+                $ResultTimer = Get-Date
+            }
+            If (($(Get-Date) - $ResultTimer).totalseconds -gt $MaxResultTime){
+                Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
+                Exit
+            }
+            Start-Sleep -Milliseconds $SleepTimer            
+        }
+        $RunspacePool.Close() | Out-Null
+        $RunspacePool.Dispose() | Out-Null
+    }
+}
+    
+    
+Function Copy-DSET {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 01/22/2019 13:47:08
+    LASTEDIT: 01/22/2019 13:47:08
+    KEYWORDS:
+    REQUIRES:
+        -RunAsAdministrator
+.Link
+    https://wstools.dev
+#>
+[CmdletBinding()]
+Param (
+    [Parameter(
+        Mandatory = $false,
+        ValueFromPipeline = $true,
+        ValueFromPipelineByPropertyName = $true
+    )]
+    [Alias('Host','Name','Computer','CN')]
+    [string[]]$ComputerName = $env:COMPUTERNAME,
+
+    [Parameter()]
+    [int32]$MaxThreads = 5,
+
+    [Parameter()]
+    $SleepTimer = 200,
+
+    [Parameter()]
+    $MaxResultTime = 1200
+)
+
+Begin {
+    $config = $Global:WSToolsConfig
+    $app = $config.DSET
+    $appname = "DSET"
+    if (!(Test-Path C:\Scripts)) {mkdir C:\Scripts}
+    if (!(Test-Path C:\Scripts\CopyStatus.csv)) {
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = "NA"
+            Program = "NA"
+            Status = "NA"
+            Time = "NA"
+        }#new object 
+        $info | Select-Object ComputerName,Program,Status,Time | export-csv C:\Scripts\CopyStatus.csv -NoTypeInformation
+    }
+
+    $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
+    $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
+    $RunspacePool.Open()
+    $Code = {
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$true,
+            Position=0,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [string]$comp
+    )
+    try {
+        robocopy $app \\$comp\c$\Patches\$appname /mir /mt:3 /r:3 /w:15 /njh /njs
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Copied"
+            Time = $end
+        }#new object 
+    }
+    catch {
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Failed"
+            Time = $end
+        }#new object
+    }
+    $info | Select-Object ComputerName,Program,Status,Time | Export-Csv C:\Scripts\CopyStatus.csv -NoTypeInformation -Append
+    }#end code block
+    $Jobs = @()
+}
+Process {
+    Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
+    ForEach ($Object in $ComputerName){
+        $PowershellThread = [powershell]::Create().AddScript($Code)
+        $PowershellThread.AddArgument($Object.ToString()) | out-null
+        $PowershellThread.RunspacePool = $RunspacePool
+        $Handle = $PowershellThread.BeginInvoke()
+        $Job = "" | Select-Object Handle, Thread, object
+        $Job.Handle = $Handle
+        $Job.Thread = $PowershellThread
+        $Job.Object = $Object.ToString()
+        $Jobs += $Job
+    }    
+}
+End {
+    $ResultTimer = Get-Date
+    While (@($Jobs | Where-Object {$Null -ne $_.Handle}).count -gt 0)  {
+        $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
+        If ($Remaining.Length -gt 60){
+            $Remaining = $Remaining.Substring(0,60) + "..."
+        }
+        Write-Progress `
+            -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
+            -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
+            -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+        ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
+            $Job.Thread.EndInvoke($Job.Handle)
+            $Job.Thread.Dispose()
+            $Job.Thread = $Null
+            $Job.Handle = $Null
+            $ResultTimer = Get-Date
+        }
+        If (($(Get-Date) - $ResultTimer).totalseconds -gt $MaxResultTime){
+            Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
+            Exit
+        }
+        Start-Sleep -Milliseconds $SleepTimer            
+    } 
+    $RunspacePool.Close() | Out-Null
+    $RunspacePool.Dispose() | Out-Null
+}
+}
+    
+    
+Function Copy-Encase {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 03/24/2020 11:09:14
+    LASTEDIT: 03/24/2020 11:09:14
+    KEYWORDS:
+    REQUIRES:
+        -RunAsAdministrator
+.Link
+    https://wstools.dev
+#>
+[CmdletBinding()]
+Param (
+    [Parameter(
+        Mandatory = $false,
+        ValueFromPipeline = $true,
+        ValueFromPipelineByPropertyName = $true
+    )]
+    [Alias('Host','Name','Computer','CN')]
+    [string[]]$ComputerName = $env:COMPUTERNAME,
+
+    [Parameter()]
+    [int32]$MaxThreads = 5,
+
+    [Parameter()]
+    $SleepTimer = 200,
+
+    [Parameter()]
+    $MaxResultTime = 1200
+)
+
+Begin {
+    $config = $Global:WSToolsConfig
+    $app = $config.Encase
+    $appname = "Encase"
+    if (!(Test-Path C:\Scripts)) {mkdir C:\Scripts}
+    if (!(Test-Path C:\Scripts\CopyStatus.csv)) {
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = "NA"
+            Program = "NA"
+            Status = "NA"
+            Time = "NA"
+        }#new object 
+        $info | Select-Object ComputerName,Program,Status,Time | export-csv C:\Scripts\CopyStatus.csv -NoTypeInformation
+    }
+
+    $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
+    $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
+    $RunspacePool.Open()
+    $Code = {
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$true,
+            Position=0,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [string]$comp
+    )
+    try {
+        robocopy $app \\$comp\c$\Patches\$appname /mir /mt:3 /r:3 /w:15 /njh /njs
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Copied"
+            Time = $end
+        }#new object 
+    }
+    catch {
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Failed"
+            Time = $end
+        }#new object
+    }
+    $info | Select-Object ComputerName,Program,Status,Time | Export-Csv C:\Scripts\CopyStatus.csv -NoTypeInformation -Append
+    }#end code block
+    $Jobs = @()
+}
+Process {
+    Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
+    ForEach ($Object in $ComputerName){
+        $PowershellThread = [powershell]::Create().AddScript($Code)
+        $PowershellThread.AddArgument($Object.ToString()) | out-null
+        $PowershellThread.RunspacePool = $RunspacePool
+        $Handle = $PowershellThread.BeginInvoke()
+        $Job = "" | Select-Object Handle, Thread, object
+        $Job.Handle = $Handle
+        $Job.Thread = $PowershellThread
+        $Job.Object = $Object.ToString()
+        $Jobs += $Job
+    }    
+}
+End {
+    $ResultTimer = Get-Date
+    While (@($Jobs | Where-Object {$Null -ne $_.Handle}).count -gt 0)  {
+        $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
+        If ($Remaining.Length -gt 60){
+            $Remaining = $Remaining.Substring(0,60) + "..."
+        }
+        Write-Progress `
+            -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
+            -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
+            -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+        ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
+            $Job.Thread.EndInvoke($Job.Handle)
+            $Job.Thread.Dispose()
+            $Job.Thread = $Null
+            $Job.Handle = $Null
+            $ResultTimer = Get-Date
+        }
+        If (($(Get-Date) - $ResultTimer).totalseconds -gt $MaxResultTime){
+            Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
+            Exit
+        }
+        Start-Sleep -Milliseconds $SleepTimer            
+    } 
+    $RunspacePool.Close() | Out-Null
+    $RunspacePool.Dispose() | Out-Null
+}
+}
+    
+    
+Function Copy-Firefox {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 05/15/2019 15:54:58
+    LASTEDIT: 08/16/2019 10:42:37
+    KEYWORDS:
+    REQUIRES:
+        -RunAsAdministrator
+.Link
+    https://wstools.dev
+#>
+[CmdletBinding()]
+Param (
+    [Parameter(
+        Mandatory = $false,
+        ValueFromPipeline = $true,
+        ValueFromPipelineByPropertyName = $true
+    )]
+    [Alias('Host','Name','Computer','CN')]
+    [string[]]$ComputerName = $env:COMPUTERNAME,
+
+    [Parameter()]
+    [int32]$MaxThreads = 5,
+
+    [Parameter()]
+    $SleepTimer = 200,
+
+    [Parameter()]
+    $MaxResultTime = 1200
+)
+
+Begin {
+    $config = $Global:WSToolsConfig
+    $app = $config.Firefox
+    $appname = "Firefox"
+    if (!(Test-Path C:\Scripts)) {mkdir C:\Scripts}
+    if (!(Test-Path C:\Scripts\CopyStatus.csv)) {
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = "NA"
+            Program = "NA"
+            Status = "NA"
+            Time = "NA"
+        }#new object 
+        $info | Select-Object ComputerName,Program,Status,Time | export-csv C:\Scripts\CopyStatus.csv -NoTypeInformation
+    }
+
+    $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
+    $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
+    $RunspacePool.Open()
+    $Code = {
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$true,
+            Position=0,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [string]$comp
+    )
+    try {
+        robocopy $app \\$comp\c$\Patches\$appname /mir /mt:3 /r:3 /w:15 /njh /njs
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Copied"
+            Time = $end
+        }#new object 
+    }
+    catch {
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Failed"
+            Time = $end
+        }#new object
+    }
+    $info | Select-Object ComputerName,Program,Status,Time | Export-Csv C:\Scripts\CopyStatus.csv -NoTypeInformation -Append
+    }#end code block
+    $Jobs = @()
+}
+Process {
+    Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
+    ForEach ($Object in $ComputerName){
+        $PowershellThread = [powershell]::Create().AddScript($Code)
+        $PowershellThread.AddArgument($Object.ToString()) | out-null
+        $PowershellThread.RunspacePool = $RunspacePool
+        $Handle = $PowershellThread.BeginInvoke()
+        $Job = "" | Select-Object Handle, Thread, object
+        $Job.Handle = $Handle
+        $Job.Thread = $PowershellThread
+        $Job.Object = $Object.ToString()
+        $Jobs += $Job
+    }    
+}
+End {
+    $ResultTimer = Get-Date
+    While (@($Jobs | Where-Object {$Null -ne $_.Handle}).count -gt 0)  {
+        $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
+        If ($Remaining.Length -gt 60){
+            $Remaining = $Remaining.Substring(0,60) + "..."
+        }
+        Write-Progress `
+            -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
+            -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
+            -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+        ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
+            $Job.Thread.EndInvoke($Job.Handle)
+            $Job.Thread.Dispose()
+            $Job.Thread = $Null
+            $Job.Handle = $Null
+            $ResultTimer = Get-Date
+        }
+        If (($(Get-Date) - $ResultTimer).totalseconds -gt $MaxResultTime){
+            Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
+            Exit
+        }
+        Start-Sleep -Milliseconds $SleepTimer            
+    } 
+    $RunspacePool.Close() | Out-Null
+    $RunspacePool.Dispose() | Out-Null
+}
+}
+    
+    
+Function Copy-Flash {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 01/22/2019 13:47:08
+    LASTEDIT: 01/22/2019 13:47:08
+    KEYWORDS:
+    REQUIRES:
+        -RunAsAdministrator
+.Link
+    https://wstools.dev
+#>
+[CmdletBinding()]
+Param (
+    [Parameter(
+        Mandatory = $false,
+        ValueFromPipeline = $true,
+        ValueFromPipelineByPropertyName = $true
+    )]
+    [Alias('Host','Name','Computer','CN')]
+    [string[]]$ComputerName = $env:COMPUTERNAME,
+
+    [Parameter()]
+    [int32]$MaxThreads = 5,
+
+    [Parameter()]
+    $SleepTimer = 200,
+
+    [Parameter()]
+    $MaxResultTime = 1200
+)
+
+Begin {
+    $config = $Global:WSToolsConfig
+    $app = $config.Flash
+    $appname = "Flash"
+    if (!(Test-Path C:\Scripts)) {mkdir C:\Scripts}
+    if (!(Test-Path C:\Scripts\CopyStatus.csv)) {
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = "NA"
+            Program = "NA"
+            Status = "NA"
+            Time = "NA"
+        }#new object 
+        $info | Select-Object ComputerName,Program,Status,Time | export-csv C:\Scripts\CopyStatus.csv -NoTypeInformation
+    }
+
+    $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
+    $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
+    $RunspacePool.Open()
+    $Code = {
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$true,
+            Position=0,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [string]$comp
+    )
+    try {
+        robocopy $app \\$comp\c$\Patches\$appname /mir /mt:3 /r:3 /w:15 /njh /njs
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Copied"
+            Time = $end
+        }#new object 
+    }
+    catch {
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Failed"
+            Time = $end
+        }#new object
+    }
+    $info | Select-Object ComputerName,Program,Status,Time | Export-Csv C:\Scripts\CopyStatus.csv -NoTypeInformation -Append
+    }#end code block
+    $Jobs = @()
+}
+Process {
+    Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
+    ForEach ($Object in $ComputerName){
+        $PowershellThread = [powershell]::Create().AddScript($Code)
+        $PowershellThread.AddArgument($Object.ToString()) | out-null
+        $PowershellThread.RunspacePool = $RunspacePool
+        $Handle = $PowershellThread.BeginInvoke()
+        $Job = "" | Select-Object Handle, Thread, object
+        $Job.Handle = $Handle
+        $Job.Thread = $PowershellThread
+        $Job.Object = $Object.ToString()
+        $Jobs += $Job
+    }    
+}
+End {
+    $ResultTimer = Get-Date
+    While (@($Jobs | Where-Object {$Null -ne $_.Handle}).count -gt 0)  {
+        $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
+        If ($Remaining.Length -gt 60){
+            $Remaining = $Remaining.Substring(0,60) + "..."
+        }
+        Write-Progress `
+            -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
+            -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
+            -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+        ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
+            $Job.Thread.EndInvoke($Job.Handle)
+            $Job.Thread.Dispose()
+            $Job.Thread = $Null
+            $Job.Handle = $Null
+            $ResultTimer = Get-Date
+        }
+        If (($(Get-Date) - $ResultTimer).totalseconds -gt $MaxResultTime){
+            Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
+            Exit
+        }
+        Start-Sleep -Milliseconds $SleepTimer            
+    } 
+    $RunspacePool.Close() | Out-Null
+    $RunspacePool.Dispose() | Out-Null
+}
+}
+    
+    
+Function Copy-IE11 {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 05/21/2019 15:46:43
+    LASTEDIT: 05/21/2019 15:46:43
+    KEYWORDS:
+    REQUIRES:
+        -RunAsAdministrator
+.Link
+    https://wstools.dev
+#>
+[CmdletBinding()]
+Param (
+    [Parameter(
+        Mandatory = $false,
+        ValueFromPipeline = $true,
+        ValueFromPipelineByPropertyName = $true
+    )]
+    [Alias('Host','Name','Computer','CN')]
+    [string[]]$ComputerName = $env:COMPUTERNAME,
+
+    [Parameter()]
+    [int32]$MaxThreads = 5,
+
+    [Parameter()]
+    $SleepTimer = 200,
+
+    [Parameter()]
+    $MaxResultTime = 1200
+)
+
+Begin {
+    $config = $Global:WSToolsConfig
+    $app = $config.IE11
+    $appname = "IE11"
+    if (!(Test-Path C:\Scripts)) {mkdir C:\Scripts}
+    if (!(Test-Path C:\Scripts\CopyStatus.csv)) {
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = "NA"
+            Program = "NA"
+            Status = "NA"
+            Time = "NA"
+        }#new object 
+        $info | Select-Object ComputerName,Program,Status,Time | export-csv C:\Scripts\CopyStatus.csv -NoTypeInformation
+    }
+
+    $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
+    $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
+    $RunspacePool.Open()
+    $Code = {
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$true,
+            Position=0,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [string]$comp
+    )
+    try {
+        robocopy $app \\$comp\c$\Patches\$appname /mir /mt:3 /r:3 /w:15 /njh /njs
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Copied"
+            Time = $end
+        }#new object 
+    }
+    catch {
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Failed"
+            Time = $end
+        }#new object
+    }
+    $info | Select-Object ComputerName,Program,Status,Time | Export-Csv C:\Scripts\CopyStatus.csv -NoTypeInformation -Append
+    }#end code block
+    $Jobs = @()
+}
+Process {
+    Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
+    ForEach ($Object in $ComputerName){
+        $PowershellThread = [powershell]::Create().AddScript($Code)
+        $PowershellThread.AddArgument($Object.ToString()) | out-null
+        $PowershellThread.RunspacePool = $RunspacePool
+        $Handle = $PowershellThread.BeginInvoke()
+        $Job = "" | Select-Object Handle, Thread, object
+        $Job.Handle = $Handle
+        $Job.Thread = $PowershellThread
+        $Job.Object = $Object.ToString()
+        $Jobs += $Job
+    }    
+}
+End {
+    $ResultTimer = Get-Date
+    While (@($Jobs | Where-Object {$Null -ne $_.Handle}).count -gt 0)  {
+        $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
+        If ($Remaining.Length -gt 60){
+            $Remaining = $Remaining.Substring(0,60) + "..."
+        }
+        Write-Progress `
+            -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
+            -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
+            -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+        ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
+            $Job.Thread.EndInvoke($Job.Handle)
+            $Job.Thread.Dispose()
+            $Job.Thread = $Null
+            $Job.Handle = $Null
+            $ResultTimer = Get-Date
+        }
+        If (($(Get-Date) - $ResultTimer).totalseconds -gt $MaxResultTime){
+            Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
+            Exit
+        }
+        Start-Sleep -Milliseconds $SleepTimer            
+    } 
+    $RunspacePool.Close() | Out-Null
+    $RunspacePool.Dispose() | Out-Null
+}
+}
+    
+    
+Function Copy-Java {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 01/22/2019 13:47:08
+    LASTEDIT: 01/22/2019 13:47:08
+    KEYWORDS:
+    REQUIRES:
+        -RunAsAdministrator
+.Link
+    https://wstools.dev
+#>
+[CmdletBinding()]
+Param (
+    [Parameter(
+        Mandatory = $false,
+        ValueFromPipeline = $true,
+        ValueFromPipelineByPropertyName = $true
+    )]
+    [Alias('Host','Name','Computer','CN')]
+    [string[]]$ComputerName = $env:COMPUTERNAME,
+
+    [Parameter()]
+    [int32]$MaxThreads = 5,
+
+    [Parameter()]
+    $SleepTimer = 200,
+
+    [Parameter()]
+    $MaxResultTime = 1200
+)
+
+Begin {
+    $config = $Global:WSToolsConfig
+    $app = $config.Java
+    $appname = "Java"
+    if (!(Test-Path C:\Scripts)) {mkdir C:\Scripts}
+    if (!(Test-Path C:\Scripts\CopyStatus.csv)) {
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = "NA"
+            Program = "NA"
+            Status = "NA"
+            Time = "NA"
+        }#new object 
+        $info | Select-Object ComputerName,Program,Status,Time | export-csv C:\Scripts\CopyStatus.csv -NoTypeInformation
+    }
+
+    $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
+    $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
+    $RunspacePool.Open()
+    $Code = {
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$true,
+            Position=0,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [string]$comp
+    )
+    try {
+        robocopy $app \\$comp\c$\Patches\$appname /mir /mt:3 /r:3 /w:15 /njh /njs
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Copied"
+            Time = $end
+        }#new object 
+    }
+    catch {
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Failed"
+            Time = $end
+        }#new object
+    }
+    $info | Select-Object ComputerName,Program,Status,Time | Export-Csv C:\Scripts\CopyStatus.csv -NoTypeInformation -Append
+    }#end code block
+    $Jobs = @()
+}
+Process {
+    Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
+    ForEach ($Object in $ComputerName){
+        $PowershellThread = [powershell]::Create().AddScript($Code)
+        $PowershellThread.AddArgument($Object.ToString()) | out-null
+        $PowershellThread.RunspacePool = $RunspacePool
+        $Handle = $PowershellThread.BeginInvoke()
+        $Job = "" | Select-Object Handle, Thread, object
+        $Job.Handle = $Handle
+        $Job.Thread = $PowershellThread
+        $Job.Object = $Object.ToString()
+        $Jobs += $Job
+    }    
+}
+End {
+    $ResultTimer = Get-Date
+    While (@($Jobs | Where-Object {$Null -ne $_.Handle}).count -gt 0)  {
+        $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
+        If ($Remaining.Length -gt 60){
+            $Remaining = $Remaining.Substring(0,60) + "..."
+        }
+        Write-Progress `
+            -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
+            -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
+            -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+        ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
+            $Job.Thread.EndInvoke($Job.Handle)
+            $Job.Thread.Dispose()
+            $Job.Thread = $Null
+            $Job.Handle = $Null
+            $ResultTimer = Get-Date
+        }
+        If (($(Get-Date) - $ResultTimer).totalseconds -gt $MaxResultTime){
+            Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
+            Exit
+        }
+        Start-Sleep -Milliseconds $SleepTimer            
+    } 
+    $RunspacePool.Close() | Out-Null
+    $RunspacePool.Dispose() | Out-Null
+}
+}
+    
+    
+Function Copy-NetBanner {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 01/22/2019 13:47:08
+    LASTEDIT: 01/22/2019 13:47:08
+    KEYWORDS:
+    REQUIRES:
+        -RunAsAdministrator
+.Link
+    https://wstools.dev
+#>
+[CmdletBinding()]
+Param (
+    [Parameter(
+        Mandatory = $false,
+        ValueFromPipeline = $true,
+        ValueFromPipelineByPropertyName = $true
+    )]
+    [Alias('Host','Name','Computer','CN')]
+    [string[]]$ComputerName = $env:COMPUTERNAME,
+
+    [Parameter()]
+    [int32]$MaxThreads = 5,
+
+    [Parameter()]
+    $SleepTimer = 200,
+
+    [Parameter()]
+    $MaxResultTime = 1200
+)
+
+Begin {
+    $config = $Global:WSToolsConfig
+    $app = $config.NetBanner
+    $appname = "NetBanner"
+    if (!(Test-Path C:\Scripts)) {mkdir C:\Scripts}
+    if (!(Test-Path C:\Scripts\CopyStatus.csv)) {
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = "NA"
+            Program = "NA"
+            Status = "NA"
+            Time = "NA"
+        }#new object 
+        $info | Select-Object ComputerName,Program,Status,Time | export-csv C:\Scripts\CopyStatus.csv -NoTypeInformation
+    }
+
+    $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
+    $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
+    $RunspacePool.Open()
+    $Code = {
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$true,
+            Position=0,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [string]$comp
+    )
+    try {
+        robocopy $app \\$comp\c$\Patches\$appname /mir /mt:3 /r:3 /w:15 /njh /njs
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Copied"
+            Time = $end
+        }#new object 
+    }
+    catch {
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Failed"
+            Time = $end
+        }#new object
+    }
+    $info | Select-Object ComputerName,Program,Status,Time | Export-Csv C:\Scripts\CopyStatus.csv -NoTypeInformation -Append
+    }#end code block
+    $Jobs = @()
+}
+Process {
+    Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
+    ForEach ($Object in $ComputerName){
+        $PowershellThread = [powershell]::Create().AddScript($Code)
+        $PowershellThread.AddArgument($Object.ToString()) | out-null
+        $PowershellThread.RunspacePool = $RunspacePool
+        $Handle = $PowershellThread.BeginInvoke()
+        $Job = "" | Select-Object Handle, Thread, object
+        $Job.Handle = $Handle
+        $Job.Thread = $PowershellThread
+        $Job.Object = $Object.ToString()
+        $Jobs += $Job
+    }    
+}
+End {
+    $ResultTimer = Get-Date
+    While (@($Jobs | Where-Object {$Null -ne $_.Handle}).count -gt 0)  {
+        $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
+        If ($Remaining.Length -gt 60){
+            $Remaining = $Remaining.Substring(0,60) + "..."
+        }
+        Write-Progress `
+            -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
+            -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
+            -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+        ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
+            $Job.Thread.EndInvoke($Job.Handle)
+            $Job.Thread.Dispose()
+            $Job.Thread = $Null
+            $Job.Handle = $Null
+            $ResultTimer = Get-Date
+        }
+        If (($(Get-Date) - $ResultTimer).totalseconds -gt $MaxResultTime){
+            Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
+            Exit
+        }
+        Start-Sleep -Milliseconds $SleepTimer            
+    } 
+    $RunspacePool.Close() | Out-Null
+    $RunspacePool.Dispose() | Out-Null
+}
+}
+    
+    
+Function Copy-Office2016 {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 01/22/2019 13:47:08
+    LASTEDIT: 01/22/2019 13:47:08
+    KEYWORDS:
+    REQUIRES:
+        -RunAsAdministrator
+.Link
+    https://wstools.dev
+#>
+[CmdletBinding()]
+Param (
+    [Parameter(
+        Mandatory = $false,
+        ValueFromPipeline = $true,
+        ValueFromPipelineByPropertyName = $true
+    )]
+    [Alias('Host','Name','Computer','CN')]
+    [string[]]$ComputerName = $env:COMPUTERNAME,
+
+    [Parameter()]
+    [int32]$MaxThreads = 5,
+
+    [Parameter()]
+    $SleepTimer = 200,
+
+    [Parameter()]
+    $MaxResultTime = 1200
+)
+
+Begin {
+    $config = $Global:WSToolsConfig
+    $app = $config.Office2016
+    $appname = "Office2016"
+    if (!(Test-Path C:\Scripts)) {mkdir C:\Scripts}
+    if (!(Test-Path C:\Scripts\CopyStatus.csv)) {
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = "NA"
+            Program = "NA"
+            Status = "NA"
+            Time = "NA"
+        }#new object 
+        $info | Select-Object ComputerName,Program,Status,Time | export-csv C:\Scripts\CopyStatus.csv -NoTypeInformation
+    }
+
+    $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
+    $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
+    $RunspacePool.Open()
+    $Code = {
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$true,
+            Position=0,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [string]$comp
+    )
+    try {
+        robocopy $app \\$comp\c$\Patches\$appname /mir /mt:3 /r:3 /w:15 /njh /njs
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Copied"
+            Time = $end
+        }#new object 
+    }
+    catch {
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Failed"
+            Time = $end
+        }#new object
+    }
+    $info | Select-Object ComputerName,Program,Status,Time | Export-Csv C:\Scripts\CopyStatus.csv -NoTypeInformation -Append
+    }#end code block
+    $Jobs = @()
+}
+Process {
+    Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
+    ForEach ($Object in $ComputerName){
+        $PowershellThread = [powershell]::Create().AddScript($Code)
+        $PowershellThread.AddArgument($Object.ToString()) | out-null
+        $PowershellThread.RunspacePool = $RunspacePool
+        $Handle = $PowershellThread.BeginInvoke()
+        $Job = "" | Select-Object Handle, Thread, object
+        $Job.Handle = $Handle
+        $Job.Thread = $PowershellThread
+        $Job.Object = $Object.ToString()
+        $Jobs += $Job
+    }    
+}
+End {
+    $ResultTimer = Get-Date
+    While (@($Jobs | Where-Object {$Null -ne $_.Handle}).count -gt 0)  {
+        $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
+        If ($Remaining.Length -gt 60){
+            $Remaining = $Remaining.Substring(0,60) + "..."
+        }
+        Write-Progress `
+            -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
+            -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
+            -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+        ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
+            $Job.Thread.EndInvoke($Job.Handle)
+            $Job.Thread.Dispose()
+            $Job.Thread = $Null
+            $Job.Handle = $Null
+            $ResultTimer = Get-Date
+        }
+        If (($(Get-Date) - $ResultTimer).totalseconds -gt $MaxResultTime){
+            Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
+            Exit
+        }
+        Start-Sleep -Milliseconds $SleepTimer            
+    } 
+    $RunspacePool.Close() | Out-Null
+    $RunspacePool.Dispose() | Out-Null
+}
+}
+    
+    
+Function Copy-Silverlight {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 12/04/2019 17:47:48
+    LASTEDIT: 12/04/2019 17:48:57
+    KEYWORDS:
+    REQUIRES:
+        -RunAsAdministrator
+.Link
+    https://wstools.dev
+#>
+[CmdletBinding()]
+Param (
+    [Parameter(
+        Mandatory = $false,
+        ValueFromPipeline = $true,
+        ValueFromPipelineByPropertyName = $true
+    )]
+    [Alias('Host','Name','Computer','CN')]
+    [string[]]$ComputerName = $env:COMPUTERNAME,
+
+    [Parameter()]
+    [int32]$MaxThreads = 5,
+
+    [Parameter()]
+    $SleepTimer = 200,
+
+    [Parameter()]
+    $MaxResultTime = 1200
+)
+
+Begin {
+    $config = $Global:WSToolsConfig
+    $app = $config.Silverlight
+    $appname = "Silverlight"
+    if (!(Test-Path C:\Scripts)) {mkdir C:\Scripts}
+    if (!(Test-Path C:\Scripts\CopyStatus.csv)) {
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = "NA"
+            Program = "NA"
+            Status = "NA"
+            Time = "NA"
+        }#new object 
+        $info | Select-Object ComputerName,Program,Status,Time | export-csv C:\Scripts\CopyStatus.csv -NoTypeInformation
+    }
+
+    $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
+    $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
+    $RunspacePool.Open()
+    $Code = {
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$true,
+            Position=0,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [string]$comp
+    )
+    try {
+        robocopy $app \\$comp\c$\Patches\$appname /mir /mt:3 /r:3 /w:15 /njh /njs
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Copied"
+            Time = $end
+        }#new object 
+    }
+    catch {
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Failed"
+            Time = $end
+        }#new object
+    }
+    $info | Select-Object ComputerName,Program,Status,Time | Export-Csv C:\Scripts\CopyStatus.csv -NoTypeInformation -Append
+    }#end code block
+    $Jobs = @()
+}
+Process {
+    Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
+    ForEach ($Object in $ComputerName){
+        $PowershellThread = [powershell]::Create().AddScript($Code)
+        $PowershellThread.AddArgument($Object.ToString()) | out-null
+        $PowershellThread.RunspacePool = $RunspacePool
+        $Handle = $PowershellThread.BeginInvoke()
+        $Job = "" | Select-Object Handle, Thread, object
+        $Job.Handle = $Handle
+        $Job.Thread = $PowershellThread
+        $Job.Object = $Object.ToString()
+        $Jobs += $Job
+    }    
+}
+End {
+    $ResultTimer = Get-Date
+    While (@($Jobs | Where-Object {$Null -ne $_.Handle}).count -gt 0)  {
+        $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
+        If ($Remaining.Length -gt 60){
+            $Remaining = $Remaining.Substring(0,60) + "..."
+        }
+        Write-Progress `
+            -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
+            -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
+            -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+        ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
+            $Job.Thread.EndInvoke($Job.Handle)
+            $Job.Thread.Dispose()
+            $Job.Thread = $Null
+            $Job.Handle = $Null
+            $ResultTimer = Get-Date
+        }
+        If (($(Get-Date) - $ResultTimer).totalseconds -gt $MaxResultTime){
+            Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
+            Exit
+        }
+        Start-Sleep -Milliseconds $SleepTimer            
+    } 
+    $RunspacePool.Close() | Out-Null
+    $RunspacePool.Dispose() | Out-Null
+}
+}
+    
+    
+Function Copy-Tanium {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 11/08/2019 14:21:26
+    LASTEDIT: 11/08/2019 14:21:26
+    KEYWORDS:
+    REQUIRES:
+        -RunAsAdministrator
+.Link
+    https://wstools.dev
+#>
+[CmdletBinding()]
+Param (
+    [Parameter(
+        Mandatory = $false,
+        ValueFromPipeline = $true,
+        ValueFromPipelineByPropertyName = $true
+    )]
+    [Alias('Host','Name','Computer','CN')]
+    [string[]]$ComputerName = $env:COMPUTERNAME,
+
+    [Parameter()]
+    [int32]$MaxThreads = 5,
+
+    [Parameter()]
+    $SleepTimer = 200,
+
+    [Parameter()]
+    $MaxResultTime = 1200
+)
+
+Begin {
+    $config = $Global:WSToolsConfig
+    $app = $config.Tanium
+    $appname = "Tanium"
+    if (!(Test-Path C:\Scripts)) {mkdir C:\Scripts}
+    if (!(Test-Path C:\Scripts\CopyStatus.csv)) {
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = "NA"
+            Program = "NA"
+            Status = "NA"
+            Time = "NA"
+        }#new object 
+        $info | Select-Object ComputerName,Program,Status,Time | export-csv C:\Scripts\CopyStatus.csv -NoTypeInformation
+    }
+
+    $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
+    $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
+    $RunspacePool.Open()
+    $Code = {
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$true,
+            Position=0,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [string]$comp
+    )
+    try {
+        robocopy $app \\$comp\c$\Patches\$appname /mir /mt:3 /r:3 /w:15 /njh /njs
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Copied"
+            Time = $end
+        }#new object 
+    }
+    catch {
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Failed"
+            Time = $end
+        }#new object
+    }
+    $info | Select-Object ComputerName,Program,Status,Time | Export-Csv C:\Scripts\CopyStatus.csv -NoTypeInformation -Append
+    }#end code block
+    $Jobs = @()
+}
+Process {
+    Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
+    ForEach ($Object in $ComputerName){
+        $PowershellThread = [powershell]::Create().AddScript($Code)
+        $PowershellThread.AddArgument($Object.ToString()) | out-null
+        $PowershellThread.RunspacePool = $RunspacePool
+        $Handle = $PowershellThread.BeginInvoke()
+        $Job = "" | Select-Object Handle, Thread, object
+        $Job.Handle = $Handle
+        $Job.Thread = $PowershellThread
+        $Job.Object = $Object.ToString()
+        $Jobs += $Job
+    }    
+}
+End {
+    $ResultTimer = Get-Date
+    While (@($Jobs | Where-Object {$Null -ne $_.Handle}).count -gt 0)  {
+        $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
+        If ($Remaining.Length -gt 60){
+            $Remaining = $Remaining.Substring(0,60) + "..."
+        }
+        Write-Progress `
+            -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
+            -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
+            -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+        ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
+            $Job.Thread.EndInvoke($Job.Handle)
+            $Job.Thread.Dispose()
+            $Job.Thread = $Null
+            $Job.Handle = $Null
+            $ResultTimer = Get-Date
+        }
+        If (($(Get-Date) - $ResultTimer).totalseconds -gt $MaxResultTime){
+            Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
+            Exit
+        }
+        Start-Sleep -Milliseconds $SleepTimer            
+    } 
+    $RunspacePool.Close() | Out-Null
+    $RunspacePool.Dispose() | Out-Null
+}
+}
+    
+    
+Function Copy-Teams {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 12/04/2019 17:43:21
+    LASTEDIT: 12/04/2019 17:45:37  
+    KEYWORDS:
+    REQUIRES:
+        -RunAsAdministrator
+.Link
+    https://wstools.dev
+#>
+[CmdletBinding()]
+Param (
+    [Parameter(
+        Mandatory = $false,
+        ValueFromPipeline = $true,
+        ValueFromPipelineByPropertyName = $true
+    )]
+    [Alias('Host','Name','Computer','CN')]
+    [string[]]$ComputerName = $env:COMPUTERNAME,
+
+    [Parameter()]
+    [int32]$MaxThreads = 5,
+
+    [Parameter()]
+    $SleepTimer = 200,
+
+    [Parameter()]
+    $MaxResultTime = 1200
+)
+
+Begin {
+    $config = $Global:WSToolsConfig
+    $app = $config.Teams
+    $appname = "Teams"
+    if (!(Test-Path C:\Scripts)) {mkdir C:\Scripts}
+    if (!(Test-Path C:\Scripts\CopyStatus.csv)) {
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = "NA"
+            Program = "NA"
+            Status = "NA"
+            Time = "NA"
+        }#new object 
+        $info | Select-Object ComputerName,Program,Status,Time | export-csv C:\Scripts\CopyStatus.csv -NoTypeInformation
+    }
+
+    $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
+    $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
+    $RunspacePool.Open()
+    $Code = {
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$true,
+            Position=0,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [string]$comp
+    )
+    try {
+        robocopy $app \\$comp\c$\Patches\$appname /mir /mt:3 /r:3 /w:15 /njh /njs
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Copied"
+            Time = $end
+        }#new object 
+    }
+    catch {
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Failed"
+            Time = $end
+        }#new object
+    }
+    $info | Select-Object ComputerName,Program,Status,Time | Export-Csv C:\Scripts\CopyStatus.csv -NoTypeInformation -Append
+    }#end code block
+    $Jobs = @()
+}
+Process {
+    Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
+    ForEach ($Object in $ComputerName){
+        $PowershellThread = [powershell]::Create().AddScript($Code)
+        $PowershellThread.AddArgument($Object.ToString()) | out-null
+        $PowershellThread.RunspacePool = $RunspacePool
+        $Handle = $PowershellThread.BeginInvoke()
+        $Job = "" | Select-Object Handle, Thread, object
+        $Job.Handle = $Handle
+        $Job.Thread = $PowershellThread
+        $Job.Object = $Object.ToString()
+        $Jobs += $Job
+    }    
+}
+End {
+    $ResultTimer = Get-Date
+    While (@($Jobs | Where-Object {$Null -ne $_.Handle}).count -gt 0)  {
+        $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
+        If ($Remaining.Length -gt 60){
+            $Remaining = $Remaining.Substring(0,60) + "..."
+        }
+        Write-Progress `
+            -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
+            -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
+            -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+        ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
+            $Job.Thread.EndInvoke($Job.Handle)
+            $Job.Thread.Dispose()
+            $Job.Thread = $Null
+            $Job.Handle = $Null
+            $ResultTimer = Get-Date
+        }
+        If (($(Get-Date) - $ResultTimer).totalseconds -gt $MaxResultTime){
+            Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
+            Exit
+        }
+        Start-Sleep -Milliseconds $SleepTimer            
+    } 
+    $RunspacePool.Close() | Out-Null
+    $RunspacePool.Dispose() | Out-Null
+}
+}
+    
+    
+Function Copy-Titus {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 01/22/2019 13:47:08
+    LASTEDIT: 01/22/2019 13:47:08
+    KEYWORDS:
+    REQUIRES:
+        -RunAsAdministrator
+.Link
+    https://wstools.dev
+#>
+[CmdletBinding()]
+Param (
+    [Parameter(
+        Mandatory = $false,
+        ValueFromPipeline = $true,
+        ValueFromPipelineByPropertyName = $true
+    )]
+    [Alias('Host','Name','Computer','CN')]
+    [string[]]$ComputerName = $env:COMPUTERNAME,
+
+    [Parameter()]
+    [int32]$MaxThreads = 5,
+
+    [Parameter()]
+    $SleepTimer = 200,
+
+    [Parameter()]
+    $MaxResultTime = 1200
+)
+
+Begin {
+    $config = $Global:WSToolsConfig
+    $app = $config.Titus
+    $appname = "Titus"
+    if (!(Test-Path C:\Scripts)) {mkdir C:\Scripts}
+    if (!(Test-Path C:\Scripts\CopyStatus.csv)) {
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = "NA"
+            Program = "NA"
+            Status = "NA"
+            Time = "NA"
+        }#new object 
+        $info | Select-Object ComputerName,Program,Status,Time | export-csv C:\Scripts\CopyStatus.csv -NoTypeInformation
+    }
+
+    $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
+    $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
+    $RunspacePool.Open()
+    $Code = {
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$true,
+            Position=0,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [string]$comp
+    )
+    try {
+        robocopy $app \\$comp\c$\Patches\$appname /mir /mt:3 /r:3 /w:15 /njh /njs
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Copied"
+            Time = $end
+        }#new object 
+    }
+    catch {
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Failed"
+            Time = $end
+        }#new object
+    }
+    $info | Select-Object ComputerName,Program,Status,Time | Export-Csv C:\Scripts\CopyStatus.csv -NoTypeInformation -Append
+    }#end code block
+    $Jobs = @()
+}
+Process {
+    Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
+    ForEach ($Object in $ComputerName){
+        $PowershellThread = [powershell]::Create().AddScript($Code)
+        $PowershellThread.AddArgument($Object.ToString()) | out-null
+        $PowershellThread.RunspacePool = $RunspacePool
+        $Handle = $PowershellThread.BeginInvoke()
+        $Job = "" | Select-Object Handle, Thread, object
+        $Job.Handle = $Handle
+        $Job.Thread = $PowershellThread
+        $Job.Object = $Object.ToString()
+        $Jobs += $Job
+    }    
+}
+End {
+    $ResultTimer = Get-Date
+    While (@($Jobs | Where-Object {$Null -ne $_.Handle}).count -gt 0)  {
+        $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
+        If ($Remaining.Length -gt 60){
+            $Remaining = $Remaining.Substring(0,60) + "..."
+        }
+        Write-Progress `
+            -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
+            -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
+            -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+        ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
+            $Job.Thread.EndInvoke($Job.Handle)
+            $Job.Thread.Dispose()
+            $Job.Thread = $Null
+            $Job.Handle = $Null
+            $ResultTimer = Get-Date
+        }
+        If (($(Get-Date) - $ResultTimer).totalseconds -gt $MaxResultTime){
+            Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
+            Exit
+        }
+        Start-Sleep -Milliseconds $SleepTimer            
+    } 
+    $RunspacePool.Close() | Out-Null
+    $RunspacePool.Dispose() | Out-Null
+}
+}
+    
+    
+Function Copy-VPN {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 03/24/2020 11:17:02
+    LASTEDIT: 03/24/2020 11:17:02
+    KEYWORDS:
+    REQUIRES:
+        -RunAsAdministrator
+.Link
+    https://wstools.dev
+#>
+[CmdletBinding()]
+Param (
+    [Parameter(
+        Mandatory = $false,
+        ValueFromPipeline = $true,
+        ValueFromPipelineByPropertyName = $true
+    )]
+    [Alias('Host','Name','Computer','CN')]
+    [string[]]$ComputerName = $env:COMPUTERNAME,
+
+    [Parameter()]
+    [int32]$MaxThreads = 5,
+
+    [Parameter()]
+    $SleepTimer = 200,
+
+    [Parameter()]
+    $MaxResultTime = 1200
+)
+
+Begin {
+    $config = $Global:WSToolsConfig
+    $app = $config.VPN
+    $appname = "VPN"
+    if (!(Test-Path C:\Scripts)) {mkdir C:\Scripts}
+    if (!(Test-Path C:\Scripts\CopyStatus.csv)) {
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = "NA"
+            Program = "NA"
+            Status = "NA"
+            Time = "NA"
+        }#new object 
+        $info | Select-Object ComputerName,Program,Status,Time | export-csv C:\Scripts\CopyStatus.csv -NoTypeInformation
+    }
+
+    $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
+    $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
+    $RunspacePool.Open()
+    $Code = {
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$true,
+            Position=0,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [string]$comp
+    )
+    try {
+        robocopy $app \\$comp\c$\Patches\$appname /mir /mt:3 /r:3 /w:15 /njh /njs
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Copied"
+            Time = $end
+        }#new object 
+    }
+    catch {
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Failed"
+            Time = $end
+        }#new object
+    }
+    $info | Select-Object ComputerName,Program,Status,Time | Export-Csv C:\Scripts\CopyStatus.csv -NoTypeInformation -Append
+    }#end code block
+    $Jobs = @()
+}
+Process {
+    Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
+    ForEach ($Object in $ComputerName){
+        $PowershellThread = [powershell]::Create().AddScript($Code)
+        $PowershellThread.AddArgument($Object.ToString()) | out-null
+        $PowershellThread.RunspacePool = $RunspacePool
+        $Handle = $PowershellThread.BeginInvoke()
+        $Job = "" | Select-Object Handle, Thread, object
+        $Job.Handle = $Handle
+        $Job.Thread = $PowershellThread
+        $Job.Object = $Object.ToString()
+        $Jobs += $Job
+    }    
+}
+End {
+    $ResultTimer = Get-Date
+    While (@($Jobs | Where-Object {$Null -ne $_.Handle}).count -gt 0)  {
+        $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
+        If ($Remaining.Length -gt 60){
+            $Remaining = $Remaining.Substring(0,60) + "..."
+        }
+        Write-Progress `
+            -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
+            -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
+            -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+        ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
+            $Job.Thread.EndInvoke($Job.Handle)
+            $Job.Thread.Dispose()
+            $Job.Thread = $Null
+            $Job.Handle = $Null
+            $ResultTimer = Get-Date
+        }
+        If (($(Get-Date) - $ResultTimer).totalseconds -gt $MaxResultTime){
+            Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
+            Exit
+        }
+        Start-Sleep -Milliseconds $SleepTimer            
+    } 
+    $RunspacePool.Close() | Out-Null
+    $RunspacePool.Dispose() | Out-Null
+}
+}
+    
+    
+Function Copy-VLC {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 07/23/2019 20:44:10
+    LASTEDIT: 07/23/2019 20:46:11
+    KEYWORDS:
+    REQUIRES:
+        -RunAsAdministrator
+.Link
+    https://wstools.dev
+#>
+[CmdletBinding()]
+Param (
+    [Parameter(
+        Mandatory = $false,
+        ValueFromPipeline = $true,
+        ValueFromPipelineByPropertyName = $true
+    )]
+    [Alias('Host','Name','Computer','CN')]
+    [string[]]$ComputerName = $env:COMPUTERNAME,
+
+    [Parameter()]
+    [int32]$MaxThreads = 5,
+
+    [Parameter()]
+    $SleepTimer = 200,
+
+    [Parameter()]
+    $MaxResultTime = 1200
+)
+
+Begin {
+    $config = $Global:WSToolsConfig
+    $app = $config.VLC
+    $appname = "VLC"
+    if (!(Test-Path C:\Scripts)) {mkdir C:\Scripts}
+    if (!(Test-Path C:\Scripts\CopyStatus.csv)) {
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = "NA"
+            Program = "NA"
+            Status = "NA"
+            Time = "NA"
+        }#new object 
+        $info | Select-Object ComputerName,Program,Status,Time | export-csv C:\Scripts\CopyStatus.csv -NoTypeInformation
+    }
+
+    $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
+    $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
+    $RunspacePool.Open()
+    $Code = {
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$true,
+            Position=0,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [string]$comp
+    )
+    try {
+        robocopy $app \\$comp\c$\Patches\$appname /mir /mt:3 /r:3 /w:15 /njh /njs
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Copied"
+            Time = $end
+        }#new object 
+    }
+    catch {
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Failed"
+            Time = $end
+        }#new object
+    }
+    $info | Select-Object ComputerName,Program,Status,Time | Export-Csv C:\Scripts\CopyStatus.csv -NoTypeInformation -Append
+    }#end code block
+    $Jobs = @()
+}
+Process {
+    Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
+    ForEach ($Object in $ComputerName){
+        $PowershellThread = [powershell]::Create().AddScript($Code)
+        $PowershellThread.AddArgument($Object.ToString()) | out-null
+        $PowershellThread.RunspacePool = $RunspacePool
+        $Handle = $PowershellThread.BeginInvoke()
+        $Job = "" | Select-Object Handle, Thread, object
+        $Job.Handle = $Handle
+        $Job.Thread = $PowershellThread
+        $Job.Object = $Object.ToString()
+        $Jobs += $Job
+    }    
+}
+End {
+    $ResultTimer = Get-Date
+    While (@($Jobs | Where-Object {$Null -ne $_.Handle}).count -gt 0)  {
+        $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
+        If ($Remaining.Length -gt 60){
+            $Remaining = $Remaining.Substring(0,60) + "..."
+        }
+        Write-Progress `
+            -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
+            -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
+            -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+        ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
+            $Job.Thread.EndInvoke($Job.Handle)
+            $Job.Thread.Dispose()
+            $Job.Thread = $Null
+            $Job.Handle = $Null
+            $ResultTimer = Get-Date
+        }
+        If (($(Get-Date) - $ResultTimer).totalseconds -gt $MaxResultTime){
+            Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
+            Exit
+        }
+        Start-Sleep -Milliseconds $SleepTimer            
+    } 
+    $RunspacePool.Close() | Out-Null
+    $RunspacePool.Dispose() | Out-Null
+}
+}
+    
+    
+Function Copy-Wireshark {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 07/23/2019 20:53:52
+    LASTEDIT: 07/23/2019 20:56:26
+    KEYWORDS:
+    REQUIRES:
+        -RunAsAdministrator
+.Link
+    https://wstools.dev
+#>
+[CmdletBinding()]
+Param (
+    [Parameter(
+        Mandatory = $false,
+        ValueFromPipeline = $true,
+        ValueFromPipelineByPropertyName = $true
+    )]
+    [Alias('Host','Name','Computer','CN')]
+    [string[]]$ComputerName,
+
+    [Parameter()]
+    [int32]$MaxThreads = 5,
+
+    [Parameter()]
+    $SleepTimer = 200,
+
+    [Parameter()]
+    $MaxResultTime = 1200
+)
+
+Begin {
+    $config = $Global:WSToolsConfig
+    $app = $config.Wireshark
+    $appname = "Wireshark"
+    if (!(Test-Path C:\Scripts)) {mkdir C:\Scripts}
+    if (!(Test-Path C:\Scripts\CopyStatus.csv)) {
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = "NA"
+            Program = "NA"
+            Status = "NA"
+            Time = "NA"
+        }#new object 
+        $info | Select-Object ComputerName,Program,Status,Time | export-csv C:\Scripts\CopyStatus.csv -NoTypeInformation
+    }
+
+    $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
+    $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
+    $RunspacePool.Open()
+    $Code = {
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$true,
+            Position=0,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [string]$comp
+    )
+    try {
+        robocopy $app \\$comp\c$\Patches\$appname *64*.exe /mir /mt:3 /r:3 /w:15 /njh /njs
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Copied"
+            Time = $end
+        }#new object 
+    }
+    catch {
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Failed"
+            Time = $end
+        }#new object
+    }
+    $info | Select-Object ComputerName,Program,Status,Time | Export-Csv C:\Scripts\CopyStatus.csv -NoTypeInformation -Append
+    }#end code block
+    $Jobs = @()
+}
+Process {
+    Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
+    ForEach ($Object in $ComputerName){
+        $PowershellThread = [powershell]::Create().AddScript($Code)
+        $PowershellThread.AddArgument($Object.ToString()) | out-null
+        $PowershellThread.RunspacePool = $RunspacePool
+        $Handle = $PowershellThread.BeginInvoke()
+        $Job = "" | Select-Object Handle, Thread, object
+        $Job.Handle = $Handle
+        $Job.Thread = $PowershellThread
+        $Job.Object = $Object.ToString()
+        $Jobs += $Job
+    }    
+}
+End {
+    $ResultTimer = Get-Date
+    While (@($Jobs | Where-Object {$Null -ne $_.Handle}).count -gt 0)  {
+        $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
+        If ($Remaining.Length -gt 60){
+            $Remaining = $Remaining.Substring(0,60) + "..."
+        }
+        Write-Progress `
+            -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
+            -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
+            -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+        ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
+            $Job.Thread.EndInvoke($Job.Handle)
+            $Job.Thread.Dispose()
+            $Job.Thread = $Null
+            $Job.Handle = $Null
+            $ResultTimer = Get-Date
+        }
+        If (($(Get-Date) - $ResultTimer).totalseconds -gt $MaxResultTime){
+            Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
+            Exit
+        }
+        Start-Sleep -Milliseconds $SleepTimer            
+    } 
+    $RunspacePool.Close() | Out-Null
+    $RunspacePool.Dispose() | Out-Null
+}
+}
+    
+    
+Function Copy-WMF3 {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 04/19/2019 12:45:57
+    LASTEDIT: 04/19/2019 12:45:57
+    KEYWORDS:
+    REQUIRES:
+        -RunAsAdministrator
+.Link
+    https://wstools.dev
+#>
+[CmdletBinding()]
+Param (
+    [Parameter(
+        Mandatory = $false,
+        ValueFromPipeline = $true,
+        ValueFromPipelineByPropertyName = $true
+    )]
+    [Alias('Host','Name','Computer','CN')]
+    [string[]]$ComputerName = $env:COMPUTERNAME,
+
+    [Parameter()]
+    [int32]$MaxThreads = 5,
+
+    [Parameter()]
+    $SleepTimer = 200,
+
+    [Parameter()]
+    $MaxResultTime = 1200
+)
+
+Begin {
+    $config = $Global:WSToolsConfig
+    $app = $config.WMF3
+    $appname = "WMF3"
+    if (!(Test-Path C:\Scripts)) {mkdir C:\Scripts}
+    if (!(Test-Path C:\Scripts\CopyStatus.csv)) {
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = "NA"
+            Program = "NA"
+            Status = "NA"
+            Time = "NA"
+        }#new object 
+        $info | Select-Object ComputerName,Program,Status,Time | export-csv C:\Scripts\CopyStatus.csv -NoTypeInformation
+    }
+
+    $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
+    $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
+    $RunspacePool.Open()
+    $Code = {
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$true,
+            Position=0,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [string]$comp
+    )
+    try {
+        robocopy $app \\$comp\c$\Patches\$appname /mir /mt:3 /r:3 /w:15 /njh /njs
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Copied"
+            Time = $end
+        }#new object 
+    }
+    catch {
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Failed"
+            Time = $end
+        }#new object
+    }
+    $info | Select-Object ComputerName,Program,Status,Time | Export-Csv C:\Scripts\CopyStatus.csv -NoTypeInformation -Append
+    }#end code block
+    $Jobs = @()
+}
+Process {
+    Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
+    ForEach ($Object in $ComputerName){
+        $PowershellThread = [powershell]::Create().AddScript($Code)
+        $PowershellThread.AddArgument($Object.ToString()) | out-null
+        $PowershellThread.RunspacePool = $RunspacePool
+        $Handle = $PowershellThread.BeginInvoke()
+        $Job = "" | Select-Object Handle, Thread, object
+        $Job.Handle = $Handle
+        $Job.Thread = $PowershellThread
+        $Job.Object = $Object.ToString()
+        $Jobs += $Job
+    }    
+}
+End {
+    $ResultTimer = Get-Date
+    While (@($Jobs | Where-Object {$Null -ne $_.Handle}).count -gt 0)  {
+        $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
+        If ($Remaining.Length -gt 60){
+            $Remaining = $Remaining.Substring(0,60) + "..."
+        }
+        Write-Progress `
+            -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
+            -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
+            -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+        ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
+            $Job.Thread.EndInvoke($Job.Handle)
+            $Job.Thread.Dispose()
+            $Job.Thread = $Null
+            $Job.Handle = $Null
+            $ResultTimer = Get-Date
+        }
+        If (($(Get-Date) - $ResultTimer).totalseconds -gt $MaxResultTime){
+            Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
+            Exit
+        }
+        Start-Sleep -Milliseconds $SleepTimer            
+    } 
+    $RunspacePool.Close() | Out-Null
+    $RunspacePool.Dispose() | Out-Null
+}
+}
+    
+    
+Function Copy-WMF4 {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 04/19/2019 12:45:57
+    LASTEDIT: 04/19/2019 12:45:57
+    KEYWORDS:
+    REQUIRES:
+        -RunAsAdministrator
+.Link
+    https://wstools.dev
+#>
+[CmdletBinding()]
+Param (
+    [Parameter(
+        Mandatory = $false,
+        ValueFromPipeline = $true,
+        ValueFromPipelineByPropertyName = $true
+    )]
+    [Alias('Host','Name','Computer','CN')]
+    [string[]]$ComputerName = $ComputerName,
+
+    [Parameter()]
+    [int32]$MaxThreads = 5,
+
+    [Parameter()]
+    $SleepTimer = 200,
+
+    [Parameter()]
+    $MaxResultTime = 1200
+)
+
+Begin {
+    $config = $Global:WSToolsConfig
+    $app = $config.WMF4
+    $appname = "WMF4"
+    if (!(Test-Path C:\Scripts)) {mkdir C:\Scripts}
+    if (!(Test-Path C:\Scripts\CopyStatus.csv)) {
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = "NA"
+            Program = "NA"
+            Status = "NA"
+            Time = "NA"
+        }#new object 
+        $info | Select-Object ComputerName,Program,Status,Time | export-csv C:\Scripts\CopyStatus.csv -NoTypeInformation
+    }
+
+    $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
+    $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
+    $RunspacePool.Open()
+    $Code = {
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$true,
+            Position=0,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [string]$comp
+    )
+    try {
+        robocopy $app \\$comp\c$\Patches\$appname /mir /mt:3 /r:3 /w:15 /njh /njs
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Copied"
+            Time = $end
+        }#new object 
+    }
+    catch {
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Failed"
+            Time = $end
+        }#new object
+    }
+    $info | Select-Object ComputerName,Program,Status,Time | Export-Csv C:\Scripts\CopyStatus.csv -NoTypeInformation -Append
+    }#end code block
+    $Jobs = @()
+}
+Process {
+    Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
+    ForEach ($Object in $ComputerName){
+        $PowershellThread = [powershell]::Create().AddScript($Code)
+        $PowershellThread.AddArgument($Object.ToString()) | out-null
+        $PowershellThread.RunspacePool = $RunspacePool
+        $Handle = $PowershellThread.BeginInvoke()
+        $Job = "" | Select-Object Handle, Thread, object
+        $Job.Handle = $Handle
+        $Job.Thread = $PowershellThread
+        $Job.Object = $Object.ToString()
+        $Jobs += $Job
+    }    
+}
+End {
+    $ResultTimer = Get-Date
+    While (@($Jobs | Where-Object {$Null -ne $_.Handle}).count -gt 0)  {
+        $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
+        If ($Remaining.Length -gt 60){
+            $Remaining = $Remaining.Substring(0,60) + "..."
+        }
+        Write-Progress `
+            -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
+            -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
+            -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+        ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
+            $Job.Thread.EndInvoke($Job.Handle)
+            $Job.Thread.Dispose()
+            $Job.Thread = $Null
+            $Job.Handle = $Null
+            $ResultTimer = Get-Date
+        }
+        If (($(Get-Date) - $ResultTimer).totalseconds -gt $MaxResultTime){
+            Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
+            Exit
+        }
+        Start-Sleep -Milliseconds $SleepTimer            
+    } 
+    $RunspacePool.Close() | Out-Null
+    $RunspacePool.Dispose() | Out-Null
+}
+}
+    
+    
+Function Copy-WMF5 {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 04/19/2019 13:02:13
+    LASTEDIT: 04/19/2019 13:02:13
+    KEYWORDS:
+    REQUIRES:
+        -RunAsAdministrator
+.Link
+    https://wstools.dev
+#>
+[CmdletBinding()]
+Param (
+    [Parameter(
+        Mandatory = $false,
+        ValueFromPipeline = $true,
+        ValueFromPipelineByPropertyName = $true
+    )]
+    [Alias('Host','Name','Computer','CN')]
+    [string[]]$ComputerName = $env:COMPUTERNAME,
+
+    [Parameter()]
+    [int32]$MaxThreads = 5,
+
+    [Parameter()]
+    $SleepTimer = 200,
+
+    [Parameter()]
+    $MaxResultTime = 1200
+)
+
+Begin {
+    $config = $Global:WSToolsConfig
+    $app = $config.WMF5
+    $appname = "WMF5"
+    if (!(Test-Path C:\Scripts)) {mkdir C:\Scripts}
+    if (!(Test-Path C:\Scripts\CopyStatus.csv)) {
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = "NA"
+            Program = "NA"
+            Status = "NA"
+            Time = "NA"
+        }#new object 
+        $info | Select-Object ComputerName,Program,Status,Time | export-csv C:\Scripts\CopyStatus.csv -NoTypeInformation
+    }
+
+    $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
+    $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
+    $RunspacePool.Open()
+    $Code = {
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$true,
+            Position=0,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [string]$comp
+    )
+    try {
+        robocopy $app \\$comp\c$\Patches\$appname /mir /mt:3 /r:3 /w:15 /njh /njs
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Copied"
+            Time = $end
+        }#new object 
+    }
+    catch {
+        $end = Get-Date
+        $info = New-Object -TypeName PSObject -Property @{
+            ComputerName = $comp
+            Program = $appname
+            Status = "Failed"
+            Time = $end
+        }#new object
+    }
+    $info | Select-Object ComputerName,Program,Status,Time | Export-Csv C:\Scripts\CopyStatus.csv -NoTypeInformation -Append
+    }#end code block
+    $Jobs = @()
+}
+Process {
+    Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
+    ForEach ($Object in $ComputerName){
+        $PowershellThread = [powershell]::Create().AddScript($Code)
+        $PowershellThread.AddArgument($Object.ToString()) | out-null
+        $PowershellThread.RunspacePool = $RunspacePool
+        $Handle = $PowershellThread.BeginInvoke()
+        $Job = "" | Select-Object Handle, Thread, object
+        $Job.Handle = $Handle
+        $Job.Thread = $PowershellThread
+        $Job.Object = $Object.ToString()
+        $Jobs += $Job
+    }    
+}
+End {
+    $ResultTimer = Get-Date
+    While (@($Jobs | Where-Object {$Null -ne $_.Handle}).count -gt 0)  {
+        $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
+        If ($Remaining.Length -gt 60){
+            $Remaining = $Remaining.Substring(0,60) + "..."
+        }
+        Write-Progress `
+            -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
+            -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
+            -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+        ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
+            $Job.Thread.EndInvoke($Job.Handle)
+            $Job.Thread.Dispose()
+            $Job.Thread = $Null
+            $Job.Handle = $Null
+            $ResultTimer = Get-Date
+        }
+        If (($(Get-Date) - $ResultTimer).totalseconds -gt $MaxResultTime){
+            Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
+            Exit
+        }
+        Start-Sleep -Milliseconds $SleepTimer            
+    } 
+    $RunspacePool.Close() | Out-Null
+    $RunspacePool.Dispose() | Out-Null
+}
+}
+
+
 Function Install-Patches {
 <#
 .SYNOPSIS

@@ -22,7 +22,7 @@
     #Location on network where you store applications
     AppRepo = "J:\"
 
-    #Local Patches folder on machines
+    #Local Patches folder on machines - this does not change the copy and install functions under WS_Remediation. They will still try to copy to C:\Patches on the remote machine.
     LocalPatches = "C:\Patches"
 
     #Network Patch Repository
@@ -91,6 +91,7 @@
     #Install file locations - for normal installation files.
     a7Zip = "\\serverunc\apps\Tools\7zip" #64-bit only unless you change Copy-7Zip to use 32-bit
     Firefox = "\\serverunc\apps\Firefox" #32-bit only unless you change Copy-Firefox to use 64-bit
+    IE11 = "\\serverunc\apps\IE11"
     SysInternals = "\\serverunc\apps\Tools\SysInternals"
     VLC = "\\serverunc\apps\Tools\VLC"
     Wireshark = "\\serverunc\apps\Tools\Wireshark"
