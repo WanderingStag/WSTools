@@ -327,7 +327,7 @@ Function Copy-7Zip {
                     Program = $appname
                     Status = "Copied"
                     Time = $end
-                }#new object 
+                }#new object
             }
             catch {
                 $end = Get-Date
@@ -350,7 +350,7 @@ Function Copy-7Zip {
                 Program = "NA"
                 Status = "NA"
                 Time = "NA"
-            }#new object 
+            }#new object
             $info | Select-Object ComputerName,Program,Status,Time | export-csv $ScriptWD\CopyStatus.csv -NoTypeInformation
         }
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
@@ -379,7 +379,7 @@ Function Copy-7Zip {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -391,14 +391,14 @@ Function Copy-7Zip {
                 Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
                 Exit
             }
-            Start-Sleep -Milliseconds $SleepTimer            
-        } 
+            Start-Sleep -Milliseconds $SleepTimer
+        }
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
     }
 }
-    
-    
+
+
 Function Copy-90Meter {
 <#
 .Notes
@@ -479,7 +479,7 @@ Function Copy-90Meter {
                     Program = $appname
                     Status = "Copied"
                     Time = $end
-                }#new object 
+                }#new object
             }
             catch {
                 $end = Get-Date
@@ -502,7 +502,7 @@ Function Copy-90Meter {
                 Program = "NA"
                 Status = "NA"
                 Time = "NA"
-            }#new object 
+            }#new object
             $info | Select-Object ComputerName,Program,Status,Time | export-csv $ScriptWD\CopyStatus.csv -NoTypeInformation
         }
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
@@ -531,7 +531,7 @@ Function Copy-90Meter {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -543,14 +543,14 @@ Function Copy-90Meter {
                 Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
                 Exit
             }
-            Start-Sleep -Milliseconds $SleepTimer            
-        } 
+            Start-Sleep -Milliseconds $SleepTimer
+        }
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
     }
 }
-    
-    
+
+
 Function Copy-ActivClient {
 <#
 .Notes
@@ -3551,7 +3551,7 @@ Begin {
                     Time = $end
                 }#new object
             }
-            $info | Select-Object ComputerName,Program,Status,Time | Export-Csv C:\Scripts\CopyStatus.csv -NoTypeInformation -Append
+            $info | Select-Object ComputerName,Program,Status,Time | Export-Csv $ScriptWD\CopyStatus.csv -NoTypeInformation -Append
         }#end code block
         $Jobs = @()
     }
