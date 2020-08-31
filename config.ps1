@@ -89,35 +89,35 @@
     ################################
 
     #Install file locations - for normal installation files.
-    a7Zip = "\\serverunc\apps\Tools\7zip" #64-bit only unless you change Copy-7Zip to use 32-bit
-    Firefox = "\\serverunc\apps\Firefox" #32-bit only unless you change Copy-Firefox to use 64-bit
-    IE11 = "\\serverunc\apps\IE11"
-    SysInternals = "\\serverunc\apps\Tools\SysInternals"
-    VLC = "\\serverunc\apps\Tools\VLC"
-    Wireshark = "\\serverunc\apps\Tools\Wireshark"
-    WMF3 = "\\serverunc\apps\Microsoft\WMF3"
-    WMF4 = "\\serverunc\apps\Microsoft\WMF4"
-    WMF5 = "\\serverunc\apps\Microsoft\WMF5"
+    a7Zip = "J:\Tools\7zip" #64-bit only unless you change Copy-7Zip to use 32-bit
+    Firefox = "J:\Tools\Firefox" #32-bit only unless you change Copy-Firefox to use 64-bit
+    IE11 = "J:\Patches\IE\IE11"
+    SysInternals = "J:\Tools\SysinternalsSuite"
+    VLC = "J:\Tools\VLC"
+    Wireshark = "J:\Tools\Wireshark"
+    WMF3 = "J:\Microsoft\Windows Management Framework 3.0"
+    WMF4 = "J:\Microsoft\Windows Management Framework 4.0"
+    WMF5 = "J:\Microsoft\Windows Management Framework 5.1"
     
     #Install file locations that use the PowerShell App Deployment Toolkit from https://psappdeploytoolkit.com/
-    a90Meter = "\\serverunc\apps\90Meter"
-    ActivClient = "\\serverunc\apps\ActivClient"
-    Acrobat = "\\serverunc\apps\Acrobat"
-    AxwayServer = "\\serverunc\apps\AxwayServer"
-    AxwayClient = "\\serverunc\apps\AxwayClient"
-    Chrome = "\\serverunc\apps\Chrome"
-    DSET = "\\serverunc\apps\DSET"
-    Encase = "\\serverunc\apps\Encase"
+    a90Meter = "J:\Patches\SDC-APPS\90Meter"
+    ActivClient = "J:\Patches\SDC-APPS\ActivClient"
+    Acrobat = "J:\Patches\SDC-APPS\Adobe\Acrobat NIPR\Acrobat"
+    AxwayServer = "J:\Patches\SDC-APPS\Axway\DSCC"
+    AxwayClient = "J:\Patches\SDC-APPS\Axway\NIPR"
+    Chrome = "J:\Patches\SDC-APPS\Chrome"
+    DSET = "J:\Patches\SDC-APPS\DSET"
+    Encase = "J:\Patches\SDC-APPS\Encase"
     #Firefox = "\\serverunc\apps\Firefox"
-    Flash = "\\serverunc\apps\Flash"
-    Java = "\\serverunc\apps\Java"
-    NetBanner = "\\serverunc\apps\NetBanner"
-    Office2016 = "\\serverunc\apps\Office2016"
-    Silverlight = "\\serverunc\apps\Silverlight"
-    Tanium = "\\serverunc\apps\Tanium"
-    Teams = "\\serverunc\apps\Teams"
-    Titus = "\\serverunc\apps\Titus"
-    VPN = "\\serverunc\apps\VPN"
+    Flash = "J:\Patches\SDC-APPS\Adobe\Flash"
+    Java = "J:\Patches\SDC-APPS\Java\NIPR"
+    NetBanner = "J:\Patches\SDC-APPS\NetBanner"
+    Office2016 = "J:\Patches\SDC-APPS\Office2016"
+    Silverlight = "J:\Patches\SDC-APPS\Silverlight"
+    Tanium = "J:\Patches\SDC-APPS\Tanium\NIPR"
+    Teams = "J:\Patches\SDC-APPS\Teams"
+    Titus = "J:\Patches\SDC-APPS\Titus"
+    VPN = "J:\Patches\SDC-APPS\VPN"
 
     #Ciphers - changes take effect immediately after change
     ##Set to 4294967295 to enable. Set to 0 to disable.
