@@ -2741,14 +2741,14 @@ Function Test-EmailRelay {
     )
         
     $config = $Global:WSToolsConfig
-    $from = $config.$Sender
+    $from = $config.Sender
     $smtpserver = $config.SMTPServer
     $port = $config.SMTPPort
     
     $date = Get-Date
     $subject = "Test from $env:COMPUTERNAME $date"
     
-    send-mailmessage -To $Recipient -From $from -Subject $subject -Body "Testing relay of SMTP messages.`nFrom: $sender `nTo: $recip `n`nPlease delete this message." -smtpserver $smtpserver -Port $port
+    send-mailmessage -To $Recipient -From $from -Subject $subject -Body "Testing relay of SMTP messages.`nFrom: $from `nTo: $recip `n`nPlease delete this message." -smtpserver $smtpserver -Port $port
 }
 
 
