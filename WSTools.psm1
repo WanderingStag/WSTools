@@ -415,14 +415,14 @@ Function Get-ComputerHWInfo {
 }
 
 
-Function Get-ComputerType {
+Function Get-ComputerModel {
 <#
    .Parameter ComputerName
     Specifies the computer or computers
    .Notes
     AUTHOR: Skyler Hart
-    CREATED: 06/20/2018 13:05:09
-    LASTEDIT: 06/20/2018 15:41:21
+    CREATED: 2018-06-20 13:05:09
+    LASTEDIT: 2020-08-31 21:40:19
     KEYWORDS:
     REQUIRES:
         -RunAsAdministrator
@@ -455,10 +455,10 @@ Function Get-ComputerType {
             }
             
             switch ($csi.Model) {
-                "Virtual Machine" {$PorV = "V"}
-                "VMware Virtual Platform" {$PorV = "V"}
-                "VirtualBox" {$PorV = "V"}
-                default {$PorV = "P"}
+                "Virtual Machine" {$PorV = "Virtual"}
+                "VMware Virtual Platform" {$PorV = "Virtual"}
+                "VirtualBox" {$PorV = "Virtual"}
+                default {$PorV = "Physical"}
             }
 
             switch ($csi.PCSystemType) {
@@ -493,6 +493,7 @@ Function Get-ComputerType {
         }
     }
 }
+New-Alias -Name "Get-Model" -Value Get-ComputerModel
 
 
 function Get-DirectoryStat {
@@ -799,74 +800,6 @@ Function Get-IEVersion {
         }#new object
     }#foreach computer
 }
-
-
-Function Get-ComputerModel {
-<#
-.Notes
-    AUTHOR: Skyler Hart
-    CREATED: 11/02/2018 14:13:59
-    LASTEDIT: 10/16/2019 17:05:53
-    KEYWORDS:
-.LINK
-    https://wstools.dev
-#>
-    [CmdletBinding()]
-    Param (
-        [Parameter(
-            Mandatory=$false,
-            Position=0,
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true
-        )]
-        [Alias('Host','Name','Computer','CN')]
-        [string[]]$ComputerName = "$env:COMPUTERNAME"
-    )
-
-    $i = 0
-    $number = $ComputerName.length
-    foreach ($comp in $ComputerName) {
-        $ci = $null
-        $make = $null
-        $model = $null
-        $PorV = $null
-        #Progress Bar
-        if ($number -gt "1") {
-            $i++
-            $amount = ($i / $number)
-            $perc1 = $amount.ToString("P")
-            Write-Progress -activity "Getting model of computers" -status "Computer $i of $number. Percent complete:  $perc1" -PercentComplete (($i / $ComputerName.length)  * 100)
-        }#if length
-        try {
-            $ci = Get-WmiObject win32_computersystem -ComputerName $comp -ErrorAction Stop
-            $make = $ci.Manufacturer
-            $model = $ci.Model
-            switch ($ci.Model) {
-                "Virtual Machine" {$PorV = "Virtual"}
-                "VMWare Virtual Platform" {$PorV = "Virtual"}
-                "VirtualBox" {$PorV = "Virtual"}
-                default {$PorV = "Physical"}
-            }
-            $info = New-Object -TypeName PSObject -Property @{
-                ComputerName = $comp
-                Make = $make
-                Model = $model
-                PorV = $PorV
-            }#new object 
-        }
-        catch {
-            $info = New-Object -TypeName PSObject -Property @{
-                ComputerName = $comp
-                Make = "NA"
-                Model = "NA"
-                PorV = "NA"
-            }#new object 
-        }
-
-        $info | Select-Object ComputerName,Make,Model,PorV
-    }
-}
-New-Alias -Name "Get-Model" -Value Get-ComputerModel
 
 
 Function Get-MTU {
