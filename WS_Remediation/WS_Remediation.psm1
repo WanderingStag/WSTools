@@ -3328,7 +3328,7 @@ Param (
         ValueFromPipelineByPropertyName = $true
     )]
     [Alias('Host','Name','Computer','CN')]
-    [string[]]$ComputerName,
+    [string[]]$ComputerName = $env:COMPUTERNAME,
 
     [Parameter()]
     [int32]$MaxThreads = 5,
@@ -3381,7 +3381,7 @@ Begin {
                 [string]$ScriptWD
             )
             try {
-                robocopy $app "\\$comp\c$\Patches\$appname" *64*.exe /mir /mt:3 /r:3 /w:15 /njh /njs
+                robocopy $app "\\$comp\c$\Patches\$appname" *.exe /mir /mt:3 /r:3 /w:15 /njh /njs
                 $end = Get-Date
                 $info = New-Object -TypeName PSObject -Property @{
                     ComputerName = $comp
@@ -3632,7 +3632,7 @@ Param (
         ValueFromPipelineByPropertyName = $true
     )]
     [Alias('Host','Name','Computer','CN')]
-    [string[]]$ComputerName = $ComputerName,
+    [string[]]$ComputerName = $env:COMPUTERNAME,
 
     [Parameter()]
     [int32]$MaxThreads = 5,

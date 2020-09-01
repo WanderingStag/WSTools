@@ -102,7 +102,7 @@
     #Install file locations that use the PowerShell App Deployment Toolkit from https://psappdeploytoolkit.com/
     a90Meter = "J:\Patches\SDC-APPS\90Meter"
     ActivClient = "J:\Patches\SDC-APPS\ActivClient"
-    Acrobat = "J:\Patches\SDC-APPS\Adobe\Acrobat NIPR\Acrobat"
+    Acrobat = "J:\Patches\SDC-APPS\Adobe\Acrobat NIPR"
     AxwayServer = "J:\Patches\SDC-APPS\Axway\DSCC"
     AxwayClient = "J:\Patches\SDC-APPS\Axway\NIPR"
     Chrome = "J:\Patches\SDC-APPS\Chrome"
