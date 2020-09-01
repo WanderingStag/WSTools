@@ -4,7 +4,7 @@
 #    August 2020     #
 ######################
 Known issues:
-1. Get-OperatingSystem displays computers as 32-bit when running the command against a computer the logged in user does not have admin rights on.
+1. Get-NICInfo doesn't always run.
 
 Bug fixes:
 1. Fixed issues with variables in Test-EmailRelay conflicting with built-in variables in newer versions of PowerShell.
@@ -46,6 +46,7 @@ New features and other changes:
 34. Added apps to config file.
 35. Added 24 Copy-ProgramName functions.
 36. Combined Get-ComputerModel and Get-ComputerType (removed function name of Get-ComputerType.)
+37. Added admin check to Get-OperatingSystem for remote computers.
 
 Removed items:
 1. Get-202001UpdateStatus: We are in August 2020 now so if computers don't have newer cumulative updates there is a problem.
