@@ -1099,7 +1099,7 @@ Function Get-OperatingSystem {
    .Notes
     AUTHOR: Skyler Hart
     CREATED: 06/06/2015 20:11:37
-    LASTEDIT: 2020-04-18 22:22:07
+    LASTEDIT: 2020-08-31 21:56:19
     KEYWORDS: Operating System, OS
     REMARKS: For local computer it can be ran as user. For remote computers, it needs to be ran as a user who has administrative rights on the remote computer.
 .LINK
@@ -1125,7 +1125,18 @@ Function Get-OperatingSystem {
     $64keyname = 'SOFTWARE\\Wow6432Node\\Microsoft\\Windows NT\\CurrentVersion'
     $i = 0
 
+    $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+    if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {$Role = 'Admin'}
+    else {$Role = 'User'}
+
     foreach ($Comp in $ComputerName){
+        if ($Comp -ne $env:COMPUTERNAME) {
+            if ($Role -eq "Admin") {$continue = $true}
+            else {$continue = $false}
+        }
+        else {$continue = $true}
+
+        if ($continue) {
         if ($Registry -eq $false) {
             #Progress Bar
             $length = $ComputerName.length
@@ -1355,6 +1366,15 @@ Function Get-OperatingSystem {
                 Build = $build
             }#newobject
         }#elseif registry
+    }#continue -eq $true
+    else {
+        New-Object psobject -Property @{
+            ComputerName = $comp
+            OS = "Error: not running PowerShell as admin"
+            Bit = $null
+            Build = $null
+        }#newobject
+    }
     }#foreach comp
 }
 
