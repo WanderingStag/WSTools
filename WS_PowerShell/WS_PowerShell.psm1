@@ -1,20 +1,17 @@
 ﻿Function Add-DateTime {
-<# 
+<#
    .Synopsis 
     This function adds the date and time at current insertion point  
    .Example
     Add-DateTime
     Adds date and time at current insertion point in a PowerShell ISE window 
-   .Notes 
-    NAME: Add-DateTime
+   .Notes
     AUTHOR: Skyler Hart
     CREATED: 08/19/2017 19:51:23
-    LASTEDIT: 10/26/2017 09:48:00  
+    LASTEDIT: 10/26/2017 09:48:00
     KEYWORDS: Scripting Techniques, Windows PowerShell ISE
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #Requires -Version 2.0 
 #> 
     $timeText = @" 
@@ -25,32 +22,19 @@ $(Get-Date)
 
 
 Function Add-DomainCheck {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter ComputerName
-    Specifies the computer or computers
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 06/13/2018 14:42:45
-    LASTEDIT: 10/04/2018 21:16:04  
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 10/04/2018 21:16:04
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
 
     $domainText = @" 
@@ -79,33 +63,20 @@ Function Add-DomainCheck {
 
 
 Function Add-Function {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 10/18/2017 13:58:17
-    LASTEDIT: 12/20/2019 22:18:43 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 12/20/2019 22:18:43
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory=$false)]
@@ -255,25 +226,22 @@ $objectText
 
 
 Function Add-Help {
-<# 
-   .Synopsis 
-    This function adds help at current insertion point  
+<#
+   .Synopsis
+    This function adds help at current insertion point.
    .Example
     Add-Help
-    Adds comment based help at current insertion point in a PowerShell ISE window 
-   .Notes 
-    NAME: Add-Help 
+    Adds comment based help at current insertion point in a PowerShell ISE window.
+   .Notes
     AUTHOR: Skyler Hart
     CREATED: 09/07/2010 17:32:34
-    LASTEDIT: 10/04/2018 20:26:05 
+    LASTEDIT: 10/04/2018 20:26:05
     KEYWORDS: Scripting Techniques, Windows PowerShell ISE, Help
-    REQUIRES: 
+    REQUIRES:
         #Requires -Version 2.0
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     $helpText = @" 
 <# 
    .Synopsis 
@@ -306,33 +274,20 @@ Function Add-Help {
 
 
 Function Add-InternetBrowsersBlock {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 10/18/2017 12:58:28
-    LASTEDIT: 10/18/2017 12:58:28 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 10/18/2017 12:58:28
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     $browserblockText = @" 
     if (`$Chrome) {Start-Process "chrome.exe" `$URL}
     elseif (`$Edge) {Start-Process shell:AppsFolder\Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge `$URL}
@@ -348,29 +303,15 @@ Function Add-InternetBrowsersBlock {
 
 
 Function Add-ParamBlock {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 09/27/2017 15:14:53
-    LASTEDIT: 12/20/2019 22:15:51 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 12/20/2019 22:15:51
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     $paramblockText = @" 
     [CmdletBinding()]
     Param (
@@ -394,32 +335,14 @@ Function Add-ParamBlock {
 
 
 Function Add-ParamInternetBrowser {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 10/18/2017 12:55:22
-    LASTEDIT: 10/18/2017 14:37:37  
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
+    LASTEDIT: 10/18/2017 14:37:37
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com 
 #>
     $paramIBText = @" 
         [Parameter(Mandatory=`$false)]
@@ -439,33 +362,15 @@ Function Add-ParamInternetBrowser {
 
 
 Function Add-ParamSwitchWithOption {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 10/23/2017 17:20:36
-    LASTEDIT: 12/20/2019 22:14:54 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
+    LASTEDIT: 12/20/2019 22:14:54
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
 
     $switchText = @"
 ,
@@ -481,32 +386,14 @@ Function Add-ParamSwitchWithOption {
 
 
 Function Add-ProgressBar {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter ComputerName
-    Specifies the computer or computers
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 04/23/2018 10:53:40
-    LASTEDIT: 04/23/2018 10:53:40 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
+    LASTEDIT: 04/23/2018 10:53:40
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com 
 #>
     $objectText = @"
 `$i = 0
@@ -525,33 +412,15 @@ if (`$number -gt "1") {
 
 
 Function Add-PSObject {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 09/27/2017 17:13:32
-    LASTEDIT: 12/21/2019 23:35:03  
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
+    LASTEDIT: 12/21/2019 23:35:03
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter()] 
@@ -581,33 +450,15 @@ New-Object -TypeName PSObject -Property @{
 
 
 Function Add-Switch {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 07/31/2019 22:17:04
-    LASTEDIT: 07/31/2019 22:17:04 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
+    LASTEDIT: 07/31/2019 22:17:04
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     $objectText = @"
 switch (`$variable) {
     value {`$variable2 = "something"}
@@ -622,29 +473,14 @@ switch (`$variable) {
 
 
 Function Get-Accelerators {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter ComputerName
-    Specifies the computer or computers
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 12/21/2019 23:28:57
-    LASTEDIT: 12/21/2019 23:28:57 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        Requires -Version 2.0
+    LASTEDIT: 12/21/2019 23:28:57
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [psobject].Assembly.GetType(“System.Management.Automation.TypeAccelerators”)::get | Sort-Object Key
 }
@@ -653,33 +489,15 @@ New-Alias -Name "accelerators" -Value Get-Accelerators
 
 
 Function Get-FilePath {  
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 09/21/2017 13:05:42
-    LASTEDIT: 09/21/2017 13:05:42 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
+    LASTEDIT: 09/21/2017 13:05:42
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#>  
+#>
     [System.Reflection.Assembly]::LoadWithPartialName("System.windows.forms") | Out-Null
     $OpenFileDialog = New-Object System.Windows.Forms.OpenFileDialog
     $OpenFileDialog.initialDirectory = "C:\"
@@ -691,33 +509,15 @@ Function Get-FilePath {
 
 
 Function Get-FolderPath {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 09/21/2017 13:05:51
-    LASTEDIT: 09/21/2017 13:05:51 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
+    LASTEDIT: 09/21/2017 13:05:51
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     Write-Host "The folder selection window is open. It may be hidden behind windows." -ForegroundColor Yellow
     Add-Type -AssemblyName System.Windows.Forms
     $FolderBrowser = New-Object System.Windows.Forms.FolderBrowserDialog
@@ -734,33 +534,15 @@ Function Get-FolderPath {
 
 
 Function Get-FunctionsInModule {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 08/21/2017 13:06:27
-    LASTEDIT: 08/21/2017 13:06:27 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
+    LASTEDIT: 08/21/2017 13:06:27
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory=$true, Position=0)] 
@@ -773,32 +555,14 @@ Function Get-FunctionsInModule {
 
 
 Function Get-Role {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 10/20/2017 16:30:43
-    LASTEDIT: 10/20/2017 16:30:43 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
+    LASTEDIT: 10/20/2017 16:30:43
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
     
@@ -809,32 +573,16 @@ Function Get-Role {
 
 
 Function Set-AutoLoadPreference {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter ComputerName
-    Specifies the computer or computers
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 02/01/2018 10:23:26
-    LASTEDIT: 02/01/2018 10:23:26 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
+    LASTEDIT: 02/01/2018 10:23:26
+    KEYWORDS:
+    REQUIRES:
+        -Version 2.0 only doesn't apply to Version 3.0 or newer
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com 
 #>
     [CmdletBinding()]
     Param (
@@ -847,32 +595,14 @@ Function Set-AutoLoadPreference {
 
 
 Function Set-Profile {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 21:07:03 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
+    LASTEDIT: 08/18/2017 21:07:03
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     #If profile already exists, open for editing
     if (Test-Path $profile) {
         start-process "$env:windir\system32\WindowsPowerShell\v1.0\PowerShell_ISE.exe" $profile
@@ -904,32 +634,14 @@ New-Alias -Name "Profile" -Value Set-Profile
 
 
 Function Set-Title {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 20:47:14 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
+    LASTEDIT: 08/18/2017 20:47:14
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory=$true, Position=0)] 
@@ -942,27 +654,14 @@ New-Alias -Name "title" -Value Set-Title
 
 
 Function Start-PowerShell {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter ComputerName
-    Specifies the computer or computers
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 10/24/2017 14:41:52
-    LASTEDIT: 10/24/2017 16:41:21  
-    KEYWORDS: 
-    REMARKS: 
+    LASTEDIT: 10/24/2017 16:41:21
+    KEYWORDS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (

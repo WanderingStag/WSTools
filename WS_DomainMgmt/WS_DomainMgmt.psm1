@@ -22,9 +22,10 @@ Function Find-EmptyGroup {
 #>
     [CmdletBinding()]
     Param (
-      [Parameter(Position=0,
-          Mandatory=$false,
-          ValueFromPipeline=$true)]
+        [Parameter(
+            Mandatory=$false,
+            Position=0
+        )]
       [string]$SearchBase
      )
 
@@ -64,10 +65,11 @@ Function Find-HiddenGALUser {
 #>
     [CmdletBinding()]
     Param (
-      [Parameter(Position=0,
-          Mandatory=$false,
-          ValueFromPipeline=$false)]
-      [string]$SearchBase
+        [Parameter(
+            Mandatory=$false,
+            Position=0
+        )]
+        [string]$SearchBase
     )
 
     if ($null -ne $SearchBase) {
@@ -102,10 +104,11 @@ function Find-SID {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Position=0,
+        [Parameter(
             Mandatory=$true,
-            ValueFromPipeline=$false)]
-      [string]$SID
+            Position=0
+        )]
+        [string]$SID
     )
     $objSID = New-Object System.Security.Principal.SecurityIdentifier `
         ("$SID")
@@ -128,19 +131,31 @@ Function Get-ComputerADSite {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(
+            Mandatory=$false,
+            Position=0,
+            ValueFromPipeline = $true
+        )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
 
-    foreach ($comp in $ComputerName) {
-        $site = nltest /server:$Comp /dsgetsite 2>$null
-        if($LASTEXITCODE -eq 0){$st = $site[0]}
-        else {$st = "NA"}
-        New-Object -TypeName PSObject -Property @{
-            ComputerName = $comp
-            Site = $st
-        }#new object
+    Begin {
+        $info = @()
+    }
+    Process {
+        foreach ($comp in $ComputerName) {
+            $site = nltest /server:$comp /dsgetsite 2>$null
+            if($LASTEXITCODE -eq 0){$st = $site[0]}
+            else {$st = "NA"}
+            $info += New-Object -TypeName PSObject -Property @{
+                ComputerName = $comp
+                Site = $st
+            }#new object
+        }
+    }
+    End {
+        $info
     }
 }
 
@@ -159,37 +174,45 @@ Function Get-DaysSinceLastLogon {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(
+            Mandatory=$false,
+            Position=0,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
         [Alias('User','SamAccountName','Computer','ComputerName','Username')]
         [string[]]$Name = "$env:USERNAME"
     )
-
-    $sd = Get-Date
-
-    foreach ($obj in $Name) {
-        try {$record = Get-ADUser $obj -Properties LastLogonDate}
-        catch {
-            $nobj = $obj + "$"
-            $record = Get-ADComputer $nobj -Properties LastLogonDate
-        }
-        $name = $record.Name
-        $LLD = $record.LastLogonDate
-        $sam = $record.SamAccountName
-        try {
-            $dsll = [math]::Round((-(New-TimeSpan -Start $sd -End $LLD)).TotalDays)
-        }
-        catch {
-            $dsll = "NA"
-        }
-
-        $info = New-Object -TypeName PSObject -Property @{
-            Name = $obj
-            DaysSinceLastLogon = $dsll
-            SamAccountName = $sam
-        }#new object
-
-        $info | Select-Object Name,DaysSinceLastLogon,SamAccountName
+    Begin {
+        $sd = Get-Date
     }
+    Process {
+        foreach ($obj in $Name) {
+            try {$record = Get-ADUser $obj -Properties LastLogonDate}
+            catch {
+                $nobj = $obj + "$"
+                $record = Get-ADComputer $nobj -Properties LastLogonDate
+            }
+            $name = $record.Name
+            $LLD = $record.LastLogonDate
+            $sam = $record.SamAccountName
+            try {
+                $dsll = [math]::Round((-(New-TimeSpan -Start $sd -End $LLD)).TotalDays)
+            }
+            catch {
+                $dsll = "NA"
+            }
+
+            $info = New-Object -TypeName PSObject -Property @{
+                Name = $obj
+                DaysSinceLastLogon = $dsll
+                SamAccountName = $sam
+            }#new object
+
+            $info | Select-Object Name,DaysSinceLastLogon,SamAccountName
+        }
+    }
+    End {}
 }
 
 
@@ -222,34 +245,42 @@ Function Get-LockedOutStatus {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName=$true)]
+        [Parameter(
+            Mandatory=$false,
+            Position=0,
+            ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName=$true
+        )]
         [Alias('User','SamAccountname')]
         [string[]]$Username = "$env:USERNAME"
     )
-
+    Begin {
     $cktime = Get-Date -Format t
-
-    foreach ($user in $Username) {
-        $usrquery = Get-ADUser $User -properties LockedOut,lockoutTime
-        $locked = $usrquery.LockedOut
-        $locktime = $usrquery.lockoutTime
-        if ($locked -eq $true) {
-            New-Object psobject -Property @{
-                User = $user
-                Status = "Locked"
-                Date = $locktime
-                CheckTime = $cktime
-            }
-        }#if
-        else {
-            New-Object psobject -Property @{
-                User = $user
-                Status = "Not Locked"
-                Date = "--"
-                CheckTime = $cktime
-            }
-        }#else
-    }#foreach
+    }
+    Process {
+        foreach ($user in $Username) {
+            $usrquery = Get-ADUser $User -properties LockedOut,lockoutTime
+            $locked = $usrquery.LockedOut
+            $locktime = $usrquery.lockoutTime
+            if ($locked -eq $true) {
+                New-Object psobject -Property @{
+                    User = $user
+                    Status = "Locked"
+                    Date = $locktime
+                    CheckTime = $cktime
+                }
+            }#if
+            else {
+                New-Object psobject -Property @{
+                    User = $user
+                    Status = "Not Locked"
+                    Date = "--"
+                    CheckTime = $cktime
+                }
+            }#else
+        }#foreach
+    }
+    End {}
 }
 
 

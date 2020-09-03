@@ -98,7 +98,7 @@
     WMF3 = "J:\Microsoft\Windows Management Framework 3.0"
     WMF4 = "J:\Microsoft\Windows Management Framework 4.0"
     WMF5 = "J:\Microsoft\Windows Management Framework 5.1"
-    
+
     #Install file locations that use the PowerShell App Deployment Toolkit from https://psappdeploytoolkit.com/
     a90Meter = "J:\Patches\SDC-APPS\90Meter"
     ActivClient = "J:\Patches\SDC-APPS\ActivClient"
@@ -130,7 +130,7 @@
     RC4_56_128Enabled = 0
     RC4_64_128Enabled = 0
     RC4_128_128Enabled = 0
-    
+
     DES56_56Enabled = 0
     TripleDES168Enabled = 0
 
@@ -138,7 +138,7 @@
 
     #Hashes - changes take effect immediately after change
     ##Set to 4294967295 to enable. Set to 0 to disable.
-    MD5Enabled = 0 #DevSkim: ignore DS126858 
+    MD5Enabled = 0 #DevSkim: ignore DS126858
     SHAEnabled = 4294967295
 
     #KeyExchangeAlgorithms - changes take effect after reboot

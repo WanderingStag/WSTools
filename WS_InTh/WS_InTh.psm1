@@ -1,32 +1,20 @@
 ﻿Function Copy-UserProfile {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter ComputerName
-    Specifies the computer or computers
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 04/06/2020 19:39:42
-    LASTEDIT: 04/06/2020 20:10:59  
-    KEYWORDS: 
-    REMARKS: 
+    LASTEDIT: 04/06/2020 20:10:59
+    KEYWORDS:
     REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -RunAsAdministrator
+        -Version 3.0
+        -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(HelpMessage = 'Enter user name. Ex: "1234567890A" without quotes',
+        [Parameter(
+            HelpMessage = 'Enter user name. Ex: "1234567890A" without quotes',
             Mandatory=$true,
             Position=0
         )]
@@ -49,62 +37,52 @@
         [Alias('Dest','DestinationFolder','DestFolder')]
         [string]$Destination = $null
     )
-
-    if ($Destination -eq $null) {
-        Write-Host "The destination folder selection window is open. It may be hidden behind windows." -ForegroundColor Yellow
-        Add-Type -AssemblyName System.Windows.Forms
-        $FolderBrowser = New-Object System.Windows.Forms.FolderBrowserDialog
-        $FolderBrowser.Description = "Select destination folder for user profile."
-        $FolderBrowser.RootFolder = 'MyComputer'
-        Set-WindowState MINIMIZE
-        [void]$FolderBrowser.ShowDialog()
-        Set-WindowState RESTORE
-        $Destination = $FolderBrowser.SelectedPath
+    Begin {
+        if ($Destination -eq $null) {
+            Write-Host "The destination folder selection window is open. It may be hidden behind windows." -ForegroundColor Yellow
+            Add-Type -AssemblyName System.Windows.Forms
+            $FolderBrowser = New-Object System.Windows.Forms.FolderBrowserDialog
+            $FolderBrowser.Description = "Select destination folder for user profile."
+            $FolderBrowser.RootFolder = 'MyComputer'
+            Set-WindowState MINIMIZE
+            [void]$FolderBrowser.ShowDialog()
+            Set-WindowState RESTORE
+            $Destination = $FolderBrowser.SelectedPath
+        }
+        $df = $Destination + "\" + $User
     }
-    
-    $df = $Destination + "\" + $User
-    foreach ($comp in $ComputerName) {
-        robocopy \\$comp\c$\Users\$user $df /mir /mt:3 /xj /r:3 /w:5 /njh /njs
+    Process {
+        foreach ($comp in $ComputerName) {
+            robocopy \\$comp\c$\Users\$user $df /mir /mt:3 /xj /r:3 /w:5 /njh /njs
+        }
     }
+    End {}
 }
 
 
 #Write help
 #Add progress bar
 function Find-UserProfile {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 20:58:21 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 08/18/2017 20:58:21
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, Position=0)] 
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME",
 
-        [Parameter(Mandatory=$false, Position=1, ValueFromPipeline=$true, ValueFromPipelineByPropertyName=$true)]
+        [Parameter(Mandatory=$false, Position=1)]
         [Alias('User','SamAccountname')]
         [string[]]$Username = "$env:USERNAME"
     )
@@ -189,32 +167,19 @@ function Find-UserProfile {
 #Find EFS encrypted folders
 #Add check for additional drives, if there are then search those
 function Find-UserProfileWithPSTSearch {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 20:58:26 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 08/18/2017 20:58:26
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
@@ -440,35 +405,22 @@ function Get-ExchangeLastLoggedOnUser {
 #Sort of working. Change to my script style
 #Add progress bar
 function Get-CurrentUser {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 20:58:42 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 08/18/2017 20:58:42
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$true, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$true, Position=0)] 
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName
     )
@@ -507,32 +459,19 @@ function Get-CurrentUser {
 
 #Write help
 function Get-LoggedOnUser {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 20:58:59 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 08/18/2017 20:58:59
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
@@ -591,175 +530,145 @@ function Get-LoggedOnUser {
 # Add try catch
 # Add progress bar
 function Get-RecentUsers {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
-    CREATED: Sometime before 8/7/2017 
-    LASTEDIT: 01/28/2020 11:50:54 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    CREATED: Sometime before 8/7/2017
+    LASTEDIT: 01/28/2020 11:50:54
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
-
+    Begin {
     $i = 0
     $number = $ComputerName.length
+    }
+    Process {
+        foreach ($Comp in $ComputerName) {
 
-    foreach ($Comp in $ComputerName) {
+            if ($number -gt "1") {
+                $i++
+                $amount = ($i / $number)
+                $perc1 = $amount.ToString("P")
+                Write-Progress -activity "Getting recent users on computers. Currently checking $comp" -status "Computer $i of $number. Percent complete:  $perc1" -PercentComplete (($i / $ComputerName.length)  * 100)
+            }#if length
 
-        if ($number -gt "1") {
-            $i++
-            $amount = ($i / $number)
-            $perc1 = $amount.ToString("P")
-            Write-Progress -activity "Getting recent users on computers. Currently checking $comp" -status "Computer $i of $number. Percent complete:  $perc1" -PercentComplete (($i / $ComputerName.length)  * 100)
-        }#if length
+            #Event ID to search for
+            $ID = "4624"
 
-
-
-        #Remove # in line below to test a single computer
-        #$Comp = "temppc"
-
-        #Event ID to search for
-        $ID = "4624"
-
-        #Strings to search for
-        $filecontent = "MachineName
+            #Strings to search for
+            $filecontent = "MachineName
 TimeCreated
 Account Name:
 Account Domain:
 Logon Type:
 Process Name:"
 
-        #Other Variables
-        $dnsdomain = "." + $env:USERDNSDOMAIN
-        $csvcontent = "When1,Computer1,AccountName,Domain2,LogonType1,Username1,Domain1,ProcessName1
+            #Other Variables
+            $dnsdomain = "." + $env:USERDNSDOMAIN
+            $csvcontent = "When1,Computer1,AccountName,Domain2,LogonType1,Username1,Domain1,ProcessName1
             "
 
-        #Create new files used during processing
-        New-Item $env:Temp\searchlist.lst -ItemType File -Force -Value $filecontent | Out-Null
-        New-Item $env:Temp\events.csv -ItemType File -Force -Value $csvcontent | Out-Null
+            #Create new files used during processing
+            New-Item $env:Temp\searchlist.lst -ItemType File -Force -Value $filecontent | Out-Null
+            New-Item $env:Temp\events.csv -ItemType File -Force -Value $csvcontent | Out-Null
 
-        #Gather events
-        $winevent = Get-WinEvent -ComputerName $Comp -FilterHashtable @{Logname='security';ID="$ID"} -MaxEvents 500
+            #Gather events
+            $winevent = Get-WinEvent -ComputerName $Comp -FilterHashtable @{Logname='security';ID="$ID"} -MaxEvents 500
 
-        foreach ($event in $winevent) {
-            ($event | Select-Object TimeCreated,MachineName,Message | Format-List * | findstr /G:"$env:TEMP\searchlist.lst") -replace "  ","" `
-            -replace "TimeCreated : ","" -replace "MachineName : ","" -replace "Security ID:","" -replace "Account Name:","" `
-            -replace "Account Domain:","" -replace "Logon ID:","" -replace "Logon Type:","" -replace "Security ID:","" `
-            -replace "Account Name:","" -replace "Account Domain:","" -replace "Logon ID:","" -replace "Logon GUID:","" `
-            -replace "Process Name:","" -replace "$dnsdomain","" -join "," | Out-File "$env:Temp\events.csv" -Append utf8
-        }#foreach event in winevent
+            foreach ($event in $winevent) {
+                ($event | Select-Object TimeCreated,MachineName,Message | Format-List * | findstr /G:"$env:TEMP\searchlist.lst") -replace "  ","" `
+                -replace "TimeCreated : ","" -replace "MachineName : ","" -replace "Security ID:","" -replace "Account Name:","" `
+                -replace "Account Domain:","" -replace "Logon ID:","" -replace "Logon Type:","" -replace "Security ID:","" `
+                -replace "Account Name:","" -replace "Account Domain:","" -replace "Logon ID:","" -replace "Logon GUID:","" `
+                -replace "Process Name:","" -replace "$dnsdomain","" -join "," | Out-File "$env:Temp\events.csv" -Append utf8
+            }#foreach event in winevent
 
+            #Process information on all events for the computer
+            $events = Import-Csv "$env:Temp\events.csv"
 
-        #Process information on all events for the computer
-        $events = Import-Csv "$env:Temp\events.csv"
-
-        $notcomp = $comp + "$"
-        $notcomp2 = "*$*"
+            $notcomp = $comp + "$"
+            $notcomp2 = "*$*"
         
-        #Filter by type of logon, username, and domain
-        $events | Where-Object {$_.LogonType1 -eq "2" -or $_.LogonType1 -eq "3" -or $_.LogonType1 -eq "7" -or $_.LogonType1 -eq "10" -or $_.LogonType1 -eq "11" `
-            -and $_.Domain1 -ne "NT AUTHORITY" -and $_.Domain1 -ne "Window Manager" -and $_.Username1 -ne "$notcomp" -and $_.Username1 -notlike "$notcomp2" `
-            -and $_.Username1 -ne "UMFD-1" -and $_.Username1 -ne "UMFD-0"} | Select-Object Computer1,When1,LogonType1,Username1,ProcessName1 | ForEach-Object {
+            #Filter by type of logon, username, and domain
+            $events | Where-Object {$_.LogonType1 -eq "2" -or $_.LogonType1 -eq "3" -or $_.LogonType1 -eq "7" -or $_.LogonType1 -eq "10" -or $_.LogonType1 -eq "11" `
+                -and $_.Domain1 -ne "NT AUTHORITY" -and $_.Domain1 -ne "Window Manager" -and $_.Username1 -ne "$notcomp" -and $_.Username1 -notlike "$notcomp2" `
+                -and $_.Username1 -ne "UMFD-1" -and $_.Username1 -ne "UMFD-0"} | Select-Object Computer1,When1,LogonType1,Username1,ProcessName1 | ForEach-Object {
                 
-                if ($_.LogonType1 -eq 2) {$type2 = "Local"}#if 2
-                if ($_.LogonType1 -eq 3) {$type2 = "Remote"}#if 3
-                if ($_.LogonType1 -eq 7) {$type2 = "UnlockScreen"}#if 7
-                if ($_.LogonType1 -eq 11) {$type2 = "CachedLocal"}#if 11
+                    if ($_.LogonType1 -eq 2) {$type2 = "Local"}#if 2
+                    if ($_.LogonType1 -eq 3) {$type2 = "Remote"}#if 3
+                    if ($_.LogonType1 -eq 7) {$type2 = "UnlockScreen"}#if 7
+                    if ($_.LogonType1 -eq 11) {$type2 = "CachedLocal"}#if 11
 
-                New-Object psobject -Property @{
-                    When = $_.When1
-                    Computer = $_.Computer1
-                    Type = $type2
-                    User = $_.Username1
-                    #ProcessName = $_.ProcessName1
-                } | Select-Object Computer,When,Type,User #,ProcessName 
-            } | Select-Object Computer,When,Type,User | Export-Csv "$env:Temp\events2.csv" -Force -NoTypeInformation
-
+                    New-Object psobject -Property @{
+                        When = $_.When1
+                        Computer = $_.Computer1
+                        Type = $type2
+                        User = $_.Username1
+                        #ProcessName = $_.ProcessName1
+                    } | Select-Object Computer,When,Type,User #,ProcessName 
+                } | Select-Object Computer,When,Type,User | Export-Csv "$env:Temp\events2.csv" -Force -NoTypeInformation
         
-        #Get 2nd and 3rd most recent users
-        #$users = $null
-        Clear-Variable -Name notuser1,notuser2,user2,user3 -ErrorAction SilentlyContinue | Out-Null
+            #Get 2nd and 3rd most recent users
+            #$users = $null
+            Clear-Variable -Name notuser1,notuser2,user2,user3 -ErrorAction SilentlyContinue | Out-Null
         
-        $events2 = Import-Csv "$env:Temp\events2.csv"
-        if (null -ne $($events2).User) {$user1 = ($events2).User[0]}
+            $events2 = Import-Csv "$env:Temp\events2.csv"
+            if (null -ne $($events2).User) {$user1 = ($events2).User[0]}
 
-        ($events2) | Select-Object Computer,When,Type,User | ForEach-Object {
-            if ($_.User -ne $user1) {[string[]]$notuser1 += $_.User}
-        }#get unique users
+            ($events2) | Select-Object Computer,When,Type,User | ForEach-Object {
+                if ($_.User -ne $user1) {[string[]]$notuser1 += $_.User}
+            }#get unique users
         
-        if ($null -ne $notuser1) {
-            $user2 = $notuser1[0]
-            foreach ($person in $notuser1) {
-                if ($null -ne $person) {
-                    if ($person -ne $user2) {[string[]]$notuser2 += $person}
-                    if ($null -ne $notuser2) {$user3 = $notuser2[0]}
-                }#if person not null
-            }#previous user3
-        }#if users not null
+            if ($null -ne $notuser1) {
+                $user2 = $notuser1[0]
+                foreach ($person in $notuser1) {
+                    if ($null -ne $person) {
+                        if ($person -ne $user2) {[string[]]$notuser2 += $person}
+                        if ($null -ne $notuser2) {$user3 = $notuser2[0]}
+                    }#if person not null
+                }#previous user3
+            }#if users not null
 
+            #Get most recent logon event for each of the 3 users
+            Clear-Variable -Name user1events,user2events,user3events -ErrorAction SilentlyContinue | Out-Null
 
+            $user1events = $events2 | Where-Object {$_.User -eq $user1} | Select-Object Computer,When,Type,User
+            $user2events = $events2 | Where-Object {$_.User -eq $user2} | Select-Object Computer,When,Type,User
+            $user3events = $events2 | Where-Object {$_.User -eq $user3} | Select-Object Computer,When,Type,User
 
-        #Get most recent logon event for each of the 3 users
-        Clear-Variable -Name user1events,user2events,user3events -ErrorAction SilentlyContinue | Out-Null
+            if ($null -ne $user1events) {$user1events[0]}
+            if ($null -ne $user2events) {$user2events[0]}
+            if ($null -ne $user3events) {$user3events[0]}
 
-        $user1events = $events2 | Where-Object {$_.User -eq $user1} | Select-Object Computer,When,Type,User
-        $user2events = $events2 | Where-Object {$_.User -eq $user2} | Select-Object Computer,When,Type,User
-        $user3events = $events2 | Where-Object {$_.User -eq $user3} | Select-Object Computer,When,Type,User
-
-        if ($null -ne $user1events) {$user1events[0]}
-        if ($null -ne $user2events) {$user2events[0]}
-        if ($null -ne $user3events) {$user3events[0]}
-
-        Remove-Item "$env:TEMP\searchlist.lst" -Force
-        Remove-Item "$env:Temp\events.csv" -Force
-        Remove-Item "$env:Temp\events2.csv" -Force
-    }#foreach computer
+            Remove-Item "$env:TEMP\searchlist.lst" -Force
+            Remove-Item "$env:Temp\events.csv" -Force
+            Remove-Item "$env:Temp\events2.csv" -Force
+        }#foreach computer
+    }
+    End {}
 }#get recent users
 
 
 #Will show connected iPhones and other USB devices.
 function Get-USBDevice {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 08/18/2017 02:34:40
-    LASTEDIT: 08/18/2017 21:00:23 
-    KEYWORDS: 
-    REMARKS: 
+    LASTEDIT: 08/18/2017 21:00:23
+    KEYWORDS:
     REQUIRES: 
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
@@ -767,12 +676,10 @@ function Get-USBDevice {
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #> 
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, Position=0)] 
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -804,15 +711,13 @@ function Get-USBStorageDevice {
     Shows the USB storage devices that have connected to the remote computer COMP1.
 .NOTES
     Author: Skyler Hart
-    Created: Sometime before 8/7/2017 
+    Created: Sometime before 8/7/2017
     Last Edit: 2020-08-12 19:44:46
     Keywords: 
     Other: 
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(
@@ -833,7 +738,6 @@ function Get-USBStorageDevice {
         $USBDevices = @()
         $ComputerCount = 0
     }
-    
     Process {
         foreach ($Comp in $ComputerName) {
             $Description,$DeviceID,$DT,$mac,$Manu,$Name,$sn = $null
@@ -1014,8 +918,7 @@ function Get-USBStorageDevice {
             }#foreach usb device
         }#foreach comp
     }#process
-
-    end {
+    End {
         #
     }
 }#end get-usbstoragedevice
@@ -1023,22 +926,11 @@ function Get-USBStorageDevice {
 
 #Tested for InTh and it seems to work
 function Get-UserLogonLogoffTimes {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 21:00:47 
-    KEYWORDS: 
-    REMARKS: 
+    LASTEDIT: 08/18/2017 21:00:47
+    KEYWORDS:
     REQUIRES: 
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
@@ -1046,12 +938,10 @@ function Get-UserLogonLogoffTimes {
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, Position=0)] 
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME",
         

@@ -1527,7 +1527,7 @@ Begin {
                     Program = $appname
                     Status = "Copied"
                     Time = $end
-                }#new object 
+                }#new object
             }
             catch {
                 $end = Get-Date
@@ -1550,7 +1550,7 @@ Begin {
                 Program = "NA"
                 Status = "NA"
                 Time = "NA"
-            }#new object 
+            }#new object
             $info | Select-Object ComputerName,Program,Status,Time | export-csv $ScriptWD\CopyStatus.csv -NoTypeInformation
         }
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
@@ -1579,7 +1579,7 @@ Begin {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -1591,14 +1591,14 @@ Begin {
                 Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
                 Exit
             }
-            Start-Sleep -Milliseconds $SleepTimer            
+            Start-Sleep -Milliseconds $SleepTimer
         }
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
     }
 }
-    
-    
+
+
 Function Copy-Flash {
 <#
 .Notes
@@ -1675,7 +1675,7 @@ Begin {
                     Program = $appname
                     Status = "Copied"
                     Time = $end
-                }#new object 
+                }#new object
             }
             catch {
                 $end = Get-Date
@@ -1698,7 +1698,7 @@ Begin {
                 Program = "NA"
                 Status = "NA"
                 Time = "NA"
-            }#new object 
+            }#new object
             $info | Select-Object ComputerName,Program,Status,Time | export-csv $ScriptWD\CopyStatus.csv -NoTypeInformation
         }
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
@@ -1727,7 +1727,7 @@ Begin {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -1739,14 +1739,14 @@ Begin {
                 Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
                 Exit
             }
-            Start-Sleep -Milliseconds $SleepTimer            
+            Start-Sleep -Milliseconds $SleepTimer
         }
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
     }
 }
-    
-    
+
+
 Function Copy-IE11 {
 <#
 .Notes
@@ -1823,7 +1823,7 @@ Begin {
                     Program = $appname
                     Status = "Copied"
                     Time = $end
-                }#new object 
+                }#new object
             }
             catch {
                 $end = Get-Date
@@ -1846,7 +1846,7 @@ Begin {
                 Program = "NA"
                 Status = "NA"
                 Time = "NA"
-            }#new object 
+            }#new object
             $info | Select-Object ComputerName,Program,Status,Time | export-csv $ScriptWD\CopyStatus.csv -NoTypeInformation
         }
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
@@ -1863,7 +1863,7 @@ Begin {
             $Job.Thread = $PowershellThread
             $Job.Object = $Object.ToString()
             $Jobs += $Job
-        } 
+        }
     }
     End {
         $ResultTimer = Get-Date
@@ -1875,7 +1875,7 @@ Begin {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -1887,14 +1887,14 @@ Begin {
                 Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
                 Exit
             }
-            Start-Sleep -Milliseconds $SleepTimer            
+            Start-Sleep -Milliseconds $SleepTimer
         }
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
     }
 }
-    
-    
+
+
 Function Copy-Java {
 <#
 .Notes
@@ -1971,7 +1971,7 @@ Begin {
                     Program = $appname
                     Status = "Copied"
                     Time = $end
-                }#new object 
+                }#new object
             }
             catch {
                 $end = Get-Date
@@ -1994,7 +1994,7 @@ Begin {
                 Program = "NA"
                 Status = "NA"
                 Time = "NA"
-            }#new object 
+            }#new object
             $info | Select-Object ComputerName,Program,Status,Time | export-csv $ScriptWD\CopyStatus.csv -NoTypeInformation
         }
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
@@ -2011,7 +2011,7 @@ Begin {
             $Job.Thread = $PowershellThread
             $Job.Object = $Object.ToString()
             $Jobs += $Job
-        } 
+        }
     }
     End {
         $ResultTimer = Get-Date
@@ -2023,7 +2023,7 @@ Begin {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -2035,14 +2035,14 @@ Begin {
                 Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
                 Exit
             }
-            Start-Sleep -Milliseconds $SleepTimer            
+            Start-Sleep -Milliseconds $SleepTimer
         }
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
     }
 }
-    
-    
+
+
 Function Copy-NetBanner {
 <#
 .Notes
@@ -2119,7 +2119,7 @@ Begin {
                     Program = $appname
                     Status = "Copied"
                     Time = $end
-                }#new object 
+                }#new object
             }
             catch {
                 $end = Get-Date
@@ -2142,7 +2142,7 @@ Begin {
                 Program = "NA"
                 Status = "NA"
                 Time = "NA"
-            }#new object 
+            }#new object
             $info | Select-Object ComputerName,Program,Status,Time | export-csv $ScriptWD\CopyStatus.csv -NoTypeInformation
         }
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
@@ -2171,7 +2171,7 @@ Begin {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -2183,14 +2183,14 @@ Begin {
                 Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
                 Exit
             }
-            Start-Sleep -Milliseconds $SleepTimer            
+            Start-Sleep -Milliseconds $SleepTimer
         }
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
     }
 }
-    
-    
+
+
 Function Copy-Office2016 {
 <#
 .Notes
@@ -2267,7 +2267,7 @@ Begin {
                     Program = $appname
                     Status = "Copied"
                     Time = $end
-                }#new object 
+                }#new object
             }
             catch {
                 $end = Get-Date
@@ -2290,7 +2290,7 @@ Begin {
                 Program = "NA"
                 Status = "NA"
                 Time = "NA"
-            }#new object 
+            }#new object
             $info | Select-Object ComputerName,Program,Status,Time | export-csv $ScriptWD\CopyStatus.csv -NoTypeInformation
         }
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
@@ -2319,7 +2319,7 @@ Begin {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -2331,14 +2331,14 @@ Begin {
                 Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
                 Exit
             }
-            Start-Sleep -Milliseconds $SleepTimer            
+            Start-Sleep -Milliseconds $SleepTimer
         }
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
     }
 }
-    
-    
+
+
 Function Copy-Silverlight {
 <#
 .Notes
@@ -2415,7 +2415,7 @@ Begin {
                     Program = $appname
                     Status = "Copied"
                     Time = $end
-                }#new object 
+                }#new object
             }
             catch {
                 $end = Get-Date
@@ -2438,7 +2438,7 @@ Begin {
                 Program = "NA"
                 Status = "NA"
                 Time = "NA"
-            }#new object 
+            }#new object
             $info | Select-Object ComputerName,Program,Status,Time | export-csv $ScriptWD\CopyStatus.csv -NoTypeInformation
         }
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
@@ -2467,7 +2467,7 @@ Begin {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -2479,14 +2479,14 @@ Begin {
                 Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
                 Exit
             }
-            Start-Sleep -Milliseconds $SleepTimer            
+            Start-Sleep -Milliseconds $SleepTimer
         } 
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
     }
 }
-    
-    
+
+
 Function Copy-Tanium {
 <#
 .Notes
@@ -2563,7 +2563,7 @@ Begin {
                     Program = $appname
                     Status = "Copied"
                     Time = $end
-                }#new object 
+                }#new object
             }
             catch {
                 $end = Get-Date
@@ -2586,7 +2586,7 @@ Begin {
                 Program = "NA"
                 Status = "NA"
                 Time = "NA"
-            }#new object 
+            }#new object
             $info | Select-Object ComputerName,Program,Status,Time | export-csv $ScriptWD\CopyStatus.csv -NoTypeInformation
         }
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
@@ -2615,7 +2615,7 @@ Begin {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -2627,20 +2627,20 @@ Begin {
                 Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
                 Exit
             }
-            Start-Sleep -Milliseconds $SleepTimer            
+            Start-Sleep -Milliseconds $SleepTimer
         }
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
     }
 }
-    
-    
+
+
 Function Copy-Teams {
 <#
 .Notes
     AUTHOR: Skyler Hart
     CREATED: 12/04/2019 17:43:21
-    LASTEDIT: 12/04/2019 17:45:37  
+    LASTEDIT: 12/04/2019 17:45:37
     KEYWORDS:
     REQUIRES:
         -RunAsAdministrator
@@ -2711,7 +2711,7 @@ Begin {
                     Program = $appname
                     Status = "Copied"
                     Time = $end
-                }#new object 
+                }#new object
             }
             catch {
                 $end = Get-Date
@@ -2734,7 +2734,7 @@ Begin {
                 Program = "NA"
                 Status = "NA"
                 Time = "NA"
-            }#new object 
+            }#new object
             $info | Select-Object ComputerName,Program,Status,Time | export-csv $ScriptWD\CopyStatus.csv -NoTypeInformation
         }
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
@@ -2763,7 +2763,7 @@ Begin {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -2775,14 +2775,14 @@ Begin {
                 Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
                 Exit
             }
-            Start-Sleep -Milliseconds $SleepTimer            
+            Start-Sleep -Milliseconds $SleepTimer
         }
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
     }
 }
-    
-    
+
+
 Function Copy-Titus {
 <#
 .Notes
@@ -2859,7 +2859,7 @@ Begin {
                     Program = $appname
                     Status = "Copied"
                     Time = $end
-                }#new object 
+                }#new object
             }
             catch {
                 $end = Get-Date
@@ -2882,7 +2882,7 @@ Begin {
                 Program = "NA"
                 Status = "NA"
                 Time = "NA"
-            }#new object 
+            }#new object
             $info | Select-Object ComputerName,Program,Status,Time | export-csv $ScriptWD\CopyStatus.csv -NoTypeInformation
         }
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
@@ -2911,7 +2911,7 @@ Begin {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -2923,14 +2923,14 @@ Begin {
                 Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
                 Exit
             }
-            Start-Sleep -Milliseconds $SleepTimer            
+            Start-Sleep -Milliseconds $SleepTimer
         }
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
     }
 }
-    
-    
+
+
 Function Copy-VPN {
 <#
 .Notes
@@ -3007,7 +3007,7 @@ Begin {
                     Program = $appname
                     Status = "Copied"
                     Time = $end
-                }#new object 
+                }#new object
             }
             catch {
                 $end = Get-Date
@@ -3030,7 +3030,7 @@ Begin {
                 Program = "NA"
                 Status = "NA"
                 Time = "NA"
-            }#new object 
+            }#new object
             $info | Select-Object ComputerName,Program,Status,Time | export-csv $ScriptWD\CopyStatus.csv -NoTypeInformation
         }
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
@@ -3059,7 +3059,7 @@ Begin {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -3071,14 +3071,14 @@ Begin {
                 Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
                 Exit
             }
-            Start-Sleep -Milliseconds $SleepTimer            
+            Start-Sleep -Milliseconds $SleepTimer
         }
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
     }
 }
-    
-    
+
+
 Function Copy-VLC {
 <#
 .Notes

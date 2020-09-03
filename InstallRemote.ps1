@@ -425,7 +425,7 @@ if (Test-Path $firefox) {
     $inff = Get-WmiObject -Class Win32_Product -Filter "Name LIKE '%Firefox%'"
     if ($inff -eq "") {$inff = "0.0.0.0.0.0"}
     $ipff = ($inff | Select-Object Version)[0].Version
-    
+
     if ($sv -match $ipff) {
         Write-Host "$cn`: Firefox in patches folder same as installed version. Skipping install..."
     }
@@ -576,7 +576,7 @@ if (Test-Path $patch4) {
     Start-Process $patch4 -ArgumentList "/quiet /norestart" -NoNewWindow -Wait
     Start-Sleep -Seconds 30
 }
-    
+
 if (Test-Path $patch11) {
     Write-Host "$cn`: Installing McAfee Patch 11."
     Start-Process $patch11 -ArgumentList "/quiet /norestart" -NoNewWindow -Wait
