@@ -14,7 +14,7 @@
     C:\PS>Clear-Patches
     Clears C:\Patches folder on the local computer (but not the inidividual program folders.)
 .EXAMPLE
-    C:\PS>Clear-Patches -ComputerName COMP1 
+    C:\PS>Clear-Patches -ComputerName COMP1
     Clears C:\Patches folder on the computer COMP1.
 .EXAMPLE
     C:\PS>Clear-Patches -ComputerName (gc c:\complist.txt) -Recursive
@@ -42,19 +42,19 @@
         )]
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-    
+
         [Parameter()]
         [switch]$Recursive,
 
         [Parameter()]
         [switch]$Old,
-            
+
         [Parameter()]
         [int32]$MaxThreads = 5,
-            
+
         [Parameter()]
         $SleepTimer = 200,
-            
+
         [Parameter()]
         $MaxResultTime = 1200
     )
@@ -68,13 +68,13 @@
             $Code = {
                 [CmdletBinding()]
                 Param (
-                    [Parameter(Mandatory=$true,
-                    Position=0,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true)]
+                    [Parameter(
+                        Mandatory=$true,
+                        Position=0
+                    )]
                     [string]$comp
                 )
-            
+
                 $psdpath = "\\$comp\c$"
                 $dn = $comp + "CS"
                 $patches = $dn + ":\Patches"
@@ -88,7 +88,7 @@
                         $info = New-Object -TypeName PSObject -Property @{
                             ComputerName = $Comp
                             Status = "Cleared"
-                        }#new object 
+                        }#new object
                     }
                     else {
                         $info = New-Object -TypeName PSObject -Property @{
@@ -112,13 +112,13 @@
             $Code = {
                 [CmdletBinding()]
                 Param (
-                    [Parameter(Mandatory=$true,
-                    Position=0,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true)]
+                    [Parameter(
+                        Mandatory=$true,
+                        Position=0
+                    )]
                     [string]$comp
                 )
-            
+
                 $psdpath = "\\$comp\c$"
                 $dn = $comp + "CS"
                 $patches = $dn + ":\Patches"
@@ -134,7 +134,7 @@
                         $info = New-Object -TypeName PSObject -Property @{
                             ComputerName = $Comp
                             Status = "Cleared"
-                        }#new object 
+                        }#new object
                     }
                     else {
                         $info = New-Object -TypeName PSObject -Property @{
@@ -158,10 +158,10 @@
             $Code = {
                 [CmdletBinding()]
                 Param (
-                    [Parameter(Mandatory=$true,
-                    Position=0,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true)]
+                    [Parameter(
+                        Mandatory=$true,
+                        Position=0
+                    )]
                     [string]$comp
                 )
 
@@ -179,7 +179,7 @@
                         $info = New-Object -TypeName PSObject -Property @{
                             ComputerName = $Comp
                             Status = "Cleared"
-                        }#new object 
+                        }#new object
                     }
                     else {
                         $info = New-Object -TypeName PSObject -Property @{
@@ -205,7 +205,7 @@
         ForEach ($Object in $ObjectList){
             $PowershellThread = [powershell]::Create().AddScript($Code)
             $PowershellThread.AddArgument($Object.ToString()) | out-null
-               
+
             $PowershellThread.RunspacePool = $RunspacePool
             $Handle = $PowershellThread.BeginInvoke()
             $Job = "" | Select-Object Handle, Thread, object
@@ -217,7 +217,7 @@
     }
     End {
         $ResultTimer = Get-Date
-        While (@($Jobs | Where-Object {$null -ne $_.Handle}).count -gt 0)  {            
+        While (@($Jobs | Where-Object {$null -ne $_.Handle}).count -gt 0)  {
             $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
             If ($Remaining.Length -gt 60){
                 $Remaining = $Remaining.Substring(0,60) + "..."
@@ -225,8 +225,8 @@
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
-     
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
+
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -239,7 +239,7 @@
                 Exit
             }
             Start-Sleep -Milliseconds $SleepTimer
-        } 
+        }
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
     }
@@ -291,31 +291,27 @@ Function Copy-7Zip {
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                    Position=0,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
                 )]
                 [string]$comp,
 
-                [Parameter(Mandatory=$true,
-                    Position=1,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=1
                 )]
                 [string]$app,
 
-                [Parameter(Mandatory=$true,
-                    Position=2,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=2
                 )]
                 [string]$appname,
 
-                [Parameter(Mandatory=$true,
-                    Position=4,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=3
                 )]
                 [string]$ScriptWD
             )
@@ -443,31 +439,27 @@ Function Copy-90Meter {
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                    Position=0,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
                 )]
                 [string]$comp,
 
-                [Parameter(Mandatory=$true,
-                    Position=1,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=1
                 )]
                 [string]$app,
 
-                [Parameter(Mandatory=$true,
-                    Position=2,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=2
                 )]
                 [string]$appname,
 
-                [Parameter(Mandatory=$true,
-                    Position=4,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=3
                 )]
                 [string]$ScriptWD
             )
@@ -594,31 +586,27 @@ Function Copy-ActivClient {
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                    Position=0,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
                 )]
                 [string]$comp,
 
-                [Parameter(Mandatory=$true,
-                    Position=1,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=1
                 )]
                 [string]$app,
 
-                [Parameter(Mandatory=$true,
-                    Position=2,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=2
                 )]
                 [string]$appname,
 
-                [Parameter(Mandatory=$true,
-                    Position=4,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=3
                 )]
                 [string]$ScriptWD
             )
@@ -630,7 +618,7 @@ Function Copy-ActivClient {
                     Program = $appname
                     Status = "Copied"
                     Time = $end
-                }#new object 
+                }#new object
             }
             catch {
                 $end = Get-Date
@@ -653,7 +641,7 @@ Function Copy-ActivClient {
                 Program = "NA"
                 Status = "NA"
                 Time = "NA"
-            }#new object 
+            }#new object
             $info | Select-Object ComputerName,Program,Status,Time | export-csv $ScriptWD\CopyStatus.csv -NoTypeInformation
         }
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
@@ -682,7 +670,7 @@ Function Copy-ActivClient {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -694,20 +682,20 @@ Function Copy-ActivClient {
                 Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
                 Exit
             }
-            Start-Sleep -Milliseconds $SleepTimer            
-        } 
+            Start-Sleep -Milliseconds $SleepTimer
+        }
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
     }
 }
-    
-    
+
+
 Function Copy-AdobeAcrobat {
 <#
 .Notes
     AUTHOR: Skyler Hart
     CREATED: 01/22/2019 13:47:08
-    LASTEDIT: 01/22/2019 13:47:08 
+    LASTEDIT: 01/22/2019 13:47:08
     KEYWORDS:
     REQUIRES:
         -RunAsAdministrator
@@ -745,31 +733,27 @@ Function Copy-AdobeAcrobat {
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                    Position=0,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
                 )]
                 [string]$comp,
 
-                [Parameter(Mandatory=$true,
-                    Position=1,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=1
                 )]
                 [string]$app,
 
-                [Parameter(Mandatory=$true,
-                    Position=2,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=2
                 )]
                 [string]$appname,
 
-                [Parameter(Mandatory=$true,
-                    Position=4,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=3
                 )]
                 [string]$ScriptWD
             )
@@ -781,7 +765,7 @@ Function Copy-AdobeAcrobat {
                     Program = $appname
                     Status = "Copied"
                     Time = $end
-                }#new object 
+                }#new object
             }
             catch {
                 $end = Get-Date
@@ -804,7 +788,7 @@ Function Copy-AdobeAcrobat {
                 Program = "NA"
                 Status = "NA"
                 Time = "NA"
-            }#new object 
+            }#new object
             $info | Select-Object ComputerName,Program,Status,Time | export-csv $ScriptWD\CopyStatus.csv -NoTypeInformation
         }
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
@@ -833,7 +817,7 @@ Function Copy-AdobeAcrobat {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -845,15 +829,15 @@ Function Copy-AdobeAcrobat {
                 Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
                 Exit
             }
-            Start-Sleep -Milliseconds $SleepTimer            
+            Start-Sleep -Milliseconds $SleepTimer
         }
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
     }
 }
 New-Alias -Name "Copy-Acrobat" -Value Copy-AdobeAcrobat
-    
-    
+
+
 Function Copy-Axway {
 <#
 .Notes
@@ -898,7 +882,7 @@ Function Copy-Axway {
                 Program = "NA"
                 Status = "NA"
                 Time = "NA"
-            }#new object 
+            }#new object
             $info | Select-Object ComputerName,Program,Status,Time | export-csv C:\Scripts\CopyStatus.csv -NoTypeInformation
         }
 
@@ -908,38 +892,33 @@ Function Copy-Axway {
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                    Position=0,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
                 )]
                 [string]$comp,
 
-                [Parameter(Mandatory=$true,
-                    Position=1,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=1
                 )]
                 [string]$app,
 
-                [Parameter(Mandatory=$true,
-                    Position=2,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=2
                 )]
                 [string]$appserver,
 
-                [Parameter(Mandatory=$true,
-                    Position=3,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=3
                 )]
                 [string]$appname,
 
-                [Parameter(Mandatory=$true,
-                    Position=4,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=4
                 )]
                 [string]$ScriptWD
             )
@@ -957,7 +936,7 @@ Function Copy-Axway {
                     Program = $appname
                     Status = "Copied"
                     Time = $end
-                }#new object 
+                }#new object
             }
             catch {
                 $end = Get-Date
@@ -980,7 +959,7 @@ Function Copy-Axway {
                 Program = "NA"
                 Status = "NA"
                 Time = "NA"
-            }#new object 
+            }#new object
             $info | Select-Object ComputerName,Program,Status,Time | export-csv $ScriptWD\CopyStatus.csv -NoTypeInformation
         }
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
@@ -1010,7 +989,7 @@ Function Copy-Axway {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -1022,7 +1001,7 @@ Function Copy-Axway {
                 Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
                 Exit
             }
-            Start-Sleep -Milliseconds $SleepTimer            
+            Start-Sleep -Milliseconds $SleepTimer
         }
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
@@ -1073,31 +1052,27 @@ Function Copy-Chrome {
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                    Position=0,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
                 )]
                 [string]$comp,
 
-                [Parameter(Mandatory=$true,
-                    Position=1,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=1
                 )]
                 [string]$app,
 
-                [Parameter(Mandatory=$true,
-                    Position=2,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=2
                 )]
                 [string]$appname,
 
-                [Parameter(Mandatory=$true,
-                    Position=4,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=3
                 )]
                 [string]$ScriptWD
             )
@@ -1109,7 +1084,7 @@ Function Copy-Chrome {
                     Program = $appname
                     Status = "Copied"
                     Time = $end
-                }#new object 
+                }#new object
             }
             catch {
                 $end = Get-Date
@@ -1132,7 +1107,7 @@ Function Copy-Chrome {
                 Program = "NA"
                 Status = "NA"
                 Time = "NA"
-            }#new object 
+            }#new object
             $info | Select-Object ComputerName,Program,Status,Time | export-csv $ScriptWD\CopyStatus.csv -NoTypeInformation
         }
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
@@ -1161,7 +1136,7 @@ Function Copy-Chrome {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -1173,14 +1148,14 @@ Function Copy-Chrome {
                 Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
                 Exit
             }
-            Start-Sleep -Milliseconds $SleepTimer            
-        } 
+            Start-Sleep -Milliseconds $SleepTimer
+        }
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
     }
 }
-    
-    
+
+
 Function Copy-DSET {
 <#
 .Notes
@@ -1225,31 +1200,27 @@ Begin {
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                    Position=0,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
                 )]
                 [string]$comp,
 
-                [Parameter(Mandatory=$true,
-                    Position=1,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=1
                 )]
                 [string]$app,
 
-                [Parameter(Mandatory=$true,
-                    Position=2,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=2
                 )]
                 [string]$appname,
 
-                [Parameter(Mandatory=$true,
-                    Position=4,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=3
                 )]
                 [string]$ScriptWD
             )
@@ -1261,7 +1232,7 @@ Begin {
                     Program = $appname
                     Status = "Copied"
                     Time = $end
-                }#new object 
+                }#new object
             }
             catch {
                 $end = Get-Date
@@ -1284,7 +1255,7 @@ Begin {
                 Program = "NA"
                 Status = "NA"
                 Time = "NA"
-            }#new object 
+            }#new object
             $info | Select-Object ComputerName,Program,Status,Time | export-csv $ScriptWD\CopyStatus.csv -NoTypeInformation
         }
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
@@ -1313,7 +1284,7 @@ Begin {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -1325,14 +1296,14 @@ Begin {
                 Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
                 Exit
             }
-            Start-Sleep -Milliseconds $SleepTimer            
+            Start-Sleep -Milliseconds $SleepTimer
         }
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
     }
 }
-    
-    
+
+
 Function Copy-Encase {
 <#
 .Notes
@@ -1376,31 +1347,27 @@ Function Copy-Encase {
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                    Position=0,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
                 )]
                 [string]$comp,
 
-                [Parameter(Mandatory=$true,
-                    Position=1,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=1
                 )]
                 [string]$app,
 
-                [Parameter(Mandatory=$true,
-                    Position=2,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=2
                 )]
                 [string]$appname,
 
-                [Parameter(Mandatory=$true,
-                    Position=4,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=3
                 )]
                 [string]$ScriptWD
             )
@@ -1412,7 +1379,7 @@ Function Copy-Encase {
                     Program = $appname
                     Status = "Copied"
                     Time = $end
-                }#new object 
+                }#new object
             }
             catch {
                 $end = Get-Date
@@ -1435,7 +1402,7 @@ Function Copy-Encase {
                 Program = "NA"
                 Status = "NA"
                 Time = "NA"
-            }#new object 
+            }#new object
             $info | Select-Object ComputerName,Program,Status,Time | export-csv $ScriptWD\CopyStatus.csv -NoTypeInformation
         }
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
@@ -1464,7 +1431,7 @@ Function Copy-Encase {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -1476,14 +1443,14 @@ Function Copy-Encase {
                 Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
                 Exit
             }
-            Start-Sleep -Milliseconds $SleepTimer            
+            Start-Sleep -Milliseconds $SleepTimer
         }
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
     }
 }
-    
-    
+
+
 Function Copy-Firefox {
 <#
 .Notes
@@ -1528,31 +1495,27 @@ Begin {
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                    Position=0,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
                 )]
                 [string]$comp,
 
-                [Parameter(Mandatory=$true,
-                    Position=1,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=1
                 )]
                 [string]$app,
 
-                [Parameter(Mandatory=$true,
-                    Position=2,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=2
                 )]
                 [string]$appname,
 
-                [Parameter(Mandatory=$true,
-                    Position=4,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=3
                 )]
                 [string]$ScriptWD
             )
@@ -1680,31 +1643,27 @@ Begin {
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                    Position=0,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
                 )]
                 [string]$comp,
 
-                [Parameter(Mandatory=$true,
-                    Position=1,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=1
                 )]
                 [string]$app,
 
-                [Parameter(Mandatory=$true,
-                    Position=2,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=2
                 )]
                 [string]$appname,
 
-                [Parameter(Mandatory=$true,
-                    Position=4,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=3
                 )]
                 [string]$ScriptWD
             )
@@ -1832,31 +1791,27 @@ Begin {
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                    Position=0,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
                 )]
                 [string]$comp,
 
-                [Parameter(Mandatory=$true,
-                    Position=1,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=1
                 )]
                 [string]$app,
 
-                [Parameter(Mandatory=$true,
-                    Position=2,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=2
                 )]
                 [string]$appname,
 
-                [Parameter(Mandatory=$true,
-                    Position=4,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=3
                 )]
                 [string]$ScriptWD
             )
@@ -1984,31 +1939,27 @@ Begin {
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                    Position=0,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
                 )]
                 [string]$comp,
 
-                [Parameter(Mandatory=$true,
-                    Position=1,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=1
                 )]
                 [string]$app,
 
-                [Parameter(Mandatory=$true,
-                    Position=2,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=2
                 )]
                 [string]$appname,
 
-                [Parameter(Mandatory=$true,
-                    Position=4,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=3
                 )]
                 [string]$ScriptWD
             )
@@ -2136,31 +2087,27 @@ Begin {
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                    Position=0,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
                 )]
                 [string]$comp,
 
-                [Parameter(Mandatory=$true,
-                    Position=1,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=1
                 )]
                 [string]$app,
 
-                [Parameter(Mandatory=$true,
-                    Position=2,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=2
                 )]
                 [string]$appname,
 
-                [Parameter(Mandatory=$true,
-                    Position=4,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=3
                 )]
                 [string]$ScriptWD
             )
@@ -2288,31 +2235,27 @@ Begin {
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                    Position=0,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
                 )]
                 [string]$comp,
 
-                [Parameter(Mandatory=$true,
-                    Position=1,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=1
                 )]
                 [string]$app,
 
-                [Parameter(Mandatory=$true,
-                    Position=2,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=2
                 )]
                 [string]$appname,
 
-                [Parameter(Mandatory=$true,
-                    Position=4,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=3
                 )]
                 [string]$ScriptWD
             )
@@ -2440,31 +2383,27 @@ Begin {
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                    Position=0,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
                 )]
                 [string]$comp,
 
-                [Parameter(Mandatory=$true,
-                    Position=1,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=1
                 )]
                 [string]$app,
 
-                [Parameter(Mandatory=$true,
-                    Position=2,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=2
                 )]
                 [string]$appname,
 
-                [Parameter(Mandatory=$true,
-                    Position=4,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=3
                 )]
                 [string]$ScriptWD
             )
@@ -2592,31 +2531,27 @@ Begin {
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                    Position=0,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
                 )]
                 [string]$comp,
 
-                [Parameter(Mandatory=$true,
-                    Position=1,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=1
                 )]
                 [string]$app,
 
-                [Parameter(Mandatory=$true,
-                    Position=2,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=2
                 )]
                 [string]$appname,
 
-                [Parameter(Mandatory=$true,
-                    Position=4,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=3
                 )]
                 [string]$ScriptWD
             )
@@ -2744,31 +2679,27 @@ Begin {
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                    Position=0,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
                 )]
                 [string]$comp,
 
-                [Parameter(Mandatory=$true,
-                    Position=1,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=1
                 )]
                 [string]$app,
 
-                [Parameter(Mandatory=$true,
-                    Position=2,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=2
                 )]
                 [string]$appname,
 
-                [Parameter(Mandatory=$true,
-                    Position=4,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=3
                 )]
                 [string]$ScriptWD
             )
@@ -2896,31 +2827,27 @@ Begin {
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                    Position=0,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
                 )]
                 [string]$comp,
 
-                [Parameter(Mandatory=$true,
-                    Position=1,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=1
                 )]
                 [string]$app,
 
-                [Parameter(Mandatory=$true,
-                    Position=2,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=2
                 )]
                 [string]$appname,
 
-                [Parameter(Mandatory=$true,
-                    Position=4,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=3
                 )]
                 [string]$ScriptWD
             )
@@ -3048,31 +2975,27 @@ Begin {
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                    Position=0,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
                 )]
                 [string]$comp,
 
-                [Parameter(Mandatory=$true,
-                    Position=1,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=1
                 )]
                 [string]$app,
 
-                [Parameter(Mandatory=$true,
-                    Position=2,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=2
                 )]
                 [string]$appname,
 
-                [Parameter(Mandatory=$true,
-                    Position=4,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=3
                 )]
                 [string]$ScriptWD
             )
@@ -3200,31 +3123,27 @@ Begin {
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                    Position=0,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
                 )]
                 [string]$comp,
 
-                [Parameter(Mandatory=$true,
-                    Position=1,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=1
                 )]
                 [string]$app,
 
-                [Parameter(Mandatory=$true,
-                    Position=2,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=2
                 )]
                 [string]$appname,
 
-                [Parameter(Mandatory=$true,
-                    Position=4,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=3
                 )]
                 [string]$ScriptWD
             )
@@ -3352,31 +3271,27 @@ Begin {
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                    Position=0,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
                 )]
                 [string]$comp,
 
-                [Parameter(Mandatory=$true,
-                    Position=1,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=1
                 )]
                 [string]$app,
 
-                [Parameter(Mandatory=$true,
-                    Position=2,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=2
                 )]
                 [string]$appname,
 
-                [Parameter(Mandatory=$true,
-                    Position=4,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=3
                 )]
                 [string]$ScriptWD
             )
@@ -3504,31 +3419,27 @@ Begin {
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                    Position=0,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
                 )]
                 [string]$comp,
 
-                [Parameter(Mandatory=$true,
-                    Position=1,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=1
                 )]
                 [string]$app,
 
-                [Parameter(Mandatory=$true,
-                    Position=2,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=2
                 )]
                 [string]$appname,
 
-                [Parameter(Mandatory=$true,
-                    Position=4,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=3
                 )]
                 [string]$ScriptWD
             )
@@ -3656,31 +3567,27 @@ Begin {
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                    Position=0,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
                 )]
                 [string]$comp,
 
-                [Parameter(Mandatory=$true,
-                    Position=1,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=1
                 )]
                 [string]$app,
 
-                [Parameter(Mandatory=$true,
-                    Position=2,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=2
                 )]
                 [string]$appname,
 
-                [Parameter(Mandatory=$true,
-                    Position=4,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=3
                 )]
                 [string]$ScriptWD
             )
@@ -3808,31 +3715,27 @@ Begin {
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                    Position=0,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
                 )]
                 [string]$comp,
 
-                [Parameter(Mandatory=$true,
-                    Position=1,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=1
                 )]
                 [string]$app,
 
-                [Parameter(Mandatory=$true,
-                    Position=2,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=2
                 )]
                 [string]$appname,
 
-                [Parameter(Mandatory=$true,
-                    Position=4,
-                    ValueFromPipeline = $true,
-                    ValueFromPipelineByPropertyName = $true
+                [Parameter(
+                    Mandatory=$true,
+                    Position=3
                 )]
                 [string]$ScriptWD
             )
@@ -7974,9 +7877,7 @@ Function Get-ENSStatus {
             } | Select-Object ComputerName,FrameworkInstalled,FrameworkVersion,ePOServerList,LastServerComms,LastSecurityUpdateCheck
         }#if host version gt 2
         else {
-            Write-Host "  PowerShell must be at least version 3. Current version:  $version  `n  Click OK to continue.  " -BackgroundColor Red -ForegroundColor Black
-            [void][reflection.assembly]::LoadWithPartialName("System.Windows.Forms")
-            [System.Windows.Forms.MessageBox]::Show("                               Error:`n`nPowerShell must be at least version 3.`n`nCurrent version is:  $version");
+            Write-Host "  PowerShell must be at least version 3. Current version:  $version" -BackgroundColor Red -ForegroundColor Black
         }#else host version
     }#foreach computer
 }#get ensstatus
