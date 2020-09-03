@@ -584,7 +584,7 @@ function Open-iLO {
 
         [Parameter(Mandatory=$false)]
         [Switch]$Edge,
-    
+
         [Parameter(Mandatory=$false)]
         [Switch]$Firefox,
 
@@ -652,7 +652,7 @@ Function Open-SharedFolders {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
         [string]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -733,7 +733,7 @@ Function Restart-ActiveDirectory {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string]$DC = "$env:COMPUTERNAME",
         [Switch]$All
@@ -770,7 +770,7 @@ Function Restart-DNS {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string]$DC = "$env:COMPUTERNAME",
         [Switch]$All
@@ -807,7 +807,7 @@ Function Restart-KDC {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string]$DC = "$env:COMPUTERNAME",
         [Switch]$All

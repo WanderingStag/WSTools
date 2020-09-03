@@ -5,7 +5,7 @@
     CREATED: 04/06/2020 19:39:42
     LASTEDIT: 04/06/2020 20:10:59
     KEYWORDS:
-    REQUIRES: 
+    REQUIRES:
         -Version 3.0
         -RunAsAdministrator
 .LINK
@@ -21,13 +21,13 @@
         [ValidateNotNullOrEmpty()]
         [Alias('Username','SamAccountName')]
         [string]$User,
-        
+
         [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
             Mandatory=$false,
             Position=1,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
-        )] 
+        )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME",
 
@@ -78,7 +78,7 @@ function Find-UserProfile {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0)] 
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME",
 
@@ -103,7 +103,7 @@ function Find-UserProfile {
         if (Test-Connection $Comp -quiet) {
         try {
             New-PSDrive -Name ProfCk -PSProvider FileSystem -root "$compath" -ErrorAction Stop | Out-Null
-        
+
             foreach ($User in $Username) {
                 try {
                     $modtime = $null
@@ -182,7 +182,7 @@ function Find-UserProfileWithPSTSearch {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME",
 
@@ -206,7 +206,7 @@ function Find-UserProfileWithPSTSearch {
         $compath = "\\" + $Comp + "\c$"
         try {
             New-PSDrive -Name ProfCk -PSProvider FileSystem -root "$compath" -ErrorAction Stop | Out-Null
-        
+
             foreach ($User in $Username) {
                 try {
                     $modtime = $null
@@ -303,46 +303,43 @@ function Find-UserProfileWithPSTSearch {
 
 
 function Export-MessagesToPST {
-<# 
-   .Synopsis 
+<#
+   .Synopsis
     This function exports a users mailbox to a pst.
    .Description
     This function exports a users mailbox to a pst.
-   .Example 
+   .Example
     Export-MessagesToPST -TargetUserAlias joe.snuffy
-    Exports joe.snuffy's mailbox to C:\Users\Desktop\joe.snuffy_mailboxyyyyMMddhhmm.pst where yyyyMMddhhmm is 
+    Exports joe.snuffy's mailbox to C:\Users\Desktop\joe.snuffy_mailboxyyyyMMddhhmm.pst where yyyyMMddhhmm is
     the date and time the mailbox was exported.
-   .Example 
+   .Example
     Export-MessagesToPST -TargetUserAlias joe.snuffy -ExportPath "c:\test"
-    Exports joe.snuffy's mailbox to C:\test\joe.snuffy_mailboxyyyyMMddhhmm.pst where yyyyMMddhhmm is the date 
+    Exports joe.snuffy's mailbox to C:\test\joe.snuffy_mailboxyyyyMMddhhmm.pst where yyyyMMddhhmm is the date
     and time the mailbox was exported.  
    .Parameter TargetUserAlias
     Mandatory parameter. Specify the users alias in Exchange or primary smtp address.
    .Parameter ExportPath
     By default saves to the logged on users desktop. You can specify where to save the pst to.
-   .Notes 
-    NAME: Export-MessagesToPST 
+   .Notes
     AUTHOR: Skyler Hart
     CREATED: 01/19/2014 01:20:00
-    LASTEDIT: 08/18/2017 20:58:26 
+    LASTEDIT: 08/18/2017 20:58:26
     KEYWORDS: Exchange, Mailbox, PST, export, InTh, Insider Threat
-    REQUIRES: 
+    REQUIRES:
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory=$true, Position=0)] 
         [string]$TargetUserAlias,
-      
-        [Parameter(Mandatory=$false, Position=1)] 
-        [string]$ExportPath = "$env:USERPROFILE\Desktop"       
-    ) 
-    
+
+        [Parameter(Mandatory=$false, Position=1)]
+        [string]$ExportPath = "$env:USERPROFILE\Desktop"
+    )
+
     $wmiq = Get-WmiObject win32_operatingsystem | Select-Object OSArchitecture
     if ($wmiq -like "*64-bit*") {
         [void][reflection.assembly]::LoadWithPartialName("System.Windows.Forms")
@@ -365,32 +362,19 @@ function Export-MessagesToPST {
 
 
 function Get-ExchangeLastLoggedOnUser {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 20:58:33 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 08/18/2017 20:58:33
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
  #Get-ADUser -Filter {EmailAddress -like "*"} -properties * | select EmailAddress | Export-Csv .\users.csv -NoTypeInformation
     $userfile = ".\users.csv"
     $users = "$userfile"

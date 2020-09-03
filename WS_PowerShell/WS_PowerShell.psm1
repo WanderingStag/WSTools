@@ -1,10 +1,10 @@
 ﻿Function Add-DateTime {
 <#
-   .Synopsis 
-    This function adds the date and time at current insertion point  
+   .Synopsis
+    This function adds the date and time at current insertion point.
    .Example
     Add-DateTime
-    Adds date and time at current insertion point in a PowerShell ISE window 
+    Adds date and time at current insertion point in a PowerShell ISE window.
    .Notes
     AUTHOR: Skyler Hart
     CREATED: 08/19/2017 19:51:23
@@ -12,12 +12,12 @@
     KEYWORDS: Scripting Techniques, Windows PowerShell ISE
 .LINK
     https://wstools.dev
-#Requires -Version 2.0 
-#> 
-    $timeText = @" 
-$(Get-Date) 
+#Requires -Version 2.0
+#>
+    $timeText = @"
+$(Get-Date)
 "@
-    $psise.CurrentFile.Editor.InsertText($timeText) 
+    $psise.CurrentFile.Editor.InsertText($timeText)
 }
 
 
@@ -37,25 +37,25 @@ Function Add-DomainCheck {
     https://wstools.dev
 #>
 
-    $domainText = @" 
+    $domainText = @"
     if (`$env:USERDNSDOMAIN -match "skynet") {
-        
+
     }#if skynet
 
     elseif (`$env:USERDNSDOMAIN -match "area") {
-        
+
     }#if area
 
     elseif (`$env:USERDNSDOMAIN -like "*.ogn.*") {
-        
+
     }#if tic
 
     elseif (`$env:USERDNSDOMAIN -eq "lab.local") {
-        
+
     }#if virtual lab
 
     elseif (`$env:USERDNSDOMAIN -match ".smil.") {
-        
+
     }#secure
 "@
     $psise.CurrentFile.Editor.InsertText($domainText)
@@ -81,7 +81,7 @@ Function Add-Function {
     Param (
         [Parameter(Mandatory=$false)]
         [Switch]$Browsers,
-      
+
         [Parameter(Mandatory=$false)]
         [Switch]$Object,
 
@@ -106,13 +106,13 @@ if ($Browsers) {
 
         [Parameter(Mandatory=`$false)]
         [Switch]`$Chrome,
-      
+
         [Parameter(Mandatory=`$false)]
         [Switch]`$Edge,
-      
+
         [Parameter(Mandatory=`$false)]
         [Switch]`$Firefox,
-        
+
         [Parameter(Mandatory=`$false)]
         [Switch]`$InternetExplorer
 "@
@@ -160,7 +160,7 @@ if ($User) {
     $userText2 = @"
 
     foreach (`$user in `$UserName) {
-        
+
     }
 "@
 }
@@ -173,29 +173,27 @@ else {
 
     $functionText = @"
 Function {
-<# 
-   .Synopsis 
+<#
+   .Synopsis
     This does that
    .Description
     This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
+   .Example
+    Example-
+    Example- accomplishes
    .Parameter ComputerName
     Specifies the computer or computers$userHelp$browserHelp
-   .Notes 
-    NAME: FUNCTIONNAME 
-    AUTHOR: 
+   .Notes
+    AUTHOR:
     CREATED: $(Get-Date)
-    LASTEDIT: $(Get-Date) 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: $(Get-Date)
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+   .Link
     https://wstools.dev
 #>
     [CmdletBinding()]
@@ -213,7 +211,7 @@ Function {
     )
 
     foreach (`$comp in `$ComputerName) {
-        
+
     }
 $userText2
 $browserText2
@@ -242,34 +240,32 @@ Function Add-Help {
 .LINK
     https://wstools.dev
 #>
-    $helpText = @" 
-<# 
-   .Synopsis 
+    $helpText = @"
+<#
+   .Synopsis
     This does that
    .Description
     This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
+   .Example
+    Example-
+    Example- accomplishes
    .Parameter PARAMETER
     The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
-    AUTHOR: 
+   .Notes
+    AUTHOR:
     CREATED: $(Get-Date)
-    LASTEDIT: $(Get-Date) 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: $(Get-Date)
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
-   .Link 
+   .Link
     https://wstools.dev
-#> 
+#>
 "@
-    $psise.CurrentFile.Editor.InsertText($helpText) 
+    $psise.CurrentFile.Editor.InsertText($helpText)
 }
 
 
@@ -298,7 +294,7 @@ Function Add-InternetBrowsersBlock {
         (New-Object -com Shell.Application).Open(`$URL)
     }
 "@
-    $psise.CurrentFile.Editor.InsertText($browserblockText) 
+    $psise.CurrentFile.Editor.InsertText($browserblockText)
 }
 
 
@@ -312,7 +308,7 @@ Function Add-ParamBlock {
 .LINK
     https://wstools.dev
 #>
-    $paramblockText = @" 
+    $paramblockText = @"
     [CmdletBinding()]
     Param (
         [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
@@ -320,17 +316,17 @@ Function Add-ParamBlock {
             Position=0,
             ValueFromPipeline = `$true,
             ValueFromPipelineByPropertyName = `$true
-        )] 
+        )]
         [ValidateSet('Info','Error','Warning')]
         [ValidateNotNullOrEmpty()]
         [Alias('Host','Name','Computer','CN')]
         [string[]]`$ComputerName = "`$env:COMPUTERNAME",
 
-        [Parameter()] 
+        [Parameter()]
         [Switch]`$Switch
     ) 
 "@
-    $psise.CurrentFile.Editor.InsertText($paramblockText) 
+    $psise.CurrentFile.Editor.InsertText($paramblockText)
 }
 
 
@@ -344,20 +340,20 @@ Function Add-ParamInternetBrowser {
 .LINK
     https://wstools.dev
 #>
-    $paramIBText = @" 
+    $paramIBText = @"
         [Parameter(Mandatory=`$false)]
         [Switch]`$Chrome,
-      
+
         [Parameter(Mandatory=`$false)]
         [Switch]`$Edge,
-      
+
         [Parameter(Mandatory=`$false)]
         [Switch]`$Firefox,
-        
+
         [Parameter(Mandatory=`$false)]
         [Switch]`$InternetExplorer
 "@
-    $psise.CurrentFile.Editor.InsertText($paramIBText) 
+    $psise.CurrentFile.Editor.InsertText($paramIBText)
 }
 
 
@@ -398,7 +394,7 @@ Function Add-ProgressBar {
     $objectText = @"
 `$i = 0
 `$number = `$ComputerName.length
-    
+
 #Progress Bar
 if (`$number -gt "1") {
     `$i++
@@ -426,7 +422,7 @@ Function Add-PSObject {
         [Parameter()] 
         [Switch]$CustomObject
     ) 
-    
+
     if ($CustomObject) {
         $objectText = @" 
 `$object = [ordered]@{
@@ -442,10 +438,10 @@ Function Add-PSObject {
         $objectText = @" 
 New-Object -TypeName PSObject -Property @{
     ComputerName = `$comp
-}#new object 
+}#new object
 "@
     }#else
-    $psise.CurrentFile.Editor.InsertText($objectText) 
+    $psise.CurrentFile.Editor.InsertText($objectText)
 }
 
 

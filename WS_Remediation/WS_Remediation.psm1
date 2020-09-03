@@ -2480,7 +2480,7 @@ Begin {
                 Exit
             }
             Start-Sleep -Milliseconds $SleepTimer
-        } 
+        }
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
     }
@@ -3155,7 +3155,7 @@ Begin {
                     Program = $appname
                     Status = "Copied"
                     Time = $end
-                }#new object 
+                }#new object
             }
             catch {
                 $end = Get-Date
@@ -3178,7 +3178,7 @@ Begin {
                 Program = "NA"
                 Status = "NA"
                 Time = "NA"
-            }#new object 
+            }#new object
             $info | Select-Object ComputerName,Program,Status,Time | export-csv $ScriptWD\CopyStatus.csv -NoTypeInformation
         }
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
@@ -3207,7 +3207,7 @@ Begin {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -3219,14 +3219,14 @@ Begin {
                 Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
                 Exit
             }
-            Start-Sleep -Milliseconds $SleepTimer            
+            Start-Sleep -Milliseconds $SleepTimer
         }
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
     }
 }
-    
-    
+
+
 Function Copy-Wireshark {
 <#
 .Notes
@@ -3303,7 +3303,7 @@ Begin {
                     Program = $appname
                     Status = "Copied"
                     Time = $end
-                }#new object 
+                }#new object
             }
             catch {
                 $end = Get-Date
@@ -3326,7 +3326,7 @@ Begin {
                 Program = "NA"
                 Status = "NA"
                 Time = "NA"
-            }#new object 
+            }#new object
             $info | Select-Object ComputerName,Program,Status,Time | export-csv $ScriptWD\CopyStatus.csv -NoTypeInformation
         }
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
@@ -3355,7 +3355,7 @@ Begin {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -3367,14 +3367,14 @@ Begin {
                 Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
                 Exit
             }
-            Start-Sleep -Milliseconds $SleepTimer            
+            Start-Sleep -Milliseconds $SleepTimer
         }
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
     }
 }
-    
-    
+
+
 Function Copy-WMF3 {
 <#
 .Notes
@@ -3451,7 +3451,7 @@ Begin {
                     Program = $appname
                     Status = "Copied"
                     Time = $end
-                }#new object 
+                }#new object
             }
             catch {
                 $end = Get-Date
@@ -3474,7 +3474,7 @@ Begin {
                 Program = "NA"
                 Status = "NA"
                 Time = "NA"
-            }#new object 
+            }#new object
             $info | Select-Object ComputerName,Program,Status,Time | export-csv $ScriptWD\CopyStatus.csv -NoTypeInformation
         }
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
@@ -3503,7 +3503,7 @@ Begin {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -3515,14 +3515,14 @@ Begin {
                 Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
                 Exit
             }
-            Start-Sleep -Milliseconds $SleepTimer            
+            Start-Sleep -Milliseconds $SleepTimer
         }
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
     }
 }
-    
-    
+
+
 Function Copy-WMF4 {
 <#
 .Notes
@@ -3599,7 +3599,7 @@ Begin {
                     Program = $appname
                     Status = "Copied"
                     Time = $end
-                }#new object 
+                }#new object
             }
             catch {
                 $end = Get-Date
@@ -3622,7 +3622,7 @@ Begin {
                 Program = "NA"
                 Status = "NA"
                 Time = "NA"
-            }#new object 
+            }#new object
             $info | Select-Object ComputerName,Program,Status,Time | export-csv $ScriptWD\CopyStatus.csv -NoTypeInformation
         }
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
@@ -3651,7 +3651,7 @@ Begin {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -3663,14 +3663,14 @@ Begin {
                 Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
                 Exit
             }
-            Start-Sleep -Milliseconds $SleepTimer            
+            Start-Sleep -Milliseconds $SleepTimer
         }
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
     }
 }
-    
-    
+
+
 Function Copy-WMF5 {
 <#
 .Notes
@@ -3747,7 +3747,7 @@ Begin {
                     Program = $appname
                     Status = "Copied"
                     Time = $end
-                }#new object 
+                }#new object
             }
             catch {
                 $end = Get-Date
@@ -3770,7 +3770,7 @@ Begin {
                 Program = "NA"
                 Status = "NA"
                 Time = "NA"
-            }#new object 
+            }#new object
             $info | Select-Object ComputerName,Program,Status,Time | export-csv $ScriptWD\CopyStatus.csv -NoTypeInformation
         }
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
@@ -3799,7 +3799,7 @@ Begin {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -3811,7 +3811,7 @@ Begin {
                 Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
                 Exit
             }
-            Start-Sleep -Milliseconds $SleepTimer            
+            Start-Sleep -Milliseconds $SleepTimer
         }
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
@@ -3847,9 +3847,7 @@ Function Install-Patches {
     Param (
         [Parameter(
             Mandatory=$false,
-            Position=0,
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true
+            Position=0
         )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
@@ -3903,13 +3901,13 @@ Function Uninstall-7Zip {
         )]
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-        
+
         [Parameter()]
         [int32]$MaxThreads = 5,
-        
+
         [Parameter()]
         $SleepTimer = 200,
-        
+
         [Parameter()]
         $MaxResultTime = 1200
     )
@@ -3918,31 +3916,31 @@ Function Uninstall-7Zip {
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
-        
+
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                Position=0,
-                ValueFromPipeline = $true,
-                ValueFromPipelineByPropertyName = $true)]
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
+                )]
                 [string]$comp
             )
-        
+
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name='7-Zip%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
                 New-Object -TypeName PSObject -Property @{
                     ComputerName = $comp
                     Program = "7-Zip"
                     Status = "Removed"
-                }#new object 
+                }#new object
             }#try
             catch {
                 New-Object -TypeName PSObject -Property @{
                     ComputerName = $comp
                     Program = "7-Zip"
                     Status = "Failed"
-                }#new object 
+                }#new object
             }#catch
         }#end code block
         $Jobs = @()
@@ -3952,7 +3950,6 @@ Function Uninstall-7Zip {
         ForEach ($Object in $ObjectList){
             $PowershellThread = [powershell]::Create().AddScript($Code)
             $PowershellThread.AddArgument($Object.ToString()) | out-null
-            
             $PowershellThread.RunspacePool = $RunspacePool
             $Handle = $PowershellThread.BeginInvoke()
             $Job = "" | Select-Object Handle, Thread, object
@@ -3965,7 +3962,6 @@ Function Uninstall-7Zip {
     End {
         $ResultTimer = Get-Date
         While (@($Jobs | Where-Object {$null -ne $_.Handle}).count -gt 0)  {
-        
             $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
             If ($Remaining.Length -gt 60){
                 $Remaining = $Remaining.Substring(0,60) + "..."
@@ -3973,8 +3969,7 @@ Function Uninstall-7Zip {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
- 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -3987,8 +3982,7 @@ Function Uninstall-7Zip {
                 Exit
             }
             Start-Sleep -Milliseconds $SleepTimer
-        
-        } 
+        }
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
     }
@@ -4017,32 +4011,31 @@ Function Uninstall-90Meter {
         )]
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-        
+
         [Parameter()]
         [int32]$MaxThreads = 5,
-        
+
         [Parameter()]
         $SleepTimer = 200,
-        
+
         [Parameter()]
         $MaxResultTime = 1200
     )
-
     Begin {
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
-        
+
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                Position=0,
-                ValueFromPipeline = $true,
-                ValueFromPipelineByPropertyName = $true)]
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
+                )]
                 [string]$comp
             )
-        
+
             try {
                 $uninstall =  Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList "cmd /c c:\windows\system32\msiexec.exe /uninstall {54C965FF-E457-4993-A083-61B9A6AEFEC1} /quiet /norestart" -ErrorAction Stop #DevSkim: ignore DS104456
                 $uninstall
@@ -4052,27 +4045,23 @@ Function Uninstall-90Meter {
                     ComputerName = $comp
                     Program = "90Meter"
                     Status = "Removed"
-                }#new object 
+                }#new object
             }#try
             catch {
                 New-Object -TypeName PSObject -Property @{
                     ComputerName = $comp
                     Program = "90Meter"
                     Status = "Failed"
-                }#new object 
+                }#new object
             }#catch
-
         }#end code block
-        
         $Jobs = @()
     }
- 
     Process{
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
         ForEach ($Object in $ObjectList){
             $PowershellThread = [powershell]::Create().AddScript($Code)
             $PowershellThread.AddArgument($Object.ToString()) | out-null
-            
             $PowershellThread.RunspacePool = $RunspacePool
             $Handle = $PowershellThread.BeginInvoke()
             $Job = "" | Select-Object Handle, Thread, object
@@ -4081,13 +4070,10 @@ Function Uninstall-90Meter {
             $Job.Object = $Object.ToString()
             $Jobs += $Job
         }
-        
     }
- 
     End{
         $ResultTimer = Get-Date
         While (@($Jobs | Where-Object {$null -ne $_.Handle}).count -gt 0)  {
-        
             $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
             If ($Remaining.Length -gt 60){
                 $Remaining = $Remaining.Substring(0,60) + "..."
@@ -4096,7 +4082,7 @@ Function Uninstall-90Meter {
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
                 -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
- 
+
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -4109,7 +4095,6 @@ Function Uninstall-90Meter {
                 Exit
             }
             Start-Sleep -Milliseconds $SleepTimer
-        
         } 
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
@@ -4118,95 +4103,75 @@ Function Uninstall-90Meter {
 
 
 Function Uninstall-AdobeAir {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 08/18/2017 21:08:38
-    LASTEDIT: 07/22/2019 20:23:33 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 07/22/2019 20:23:33
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
             Mandatory=$true,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
-        )] 
+        )]
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-        
+
         [Parameter()]
         [int32]$MaxThreads = 5,
-        
+
         [Parameter()]
         $SleepTimer = 200,
-        
+
         [Parameter()]
         $MaxResultTime = 1200
     )
-
     Begin{
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
-        
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                Position=0,
-                ValueFromPipeline = $true,
-                ValueFromPipelineByPropertyName = $true)]
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
+                )]
                 [string]$comp
             )
-        
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name LIKE 'Adobe Air%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
                 New-Object -TypeName PSObject -Property @{
                     ComputerName = $comp
                     Program = "Adobe Air"
                     Status = "Removed"
-                }#new object 
+                }#new object
             }#try
             catch {
                 New-Object -TypeName PSObject -Property @{
                     ComputerName = $comp
                     Program = "Adobe Air"
                     Status = "Failed"
-                }#new object 
+                }#new object
             }#catch
-
         }#end code block
-        
         $Jobs = @()
     }
- 
     Process{
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
         ForEach ($Object in $ObjectList){
             $PowershellThread = [powershell]::Create().AddScript($Code)
             $PowershellThread.AddArgument($Object.ToString()) | out-null
-            
             $PowershellThread.RunspacePool = $RunspacePool
             $Handle = $PowershellThread.BeginInvoke()
             $Job = "" | Select-Object Handle, Thread, object
@@ -4215,13 +4180,10 @@ Function Uninstall-AdobeAir {
             $Job.Object = $Object.ToString()
             $Jobs += $Job
         }
-        
     }
- 
     End{
         $ResultTimer = Get-Date
         While (@($Jobs | Where-Object {$null -ne $_.Handle}).count -gt 0)  {
-        
             $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
             If ($Remaining.Length -gt 60){
                 $Remaining = $Remaining.Substring(0,60) + "..."
@@ -4229,8 +4191,7 @@ Function Uninstall-AdobeAir {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
- 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -4243,7 +4204,6 @@ Function Uninstall-AdobeAir {
                 Exit
             }
             Start-Sleep -Milliseconds $SleepTimer
-        
         } 
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
@@ -4252,68 +4212,52 @@ Function Uninstall-AdobeAir {
 
 
 Function Uninstall-AdobeFlash {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 08/18/2017 21:08:42
-    LASTEDIT: 07/22/2019 20:26:17 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 07/22/2019 20:26:17
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
             Mandatory=$true,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
-        )] 
+        )]
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-        
+
         [Parameter()]
         [int32]$MaxThreads = 5,
-        
+
         [Parameter()]
         $SleepTimer = 200,
-        
+
         [Parameter()]
         $MaxResultTime = 1200
     )
-
-    Begin{
+    Begin {
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
-        
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                Position=0,
-                ValueFromPipeline = $true,
-                ValueFromPipelineByPropertyName = $true)]
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
+                )]
                 [string]$comp
             )
-        
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name LIKE 'Adobe Flash%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
                 New-Object -TypeName PSObject -Property @{
@@ -4329,18 +4273,14 @@ Function Uninstall-AdobeFlash {
                     Status = "Failed"
                 }#new object 
             }#catch
-
         }#end code block
-        
         $Jobs = @()
     }
- 
-    Process{
+    Process {
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
         ForEach ($Object in $ObjectList){
             $PowershellThread = [powershell]::Create().AddScript($Code)
             $PowershellThread.AddArgument($Object.ToString()) | out-null
-            
             $PowershellThread.RunspacePool = $RunspacePool
             $Handle = $PowershellThread.BeginInvoke()
             $Job = "" | Select-Object Handle, Thread, object
@@ -4349,13 +4289,10 @@ Function Uninstall-AdobeFlash {
             $Job.Object = $Object.ToString()
             $Jobs += $Job
         }
-        
     }
- 
-    End{
+    End {
         $ResultTimer = Get-Date
         While (@($Jobs | Where-Object {$null -ne $_.Handle}).count -gt 0)  {
-        
             $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
             If ($Remaining.Length -gt 60){
                 $Remaining = $Remaining.Substring(0,60) + "..."
@@ -4364,7 +4301,6 @@ Function Uninstall-AdobeFlash {
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
                 -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
- 
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -4377,7 +4313,6 @@ Function Uninstall-AdobeFlash {
                 Exit
             }
             Start-Sleep -Milliseconds $SleepTimer
-        
         } 
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
@@ -4387,95 +4322,75 @@ New-Alias -Name "Uninstall-Flash" -Value Uninstall-AdobeFlash
 
 
 Function Uninstall-AdobePro {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 08/18/2017 21:08:49
-    LASTEDIT: 07/22/2019 20:29:01 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 07/22/2019 20:29:01
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
             Mandatory=$true,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
-        )] 
+        )]
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-        
+
         [Parameter()]
         [int32]$MaxThreads = 5,
-        
+
         [Parameter()]
         $SleepTimer = 200,
-        
+
         [Parameter()]
         $MaxResultTime = 1200
     )
-
-    Begin{
+    Begin {
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
-        
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                Position=0,
-                ValueFromPipeline = $true,
-                ValueFromPipelineByPropertyName = $true)]
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
+                )]
                 [string]$comp
             )
-        
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name LIKE 'Adobe Acrobat%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
                 New-Object -TypeName PSObject -Property @{
                     ComputerName = $comp
                     Program = "Adobe Acrobat Pro"
                     Status = "Removed"
-                }#new object 
+                }#new object
             }#try
             catch {
                 New-Object -TypeName PSObject -Property @{
                     ComputerName = $comp
                     Program = "Adobe Acrobat Pro"
                     Status = "Failed"
-                }#new object 
+                }#new object
             }#catch
-
         }#end code block
-        
         $Jobs = @()
     }
- 
-    Process{
+    Process {
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
         ForEach ($Object in $ObjectList){
             $PowershellThread = [powershell]::Create().AddScript($Code)
             $PowershellThread.AddArgument($Object.ToString()) | out-null
-            
             $PowershellThread.RunspacePool = $RunspacePool
             $Handle = $PowershellThread.BeginInvoke()
             $Job = "" | Select-Object Handle, Thread, object
@@ -4484,13 +4399,10 @@ Function Uninstall-AdobePro {
             $Job.Object = $Object.ToString()
             $Jobs += $Job
         }
-        
     }
- 
-    End{
+    End {
         $ResultTimer = Get-Date
         While (@($Jobs | Where-Object {$null -ne $_.Handle}).count -gt 0)  {
-        
             $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
             If ($Remaining.Length -gt 60){
                 $Remaining = $Remaining.Substring(0,60) + "..."
@@ -4498,8 +4410,7 @@ Function Uninstall-AdobePro {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
- 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -4512,7 +4423,6 @@ Function Uninstall-AdobePro {
                 Exit
             }
             Start-Sleep -Milliseconds $SleepTimer
-        
         } 
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
@@ -4523,95 +4433,75 @@ New-Alias -Name "Uninstall-AdobeAcrobat" -Value Uninstall-AdobePro
 
 
 Function Uninstall-AdobeReader {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 08/18/2017 21:08:53
-    LASTEDIT: 07/22/2019 20:31:36  
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 07/22/2019 20:31:36
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
             Mandatory=$true,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
-        )] 
+        )]
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-        
+
         [Parameter()]
         [int32]$MaxThreads = 5,
-        
+
         [Parameter()]
         $SleepTimer = 200,
-        
+
         [Parameter()]
         $MaxResultTime = 1200
     )
-
-    Begin{
+    Begin {
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
-        
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                Position=0,
-                ValueFromPipeline = $true,
-                ValueFromPipelineByPropertyName = $true)]
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
+                )]
                 [string]$comp
             )
-        
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name LIKE 'Adobe Reader%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
                 New-Object -TypeName PSObject -Property @{
                     ComputerName = $comp
                     Program = "Adobe Reader"
                     Status = "Removed"
-                }#new object 
+                }#new object
             }#try
             catch {
                 New-Object -TypeName PSObject -Property @{
                     ComputerName = $comp
                     Program = "Adobe Reader"
                     Status = "Failed"
-                }#new object 
+                }#new object
             }#catch
-
         }#end code block
-        
         $Jobs = @()
     }
- 
-    Process{
+    Process {
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
         ForEach ($Object in $ObjectList){
             $PowershellThread = [powershell]::Create().AddScript($Code)
             $PowershellThread.AddArgument($Object.ToString()) | out-null
-            
             $PowershellThread.RunspacePool = $RunspacePool
             $Handle = $PowershellThread.BeginInvoke()
             $Job = "" | Select-Object Handle, Thread, object
@@ -4620,13 +4510,10 @@ Function Uninstall-AdobeReader {
             $Job.Object = $Object.ToString()
             $Jobs += $Job
         }
-        
     }
- 
-    End{
+    End {
         $ResultTimer = Get-Date
         While (@($Jobs | Where-Object {$null -ne $_.Handle}).count -gt 0)  {
-        
             $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
             If ($Remaining.Length -gt 60){
                 $Remaining = $Remaining.Substring(0,60) + "..."
@@ -4634,8 +4521,7 @@ Function Uninstall-AdobeReader {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
- 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -4648,7 +4534,6 @@ Function Uninstall-AdobeReader {
                 Exit
             }
             Start-Sleep -Milliseconds $SleepTimer
-        
         } 
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
@@ -4657,95 +4542,75 @@ Function Uninstall-AdobeReader {
 
 
 Function Uninstall-AdobeShockwave {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 08/18/2017 21:08:57
-    LASTEDIT: 07/22/2019 20:34:05   
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 07/22/2019 20:34:05
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
             Mandatory=$true,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
-        )] 
+        )]
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-        
+
         [Parameter()]
         [int32]$MaxThreads = 5,
-        
+
         [Parameter()]
         $SleepTimer = 200,
-        
+
         [Parameter()]
         $MaxResultTime = 1200
     )
-
-    Begin{
+    Begin {
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
-        
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                Position=0,
-                ValueFromPipeline = $true,
-                ValueFromPipelineByPropertyName = $true)]
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
+                )]
                 [string]$comp
             )
-        
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name LIKE 'Adobe Shockwave%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
                 New-Object -TypeName PSObject -Property @{
                     ComputerName = $comp
                     Program = "Adobe Shockwave"
                     Status = "Removed"
-                }#new object 
+                }#new object
             }#try
             catch {
                 New-Object -TypeName PSObject -Property @{
                     ComputerName = $comp
                     Program = "Adobe Shockwave"
                     Status = "Failed"
-                }#new object 
+                }#new object
             }#catch
-
         }#end code block
-        
         $Jobs = @()
     }
- 
-    Process{
+    Process {
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
         ForEach ($Object in $ObjectList){
             $PowershellThread = [powershell]::Create().AddScript($Code)
             $PowershellThread.AddArgument($Object.ToString()) | out-null
-            
             $PowershellThread.RunspacePool = $RunspacePool
             $Handle = $PowershellThread.BeginInvoke()
             $Job = "" | Select-Object Handle, Thread, object
@@ -4754,13 +4619,10 @@ Function Uninstall-AdobeShockwave {
             $Job.Object = $Object.ToString()
             $Jobs += $Job
         }
-        
     }
- 
-    End{
+    End {
         $ResultTimer = Get-Date
         While (@($Jobs | Where-Object {$null -ne $_.Handle}).count -gt 0)  {
-        
             $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
             If ($Remaining.Length -gt 60){
                 $Remaining = $Remaining.Substring(0,60) + "..."
@@ -4768,8 +4630,7 @@ Function Uninstall-AdobeShockwave {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
- 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -4782,7 +4643,6 @@ Function Uninstall-AdobeShockwave {
                 Exit
             }
             Start-Sleep -Milliseconds $SleepTimer
-        
         } 
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
@@ -4792,33 +4652,20 @@ New-Alias -Name "Uninstall-Shockwave" -Value Uninstall-AdobeShockwave
 
 
 Function Uninstall-GoogleChrome {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 07/22/2019 15:29:24
-    LASTEDIT: 07/22/2019 20:36:24    
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 07/22/2019 20:36:24
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
@@ -4828,32 +4675,29 @@ Function Uninstall-GoogleChrome {
         )] 
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-        
+
         [Parameter()]
         [int32]$MaxThreads = 5,
-        
+
         [Parameter()]
         $SleepTimer = 200,
-        
+
         [Parameter()]
         $MaxResultTime = 1200
     )
-
-    Begin{
+    Begin {
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
-        
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                Position=0,
-                ValueFromPipeline = $true,
-                ValueFromPipelineByPropertyName = $true)]
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
+                )]
                 [string]$comp
             )
-        
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name LIKE '%Chrome%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
                 New-Object -TypeName PSObject -Property @{
@@ -4869,18 +4713,14 @@ Function Uninstall-GoogleChrome {
                     Status = "Failed"
                 }#new object 
             }#catch
-
         }#end code block
-        
         $Jobs = @()
     }
- 
-    Process{
+    Process {
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
         ForEach ($Object in $ObjectList){
             $PowershellThread = [powershell]::Create().AddScript($Code)
             $PowershellThread.AddArgument($Object.ToString()) | out-null
-            
             $PowershellThread.RunspacePool = $RunspacePool
             $Handle = $PowershellThread.BeginInvoke()
             $Job = "" | Select-Object Handle, Thread, object
@@ -4889,13 +4729,10 @@ Function Uninstall-GoogleChrome {
             $Job.Object = $Object.ToString()
             $Jobs += $Job
         }
-        
     }
- 
-    End{
+    End {
         $ResultTimer = Get-Date
         While (@($Jobs | Where-Object {$null -ne $_.Handle}).count -gt 0)  {
-        
             $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
             If ($Remaining.Length -gt 60){
                 $Remaining = $Remaining.Substring(0,60) + "..."
@@ -4903,8 +4740,7 @@ Function Uninstall-GoogleChrome {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
- 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -4917,7 +4753,6 @@ Function Uninstall-GoogleChrome {
                 Exit
             }
             Start-Sleep -Milliseconds $SleepTimer
-        
         } 
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
@@ -4927,68 +4762,52 @@ New-Alias -Name "Uninstall-Chrome" -Value Uninstall-GoogleChrome
 
 
 Function Uninstall-HPInsightAgent {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 08/18/2017 21:09:07
-    LASTEDIT: 07/22/2019 20:41:20     
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 07/22/2019 20:41:20
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
             Mandatory=$true,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
-        )] 
+        )]
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-        
+
         [Parameter()]
         [int32]$MaxThreads = 5,
-        
+
         [Parameter()]
         $SleepTimer = 200,
-        
+
         [Parameter()]
         $MaxResultTime = 1200
     )
-
-    Begin{
+    Begin {
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
-        
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                Position=0,
-                ValueFromPipeline = $true,
-                ValueFromPipelineByPropertyName = $true)]
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
+                )]
                 [string]$comp
             )
-        
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name LIKE 'HP Insight%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
                 New-Object -TypeName PSObject -Property @{
@@ -5004,18 +4823,14 @@ Function Uninstall-HPInsightAgent {
                     Status = "Failed"
                 }#new object 
             }#catch
-
         }#end code block
-        
         $Jobs = @()
     }
- 
-    Process{
+    Process {
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
         ForEach ($Object in $ObjectList){
             $PowershellThread = [powershell]::Create().AddScript($Code)
             $PowershellThread.AddArgument($Object.ToString()) | out-null
-            
             $PowershellThread.RunspacePool = $RunspacePool
             $Handle = $PowershellThread.BeginInvoke()
             $Job = "" | Select-Object Handle, Thread, object
@@ -5024,13 +4839,10 @@ Function Uninstall-HPInsightAgent {
             $Job.Object = $Object.ToString()
             $Jobs += $Job
         }
-        
     }
- 
-    End{
+    End {
         $ResultTimer = Get-Date
         While (@($Jobs | Where-Object {$null -ne $_.Handle}).count -gt 0)  {
-        
             $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
             If ($Remaining.Length -gt 60){
                 $Remaining = $Remaining.Substring(0,60) + "..."
@@ -5038,8 +4850,7 @@ Function Uninstall-HPInsightAgent {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
- 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -5052,7 +4863,6 @@ Function Uninstall-HPInsightAgent {
                 Exit
             }
             Start-Sleep -Milliseconds $SleepTimer
-        
         } 
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
@@ -5061,68 +4871,52 @@ Function Uninstall-HPInsightAgent {
 
 
 Function Uninstall-HPVersionControlAgent {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 08/18/2017 21:09:12
-    LASTEDIT: 07/22/2019 20:42:42      
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 07/22/2019 20:42:42
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
             Mandatory=$true,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
-        )] 
+        )]
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-        
+
         [Parameter()]
         [int32]$MaxThreads = 5,
-        
+
         [Parameter()]
         $SleepTimer = 200,
-        
+
         [Parameter()]
         $MaxResultTime = 1200
     )
-
-    Begin{
+    Begin {
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
-        
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                Position=0,
-                ValueFromPipeline = $true,
-                ValueFromPipelineByPropertyName = $true)]
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
+                )]
                 [string]$comp
             )
-        
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name LIKE 'HP Version%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
                 New-Object -TypeName PSObject -Property @{
@@ -5138,18 +4932,14 @@ Function Uninstall-HPVersionControlAgent {
                     Status = "Failed"
                 }#new object 
             }#catch
-
         }#end code block
-        
         $Jobs = @()
     }
- 
-    Process{
+    Process {
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
         ForEach ($Object in $ObjectList){
             $PowershellThread = [powershell]::Create().AddScript($Code)
             $PowershellThread.AddArgument($Object.ToString()) | out-null
-            
             $PowershellThread.RunspacePool = $RunspacePool
             $Handle = $PowershellThread.BeginInvoke()
             $Job = "" | Select-Object Handle, Thread, object
@@ -5158,13 +4948,10 @@ Function Uninstall-HPVersionControlAgent {
             $Job.Object = $Object.ToString()
             $Jobs += $Job
         }
-        
     }
- 
-    End{
+    End {
         $ResultTimer = Get-Date
         While (@($Jobs | Where-Object {$null -ne $_.Handle}).count -gt 0)  {
-        
             $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
             If ($Remaining.Length -gt 60){
                 $Remaining = $Remaining.Substring(0,60) + "..."
@@ -5172,8 +4959,7 @@ Function Uninstall-HPVersionControlAgent {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
- 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -5186,7 +4972,6 @@ Function Uninstall-HPVersionControlAgent {
                 Exit
             }
             Start-Sleep -Milliseconds $SleepTimer
-        
         } 
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
@@ -5195,95 +4980,75 @@ Function Uninstall-HPVersionControlAgent {
 
 
 Function Uninstall-IBMForms {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 08/18/2017 21:09:25
-    LASTEDIT: 07/22/2019 20:47:05        
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 07/22/2019 20:47:05
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
             Mandatory=$true,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
-        )] 
+        )]
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-        
+
         [Parameter()]
         [int32]$MaxThreads = 5,
-        
+
         [Parameter()]
         $SleepTimer = 200,
-        
+
         [Parameter()]
         $MaxResultTime = 1200
     )
-
-    Begin{
+    Begin {
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
-        
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                Position=0,
-                ValueFromPipeline = $true,
-                ValueFromPipelineByPropertyName = $true)]
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
+                )]
                 [string]$comp
             )
-        
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name like 'IBM Forms%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
                 New-Object -TypeName PSObject -Property @{
                     ComputerName = $comp
                     Program = "IBM Forms"
                     Status = "Removed"
-                }#new object 
+                }#new object
             }#try
             catch {
                 New-Object -TypeName PSObject -Property @{
                     ComputerName = $comp
                     Program = "IBM Forms"
                     Status = "Failed"
-                }#new object 
+                }#new object
             }#catch
-
         }#end code block
-        
         $Jobs = @()
     }
- 
-    Process{
+    Process {
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
         ForEach ($Object in $ObjectList){
             $PowershellThread = [powershell]::Create().AddScript($Code)
             $PowershellThread.AddArgument($Object.ToString()) | out-null
-            
             $PowershellThread.RunspacePool = $RunspacePool
             $Handle = $PowershellThread.BeginInvoke()
             $Job = "" | Select-Object Handle, Thread, object
@@ -5292,13 +5057,10 @@ Function Uninstall-IBMForms {
             $Job.Object = $Object.ToString()
             $Jobs += $Job
         }
-        
     }
- 
-    End{
+    End {
         $ResultTimer = Get-Date
         While (@($Jobs | Where-Object {$null -ne $_.Handle}).count -gt 0)  {
-        
             $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
             If ($Remaining.Length -gt 60){
                 $Remaining = $Remaining.Substring(0,60) + "..."
@@ -5306,8 +5068,7 @@ Function Uninstall-IBMForms {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
- 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -5320,7 +5081,6 @@ Function Uninstall-IBMForms {
                 Exit
             }
             Start-Sleep -Milliseconds $SleepTimer
-        
         } 
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
@@ -5329,95 +5089,75 @@ Function Uninstall-IBMForms {
 
 
 Function Uninstall-McAfeeVSE {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 08/18/2017 21:09:30
-    LASTEDIT: 07/22/2019 20:49:03         
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 07/22/2019 20:49:03
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
             Mandatory=$true,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
-        )] 
+        )]
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-        
+
         [Parameter()]
         [int32]$MaxThreads = 5,
-        
+
         [Parameter()]
         $SleepTimer = 200,
-        
+
         [Parameter()]
         $MaxResultTime = 1200
     )
-
-    Begin{
+    Begin {
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
-        
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                Position=0,
-                ValueFromPipeline = $true,
-                ValueFromPipelineByPropertyName = $true)]
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
+                )]
                 [string]$comp
             )
-        
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name='McAfee VirusScan%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
                 New-Object -TypeName PSObject -Property @{
                     ComputerName = $comp
                     Program = "McAfee VirusScan"
                     Status = "Removed"
-                }#new object 
+                }#new object
             }#try
             catch {
                 New-Object -TypeName PSObject -Property @{
                     ComputerName = $comp
                     Program = "McAfee VirusScan"
                     Status = "Failed"
-                }#new object 
+                }#new object
             }#catch
-
         }#end code block
-        
         $Jobs = @()
     }
- 
-    Process{
+    Process {
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
         ForEach ($Object in $ObjectList){
             $PowershellThread = [powershell]::Create().AddScript($Code)
             $PowershellThread.AddArgument($Object.ToString()) | out-null
-            
             $PowershellThread.RunspacePool = $RunspacePool
             $Handle = $PowershellThread.BeginInvoke()
             $Job = "" | Select-Object Handle, Thread, object
@@ -5426,13 +5166,10 @@ Function Uninstall-McAfeeVSE {
             $Job.Object = $Object.ToString()
             $Jobs += $Job
         }
-        
     }
- 
-    End{
+    End {
         $ResultTimer = Get-Date
         While (@($Jobs | Where-Object {$null -ne $_.Handle}).count -gt 0)  {
-        
             $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
             If ($Remaining.Length -gt 60){
                 $Remaining = $Remaining.Substring(0,60) + "..."
@@ -5440,8 +5177,7 @@ Function Uninstall-McAfeeVSE {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
- 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -5454,7 +5190,6 @@ Function Uninstall-McAfeeVSE {
                 Exit
             }
             Start-Sleep -Milliseconds $SleepTimer
-        
         } 
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
@@ -5463,68 +5198,52 @@ Function Uninstall-McAfeeVSE {
 
 
 Function Uninstall-MozillaFirefox {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 07/22/2019 20:19:10
-    LASTEDIT: 11/26/2019 14:25:58   
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 11/26/2019 14:25:58
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
             Mandatory=$true,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
-        )] 
+        )]
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-        
+
         [Parameter()]
         [int32]$MaxThreads = 5,
-        
+
         [Parameter()]
         $SleepTimer = 200,
-        
+
         [Parameter()]
         $MaxResultTime = 1200
     )
-
-    Begin{
+    Begin {
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
-        
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                Position=0,
-                ValueFromPipeline = $true,
-                ValueFromPipelineByPropertyName = $true)]
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
+                )]
                 [string]$comp
             )
-        
             try {
                 Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList 'cmd /c "C:\Program Files\Mozilla Firefox\uninstall\helper.exe" -ms' -ErrorAction SilentlyContinue | Out-Null
                 Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList 'cmd /c "C:\Program Files (x86)\Mozilla Firefox\uninstall\helper.exe" -ms' -ErrorAction SilentlyContinue | Out-Null
@@ -5536,27 +5255,23 @@ Function Uninstall-MozillaFirefox {
                     ComputerName = $comp
                     Program = "Mozilla Firefox"
                     Status = "Removal Initialized"
-                }#new object 
+                }#new object
             }#try
             catch {
                 New-Object -TypeName PSObject -Property @{
                     ComputerName = $comp
                     Program = "Mozilla Firefox"
                     Status = "Failed"
-                }#new object 
+                }#new object
             }#catch
-
         }#end code block
-        
         $Jobs = @()
     }
- 
-    Process{
+    Process {
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
         ForEach ($Object in $ObjectList){
             $PowershellThread = [powershell]::Create().AddScript($Code)
             $PowershellThread.AddArgument($Object.ToString()) | out-null
-            
             $PowershellThread.RunspacePool = $RunspacePool
             $Handle = $PowershellThread.BeginInvoke()
             $Job = "" | Select-Object Handle, Thread, object
@@ -5565,13 +5280,10 @@ Function Uninstall-MozillaFirefox {
             $Job.Object = $Object.ToString()
             $Jobs += $Job
         }
-        
     }
- 
-    End{
+    End {
         $ResultTimer = Get-Date
         While (@($Jobs | Where-Object {$null -ne $_.Handle}).count -gt 0)  {
-        
             $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
             If ($Remaining.Length -gt 60){
                 $Remaining = $Remaining.Substring(0,60) + "..."
@@ -5579,8 +5291,7 @@ Function Uninstall-MozillaFirefox {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
- 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -5593,7 +5304,6 @@ Function Uninstall-MozillaFirefox {
                 Exit
             }
             Start-Sleep -Milliseconds $SleepTimer
-        
         } 
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
@@ -5603,68 +5313,52 @@ New-Alias -Name "Uninstall-Firefox" -Value Uninstall-MozillaFirefox
 
 
 Function Uninstall-MozillaMaintenanceService {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 08/01/2019 16:36:26
-    LASTEDIT: 08/01/2019 16:36:26 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 08/01/2019 16:36:26
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#>  
+#>
     [CmdletBinding()]
     Param (
         [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
             Mandatory=$true,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
-        )] 
+        )]
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-        
+
         [Parameter()]
         [int32]$MaxThreads = 5,
-        
+
         [Parameter()]
         $SleepTimer = 200,
-        
+
         [Parameter()]
         $MaxResultTime = 1200
     )
-
-    Begin{
+    Begin {
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
-        
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                Position=0,
-                ValueFromPipeline = $true,
-                ValueFromPipelineByPropertyName = $true)]
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
+                )]
                 [string]$comp
             )
-        
             try {
                 Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList 'cmd /c "C:\Program Files\Mozilla Maintenance Service\uninstall.exe" /S' -ErrorAction SilentlyContinue | Out-Null
                 Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList 'cmd /c "C:\Program Files (x86)\Mozilla Maintenance Service\uninstall.exe" /S' -ErrorAction Stop | Out-Null
@@ -5674,27 +5368,23 @@ Function Uninstall-MozillaMaintenanceService {
                     ComputerName = $comp
                     Program = "Mozilla Maintenance Service"
                     Status = "Removal Initialized"
-                }#new object 
+                }#new object
             }#try
             catch {
                 New-Object -TypeName PSObject -Property @{
                     ComputerName = $comp
                     Program = "Mozilla Maintenance Service"
                     Status = "Failed"
-                }#new object 
+                }#new object
             }#catch
-
         }#end code block
-        
         $Jobs = @()
     }
- 
-    Process{
+    Process {
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
         ForEach ($Object in $ObjectList){
             $PowershellThread = [powershell]::Create().AddScript($Code)
             $PowershellThread.AddArgument($Object.ToString()) | out-null
-            
             $PowershellThread.RunspacePool = $RunspacePool
             $Handle = $PowershellThread.BeginInvoke()
             $Job = "" | Select-Object Handle, Thread, object
@@ -5703,13 +5393,10 @@ Function Uninstall-MozillaMaintenanceService {
             $Job.Object = $Object.ToString()
             $Jobs += $Job
         }
-        
     }
- 
-    End{
+    End {
         $ResultTimer = Get-Date
         While (@($Jobs | Where-Object {$null -ne $_.Handle}).count -gt 0)  {
-        
             $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
             If ($Remaining.Length -gt 60){
                 $Remaining = $Remaining.Substring(0,60) + "..."
@@ -5717,8 +5404,7 @@ Function Uninstall-MozillaMaintenanceService {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
- 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -5731,7 +5417,6 @@ Function Uninstall-MozillaMaintenanceService {
                 Exit
             }
             Start-Sleep -Milliseconds $SleepTimer
-        
         } 
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
@@ -5741,95 +5426,75 @@ New-Alias -Name "Uninstall-FirefoxMaintenanceService" -Value Uninstall-MozillaMa
 
 
 Function Uninstall-OracleJava {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+   .Notes
     AUTHOR: Skyler Hart
     CREATED: 08/18/2017 21:09:20
-    LASTEDIT: 07/22/2019 20:44:41       
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 07/22/2019 20:44:41
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
             Mandatory=$true,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
-        )] 
+        )]
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-        
+
         [Parameter()]
         [int32]$MaxThreads = 5,
-        
+
         [Parameter()]
         $SleepTimer = 200,
-        
+
         [Parameter()]
         $MaxResultTime = 1200
     )
-
-    Begin{
+    Begin {
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
-        
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                Position=0,
-                ValueFromPipeline = $true,
-                ValueFromPipelineByPropertyName = $true)]
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
+                )]
                 [string]$comp
             )
-        
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name like 'Java%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
                 New-Object -TypeName PSObject -Property @{
                     ComputerName = $comp
                     Program = "Java"
                     Status = "Removed"
-                }#new object 
+                }#new object
             }#try
             catch {
                 New-Object -TypeName PSObject -Property @{
                     ComputerName = $comp
                     Program = "Java"
                     Status = "Failed"
-                }#new object 
+                }#new object
             }#catch
-
         }#end code block
-        
         $Jobs = @()
     }
- 
-    Process{
+    Process {
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
         ForEach ($Object in $ObjectList){
             $PowershellThread = [powershell]::Create().AddScript($Code)
             $PowershellThread.AddArgument($Object.ToString()) | out-null
-            
             $PowershellThread.RunspacePool = $RunspacePool
             $Handle = $PowershellThread.BeginInvoke()
             $Job = "" | Select-Object Handle, Thread, object
@@ -5838,13 +5503,10 @@ Function Uninstall-OracleJava {
             $Job.Object = $Object.ToString()
             $Jobs += $Job
         }
-        
     }
- 
-    End{
+    End {
         $ResultTimer = Get-Date
         While (@($Jobs | Where-Object {$null -ne $_.Handle}).count -gt 0)  {
-        
             $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
             If ($Remaining.Length -gt 60){
                 $Remaining = $Remaining.Substring(0,60) + "..."
@@ -5852,8 +5514,7 @@ Function Uninstall-OracleJava {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
- 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -5866,7 +5527,6 @@ Function Uninstall-OracleJava {
                 Exit
             }
             Start-Sleep -Milliseconds $SleepTimer
-        
         } 
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
@@ -5876,95 +5536,75 @@ New-Alias -Name "Uninstall-Java" -Value Uninstall-OracleJava
 
 
 Function Uninstall-VLC {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+   .Notes
     AUTHOR: Skyler Hart
     CREATED: 07/22/2019 20:55:21
-    LASTEDIT: 07/22/2019 20:56:10  
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 07/22/2019 20:56:10
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#>  
+#>
     [CmdletBinding()]
     Param (
         [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
             Mandatory=$true,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
-        )] 
+        )]
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-        
+
         [Parameter()]
         [int32]$MaxThreads = 5,
-        
+
         [Parameter()]
         $SleepTimer = 200,
-        
+
         [Parameter()]
         $MaxResultTime = 1200
     )
-
-    Begin{
+    Begin {
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
-        
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                Position=0,
-                ValueFromPipeline = $true,
-                ValueFromPipelineByPropertyName = $true)]
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
+                )]
                 [string]$comp
             )
-        
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name='VLC%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
                 New-Object -TypeName PSObject -Property @{
                     ComputerName = $comp
                     Program = "VLC"
                     Status = "Removed"
-                }#new object 
+                }#new object
             }#try
             catch {
                 New-Object -TypeName PSObject -Property @{
                     ComputerName = $comp
                     Program = "VLC"
                     Status = "Failed"
-                }#new object 
+                }#new object
             }#catch
-
         }#end code block
-        
         $Jobs = @()
     }
- 
-    Process{
+    Process {
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
         ForEach ($Object in $ObjectList){
             $PowershellThread = [powershell]::Create().AddScript($Code)
             $PowershellThread.AddArgument($Object.ToString()) | out-null
-            
             $PowershellThread.RunspacePool = $RunspacePool
             $Handle = $PowershellThread.BeginInvoke()
             $Job = "" | Select-Object Handle, Thread, object
@@ -5973,13 +5613,10 @@ Function Uninstall-VLC {
             $Job.Object = $Object.ToString()
             $Jobs += $Job
         }
-        
     }
- 
-    End{
+    End {
         $ResultTimer = Get-Date
         While (@($Jobs | Where-Object {$null -ne $_.Handle}).count -gt 0)  {
-        
             $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
             If ($Remaining.Length -gt 60){
                 $Remaining = $Remaining.Substring(0,60) + "..."
@@ -5987,8 +5624,7 @@ Function Uninstall-VLC {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
- 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -6001,7 +5637,6 @@ Function Uninstall-VLC {
                 Exit
             }
             Start-Sleep -Milliseconds $SleepTimer
-        
         } 
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
@@ -6010,95 +5645,75 @@ Function Uninstall-VLC {
 
 
 Function Uninstall-WinSCP {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+   .Notes
     AUTHOR: Skyler Hart
     CREATED: 07/22/2019 20:54:29
-    LASTEDIT: 07/22/2019 20:54:42  
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 07/22/2019 20:54:42
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
             Mandatory=$true,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
-        )] 
+        )]
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-        
+
         [Parameter()]
         [int32]$MaxThreads = 5,
-        
+
         [Parameter()]
         $SleepTimer = 200,
-        
+
         [Parameter()]
         $MaxResultTime = 1200
     )
-
-    Begin{
+    Begin {
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
-        
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                Position=0,
-                ValueFromPipeline = $true,
-                ValueFromPipelineByPropertyName = $true)]
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
+                )]
                 [string]$comp
             )
-        
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name='WinSCP%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
                 New-Object -TypeName PSObject -Property @{
                     ComputerName = $comp
                     Program = "WinSCP"
                     Status = "Removed"
-                }#new object 
+                }#new object
             }#try
             catch {
                 New-Object -TypeName PSObject -Property @{
                     ComputerName = $comp
                     Program = "WinSCP"
                     Status = "Failed"
-                }#new object 
+                }#new object
             }#catch
-
         }#end code block
-        
         $Jobs = @()
     }
- 
-    Process{
+    Process {
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
         ForEach ($Object in $ObjectList){
             $PowershellThread = [powershell]::Create().AddScript($Code)
             $PowershellThread.AddArgument($Object.ToString()) | out-null
-            
             $PowershellThread.RunspacePool = $RunspacePool
             $Handle = $PowershellThread.BeginInvoke()
             $Job = "" | Select-Object Handle, Thread, object
@@ -6107,13 +5722,10 @@ Function Uninstall-WinSCP {
             $Job.Object = $Object.ToString()
             $Jobs += $Job
         }
-        
     }
- 
-    End{
+    End {
         $ResultTimer = Get-Date
         While (@($Jobs | Where-Object {$null -ne $_.Handle}).count -gt 0)  {
-        
             $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
             If ($Remaining.Length -gt 60){
                 $Remaining = $Remaining.Substring(0,60) + "..."
@@ -6121,8 +5733,7 @@ Function Uninstall-WinSCP {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
- 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -6135,7 +5746,6 @@ Function Uninstall-WinSCP {
                 Exit
             }
             Start-Sleep -Milliseconds $SleepTimer
-        
         } 
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
@@ -6154,36 +5764,23 @@ Function Uninstall-WinSCP {
 
 
 Function Disable-3DES {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 04/23/2018 14:40:00
-    LASTEDIT: 04/23/2018 14:40:00 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 04/23/2018 14:40:00
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#>  
+#>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -6216,36 +5813,23 @@ Function Disable-3DES {
 
 
 Function Enable-3DES {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 04/23/2018 14:41:22
-    LASTEDIT: 04/23/2018 14:41:22 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 04/23/2018 14:41:22
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#>  
+#>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -6278,36 +5862,23 @@ Function Enable-3DES {
 
 
 Function Disable-DiffieHellman {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 04/23/2018 16:38:23
-    LASTEDIT: 04/23/2018 16:38:23 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 04/23/2018 16:38:23
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#>  
+#>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -6331,36 +5902,23 @@ Function Disable-DiffieHellman {
 
 
 Function Enable-DiffieHellman {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 04/23/2018 16:38:31
-    LASTEDIT: 04/23/2018 16:38:31 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 04/23/2018 16:38:31
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#>   
+#>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -6384,36 +5942,23 @@ Function Enable-DiffieHellman {
 
 
 Function Disable-RC4 {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 04/23/2018 15:00:09
-    LASTEDIT: 04/23/2018 15:00:09 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 04/23/2018 15:00:09
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#>  
+#>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -6431,7 +5976,7 @@ Function Disable-RC4 {
         $BaseKey = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine, $comp)
         $SubKey = $BaseKey.OpenSubKey('System\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\RC4 128/128',$true)
         $SubKey.SetValue($ValueName, $ValueData, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    
+
         ([Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine, $comp)).CreateSubKey('System\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\RC4 64/128')
         $SubKey = $BaseKey.OpenSubKey('System\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\RC4 64/128',$true)
         $SubKey.SetValue($ValueName, $ValueData, [Microsoft.Win32.RegistryValueKind]::DWORD)
@@ -6448,36 +5993,23 @@ Function Disable-RC4 {
 
 
 Function Enable-RC4 {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 04/23/2018 15:00:19
-    LASTEDIT: 04/23/2018 15:00:19 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 04/23/2018 15:00:19
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com 
-#>   
+#>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -6495,7 +6027,7 @@ Function Enable-RC4 {
         $BaseKey = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine, $comp)
         $SubKey = $BaseKey.OpenSubKey('System\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\RC4 128/128',$true)
         $SubKey.SetValue($ValueName, $ValueData, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    
+
         ([Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine, $comp)).CreateSubKey('System\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\RC4 64/128')
         $SubKey = $BaseKey.OpenSubKey('System\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\RC4 64/128',$true)
         $SubKey.SetValue($ValueName, $ValueData, [Microsoft.Win32.RegistryValueKind]::DWORD)
@@ -6512,33 +6044,20 @@ Function Enable-RC4 {
 
 
 Function Set-FeatureSettingsOverride {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 03/26/2019 21:30:15
-    LASTEDIT: 03/28/2019 15:58:21  
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 03/28/2019 15:58:21
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
@@ -6546,7 +6065,7 @@ Function Set-FeatureSettingsOverride {
             Position=0,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
-        )] 
+        )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -6592,36 +6111,23 @@ Function Set-FeatureSettingsOverride {
 
 
 function Set-MS15124 {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 12/21/2017 12:43:44
-    LASTEDIT: 12/21/2017 12:48:58  
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 12/21/2017 12:48:58
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com 
-#>  
+#>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -6643,33 +6149,20 @@ function Set-MS15124 {
 
 
 Function Set-RemediationValues {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 02/08/2018 22:10:17
-    LASTEDIT: 03/26/2019 21:30:33  
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 03/26/2019 21:30:33
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
@@ -6677,10 +6170,10 @@ Function Set-RemediationValues {
             Position=0,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
-        )] 
+        )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
-    ) 
+    )
 
     $v1 = 'iexplore.exe'
     $v2 = 'SchUseStrongCrypto'
@@ -6966,35 +6459,22 @@ Function Set-RemediationValues {
 
 #Write function to check Ciphers and Protocols
 function Set-SCHANNELsettings {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
-    LASTEDIT: 12/19/2017 10:34:25 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 12/19/2017 10:34:25
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -7185,32 +6665,20 @@ function Set-SCHANNELsettings {
 
 #need to finish https://support.microsoft.com/en-us/help/2696547/how-to-detect-enable-and-disable-smbv1-smbv2-and-smbv3-in-windows-and
 Function Set-SMBv1 {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter ComputerName
-    Specifies the computer or computers
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 01/31/2018 09:32:17
-    LASTEDIT: 02/09/2018 00:47:46 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 02/09/2018 00:47:46
+    KEYWORDS:
+    REQUIRES:
+        -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com 
 #>
     [CmdletBinding()]
     Param (
-        [Parameter()] 
+        [Parameter()]
         [Switch]$On
     )
 
@@ -7237,32 +6705,28 @@ Function Set-SMBv1 {
 
 
 Function Set-SMBv1Fix {
-<# 
-   .Synopsis 
+<#
+   .Synopsis
     This fix action is purpose built for the issues seen accessing the NetApp from OSI computers on Windows 10.
    .Description
     Turns SMBv1 on. This fix action is purpose built for the issues seen accessing the NetApp from OSI computers on Windows 10. While this fix action turns SMBv1 on, group policy specifically turns SMBv1 off, which is counted on.
-   .Example 
+   .Example
     Set-SMBv1Fix COMP1
     Sets the fix action on COMP1. After the fix action is applied, COMP1 will need to be rebooted.
-   .Example 
+   .Example
     Set-SMBv1Fix
     Sets the fix action on the local computer. After the fix action is applied, the local computer will need to be rebooted.
    .Parameter ComputerName
     Specifies the computer or computers
-   .Notes 
-    NAME: Set-SMBv1Fix 
+   .Notes
     AUTHOR: Skyler Hart
     CREATED: 12/18/2018 09:36:43
-    LASTEDIT: 12/18/2018 10:25:19  
+    LASTEDIT: 12/18/2018 10:25:19
     KEYWORDS: fix action, fix, SMB, SMBv1
-    REMARKS: 
-    REQUIRES: 
-        #Requires -RunAsAdministrator
+    REQUIRES:
+        -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (
@@ -7271,7 +6735,7 @@ Function Set-SMBv1Fix {
             Position=0,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
-        )] 
+        )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -7302,18 +6766,6 @@ Function Set-SMBv1Fix {
 
 function Get-NetworkLevelAuthentication {
 <#
-.SYNOPSIS
-    Short description
-.DESCRIPTION
-    Long description
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.EXAMPLE
-    C:\PS>Get-NetworkLevelAuthentication
-    Example of how to use this cmdlet
-.EXAMPLE
-    C:\PS>Get-NetworkLevelAuthentication -PARAMETER
-    Another example of how to use this cmdlet but with a parameter or switch.
 .NOTES
     Author: Skyler Hart
     Created: 2020-04-18 15:28:10
@@ -7321,21 +6773,17 @@ function Get-NetworkLevelAuthentication {
     Keywords: Network, NLA, Network Level Authentication, RDP, Remote Desktop
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     param(
-        [Parameter(#HelpMessage = "Enter one or more computer names separated by commas.",
+        [Parameter(
             Mandatory=$false,
-            #Position=0,
-            #ValueFromPipelineByPropertyName = $true,
             ValueFromPipeline = $true
         )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
-    
+
     foreach ($Comp in $ComputerName) {
         try {
             $ErrorActionPreference = "Stop"
@@ -7377,12 +6825,6 @@ New-Alias -Name "Get-NLA" -Value Get-NetworkLevelAuthentication
 
 function Set-NetworkLevelAuthentication {
 <#
-.SYNOPSIS
-    Short description
-.DESCRIPTION
-    Long description
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
 .PARAMETER Disable
     Specifies to disable Network Level Authentication. Without this NLA will be enabled.
 .EXAMPLE
@@ -7400,11 +6842,9 @@ function Set-NetworkLevelAuthentication {
     Last Edit: 2020-04-18 16:01:02
     Keywords: Network, NLA, Network Level Authentication, RDP, Remote Desktop
     Requires:
-        #RunAsAdministrator
+        -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     param(
@@ -7466,32 +6906,19 @@ New-Alias -Name "Set-NLA" -Value Set-NetworkLevelAuthentication
 
 
 function Open-ConfigurationManager {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 21:10:11 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 08/18/2017 21:10:11
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     if (Test-Path "C:\Windows\SysWOW64\CCM\SMSCFGRC.cpl") {Start-Process C:\Windows\SysWOW64\CCM\SMSCFGRC.cpl}
     elseif (Test-Path "C:\Windows\System32\CCM\SMSCFGRC.cpl") {Start-Process C:\Windows\System32\CCM\SMSCFGRC.cpl}
     else {Throw "Configuration Manager not found"}
@@ -7500,31 +6927,18 @@ New-Alias -Name "configmgr" -Value Open-ConfigurationManager
 
 
 function Open-RunAdvertisedPrograms {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 21:10:15 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 08/18/2017 21:10:15
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #> 
     if (Test-Path "C:\Windows\SysWOW64\CCM\SMSRAP.cpl") {Start-Process C:\Windows\SysWOW64\CCM\SMSRAP.cpl}
     elseif (Test-Path "C:\Windows\System32\CCM\SMSRAP.cpl") {Start-Process C:\Windows\System32\CCM\SMSRAP.cpl}
@@ -7534,32 +6948,19 @@ New-Alias -Name "rap" -Value Open-RunAdvertisedPrograms
 
 
 function Open-SCCMLogsFolder {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 21:10:27 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 08/18/2017 21:10:27
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
 <#--
 CAS.log
 Provides information about the process of downloading software updates to the local cache and cache management.
@@ -7626,7 +7027,7 @@ This log is only on the client computer configured as the synchronization host f
 --#>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -7649,29 +7050,16 @@ This log is only on the client computer configured as the synchronization host f
 
 
 function Open-WindowsUpdateLog {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 05/03/2016 20:06:39
-    LASTEDIT: 08/07/2018 15:53:00  
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 08/07/2018 15:53:00
+    KEYWORDS:
+    REQUIRES:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
 <#--
 Found on the Configuration Manager Client computer, by default, in %windir%.
 
@@ -7681,7 +7069,7 @@ software updates for compliance assessment and whether there are updates to the 
 --#>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -7729,36 +7117,23 @@ software updates for compliance assessment and whether there are updates to the 
 
 
 Function Get-ENSStatus {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 09/10/2019 21:57:28
-    LASTEDIT: 09/25/2019 14:43:59    
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 09/25/2019 14:43:59
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -7889,36 +7264,23 @@ New-Alias -Name "Get-ENSInfo" -Value Get-ENSStatus
 # Get-HBSSStatus (Get-Content .\computers.txt) | Format-Table -AutoSize
 # Get-HBSSStatus (Get-Content .\computers.txt) | Export-Csv .\hbssstatus.csv -NoTypeInformation
 function Get-HBSSStatus {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 08/18/2017 21:11:01
-    LASTEDIT: 09/25/2019 14:42:42 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 09/25/2019 14:42:42
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -8124,32 +7486,19 @@ function Get-HBSSStatus {
 
 
 function Open-HBSSStatusMonitor {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
-    CREATED: Sometime before 8/7/2017 
-    LASTEDIT: 08/18/2017 21:11:12 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    CREATED: Sometime before 8/7/2017
+    LASTEDIT: 08/18/2017 21:11:12
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     if (Test-Path "$env:ProgramFiles\McAfee\Agent\cmdagent.exe") {
         Start-Process "$env:ProgramFiles\McAfee\Agent\cmdagent.exe" /s
@@ -8168,33 +7517,20 @@ New-Alias -Name "HBSS" -Value Open-HBSSStatusMonitor
 
 
 function Open-McAfeeVirusScanConsole {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
-    CREATED: Sometime before 8/7/2017 
-    LASTEDIT: 08/18/2017 21:11:16 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    CREATED: Sometime before 8/7/2017
+    LASTEDIT: 08/18/2017 21:11:16
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     if (Test-Path "$env:ProgramFiles\McAfee\VirusScan Enterprise\mcconsol.exe") {
         Start-Process "$env:ProgramFiles\McAfee\VirusScan Enterprise\mcconsol.exe"
     }
@@ -8203,100 +7539,71 @@ function Open-McAfeeVirusScanConsole {
 
 
 function Open-HIPSLog {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
-    CREATED: Sometime before 8/7/2017 
-    LASTEDIT: 08/18/2017 21:11:22 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    CREATED: Sometime before 8/7/2017
+    LASTEDIT: 08/18/2017 21:11:22
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     explorer "$env:ProgramData\McAfee\Host Intrusion Prevention"
 }
 
 
 Function Uninstall-HBSS {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+.Notes
     AUTHOR: Skyler Hart
     CREATED: 09/11/2019 15:37:31
-    LASTEDIT: 09/11/2019 16:20:07   
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 09/11/2019 16:20:07
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
             Mandatory=$true,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
-        )] 
+        )]
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-        
+
         [Parameter()]
         [int32]$MaxThreads = 5,
-        
+
         [Parameter()]
         $SleepTimer = 200,
-        
+
         [Parameter()]
         $MaxResultTime = 1200
     )
-
-    Begin{
+    Begin {
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
-        
         $Code = {
             [CmdletBinding()]
             Param (
-                [Parameter(Mandatory=$true,
-                Position=0,
-                ValueFromPipeline = $true,
-                ValueFromPipelineByPropertyName = $true)]
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
+                )]
                 [string]$comp
             )
-        
             try {
                 Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList 'cmd /c "C:\Program Files\McAfee\Agent\x86\FrmInst.exe" /Remove=Agent /Silent' -ErrorAction Stop | Out-Null
                 Start-Sleep -Seconds 30
@@ -8305,27 +7612,23 @@ Function Uninstall-HBSS {
                     ComputerName = $comp
                     Program = "McAfee ENS (HBSS) Agent"
                     Status = "Removal Initialized"
-                }#new object 
+                }#new object
             }#try
             catch {
                 New-Object -TypeName PSObject -Property @{
                     ComputerName = $comp
                     Program = "McAfee ENS (HBSS) Agent"
                     Status = "Failed"
-                }#new object 
+                }#new object
             }#catch
-
         }#end code block
-        
         $Jobs = @()
     }
- 
-    Process{
+    Process {
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
         ForEach ($Object in $ObjectList){
             $PowershellThread = [powershell]::Create().AddScript($Code)
             $PowershellThread.AddArgument($Object.ToString()) | out-null
-            
             $PowershellThread.RunspacePool = $RunspacePool
             $Handle = $PowershellThread.BeginInvoke()
             $Job = "" | Select-Object Handle, Thread, object
@@ -8334,13 +7637,10 @@ Function Uninstall-HBSS {
             $Job.Object = $Object.ToString()
             $Jobs += $Job
         }
-        
     }
- 
-    End{
+    End {
         $ResultTimer = Get-Date
         While (@($Jobs | Where-Object {$null -ne $_.Handle}).count -gt 0)  {
-        
             $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
             If ($Remaining.Length -gt 60){
                 $Remaining = $Remaining.Substring(0,60) + "..."
@@ -8348,8 +7648,7 @@ Function Uninstall-HBSS {
             Write-Progress `
                 -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
                 -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
- 
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
             ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
                 $Job.Thread.EndInvoke($Job.Handle)
                 $Job.Thread.Dispose()
@@ -8362,7 +7661,6 @@ Function Uninstall-HBSS {
                 Exit
             }
             Start-Sleep -Milliseconds $SleepTimer
-        
         } 
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
@@ -8374,41 +7672,17 @@ New-Alias -Name "Uninstall-ENS" -Value Uninstall-HBSS
 #Need to fix for new paths
 function Sync-HBSSWithServer {
 <#
-.SYNOPSIS
-    Short description
-.DESCRIPTION
-    Long description
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.PARAMETER Path
-    Specifies a path to one or more locations.
-.PARAMETER InputObject
-    Specifies the object to be processed.  You can also pipe the objects to this command.
-.EXAMPLE
-    C:\PS>Verb-Noun
-    Example of how to use this cmdlet
-.EXAMPLE
-    C:\PS>Verb-Noun -PARAMETER
-    Another example of how to use this cmdlet but with a parameter or switch.
 .NOTES
     Author: Skyler Hart
     Created: Sometime before 8/7/2017
     Last Edit: 2020-04-13 20:37:25
     Keywords: HBSS
-.COMPONENT
-    The component this cmdlet belongs to
-.ROLE
-    The role this cmdlet belongs to
-.FUNCTIONALITY
-    The functionality that best describes this cmdlet
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -8461,6 +7735,5 @@ function Sync-HBSSWithServer {
 }
 New-Alias -Name "Sync-HBSS" -Value Sync-HBSSWithServer
 New-Alias -Name "Sync-ENS" -Value Sync-HBSSWithServer
-
 
 Export-ModuleMember -Alias * -Function *
