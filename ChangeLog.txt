@@ -1,7 +1,7 @@
 ######################
 #                    #
 #      v1.3.0 unpublished        #
-#    August 2020     #
+#   September 2020   #
 ######################
 Known issues:
 1. Get-NICInfo doesn't always run.
@@ -38,7 +38,7 @@ New features and other changes:
 26. Updated comment text, tags, and Uri's in module manifest based on Microsoft's PowerShell Gallery publishing guidelines.
 27. Fixed numerous PSScriptAnalyzer Warnings
 28. Re-wrote Get-UserWithThumbnail so it outputs objects.
-29. Fixed numerous PSScriptAnalyzer Information level Severity issues.
+29. Fixed numerous PSScriptAnalyzer Information and Warning level Severity issues.
 30. Prepared WS_DomainMgmt sub-module for external help.
 31. Began preparing WSTools root module for external help.
 32. Added some remediation value settings to config file.
