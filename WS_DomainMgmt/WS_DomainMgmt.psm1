@@ -330,6 +330,90 @@ Function Get-NewADGroup {
 }
 
 
+Function Get-PrivilegedGroups {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 03/05/2019 14:56:27
+    LASTEDIT: 2020-09-09 11:03:16
+    KEYWORDS:
+    REQUIRES:
+        -Modules ActiveDirectory
+.Link
+    https://wstools.dev
+#>
+    $config = $Global:WSToolsConfig
+    $agroups = $config.PrivGroups
+
+    $aginfo = $null
+    $aginfo = @()
+    $ginfo = @()
+    foreach ($ag in $agroups) {
+        $aginfo += (Get-ADGroup $ag | Add-Member -NotePropertyName Why -NotePropertyValue Hardcoded -Force -PassThru)
+    }
+
+    foreach ($agroup in $aginfo) {
+        $aname = $agroup.Name
+        $ginfo += Get-ADGroupMember $agroup | Select-Object * | Add-Member -NotePropertyName Why -NotePropertyValue "Sub of $aname" -Force -PassThru
+    }
+
+    $addgroups = $null
+    $addgroups = $ginfo | Where-Object {$_.objectClass -eq "group"}
+    if ($null -ne $addgroups) {
+        foreach ($addgroup in $addgroups) {
+            $agname = $null
+            $agname = $addgroup.Name
+            $agroups += $addgroup
+
+            $ginfo2 = $null
+            $ginfo2 = Get-ADGroupMember $agname | Select-Object * | Add-Member -NotePropertyName Why -NotePropertyValue "Sub of $agname" -Force -PassThru
+            if ($null -ne $ginfo2) {
+                $addgroups2 = $null
+                $addgroups2 = $ginfo2 | Where-Object {$_.objectClass -eq "group"}
+                if ($null -ne $addgroups2) {
+                    foreach ($addgroup2 in $addgroups2) {
+                        $ag2name = $null
+                        $ag2name = $addgroup2.name
+                        $agroups += $addgroup2
+
+                        $ginfo3 = $null
+                        $ginfo3 = Get-ADGroupMember $ag2name | Select-Object * | Add-Member -NotePropertyName Why -NotePropertyValue "Sub of $ag2name" -Force -PassThru
+                        if ($null -ne $ginfo3) {
+                            $addgroups3 = $null
+                            $addgroups3 = $ginfo3 | Where-Object {$_.objectClass -eq "group"}
+                            if ($null -ne $addgroups3) {
+                                foreach ($addgroup3 in $addgroups3) {
+                                    $ag3name = $null
+                                    $ag3name = $addgroup3.name
+                                    $agroups += $ddgroup3
+
+                                    $ginfo4 = $null
+                                    $ginfo4 = Get-ADGroupMember $ag3name | Select-Object * | Add-Member -NotePropertyName Why -NotePropertyValue "Sub of $ag3name" -Force -PassThru
+                                    if ($null -ne $ginfo4) {
+                                        $addgroups4 = $null
+                                        $addgroups4 = $ginfo4 | Where-Object {$_.objectClass -eq "group"}
+                                        if ($null -ne $addgroups4) {
+                                            foreach ($addgroup4 in $addgroups4) {
+                                                #Clear-Variable ag4name
+                                                #$ag4name = $addgroup4.name
+                                                $agroups += $addgroup4
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }#foreach additional group
+    }#if there are additional groups as sub-members
+
+    $augroups = ($agroups | Sort-Object Name -Unique | Select-Object Name,Why)
+    $augroups
+}
+
+
 Function Get-ProtectedGroup {
 <#
 .Notes
