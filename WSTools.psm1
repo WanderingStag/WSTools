@@ -1917,7 +1917,7 @@ Function Get-SysInternals {
             [Parameter(ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
             [string]$PlaceIn = "$env:userprofile\Downloads\SysInternals",
 
-            [Parameter(ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+            [Parameter(ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
             [string]$url = "https://download.sysinternals.com/files/SysinternalsSuite.zip"
         )
 
@@ -2177,7 +2177,7 @@ function Save-UpdateHistory {
 
 
 function Get-WindowsSetupLog {
-<# 
+<#
    .Notes
     AUTHOR: Skyler Hart
     CREATED: 03/18/2019 15:43:03
@@ -2196,7 +2196,7 @@ function Get-WindowsSetupLog {
         )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME",
-        
+
         [Parameter(Mandatory=$false)]
         [Alias('Days')]
         [int32]$DaysBackToSearch = 180,
@@ -2260,8 +2260,8 @@ function Get-WindowsSetupLog {
                         Status = $st
                         Message = $mess
                         Time = $time
-                    }#new object 
-                }#if servicing provider or error 
+                    }#new object
+                }#if servicing provider or error
             }#foreach event
 
 
@@ -2343,7 +2343,7 @@ Function Get-WSToolsVersion {
     Param (
         [Parameter(Mandatory=$false)]
         [Switch]$Remote,
-        
+
         [Parameter(Mandatory=$false, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName
@@ -2418,7 +2418,7 @@ Function Import-DRAModule {
 .LINK
     https://wstools.dev
 #>
-    
+
     $config = $Global:WSToolsConfig
     $ip = $config.DRAInstallLocation
     $if = $config.DRAInstallFile
@@ -2444,7 +2444,7 @@ Function Import-XML {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$true, Position=0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$true, Position=0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
         [string]$Path
     )
 
@@ -2525,7 +2525,7 @@ Function Install-WSTools {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -2586,7 +2586,7 @@ Function Show-BalloonTip {
 
         [Parameter(Mandatory=$true)]
         [string]$Title,
-        
+
         [Parameter(Mandatory=$false)]
         [ValidateSet('Info','Error','Warning')]
         [string]$Icon = 'Info',
@@ -2623,10 +2623,10 @@ Function Show-MessageBox {
     Param (
         [Parameter(Mandatory=$true)]
         [string]$Text,
-        
+
         [Parameter(Mandatory=$true)]
         [string]$Title,
-        
+
         [Parameter(Mandatory=$false)]
         [int32]$Timeout = 10
     )
@@ -2648,7 +2648,7 @@ Function Show-MessageBox {
 #0x20 Show "Question Mark" icon.
 #0x30 Show "Exclamation Mark" icon.
 #0x40 Show "Information Mark" icon.
- 
+
 #Return values
 #-1 The user did not click a button before nSecondsToWait seconds elapsed.
 #1 OK button
@@ -2665,18 +2665,8 @@ New-Alias -Name "message" -Value Show-MessageBox
 
 
 Function Test-EmailRelay {
-    <# 
-       .Synopsis 
-        This does that
-       .Description
-        This does that
-       .Example 
-        Example- 
-        Example- accomplishes  
-       .Parameter PARAMETER
-        The parameter does this
-       .Notes 
-        NAME: FUNCTIONNAME 
+    <#
+       .Notes
         AUTHOR: Skyler Hart
         CREATED: 08/18/2017 20:40:04
         LASTEDIT: 2020-08-09 21:36:41
@@ -2686,21 +2676,21 @@ Function Test-EmailRelay {
     https://wstools.dev
 .LINK
     https://www.skylerhart.com
-    #>  
+    #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$true, Position=0, HelpMessage="Enter e-mail address of recipient")] 
+        [Parameter(Mandatory=$true, Position=0, HelpMessage="Enter e-mail address of recipient")]
         [string]$Recipient
     )
-        
+
     $config = $Global:WSToolsConfig
     $from = $config.Sender
     $smtpserver = $config.SMTPServer
     $port = $config.SMTPPort
-    
+
     $date = Get-Date
     $subject = "Test from $env:COMPUTERNAME $date"
-    
+
     send-mailmessage -To $Recipient -From $from -Subject $subject -Body "Testing relay of SMTP messages.`nFrom: $from `nTo: $recip `n`nPlease delete this message." -smtpserver $smtpserver -Port $port
 }
 
@@ -2709,35 +2699,22 @@ Function Test-EmailRelay {
 # and have it convert it. Or 192.168.0.0-255 and check all computers. Write help
 # Add alias's and fix pipeline
 Function Test-Online {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+   .Notes
     AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 20:47:56 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 08/18/2017 20:47:56
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -2778,39 +2755,26 @@ Function Test-Online {
 
 
 Function Test-RegistryValue {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter ComputerName
-    Specifies the computer or computers
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+   .Notes
     AUTHOR: Skyler Hart
     CREATED: 02/08/2018 22:32:46
-    LASTEDIT: 02/08/2018 22:32:46 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 02/08/2018 22:32:46
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$true, Position=0)] 
+        [Parameter(Mandatory=$true, Position=0)]
         [ValidateNotNullOrEmpty()]$Path,
 
-        [Parameter(Mandatory=$true, Position=1)] 
+        [Parameter(Mandatory=$true, Position=1)]
         [ValidateNotNullOrEmpty()]$Value
     )
 
@@ -2825,26 +2789,23 @@ Function Test-RegistryValue {
 
 
 Function Update-WSTools {
-<# 
-   .Synopsis 
+<#
+   .Synopsis
     This updates the WSTools module
    .Description
     Updates the WSTools module in various locations
-   .Example 
-    Update-WSTools 
-    Will update the WSTools module  
-   .Notes 
-    NAME: Update-WSTools 
+   .Example
+    Update-WSTools
+    Will update the WSTools module
+   .Notes
     AUTHOR: Skyler Hart
-    CREATED: 09/21/2017 14:48:46 
-    LASTEDIT: 10/17/2019 23:14:22    
+    CREATED: 09/21/2017 14:48:46
+    LASTEDIT: 10/17/2019 23:14:22
     KEYWORDS: PowerShell, module, WSTools, personal
-    REMARKS: 
+    REMARKS:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     $config = $Global:WSToolsConfig
     $UPath = $config.UpdatePath
     $UComp = $config.UpdateComp
@@ -2866,32 +2827,19 @@ Function Update-WSTools {
 
 
 Function Join-File {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter ComputerName
-    Specifies the computer or computers
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+   .Notes
     AUTHOR: Skyler Hart
     CREATED: 04/30/2019 14:52:40
-    LASTEDIT: 04/30/2019 17:17:50   
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 04/30/2019 17:17:50
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (
@@ -2988,32 +2936,19 @@ Function Join-File {
 
 
 Function Split-File {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter ComputerName
-    Specifies the computer or computers
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+   .Notes
     AUTHOR: Skyler Hart
     CREATED: 04/30/2019 13:18:22
-    LASTEDIT: 04/30/2019 17:27:34   
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 04/30/2019 17:27:34
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (
@@ -3034,7 +2969,7 @@ Function Split-File {
         )]
         [Alias('OutputLocation','Output','DestinationPath','Destination')]
         [string]$DestinationFolder,
-        
+
         [Parameter(HelpMessage = "Enter the size you want the part files to be. Can be bytes or you can specify a size. Ex: 100MB",
             Mandatory=$false,
             Position=2,
@@ -3085,34 +3020,17 @@ Function Split-File {
 ###########################################################################
 function Set-Preferences {
 <#
-.SYNOPSIS
-    Short description
-.DESCRIPTION
-    Long description
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.PARAMETER Path
-    Specifies a path to one or more locations.
-.EXAMPLE
-    C:\PS>Set-Preferences
-    Example of how to use this cmdlet
-.EXAMPLE
-    C:\PS>Set-Preferences -PARAMETER
-    Another example of how to use this cmdlet but with a parameter or switch.
 .NOTES
     Author: Skyler Hart
     Created: 2020-04-18 13:00:47
     Last Edit: 2020-04-18 13:00:47
-    Keywords: 
-    Other: 
+    Keywords:
     Requires:
         -Module ActiveDirectory
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     $config = $Global:WSToolsConfig
     $explorer = $config.Explorer
@@ -3213,32 +3131,19 @@ function Set-Preferences {
 
 
 Function Set-Explorer {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter ComputerName
-    Specifies the computer or computers
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+   .Notes
     AUTHOR: Skyler Hart
     CREATED: 02/08/2018 21:26:47
-    LASTEDIT: 02/08/2018 21:26:47 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 02/08/2018 21:26:47
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (
@@ -3254,70 +3159,41 @@ Function Set-Explorer {
 
 Function Set-ShortcutText {
 <#
-.SYNOPSIS
-    Short description
-.DESCRIPTION
-    Long description
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.PARAMETER Path
-    Specifies a path to one or more locations.
-.EXAMPLE
-    C:\PS>Set-ShortcutText
-    Example of how to use this cmdlet
-.EXAMPLE
-    C:\PS>Set-ShortcutText -PARAMETER
-    Another example of how to use this cmdlet but with a parameter or switch.
 .NOTES
     Author: Skyler Hart
     Created: 2020-04-18 20:44:39
     Last Edit: 2020-04-18 20:44:39
-    Keywords: 
+    Keywords:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
         [CmdletBinding()]
         Param (
             [Switch]$Yes,
             [Switch]$No
         )
-    
+
         if ($Yes) {Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name Link -Value ([byte[]](00,00,00,00)) -Force}
         elseif ($No) {Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name Link -Value ([byte[]](17,00,00,00)) -Force}
         else {Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name NoUseStoreOpenWith -Value ([byte[]](00,00,00,00)) -Force}
-    }
+}
 
 
 Function Set-StoreLookup {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+   .Notes
     AUTHOR: Skyler Hart
     CREATED: 02/08/2018 21:44:31
-    LASTEDIT: 02/08/2018 21:44:31 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 02/08/2018 21:44:31
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Switch]$Yes,
@@ -3331,33 +3207,20 @@ Function Set-StoreLookup {
 
 
 Function Show-HiddenFiles {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+   .Notes
     AUTHOR: Skyler Hart
     CREATED: 02/08/2018 21:40:23
-    LASTEDIT: 02/08/2018 21:40:23 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 02/08/2018 21:40:23
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Switch]$Yes,
@@ -3371,33 +3234,20 @@ Function Show-HiddenFiles {
 
 
 Function Show-FileExtensions {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+   .Notes
     AUTHOR: Skyler Hart
     CREATED: 02/08/2018 21:41:37
-    LASTEDIT: 02/08/2018 21:41:37 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 02/08/2018 21:41:37
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com 
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Switch]$Yes,
@@ -3410,8 +3260,6 @@ Function Show-FileExtensions {
 }
 
 
-
-
 ###########################################################################
 ###########################################################################
 ##                                                                       ##
@@ -3422,32 +3270,19 @@ Function Show-FileExtensions {
 
 #get more open commands here: https://sysadminstricks.com/tricks/most-useful-microsoft-management-console-snap-in-control-files-msc-files.html
 function Open-AdminTools {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+   .Notes
     AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 20:48:27 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 08/18/2017 20:48:27
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     control.exe admintools
 }
 New-Alias -Name "tools" -Value Open-AdminTools
@@ -3456,32 +3291,19 @@ New-Alias -Name "admin" -Value Open-AdminTools
 
 
 function Open-BitLocker {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+   .Notes
     AUTHOR: Skyler Hart
     CREATED: 08/19/2017 21:56:03
-    LASTEDIT: 08/19/2017 21:56:03 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 08/19/2017 21:56:03
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     control.exe /name Microsoft.BitLockerDriveEncryption
 }
@@ -3489,96 +3311,57 @@ New-Alias -Name "BitLocker" -Value Open-BitLocker
 
 
 function Open-CertificatesComputer {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+   .Notes
     AUTHOR: Skyler Hart
     CREATED: 08/19/2017 22:22:46
-    LASTEDIT: 08/19/2017 22:22:46 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 08/19/2017 22:22:46
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     certlm.msc
 }
 
 
 function Open-CertificatesUser {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+   .Notes
     AUTHOR: Skyler Hart
     CREATED: 08/19/2017 22:22:46
-    LASTEDIT: 08/19/2017 22:22:46 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 08/19/2017 22:22:46
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     certmgr.msc
 }
 
 
 function Open-ComputerManagement {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+   .Notes
     AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 20:48:35 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 08/18/2017 20:48:35
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
@@ -3590,32 +3373,19 @@ function Open-ComputerManagement {
 
 
 function Open-DeviceManager {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+   .Notes
     AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 20:48:43 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 08/18/2017 20:48:43
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
@@ -3627,32 +3397,19 @@ function Open-DeviceManager {
 
 
 function Open-DevicesAndPrinters {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+   .Notes
     AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 20:48:52 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 08/18/2017 20:48:52
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     control.exe printers
 }
 New-Alias -Name "printers" -Value Open-DevicesAndPrinters
@@ -3660,34 +3417,17 @@ New-Alias -Name "printers" -Value Open-DevicesAndPrinters
 
 function Open-DiscDrive {
 <#
-.SYNOPSIS
-    Short description
-.DESCRIPTION
-    Long description
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.PARAMETER Path
-    Specifies a path to one or more locations.
-.EXAMPLE
-    C:\PS>Open-DiscDrive
-    Example of how to use this cmdlet
-.EXAMPLE
-    C:\PS>Open-DiscDrive -PARAMETER
-    Another example of how to use this cmdlet but with a parameter or switch.
 .NOTES
     Author: Skyler Hart
     Created: 2020-05-08 23:26:34
     Last Edit: 2020-05-08 23:26:34
-    Keywords: 
-    Other: 
+    Keywords:
     Requires:
         -Module ActiveDirectory
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     $sh = New-Object -ComObject "Shell.Application"
     $sh.Namespace(17).Items() | Where-Object {$_.Type -eq "CD Drive"} | ForEach-Object {$_.InvokeVerb("Eject")}
@@ -3696,33 +3436,20 @@ New-Alias -Name "Eject-Disc" -Value Open-DiscDrive
 
 
 function Open-DiskManagement {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+   .Notes
     AUTHOR: Skyler Hart
     CREATED: 08/19/2017 22:19:32
-    LASTEDIT: 08/19/2017 22:19:32 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 08/19/2017 22:19:32
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com 
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
@@ -3734,32 +3461,19 @@ function Open-DiskManagement {
 
 
 function Open-EventViewer {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+   .Notes
     AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 20:48:35 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 08/18/2017 20:48:35
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
@@ -3772,33 +3486,20 @@ New-Alias -Name "events" -Value Open-EventViewer
 
 
 Function Open-FirewallLog {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+   .Notes
     AUTHOR: Skyler Hart
     CREATED: 09/11/2017 14:50:51
-    LASTEDIT: 09/11/2017 14:50:51 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 09/11/2017 14:50:51
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com 
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter()] 
@@ -3818,32 +3519,19 @@ Function Open-FirewallLog {
 
 
 function Open-LocalGPeditor {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+   .Notes
     AUTHOR: Skyler Hart
     CREATED: 08/19/2017 22:31:01
     LASTEDIT: 08/19/2017 22:31:01 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     gpedit.msc
 }
@@ -3852,32 +3540,19 @@ New-Alias -Name "LocalPolicy" -Value Open-LocalGPeditor
 
 
 Function Open-NetworkConnections {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+   .Notes
     AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 20:49:17 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 08/18/2017 20:49:17
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     control.exe ncpa.cpl
 }
 New-Alias -Name "network" -Value Open-NetworkConnections
@@ -3885,65 +3560,39 @@ New-Alias -Name "connections" -Value Open-NetworkConnections
 
 
 function Open-ProgramsAndFeatures {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+   .Notes
     AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 20:49:23 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 08/18/2017 20:49:23
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     Start-Process appwiz.cpl
 }
 New-Alias -Name "programs" -Value Open-ProgramsAndFeatures
 
 
 function Connect-RDP {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+   .Notes
     AUTHOR: Skyler Hart
     CREATED: 08/18/2017 20:48:07
-    LASTEDIT: 10/20/2017 15:25:56  
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 10/20/2017 15:25:56
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory=$true, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
@@ -3957,29 +3606,16 @@ New-Alias -Name "rdp" -Value Connect-RDP
 
 
 Function Open-Remedy {
-    <# 
-       .Synopsis 
-        This does that
-       .Description
-        This does that
-       .Example 
-        Example- 
-        Example- accomplishes  
-       .Parameter PARAMETER
-        The parameter does this
-       .Notes 
-        NAME: FUNCTIONNAME 
+    <#
+       .Notes
         AUTHOR: Skyler Hart
         CREATED: 10/03/2017 10:52:44
-        LASTEDIT: 2020-04-17 15:47:44   
-        KEYWORDS: 
-        REMARKS: 
-        REQUIRES: 
+        LASTEDIT: 2020-04-17 15:47:44
+        KEYWORDS:
+        REQUIRES:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-    #> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory=$false)]
@@ -4013,32 +3649,19 @@ New-Alias -Name "Open-EITSM" -Value Open-Remedy
 
 
 Function Open-Services {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+   .Notes
     AUTHOR: Skyler Hart
     CREATED: 08/19/2017 22:14:08
-    LASTEDIT: 08/19/2017 22:14:08 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 08/19/2017 22:14:08
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (
@@ -4052,32 +3675,19 @@ New-Alias -Name "services" -Value Open-Services
 
 
 Function Open-SystemProperties {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+   .Notes
     AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 20:49:29 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 08/18/2017 20:49:29
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     control.exe sysdm.cpl
 }
 
@@ -4213,34 +3823,17 @@ function Set-MTU {
 
 function Set-NetworkConnectionsShortcut {
 <#
-.SYNOPSIS
-    Short description
-.DESCRIPTION
-    Long description
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.PARAMETER Path
-    Specifies a path to one or more locations.
-.EXAMPLE
-    C:\PS>Set-NetworkConnectionsShortcut
-    Example of how to use this cmdlet
-.EXAMPLE
-    C:\PS>Set-NetworkConnectionsShortcut -PARAMETER
-    Another example of how to use this cmdlet but with a parameter or switch.
 .NOTES
     Author: Skyler Hart
     Created: 2020-05-08 23:01:21
     Last Edit: 2020-05-08 23:01:21
-    Keywords: 
-    Other: 
+    Keywords:
     Requires:
         -Module ActiveDirectory
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     param(
@@ -4275,35 +3868,22 @@ function Set-NetworkConnectionsShortcut {
 
 
 function Set-Reboot0100 {
-<# 
-   .Synopsis 
-    This does that
-   .Description
-    This does that
-   .Example 
-    Example- 
-    Example- accomplishes  
-   .Parameter PARAMETER
-    The parameter does this
-   .Notes 
-    NAME: FUNCTIONNAME 
+<#
+   .Notes
     AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 20:49:35 
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    LASTEDIT: 08/18/2017 20:49:35
+    KEYWORDS:
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #> 
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME",
       
@@ -4327,34 +3907,17 @@ function Set-Reboot0100 {
 
 Function Get-DefaultBrowserPath {
 <#
-.SYNOPSIS
-    Short description
-.DESCRIPTION
-    Long description
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.PARAMETER Path
-    Specifies a path to one or more locations.
-.EXAMPLE
-    C:\PS>Verb-Noun
-    Example of how to use this cmdlet
-.EXAMPLE
-    C:\PS>Verb-Noun -PARAMETER
-    Another example of how to use this cmdlet but with a parameter or switch.
 .NOTES
     Author: Skyler Hart
     Created: Sometime before 2017-08-07
     Last Edit: 2020-08-20 15:09:53
-    Keywords: 
-    Other: 
+    Keywords:
     Requires:
         -Module ActiveDirectory
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     New-PSDrive -Name HKCR -PSProvider Registry -Root Hkey_Classes_Root | Out-Null
     $BrowserPath = ((Get-ItemProperty 'HKCR:\http\shell\open\command').'(default)').Split('"')[1]          
@@ -4364,43 +3927,43 @@ Function Get-DefaultBrowserPath {
 
 
 Function Get-FileMetaData { 
-  <# 
-   .Synopsis 
-    This function gets file metadata and returns it as a custom PS Object  
-   .Description 
-    This function gets file metadata using the Shell.Application object and 
-    returns a custom PSObject object that can be sorted, filtered or otherwise 
-    manipulated. 
-   .Example 
-    Get-FileMetaData -folder "e:\music" 
-    Gets file metadata for all files in the e:\music directory 
-   .Example 
-    Get-FileMetaData -folder (gci e:\music -Recurse -Directory).FullName 
-    This example uses the Get-ChildItem cmdlet to do a recursive lookup of  
-    all directories in the e:\music folder and then it goes through and gets 
-    all of the file metada for all the files in the directories and in the  
-    subdirectories.   
-   .Example 
-    Get-FileMetaData -folder "c:\fso","E:\music\Big Boi" 
-    Gets file metadata from files in both the c:\fso directory and the 
-    e:\music\big boi directory. 
-   .Example 
-    $meta = Get-FileMetaData -folder "E:\music" 
-    This example gets file metadata from all files in the root of the 
-    e:\music directory and stores the returned custom objects in a $meta  
-    variable for later processing and manipulation. 
-   .Parameter Folder 
-    The folder that is parsed for files  
-   .Notes 
-    NAME:  Get-FileMetaData 
-    AUTHOR: ed wilson, msft 
-    LASTEDIT: 01/24/2014 14:08:24 
-    KEYWORDS: Storage, Files, Metadata 
-    HSG: HSG-2-5-14 
-   .Link 
+  <#
+   .Synopsis
+    This function gets file metadata and returns it as a custom PS Object
+   .Description
+    This function gets file metadata using the Shell.Application object and
+    returns a custom PSObject object that can be sorted, filtered or otherwise
+    manipulated.
+   .Example
+    Get-FileMetaData -folder "e:\music"
+    Gets file metadata for all files in the e:\music directory
+   .Example
+    Get-FileMetaData -folder (gci e:\music -Recurse -Directory).FullName
+    This example uses the Get-ChildItem cmdlet to do a recursive lookup of
+    all directories in the e:\music folder and then it goes through and gets
+    all of the file metada for all the files in the directories and in the
+    subdirectories.
+   .Example
+    Get-FileMetaData -folder "c:\fso","E:\music\Big Boi"
+    Gets file metadata from files in both the c:\fso directory and the
+    e:\music\big boi directory.
+   .Example
+    $meta = Get-FileMetaData -folder "E:\music"
+    This example gets file metadata from all files in the root of the
+    e:\music directory and stores the returned custom objects in a $meta
+    variable for later processing and manipulation.
+   .Parameter Folder
+    The folder that is parsed for files
+   .Notes
+    NAME:  Get-FileMetaData
+    AUTHOR: ed wilson, msft
+    LASTEDIT: 01/24/2014 14:08:24
+    KEYWORDS: Storage, Files, Metadata
+    HSG: HSG-2-5-14
+   .Link
      https://devblogs.microsoft.com/scripting/
- #Requires -Version 2.0 
- #> 
+ #Requires -Version 2.0
+ #>
  Param([string[]]$folder) 
  foreach($sFolder in $folder) 
   { 
@@ -4430,20 +3993,6 @@ Function Get-FileMetaData {
 
 function Get-User {
 <#
-.SYNOPSIS
-    Short description
-.DESCRIPTION
-    Long description
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.PARAMETER Path
-    Specifies a path to one or more locations.
-.EXAMPLE
-    C:\PS>Get-User
-    Example of how to use this cmdlet
-.EXAMPLE
-    C:\PS>Get-User -PARAMETER
-    Another example of how to use this cmdlet but with a parameter or switch.
 .NOTES
     Author: Skyler Hart
     Created: 2020-04-20 19:51:03
@@ -4452,8 +4001,6 @@ function Get-User {
         -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     param(
@@ -4841,27 +4388,13 @@ function Get-IPrange {
 
 function Set-WSToolsConfig {
 <#
-.SYNOPSIS
-    Short description
-.DESCRIPTION
-    Long description
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.PARAMETER Path
-    Specifies a path to one or more locations.
-.EXAMPLE
-    C:\PS>Set-WSToolsConfig
-    Example of how to use this cmdlet
 .NOTES
     Author: Skyler Hart
     Created: 2020-04-17 15:00:06
     Last Edit: 2020-04-17 15:00:06
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
-
     PowerShell_Ise "$PSScriptRoot\config.ps1"
 }
 New-Alias -Name "Open-WSToolsConfig" -Value Set-WSToolsConfig
