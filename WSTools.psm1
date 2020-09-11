@@ -4082,32 +4082,23 @@ Function Open-SystemProperties {
 }
 
 
-function Set-DirtyShutdown {
+function Clear-DirtyShutdown {
 <#
-.SYNOPSIS
-    Short description
-.DESCRIPTION
-    Long description
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
 .EXAMPLE
-    C:\PS>Set-DirtyShutdown
+    C:\PS>Clear-DirtyShutdown
     Example of how to use this cmdlet. Will clear a dirty shutdown that causes the shutdown tracker to appear.
 .EXAMPLE
-    C:\PS>Set-DirtyShutdown -ComputerName COMP1
+    C:\PS>Clear-DirtyShutdown -ComputerName COMP1
     Another example of how to use this cmdlet. Will clear the dirty shutdown on COMP1
 .NOTES
     Author: Skyler Hart
     Created: 2020-05-08 17:54:09
     Last Edit: 2020-05-08 18:28:01
-    Keywords: 
-    Other: 
+    Keywords:
     Requires:
         -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     param(
