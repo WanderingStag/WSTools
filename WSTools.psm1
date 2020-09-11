@@ -54,7 +54,7 @@ function Clear-ImproperProfileCopy {
     Clears Application Data folder that was improperly copied which happens when copy and pasting a profile.
    .Description
     Copies nested Application Data folders to a higher level (by default to C:\f2) and deletes them.
-   .Example 
+   .Example
     Clear-ImproperProfileCopy -Source \\fileserver\example\user -Destination E:\f2
     Clears nested Application Data folders from \\fileserver\example\user. Uses E:\f2 as the folder for clearing.
    .Example
@@ -64,10 +64,10 @@ function Clear-ImproperProfileCopy {
     Specifies the folder that contains the Application Data folder causing issues.
    .Parameter Destination
     Specifies the folder that is used to copy the nested folders to and deletes them.
-   .Notes 
+   .Notes
     AUTHOR: Skyler Hart
     CREATED: 06/11/2016 20:37:14
-    LASTEDIT: 2020-04-15 21:54:21 
+    LASTEDIT: 2020-04-15 21:54:21
     KEYWORDS: user, profile, app data, application data, cleanup, clear, improper
 .LINK
     https://wstools.dev
@@ -79,7 +79,7 @@ function Clear-ImproperProfileCopy {
 
         [Parameter(Mandatory=$true, Position=1)]
         [string]$Destination
-    ) 
+    )
 
     if (!($Destination)) {
         New-Item $Destination -ItemType Directory
@@ -88,7 +88,6 @@ function Clear-ImproperProfileCopy {
     else {
         $cd = $false
     }
-
 
     $folder1 = $Source + "\Application Data"
     $folder2 = $Destination + "\Application Data"
@@ -122,23 +121,23 @@ Function Clear-Space {
    .Synopsis
     Clears harddrive space
    .Description
-    Clears harddrive space by clearing temp files and caches. Invoke method does not clear as many locations. #DevSkim: ignore DS104456 
+    Clears harddrive space by clearing temp files and caches. Invoke method does not clear as many locations. #DevSkim: ignore DS104456
    .Example
-    Clear-Space 
-    Clears temp and cache data on the local computer  
+    Clear-Space
+    Clears temp and cache data on the local computer
    .Example
-    Clear-Space -ComputerName COMP1 
+    Clear-Space -ComputerName COMP1
     Clears temp and cache data on the computer COMP1
    .Example
     Clear-Space -ComputerName (gc c:\complist.txt)
     Clears temp and cache data on the computers listed in the file c:\complist.txt
    .Example
     Clear-Space -ComputerName (gc c:\complist.txt) -InvokeMethod
-    Clears temp and cache data on the computers listed in the file c:\complist.txt using the Invoke-WMIMethod command. #DevSkim: ignore DS104456 
+    Clears temp and cache data on the computers listed in the file c:\complist.txt using the Invoke-WMIMethod command. #DevSkim: ignore DS104456
    .Parameter ComputerName
     Specifies the computer or computers to clear space on
    .Parameter InvokeMethod
-    Specifies the computer or computers to clear space on using the Invoke-WMIMethod command #DevSkim: ignore DS104456 
+    Specifies the computer or computers to clear space on using the Invoke-WMIMethod command #DevSkim: ignore DS104456
    .Notes
     AUTHOR: Skyler Hart
     CREATED: 05/19/2017 20:16:47
@@ -150,11 +149,11 @@ Function Clear-Space {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME",
 
-        [Parameter()] 
+        [Parameter()]
         [Switch]$InvokeMethod
     )
 
@@ -266,48 +265,48 @@ Function Clear-Space {
                 $wmiq = Get-WmiObject win32_operatingsystem -ComputerName $Comp -ErrorAction Stop | Select-Object OSArchitecture
                 #Clear SCCM cache
                 if ($wmiq -like "*64-bit*") {
-                    $invoke = Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c del "C:\Windows\SysWOW64\ccm\cache\*.*" /f /q && FOR /D %p IN ("C:\Windows\SysWOW64\ccm\cache\*") DO rmdir "%p" /q' -ErrorAction SilentlyContinue #DevSkim: ignore DS104456 
+                    $invoke = Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c del "C:\Windows\SysWOW64\ccm\cache\*.*" /f /q && FOR /D %p IN ("C:\Windows\SysWOW64\ccm\cache\*") DO rmdir "%p" /q' -ErrorAction SilentlyContinue #DevSkim: ignore DS104456
                     $id32 = $invoke.ProcessId
                     Write-Output "Waiting for deletion of files in C:\Windows\SysWOW64\ccm\cache to complete"
                     do {(Start-Sleep -Seconds 10)}
                     until ((Get-WMIobject -Class Win32_process -ComputerName $Comp) | Where-Object {$_.ProcessID -eq $id32})
                 }#if64bit
                 else {
-                    $invoke = Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c del "C:\Windows\System32\ccm\cache\*.*" /f /q && FOR /D %p IN ("C:\Windows\System32\ccm\cache\*") DO rmdir "%p" /q' -ErrorAction SilentlyContinue #DevSkim: ignore DS104456 
+                    $invoke = Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c del "C:\Windows\System32\ccm\cache\*.*" /f /q && FOR /D %p IN ("C:\Windows\System32\ccm\cache\*") DO rmdir "%p" /q' -ErrorAction SilentlyContinue #DevSkim: ignore DS104456
                     $id32 = $invoke.ProcessId
                     Write-Output "Waiting for deletion of files in C:\Windows\System32\ccm\cache to complete"
                     do {(Start-Sleep -Seconds 10)}
                     until ((Get-WMIobject -Class Win32_process -ComputerName $Comp) | Where-Object {$_.ProcessID -eq $id32})
                 }#elseif32bit
-                $invoke = Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c del "C:\Windows\ccmcache\*.*" /f /q && FOR /D %p IN ("C:\Windows\ccmcache\*") DO rmdir "%p" /q' -ErrorAction SilentlyContinue #DevSkim: ignore DS104456 
+                $invoke = Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c del "C:\Windows\ccmcache\*.*" /f /q && FOR /D %p IN ("C:\Windows\ccmcache\*") DO rmdir "%p" /q' -ErrorAction SilentlyContinue #DevSkim: ignore DS104456
                 $id32 = $invoke.ProcessId
                 Write-Output "Waiting for deletion of files in C:\Windows\ccmcache to complete"
                 do {(Start-Sleep -Seconds 10)}
                 until ((Get-WMIobject -Class Win32_process -ComputerName $Comp) | Where-Object {$_.ProcessID -eq $id32})
 
                 #Remove C:\Temp files
-                $invoke = Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c del "C:\Temp\*.*" /f /q && FOR /D %p IN ("C:\Temp\*") DO rmdir "%p" /q' -ErrorAction SilentlyContinue #DevSkim: ignore DS104456 
+                $invoke = Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c del "C:\Temp\*.*" /f /q && FOR /D %p IN ("C:\Temp\*") DO rmdir "%p" /q' -ErrorAction SilentlyContinue #DevSkim: ignore DS104456
                 $id32 = $invoke.ProcessId
                 Write-Output "Waiting for deletion of files in C:\Temp to complete"
                 do {(Start-Sleep -Seconds 10)}
                 until ((Get-WMIobject -Class Win32_process -ComputerName $Comp) | Where-Object {$_.ProcessID -eq $id32})
 
                 #Remove Windows Temp files
-                $invoke = Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c del "C:\Windows\Temp\*.*" /f /q && FOR /D %p IN ("C:\Windows\Temp\*") DO rmdir "%p" /q' -ErrorAction SilentlyContinue #DevSkim: ignore DS104456 
+                $invoke = Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c del "C:\Windows\Temp\*.*" /f /q && FOR /D %p IN ("C:\Windows\Temp\*") DO rmdir "%p" /q' -ErrorAction SilentlyContinue #DevSkim: ignore DS104456
                 $id32 = $invoke.ProcessId
                 Write-Output "Waiting for deletion of files in C:\Windows\Temp to complete"
                 do {(Start-Sleep -Seconds 10)}
                 until ((Get-WMIobject -Class Win32_process -ComputerName $Comp) | Where-Object {$_.ProcessID -eq $id32})
 
                 #Remove Prefetch files
-                $invoke = Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c del "C:\Windows\Prefetch\*.*" /f /q && FOR /D %p IN ("C:\Windows\Prefetch\*") DO rmdir "%p" /q' -ErrorAction SilentlyContinue #DevSkim: ignore DS104456 
+                $invoke = Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c del "C:\Windows\Prefetch\*.*" /f /q && FOR /D %p IN ("C:\Windows\Prefetch\*") DO rmdir "%p" /q' -ErrorAction SilentlyContinue #DevSkim: ignore DS104456
                 $id32 = $invoke.ProcessId
                 Write-Output "Waiting for deletion of files in C:\Windows\Prefetch to complete"
                 do {(Start-Sleep -Seconds 10)}
                 until ((Get-WMIobject -Class Win32_process -ComputerName $Comp) | Where-Object {$_.ProcessID -eq $id32})
 
                 #Remove Windows Update cache
-                $invoke = Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c del "C:\Windows\SoftwareDistribution\Download\*.*" /f /q && FOR /D %p IN ("C:\Windows\SoftwareDistribution\Download\*") DO rmdir "%p" /q' -ErrorAction SilentlyContinue #DevSkim: ignore DS104456 
+                $invoke = Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c del "C:\Windows\SoftwareDistribution\Download\*.*" /f /q && FOR /D %p IN ("C:\Windows\SoftwareDistribution\Download\*") DO rmdir "%p" /q' -ErrorAction SilentlyContinue #DevSkim: ignore DS104456
                 $id32 = $invoke.ProcessId
                 Write-Output "Waiting for deletion of files in C:\Windows\SoftwareDistribution\Download to complete"
                 do {(Start-Sleep -Seconds 10)}
@@ -329,7 +328,7 @@ function Disable-ServerManager {
     Author: Skyler Hart
     Created: 2020-05-08 23:18:39
     Last Edit: 2020-05-08 23:18:39
-    Keywords: 
+    Keywords:
 .LINK
     https://wstools.dev
 #>
@@ -343,7 +342,7 @@ function Enable-RDP {
     Author: Skyler Hart
     Created: 2020-05-08 23:21:17
     Last Edit: 2020-05-08 23:21:17
-    Keywords: 
+    Keywords:
     Requires:
         -RunAsAdministrator
 .LINK
@@ -361,7 +360,7 @@ Function Get-ComputerHWInfo {
     Get Manufacturer, Model, Model Version, BIOS vendor, BIOS version, and release date of BIOS update on local or remote computer.
    .Example
     Get-ComputerHWInfo
-    Get hardware information for local computer  
+    Get hardware information for local computer
    .Example
     Get-ComputerHWInfo COMP1
     Get hardware information for computer COMP1
@@ -372,7 +371,7 @@ Function Get-ComputerHWInfo {
     CREATED: 3/15/2015 08:49:13
     LASTEDIT: 09/21/2017 13:03:30
     KEYWORDS: hardware, information, computer
-    REQUIRES: 
+    REQUIRES:
         -RunAsAdministrator
 .LINK
     https://wstools.dev
@@ -388,13 +387,13 @@ Function Get-ComputerHWInfo {
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
-     
+
     $keyname = 'HARDWARE\\DESCRIPTION\\System\\BIOS'
     foreach ($comp in $ComputerName) {
         $reg = $null
         $key = $null
-        $reg = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey('LocalMachine', $comp) 
-        $key = $reg.OpenSubkey($keyname) 
+        $reg = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey('LocalMachine', $comp)
+        $key = $reg.OpenSubkey($keyname)
         $BRD = $key.GetValue('BIOSReleaseDate')
         $BV = $key.GetValue('BIOSVendor')
         $Bver = $key.GetValue('BIOSVersion')
@@ -440,69 +439,72 @@ Function Get-ComputerModel {
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
+    Begin {}
+    Process {
+        foreach ($comp in $ComputerName) {
+            try {
+                $csi = Get-WmiObject -Class Win32_ComputerSystem -ComputerName $comp -ErrorAction Stop
 
-    foreach ($comp in $ComputerName) {
-        try {
-            $csi = Get-WmiObject -Class Win32_ComputerSystem -ComputerName $comp -ErrorAction Stop
-            
-            switch ($csi.DomainRole) {
-                0 {$dr = "Standalone Workstation"}
-                1 {$dr = "Member Workstation"}
-                2 {$dr = "Standalone Server"}
-                3 {$dr = "Member Server"}
-                4 {$dr = "Domain Controller"}
-                5 {$dr = "Primary Domain Controller"}
+                switch ($csi.DomainRole) {
+                    0 {$dr = "Standalone Workstation"}
+                    1 {$dr = "Member Workstation"}
+                    2 {$dr = "Standalone Server"}
+                    3 {$dr = "Member Server"}
+                    4 {$dr = "Domain Controller"}
+                    5 {$dr = "Primary Domain Controller"}
+                }
+
+                switch ($csi.Model) {
+                    "Virtual Machine" {$PorV = "Virtual"}
+                    "VMware Virtual Platform" {$PorV = "Virtual"}
+                    "VirtualBox" {$PorV = "Virtual"}
+                    default {$PorV = "Physical"}
+                }
+
+                switch ($csi.PCSystemType) {
+                    2 {$type = "Laptop/Tablet"}
+                    default {$type = "Desktop"}
+                }
+
+                $manu = $csi.Manufacturer
+                $model = $csi.Model
+
+                $info = New-Object -TypeName PSObject -Property @{
+                    ComputerName = $comp
+                    DomainRole = $dr
+                    Manufacturer = $manu
+                    Model = $model
+                    PorV = $PorV
+                    Type = $type
+                }#new object
+                $info | Select-Object ComputerName,DomainRole,Manufacturer,Model,PorV,Type
             }
-            
-            switch ($csi.Model) {
-                "Virtual Machine" {$PorV = "Virtual"}
-                "VMware Virtual Platform" {$PorV = "Virtual"}
-                "VirtualBox" {$PorV = "Virtual"}
-                default {$PorV = "Physical"}
+            catch {
+                $na = "NA"
+                New-Object -TypeName PSObject -Property @{
+                    ComputerName = $comp
+                    DomainRole = "Unable to connect"
+                    Manufacturer = $na
+                    Model = $na
+                    PorV = $na
+                    Type = $na
+                }#new object
+                $info | Select-Object ComputerName,DomainRole,Manufacturer,Model,PorV,Type
             }
-
-            switch ($csi.PCSystemType) {
-                2 {$type = "Laptop/Tablet"}
-                default {$type = "Desktop"}
-            }
-
-            $manu = $csi.Manufacturer
-            $model = $csi.Model
-
-            $info = New-Object -TypeName PSObject -Property @{
-                ComputerName = $comp
-                DomainRole = $dr
-                Manufacturer = $manu
-                Model = $model
-                PorV = $PorV
-                Type = $type
-            }#new object 
-            $info | Select-Object ComputerName,DomainRole,Manufacturer,Model,PorV,Type
-        }
-        catch {
-            $na = "NA"
-            New-Object -TypeName PSObject -Property @{
-                ComputerName = $comp
-                DomainRole = "Unable to connect"
-                Manufacturer = $na
-                Model = $na
-                PorV = $na
-                Type = $na
-            }#new object 
-            $info | Select-Object ComputerName,DomainRole,Manufacturer,Model,PorV,Type
         }
     }
+    End {}
 }
 New-Alias -Name "Get-Model" -Value Get-ComputerModel
 
 
 function Get-DirectoryStat {
 <#
-    .NOTES
-        Author: Skyler Hart
-        Created: 2020-08-09 10:07:49
-        Last Edit: 2020-08-09 21:35:14
-        Keywords:
+.NOTES
+    Author: Skyler Hart
+    Created: 2020-08-09 10:07:49
+    Last Edit: 2020-08-09 21:35:14
+    Keywords:
 .LINK
     https://wstools.dev
 #>
@@ -519,12 +521,25 @@ function Get-DirectoryStat {
         [Alias('Dir','Folder','UNC')]
         [string[]]$DirectoryName
     )
-    
-    foreach ($Directory in $DirectoryName) {
-        $stats = New-Object PsObject -Property @{Directory = $null; FileCount = 0; SizeBytes = [long]0; SizeKB = 0; SizeMB = 0; SizeGB = 0; Over100MB = 0; Over1GB = 0; Over5GB = 0}
-        $stats.Directory = $Directory
-        foreach ($d in [system.io.Directory]::EnumerateDirectories($Directory)) {
-            foreach ($f in [system.io.Directory]::EnumerateFiles($d)) {
+    Begin {}
+    Process {
+        foreach ($Directory in $DirectoryName) {
+            $stats = New-Object PsObject -Property @{Directory = $null; FileCount = 0; SizeBytes = [long]0; SizeKB = 0; SizeMB = 0; SizeGB = 0; Over100MB = 0; Over1GB = 0; Over5GB = 0}
+            $stats.Directory = $Directory
+            foreach ($d in [system.io.Directory]::EnumerateDirectories($Directory)) {
+                foreach ($f in [system.io.Directory]::EnumerateFiles($d)) {
+                    $length = (New-Object io.FileInfo $f).Length
+                    $stats.FileCount++
+                    $stats.SizeBytes += $length
+                    if ($length -gt 104857600) {$stats.Over100MB++}
+                    if ($length -gt 1073741824) {$stats.Over1GB++}
+                    if ($length -gt 5368709120) {$stats.Over5GB++}
+                    $stats.SizeKB += ("{0:N2}" -f ($length / 1KB))
+                    $stats.SizeMB += ("{0:N2}" -f ($length / 1MB))
+                    $stats.SizeGB += ("{0:N2}" -f ($length / 1GB))
+                } #foreach file
+            }#foreach subfolder get stats
+            foreach ($f in [system.io.Directory]::EnumerateFiles($Directory)) {
                 $length = (New-Object io.FileInfo $f).Length
                 $stats.FileCount++
                 $stats.SizeBytes += $length
@@ -534,21 +549,11 @@ function Get-DirectoryStat {
                 $stats.SizeKB += ("{0:N2}" -f ($length / 1KB))
                 $stats.SizeMB += ("{0:N2}" -f ($length / 1MB))
                 $stats.SizeGB += ("{0:N2}" -f ($length / 1GB))
-            } #foreach file
-        }#foreach subfolder get stats
-        foreach ($f in [system.io.Directory]::EnumerateFiles($Directory)) {
-            $length = (New-Object io.FileInfo $f).Length
-            $stats.FileCount++
-            $stats.SizeBytes += $length
-            if ($length -gt 104857600) {$stats.Over100MB++}
-            if ($length -gt 1073741824) {$stats.Over1GB++}
-            if ($length -gt 5368709120) {$stats.Over5GB++}
-            $stats.SizeKB += ("{0:N2}" -f ($length / 1KB))
-            $stats.SizeMB += ("{0:N2}" -f ($length / 1MB))
-            $stats.SizeGB += ("{0:N2}" -f ($length / 1GB))
-        }#foreach file
-        $stats | Select-Object Directory,FileCount,Over100MB,Over1GB,Over5GB,SizeBytes,SizeKB,SizeMB,SizeGB
-    }#foreach directory in #directoryname
+            }#foreach file
+            $stats | Select-Object Directory,FileCount,Over100MB,Over1GB,Over5GB,SizeBytes,SizeKB,SizeMB,SizeGB
+        }#foreach directory in #directoryname
+    }
+    End {}
 }
 
 
@@ -726,17 +731,13 @@ Function Get-FeaturesOnDemand {
     AUTHOR: Skyler Hart
     CREATED: 09/25/2019 14:13:50
     LASTEDIT: 2020-08-31 21:44:37
-    KEYWORDS: 
-    REMARKS: 
-    REQUIRES: 
+    KEYWORDS:
+    REQUIRES:
         Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     $ninfo = @()
-    
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
     if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {$Role = 'Admin'}
     else {$Role = 'User'}
@@ -785,12 +786,12 @@ Function Get-IEVersion {
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
-     
+
     $keyname = 'SOFTWARE\\Microsoft\\Internet Explorer'
     foreach ($comp in $ComputerName) {
         $reg = $null
         $key = $null
-        $value = $null 
+        $value = $null
         $reg = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey('LocalMachine', $comp)
         $key = $reg.OpenSubkey($keyname)
         $value = $key.GetValue('Version')
@@ -828,7 +829,7 @@ Function Get-MTU {
         $netad = (Get-WmiObject Win32_NetworkAdapter -ComputerName $comp -Filter NetConnectionStatus=2  -ErrorAction Stop | Select-Object * | Where-Object {$null -ne $_.MACAddress -or $_.MACAddress -ne ""})
         $RegBase = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine,$comp)
         $RegLoc = 'SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces'
-        
+
         $RegKey = $RegBase.OpenSubKey($RegLoc)
         $ints = $RegKey.GetSubKeyNames()
         foreach ($int in $ints) {
@@ -851,7 +852,7 @@ Function Get-MTU {
                 else {
                     $ip = $dhcpaddr
                 }
-        
+
                 if ($null -eq $ip -or $ip -eq "" -or $ip -like "0*") {
                     #don't report
                 }
@@ -922,7 +923,7 @@ Function Get-NICInfo {
             $wmio = Get-WmiObject -Class Win32_NetworkAdapterConfiguration -ComputerName $Comp -ErrorAction Stop
             $wwhr = (($wmio) | Where-Object {$_.IPEnabled -eq $true -and $null -ne $_.IPAddress})
             $ints = ($wwhr | Select-Object -property *)
-                        
+
             if ($null -ne $ints) {
                 foreach ($int in $ints) {
                     Clear-Variable -Name MAC,intname,DHCPEnabled,DHCPServer,dhsraddr,ipv6DHCPServer,IPv4,ipv42,ipv6auto,IPv6,`
@@ -1034,12 +1035,12 @@ Function Get-NICInfo {
                         DNSServer3 = $dns3
                         #IPv6DNSServer1 = $ipv6dns1
                         #IPv6DNSServer2 = $ipv6dns2
-                        #Pv6DNSServer3 = $ipv6dns3   
+                        #Pv6DNSServer3 = $ipv6dns3
                     }#new object
                 }#foreach interface
             }#if ints not null
         }#try
-        
+
         catch {
             New-Object psobject -Property @{
                 Name = $Comp
@@ -1067,7 +1068,7 @@ Function Get-NICInfo {
                 DNSServer3 = $dns3
                 #IPv6DNSServer1 = $ipv6dns1
                 #IPv6DNSServer2 = $ipv6dns2
-                #Pv6DNSServer3 = $ipv6dns3   
+                #Pv6DNSServer3 = $ipv6dns3
             }#new object
         }#catch
     }#foreach computer
@@ -1076,22 +1077,22 @@ Function Get-NICInfo {
 
 Function Get-OperatingSystem {
 <#
-   .Synopsis 
+   .Synopsis
     Gets Operating System information
    .Description
     Gets Operating System information via WMI query (Default) or Registry query (Switch.) Determines whether the computer is 32-bit or 64-bit, the Operating System name, and the OS Build number.
-   .Example 
-    Get-OperatingSystem 
-    Gets Operating System information for the local computer  
-   .Example 
+   .Example
+    Get-OperatingSystem
+    Gets Operating System information for the local computer
+   .Example
     Get-OperatingSystem -Registry
     Gets Operating System information for the local computer via Registry query instead os WMI query
-   .Example 
+   .Example
     Get-OperatingSystem -ComputerName SERVER1
     Gets Operating System information for computer SERVER1
-   .Example 
+   .Example
     Get-OperatingSystem -ComputerName (gc c:\complist.txt) -Registry
-    Gets Operating System information for all computers listed in c:\complist.txt via Registry queries   
+    Gets Operating System information for all computers listed in c:\complist.txt via Registry queries
    .Parameter ComputerName
     Specify computer or computer names to query
    .Parameter Registry
@@ -1116,7 +1117,7 @@ Function Get-OperatingSystem {
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME",
 
-        [Parameter(Mandatory=$false, Position=1)] 
+        [Parameter(Mandatory=$false, Position=1)]
         [Switch]$Registry
     )
 
@@ -1195,9 +1196,9 @@ Function Get-OperatingSystem {
 
                 try {
                     $ErrorActionPreference = "Stop"
-                    $reg = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey('LocalMachine', $comp) 
-                    $key = $reg.OpenSubkey($keyname) 
-                    $value = $key.GetValue('ProductName') 
+                    $reg = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey('LocalMachine', $comp)
+                    $key = $reg.OpenSubkey($keyname)
+                    $value = $key.GetValue('ProductName')
                     $build = $key.GetValue('CurrentBuildNumber')
 
                     #64bit check
@@ -1297,11 +1298,11 @@ Function Get-OperatingSystem {
                 $perc1 = $amount.ToString("P")
                 Write-Progress -activity "Getting Operating System info on computers" -status "Checking $comp. Computer $i of $number. Percent complete:  $perc1" -PercentComplete (($i / $ComputerName.length)  * 100)
             }#if length
-        
+
             #Pull registry values
-            $reg = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey('LocalMachine', $comp) 
-            $key = $reg.OpenSubkey($keyname) 
-            $value = $key.GetValue('ProductName') 
+            $reg = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey('LocalMachine', $comp)
+            $key = $reg.OpenSubkey($keyname)
+            $value = $key.GetValue('ProductName')
             $build = $key.GetValue('CurrentBuildNumber')
 
             #64bit check
@@ -1329,7 +1330,7 @@ Function Get-OperatingSystem {
                 if ($null -eq $value2) {$bit = "32-bit"}
                 else {$bit = "64-bit"}
             }
-        
+
             if ($value -like "Windows 10*" -or $value -match "2016" -or $value -match "2019") {
                 if ($Build -eq 14393) {
                     $OS = $value + " v1607"
@@ -1401,77 +1402,77 @@ function Get-BitLockerStatus {
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
-    
+
     $overall = @()
     foreach ($Comp in $ComputerName) {
         $i = 0
         try {
             $ErrorActionPreference = "Stop"
             $bi = manage-bde.exe -ComputerName $Comp -status
-    
+
             #Get Drives
             $drives = @()
             $d = $bi | Select-String -Pattern 'Volume '
             $drives += $d | ForEach-Object {
                 $_.ToString().Trim().Substring(0,8) -replace "Volume ",""
             }#foreach drive
-    
+
             #Get Size
             $size = @()
             $si = $bi | Select-String -Pattern 'Size'
             $size += $si | ForEach-Object {
                 $_.ToString().Trim().Substring(22)
             }#foreach size
-    
+
             #Get BitLocker Version
             $ver = @()
             $v = $bi | Select-String -Pattern 'BitLocker Version'
             $ver += $v | ForEach-Object {
                 $_.ToString().Trim().Substring(22)
             }#foreach version
-    
+
             #Get Status
             $status = @()
             $s = $bi | Select-String -Pattern 'Conversion Status'
             $status += $s | ForEach-Object {
                 $_.ToString().Trim().Substring(22)
             }#foreach status
-    
+
             #Get Percent Encrypted
             $per = @()
             $p = $bi | Select-String -Pattern 'Percentage Encrypt'
             $per += $p | ForEach-Object {
                 $_.ToString().Trim().Substring(22)
             }#foreach percentage
-    
+
             #Get Encryption Method
             $em = @()
             $e = $bi | Select-String -Pattern 'Encryption Method'
             $em += $e | ForEach-Object {
                 $_.ToString().Trim().Substring(22)
             }#foreach encryption method
-    
+
             #Get Protection Status
             $ps = @()
             $pi = $bi | Select-String -Pattern 'Protection Status'
             $ps += $pi | ForEach-Object {
                 $_.ToString().Trim().Substring(22)
             }#foreach pro status
-    
+
             #Get Lock Status
             $ls = @()
             $li = $bi | Select-String -Pattern 'Lock Status'
             $ls += $li | ForEach-Object {
                 $_.ToString().Trim().Substring(22)
             }#foreach Lock Status
-    
+
             #Get ID Field
             $id = @()
             $ii = $bi | Select-String -Pattern 'Identification Field'
             $id += $ii | ForEach-Object {
                 $_.ToString().Trim().Substring(22)
             }#foreach ID
-            
+
             #Get Key Protectors
             $key = @()
             $k = $bi | Select-String -Pattern 'Key Protect'
@@ -1483,7 +1484,7 @@ function Get-BitLockerStatus {
             Write-Host "Unable to connect to $Comp"
             $status = "Insuffiect permissions or unable to connect"
         }
-            
+
         $num = $drives.Length
         do {
             $overall += New-Object -TypeName PSObject -Property @{
@@ -1608,7 +1609,7 @@ Function Get-PSVersion {
             Position=0,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
-        )] 
+        )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME",
 
@@ -1634,7 +1635,7 @@ Function Get-PSVersion {
             $perc1 = $amount.ToString("P")
             Write-Progress -activity "Getting installed PowerShell version on multiple computers" -status "Computer $i of $number. Currently checking: $comp. Percent complete:  $perc1" -PercentComplete (($i / $ComputerName.length)  * 100)
         }#if length
-        
+
         if ($ignorelist -notmatch $comp) {
             try {
                 $info = Get-Item \\$comp\c$\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -ErrorAction Stop
@@ -1669,7 +1670,7 @@ Function Get-PSVersion {
                     Status = $status
                     HighestSupportedVersion = $maxver
                     OS = $os
-                }#new object 
+                }#new object
             }
             catch {
                 $compinfo += New-Object -TypeName PSObject -Property @{
@@ -1678,7 +1679,7 @@ Function Get-PSVersion {
                     Status = "NA"
                     HighestSupportedVersion = "NA"
                     OS = "NA"
-                }#new object 
+                }#new object
             }
         }
     }
@@ -1702,7 +1703,7 @@ Function Get-PublicIP {
 
 
 Function Get-SerialNumber {
-<# 
+<#
 .Notes
     AUTHOR: Skyler Hart
     CREATED: 11/02/2018 12:11:03
@@ -1738,13 +1739,13 @@ Function Get-SerialNumber {
             $info = New-Object -TypeName PSObject -Property @{
                 ComputerName = $comp
                 SerialNumber = $sn
-            }#new object 
+            }#new object
         }
         catch {
             $info = New-Object -TypeName PSObject -Property @{
                 ComputerName = $comp
                 SerialNumber = "NA"
-            }#new object 
+            }#new object
         }
 
         $info
@@ -1773,7 +1774,7 @@ Function Get-ShutdownLog {
         )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME",
-        
+
         [Parameter(Mandatory=$false)]
         [Alias('Days')]
         [int32]$DaysBackToSearch = 30,
@@ -1829,7 +1830,6 @@ Function Get-ShutdownLog {
                 $user = $null
                 $program = $null
                 $reason = $null
-                
             }
             else {
                 $program = $mess.Substring(0, $mess.IndexOf('(')) -replace "The process ",""
@@ -1848,7 +1848,7 @@ Function Get-ShutdownLog {
                 $tx1 = ($mess.Substring(0, $mess.IndexOf(': '))).length + 2
                 $tx2 = $mess.Substring($tx1)
                 $reason = ($tx2 -split '["\n\r"|"\r\n"|\n|\r]' | Where-Object {$_ -notlike "Reason code*" -and $_ -notlike "Shutdown Type*" -and $_ -notlike "Comment*"})[0]
-                
+
                 $re = $mess.Substring(65,40)
                 if ($re -match "restart") {
                     $st = "Reboot initiated"
@@ -1868,9 +1868,9 @@ Function Get-ShutdownLog {
                 Program = $program
                 User = $user
                 Reason = $reason
-            }#new object 
+            }#new object
         }#foreach event found
-        
+
         $info | Select-Object ComputerName,Time,Type,Status,User,Program,Reason | Select-Object -First $MostRecent
     }#foreach computer
 }
@@ -1878,7 +1878,7 @@ Function Get-ShutdownLog {
 
 Function Get-SysInternals {
 <#
-    .Synopsis 
+    .Synopsis
         Download the SysInternals Suite
     .Description
         Downloads the SysInternals Suite. Several customizable options included.
@@ -1896,7 +1896,7 @@ Function Get-SysInternals {
         Specifies the folder path of where to save the extracted files
     .Parameter url
         Specifies the download link for the SysInternals Suite.
-    .Notes 
+    .Notes
         AUTHOR: Skyler Hart
         CREATED: 2017-08-19 19:11:47
         LASTEDIT: 2020-08-20 10:43:45
@@ -1908,26 +1908,26 @@ Function Get-SysInternals {
 #>
         [CmdletBinding()]
         Param (
-            [Parameter(ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+            [Parameter(ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
             [string]$zipPath = "c:\temp",
-    
-            [Parameter(ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+
+            [Parameter(ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
             [string]$tempFolder = "c:\temp\SysInternalsSuite",
-    
-            [Parameter(ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+
+            [Parameter(ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
             [string]$PlaceIn = "$env:userprofile\Downloads\SysInternals",
-    
+
             [Parameter(ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
             [string]$url = "https://download.sysinternals.com/files/SysinternalsSuite.zip"
         )
-    
+
         $zipname = $zipPath + "\SysinternalsSuite.zip"
         $continue = $false
-        
+
         if (!(Test-Path $PlaceIn)) {mkdir $PlaceIn | Out-Null}
         if (!(Test-Path $zipPath)) {mkdir $zipPath | Out-Null}
         if (!(Test-Path $tempFolder)) {mkdir $tempFolder | Out-Null}
-    
+
         $ErrorActionPreference = "Stop"
         Write-Host "Downloading $url to $zipPath"
         try {
@@ -1948,7 +1948,7 @@ Function Get-SysInternals {
                 $continue = $true
             }
         }
-    
+
         if ($continue) {
             Write-Host "Extracting $zipname to $tempFolder"
             try {
@@ -2103,7 +2103,7 @@ function Get-UpdateHistory {
                 5 {$Result = "Aborted"}
                 Default {$Result = ($e.ResultCode)}
             }#switch
-    
+
             $Cat = $e.Categories | Select-Object -First 1 -ExpandProperty Name
 
             $obj = New-Object -TypeName PSObject -Property @{
@@ -2117,7 +2117,7 @@ function Get-UpdateHistory {
                 Description = ($e.Description)
                 SupportUrl = ($e.SupportUrl)
             } | Select-Object ComputerName,Date,Result,KB,Title,Category,ClientApplicationID,Description,SupportUrl
-    
+
             $obj
         }#foreach event in history
     }#foreach comp
@@ -2144,7 +2144,7 @@ function Save-MaintenanceReport {
             ValueFromPipelineByPropertyName = $true
         )]
         [int32]$Days = 20
-    ) 
+    )
 
     $UHPath = ($Global:WSToolsConfig).UHPath
     $dt = get-date -Format yyyyMMdd
@@ -4133,10 +4133,6 @@ function Clear-DirtyShutdown {
 
 function Set-LAPSshortcut {
 <#
-.SYNOPSIS
-    Short description
-.DESCRIPTION
-    Long description
 .PARAMETER Path
     Specifies whether to save to the Public Desktop or the logged on users desktop.
 .EXAMPLE
@@ -4157,8 +4153,6 @@ function Set-LAPSshortcut {
     Last Edit: 2020-05-08 22:34:49
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     param(
@@ -4193,34 +4187,15 @@ function Set-LAPSshortcut {
 
 function Set-MTU {
 <#
-.SYNOPSIS
-    Short description
-.DESCRIPTION
-    Long description
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.PARAMETER Path
-    Specifies a path to one or more locations.
-.EXAMPLE
-    C:\PS>Set-MTU
-    Example of how to use this cmdlet
-.EXAMPLE
-    C:\PS>Set-MTU -PARAMETER
-    Another example of how to use this cmdlet but with a parameter or switch.
 .NOTES
     Author: Skyler Hart
     Created: 2020-05-12 20:56:13
     Last Edit: 2020-05-12 20:56:13
-    Keywords: 
-    Other: 
+    Keywords:
     Requires:
-        -Module ActiveDirectory
-        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
 	[CmdletBinding()]
     Param (
