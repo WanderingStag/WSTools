@@ -6452,7 +6452,7 @@ Function Set-RemediationValues {
         }
         #endregion
 
-        Set-NetworkLevelAuthentication $comp -EnableNLA:$true
+        Set-NetworkLevelAuthentication $comp
     }#foreach computer
 }
 
