@@ -30,11 +30,9 @@
     Author: Skyler Hart
     Created: Sometime prior to 2017-08
     Last Edit: 2020-08-19 23:03:32
-    Keywords: 
+    Keywords:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding(SupportsShouldProcess=$true)]
     param(
@@ -45,9 +43,8 @@
         [string[]]$ComputerName = $env:COMPUTERNAME,
     
         [Parameter(Position=1)]
-        [string[]]$Property 
+        [string[]]$Property
     )
-    
     Begin {
         $RegistryLocation = 'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\',
                             'SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\'
@@ -57,7 +54,6 @@
             $SelectProperty += $Property
         }
     }#begin
-    
     Process {
         foreach ($Computer in $ComputerName) {
             $RegBase = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine,$Computer)

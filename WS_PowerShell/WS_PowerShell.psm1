@@ -203,7 +203,7 @@ Function {
             Position=0,
             ValueFromPipeline = `$true,
             ValueFromPipelineByPropertyName = `$true
-        )] 
+        )]
         [ValidateSet('Info','Error','Warning')]
         [ValidateNotNullOrEmpty()]
         [Alias('Host','Name','Computer','CN')]
@@ -284,7 +284,7 @@ Function Add-InternetBrowsersBlock {
 .LINK
     https://wstools.dev
 #>
-    $browserblockText = @" 
+    $browserblockText = @"
     if (`$Chrome) {Start-Process "chrome.exe" `$URL}
     elseif (`$Edge) {Start-Process shell:AppsFolder\Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge `$URL}
     elseif (`$Firefox) {Start-Process "firefox.exe" `$URL}
@@ -324,7 +324,7 @@ Function Add-ParamBlock {
 
         [Parameter()]
         [Switch]`$Switch
-    ) 
+    )
 "@
     $psise.CurrentFile.Editor.InsertText($paramblockText)
 }
@@ -419,12 +419,12 @@ Function Add-PSObject {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter()] 
+        [Parameter()]
         [Switch]$CustomObject
-    ) 
+    )
 
     if ($CustomObject) {
-        $objectText = @" 
+        $objectText = @"
 `$object = [ordered]@{
     'Property1'        = `$null
     'LongPropertyEx'   = `$null
@@ -435,7 +435,7 @@ Function Add-PSObject {
 "@
     }#if custom object
     else {
-        $objectText = @" 
+        $objectText = @"
 New-Object -TypeName PSObject -Property @{
     ComputerName = `$comp
 }#new object
@@ -484,7 +484,7 @@ New-Alias -Name "Get-TypeAccelerators" -Value Get-Accelerators
 New-Alias -Name "accelerators" -Value Get-Accelerators
 
 
-Function Get-FilePath {  
+Function Get-FilePath {
 <#
 .Notes
     AUTHOR: Skyler Hart
@@ -541,7 +541,7 @@ Function Get-FunctionsInModule {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$true, Position=0)] 
+        [Parameter(Mandatory=$true, Position=0)]
         [string]$Module
     )
 
@@ -561,7 +561,6 @@ Function Get-Role {
     https://wstools.dev
 #>
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
-    
     if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {$Role = "Admin"}
     else {$Role = "Non-Admin"}
     $Role
@@ -582,7 +581,7 @@ Function Set-AutoLoadPreference {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0)] 
+        [Parameter(Mandatory=$false, Position=0)]
         [ValidateSet("All","None")]
         $mode = "All"
     )
@@ -640,10 +639,9 @@ Function Set-Title {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$true, Position=0)] 
+        [Parameter(Mandatory=$true, Position=0)]
         [string]$titleText
     )
-
     $Host.UI.RawUI.WindowTitle = $titleText
 }
 New-Alias -Name "title" -Value Set-Title

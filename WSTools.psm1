@@ -12,9 +12,7 @@
     param(
         [Parameter(
             HelpMessage = "Enter the address of the website.",
-            Mandatory=$true,
-            ValueFromPipelineByPropertyName = $true,
-            ValueFromPipeline = $true
+            Mandatory=$true
         )]
         [ValidateNotNullOrEmpty()]
         [Alias('Site','URL','Address')]
@@ -608,7 +606,7 @@ Function Get-WMINameSpace {
         [string]$Namespace = "root"
     )
 
-    Get-WmiObject -Namespace "root" -Class "__Namespace" -ComputerName $ComputerName | Select-Object Name
+    Get-WmiObject -Namespace $Namespace -Class "__Namespace" -ComputerName $ComputerName | Select-Object Name
 }
 
 
@@ -2879,7 +2877,7 @@ Function Join-File {
             Extension = $ext
             Num = [int]$num
             Directory = $dp
-        }#new object 
+        }#new object
     }
 
     $sobj = $myobjs | Sort-Object Num | Select-Object FullName,Name,Extension,Directory
@@ -3364,7 +3362,7 @@ function Open-ComputerManagement {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN')]
         [string]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -3388,7 +3386,7 @@ function Open-DeviceManager {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN')]
         [string]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -3452,7 +3450,7 @@ function Open-DiskManagement {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN')]
         [string]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -3476,7 +3474,7 @@ function Open-EventViewer {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -3502,13 +3500,13 @@ Function Open-FirewallLog {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter()] 
+        [Parameter()]
         [Switch]$Domain,
 
-        [Parameter()] 
+        [Parameter()]
         [Switch]$Private,
 
-        [Parameter()] 
+        [Parameter()]
         [Switch]$Public
     )
 
@@ -3523,7 +3521,7 @@ function Open-LocalGPeditor {
    .Notes
     AUTHOR: Skyler Hart
     CREATED: 08/19/2017 22:31:01
-    LASTEDIT: 08/19/2017 22:31:01 
+    LASTEDIT: 08/19/2017 22:31:01
     KEYWORDS:
     REQUIRES:
         #Requires -Version 3.0
@@ -3595,7 +3593,7 @@ function Connect-RDP {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$true, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$true, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN')]
         [string]$ComputerName
     )
@@ -3620,20 +3618,20 @@ Function Open-Remedy {
     Param (
         [Parameter(Mandatory=$false)]
         [Switch]$Chrome,
-          
+
         [Parameter(Mandatory=$false)]
         [Switch]$Edge,
-          
+
         [Parameter(Mandatory=$false)]
         [Switch]$Firefox,
-            
+
         [Parameter(Mandatory=$false)]
         [Switch]$InternetExplorer
-    ) 
-        
+    )
+
     $config = $Global:WSToolsConfig
     $URL = $config.Remedy
-    
+
     if ($Chrome) {Start-Process "chrome.exe" $URL}
     elseif ($Edge) {Start-Process shell:AppsFolder\Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge $URL}
     elseif ($Firefox) {Start-Process "firefox.exe" $URL}
@@ -3665,7 +3663,7 @@ Function Open-Services {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN')]
         [string]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -3777,7 +3775,7 @@ function Set-LAPSshortcut {
         [ValidateNotNullOrEmpty()]
         [string]$Path
     )
-    
+
     if ($Path -eq "PublicDesktop") {
         $sp = "C:\Users\Public\Desktop\LAPS.lnk"
     }
@@ -3880,13 +3878,13 @@ function Set-Reboot0100 {
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME",
-      
+
         [Parameter()]
         [switch]$Abort
      )
@@ -3920,13 +3918,13 @@ Function Get-DefaultBrowserPath {
     https://wstools.dev
 #>
     New-PSDrive -Name HKCR -PSProvider Registry -Root Hkey_Classes_Root | Out-Null
-    $BrowserPath = ((Get-ItemProperty 'HKCR:\http\shell\open\command').'(default)').Split('"')[1]          
+    $BrowserPath = ((Get-ItemProperty 'HKCR:\http\shell\open\command').'(default)').Split('"')[1]
     return $BrowserPath
     Remove-PSDrive -Name HKCR -Force -ErrorAction SilentlyContinue | Out-Null
 }
 
 
-Function Get-FileMetaData { 
+Function Get-FileMetaData {
   <#
    .Synopsis
     This function gets file metadata and returns it as a custom PS Object
@@ -3964,30 +3962,24 @@ Function Get-FileMetaData {
      https://devblogs.microsoft.com/scripting/
  #Requires -Version 2.0
  #>
- Param([string[]]$folder) 
- foreach($sFolder in $folder) 
-  { 
-   $a = 0 
-   $objShell = New-Object -ComObject Shell.Application 
-   $objFolder = $objShell.namespace($sFolder) 
- 
-   foreach ($File in $objFolder.items()) 
-    {  
-     $FileMetaData = New-Object PSOBJECT 
-      for ($a ; $a  -le 266; $a++) 
-       {  
-         if($objFolder.getDetailsOf($File, $a)) 
-           { 
-             $hash += @{$($objFolder.getDetailsOf($objFolder.items, $a))  = 
-                   $($objFolder.getDetailsOf($File, $a)) } 
-            $FileMetaData | Add-Member $hash 
-            $hash.clear()  
-           } #end if 
-       } #end for  
-     $a=0 
-     $FileMetaData 
-    } #end foreach $file 
-  } #end foreach $sfolder 
+    Param([string[]]$folder)
+    foreach($sFolder in $folder) {
+        $a = 0
+        $objShell = New-Object -ComObject Shell.Application
+        $objFolder = $objShell.namespace($sFolder)
+        foreach ($File in $objFolder.items()) {
+            $FileMetaData = New-Object PSOBJECT
+            for ($a ; $a  -le 266; $a++) {
+                if($objFolder.getDetailsOf($File, $a)) {
+                    $hash += @{$($objFolder.getDetailsOf($objFolder.items, $a)) = $($objFolder.getDetailsOf($File, $a))}
+                    $FileMetaData | Add-Member $hash
+                    $hash.clear()
+                } #end if
+            } #end for
+            $a=0
+            $FileMetaData
+        } #end foreach $file 
+    } #end foreach $sfolder
 } #end Get-FileMetaData
 
 
@@ -4013,7 +4005,7 @@ function Get-User {
         [ValidateNotNullorEmpty()]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME",
-    
+
         [Parameter(
             Mandatory=$false,
             Position=1,
@@ -4023,7 +4015,7 @@ function Get-User {
         [Alias('Username')]
         [string]$User
     )
-        
+
     foreach ($Comp in $ComputerName) {
         try {
             #Connect to computer and get information on user/users
@@ -4033,7 +4025,7 @@ function Get-User {
             else {
                 $ui = Get-WmiObject -Class Win32_UserAccount -filter "LocalAccount='True'" -ComputerName $comp -ErrorAction Stop | Select-Object Name,Description,Disabled,Lockout,PasswordChangeable,PasswordExpires,PasswordRequired
             }
-                    
+
             ForEach ($u in $ui) {
                 New-Object -TypeName PSObject -Property @{
                     Computer = $Comp
@@ -4063,57 +4055,45 @@ function Get-User {
 }
 
 
-#Requires -Version 2.0
 Function Get-LockedOutLocation {
 <#
 .SYNOPSIS
 	This function will locate the computer that processed a failed user logon attempt which caused the user account to become locked out.
-
 .DESCRIPTION
-	This function will locate the computer that processed a failed user logon attempt which caused the user account to become locked out. 
-	The locked out location is found by querying the PDC Emulator for locked out events (4740).  
+	This function will locate the computer that processed a failed user logon attempt which caused the user account to become locked out.
+	The locked out location is found by querying the PDC Emulator for locked out events (4740).
 	The function will display the BadPasswordTime attribute on all of the domain controllers to add in further troubleshooting.
-
 .EXAMPLE
 	PS C:\>Get-LockedOutLocation -Identity Joe.Davis
-
-
 	This example will find the locked out location for Joe Davis.
 .NOTE
-	This function is only compatible with an environment where the domain controller with the PDCe role to be running Windows Server 2008 SP2 and up.  
+	This function is only compatible with an environment where the domain controller with the PDCe role to be running Windows Server 2008 SP2 and up.
 	The script is also dependent the ActiveDirectory PowerShell module, which requires the AD Web services to be running on at least one domain controller.
 	Author:Jason Walker
 	Last Modified: 3/20/2013
 #>
     [CmdletBinding()]
-
     Param(
       [Parameter(Mandatory=$True)]
-      [String]$Identity      
+      [String]$Identity
     )
 
-    Begin
-    { 
-        $DCCounter = 0 
-        $LockedOutStats = @()   
-                
-        Try
-        {
+    Begin {
+        $DCCounter = 0
+        $LockedOutStats = @()
+        Try {
             Import-Module ActiveDirectory -ErrorAction Stop
         }
-        Catch
-        {
+        Catch {
            Write-Warning $_
            Break
         }
     }#end begin
-    Process
-    {
-        
+    Process {
         #Get all domain controllers in domain
         $DomainControllers = Get-ADDomainController -Filter *
         $PDCEmulator = ($DomainControllers | Where-Object {$_.OperationMasterRoles -contains "PDCEmulator"})
-        
+
         Write-Verbose "Finding the domain controllers in the domain"
         Foreach($DC in $DomainControllers)
         {
@@ -4128,39 +4108,34 @@ Function Get-LockedOutLocation {
                 Write-Warning $_
                 Continue
             }
-            If($UserInfo.LastBadPasswordAttempt)
-            {    
+            If($UserInfo.LastBadPasswordAttempt) {
                 $LockedOutStats += New-Object -TypeName PSObject -Property @{
                         Name                   = $UserInfo.SamAccountName
                         SID                    = $UserInfo.SID.Value
                         LockedOut              = $UserInfo.LockedOut
                         BadPwdCount            = $UserInfo.BadPwdCount
-                        BadPasswordTime        = $UserInfo.BadPasswordTime            
+                        BadPasswordTime        = $UserInfo.BadPasswordTime
                         DomainController       = $DC.Hostname
                         AccountLockoutTime     = $UserInfo.AccountLockoutTime
                         LastBadPasswordAttempt = ($UserInfo.LastBadPasswordAttempt).ToLocalTime()
-                    }          
+                    }
             }#end if
         }#end foreach DCs
         $LockedOutStats | Format-Table -Property Name,LockedOut,DomainController,BadPwdCount,AccountLockoutTime,LastBadPasswordAttempt -AutoSize
 
         #Get User Info
-        Try
-        {  
+        Try {  
            Write-Verbose "Querying event log on $($PDCEmulator.HostName)"
            $LockedOutEvents = Get-WinEvent -ComputerName $PDCEmulator.HostName -FilterHashtable @{LogName='Security';Id=4740} -ErrorAction Stop | Sort-Object -Property TimeCreated -Descending
         }
-        Catch 
-        {          
+        Catch {
            Write-Warning $_
            Continue
-        }#end catch     
-                                 
+        }#end catch
         Foreach($Event in $LockedOutEvents)
         {            
            If($Event | Where-Object {$_.Properties[2].value -match $UserInfo.SID.Value})
-           { 
-              
+           {
               $Event | Select-Object -Property @(
                 @{Label = 'User';               Expression = {$_.Properties[0].Value}}
                 @{Label = 'DomainController';   Expression = {$_.MachineName}}
@@ -4169,13 +4144,9 @@ Function Get-LockedOutLocation {
                 @{Label = 'Message';            Expression = {$_.Message -split "`r" | Select-Object -First 1}}
                 @{Label = 'LockedOutLocation';  Expression = {$_.Properties[1].Value}}
               )
-                                                
             }#end ifevent
-            
        }#end foreach lockedout event
-       
     }#end process
-   
 }#end function
 
 
@@ -4211,11 +4182,9 @@ Function Get-InstalledProgram {
     Author: Skyler Hart
     Created: Sometime prior to 2017-08
     Last Edit: 2020-08-19 23:03:32
-    Keywords: 
+    Keywords:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding(SupportsShouldProcess=$true)]
     param(
@@ -4226,7 +4195,7 @@ Function Get-InstalledProgram {
         [string[]]$ComputerName = $env:COMPUTERNAME,
 
         [Parameter(Position=1)]
-        [string[]]$Property 
+        [string[]]$Property
     )
 
     Begin {
@@ -4280,7 +4249,7 @@ Function Get-InstalledProgram {
 }
 
 
-function Get-IPrange { 
+function Get-IPrange {
 <#
 .SYNOPSIS
     Lists IPs within a range, subnet, or CIDR block.
@@ -4306,83 +4275,70 @@ function Get-IPrange {
     Author: Skyler Hart
     Created: Sometime before 8/7/2017
     Last Edit: 2020-08-20 09:11:46
-    Keywords: 
+    Keywords:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#> 
+#>
     [CmdletBinding()]
     Param (
         [Parameter(
             Mandatory=$false,
-            Position=0,
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true
+            Position=0
         )]
         [Alias('IPv4','Address','IPv4Address')]
         [string]$IP,
-    
+
         [Parameter(
-            Mandatory=$false,
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true
+            Mandatory=$false
         )]
         [Alias('Notation','Block')]
         [string]$CIDR,
-    
+
         [Parameter(
-            Mandatory=$false,
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true
+            Mandatory=$false
         )]
         [Alias('Mask')]
         [string]$Subnet,
-    
+
         [Parameter(
-            Mandatory=$false,
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true
+            Mandatory=$false
         )]
         [string]$Start,
-    
+
         [Parameter(
-            Mandatory=$false,
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true
+            Mandatory=$false
         )]
         [string]$End
     )
-      
-    function Convert-IPtoINT64 () {  
-        param ($IP)    
-        $octets = $IP.split(".")  
-        return [int64]([int64]$octets[0]*16777216 +[int64]$octets[1]*65536 +[int64]$octets[2]*256 +[int64]$octets[3])  
-    }  
-      
-    function Convert-INT64toIP() {  
-        param ([int64]$int)  
-        return (([math]::truncate($int/16777216)).tostring()+"."+([math]::truncate(($int%16777216)/65536)).tostring()+"."+([math]::truncate(($int%65536)/256)).tostring()+"."+([math]::truncate($int%256)).tostring() ) 
-    }  
-      
-    if ($IP) {$ipaddr = [Net.IPAddress]::Parse($IP)}  
-    if ($CIDR) {$maskaddr = [Net.IPAddress]::Parse((Convert-INT64toIP -int ([convert]::ToInt64(("1"*$CIDR+"0"*(32-$CIDR)),2)))) }  
-    if ($Subnet) {$maskaddr = [Net.IPAddress]::Parse($Subnet)}  
-    if ($IP) {$networkaddr = new-object net.ipaddress ($maskaddr.address -band $ipaddr.address)}  
-    if ($IP) {$broadcastaddr = new-object net.ipaddress (([system.net.ipaddress]::parse("255.255.255.255").address -bxor $maskaddr.address -bor $networkaddr.address))}  
-      
-    if ($IP) {  
-        $startaddr = Convert-IPtoINT64 -IP $networkaddr.ipaddresstostring  
-        $endaddr = Convert-IPtoINT64 -IP $broadcastaddr.ipaddresstostring  
-    } else {  
-        $startaddr = Convert-IPtoINT64 -IP $start  
-        $endaddr = Convert-IPtoINT64 -IP $end  
-    }  
-      
-      
-    for ($i = $startaddr; $i -le $endaddr; $i++) {  
-        Convert-INT64toIP -int $i  
-    } 
+
+    function Convert-IPtoINT64 () {
+        param ($IP)
+        $octets = $IP.split(".")
+        return [int64]([int64]$octets[0]*16777216 +[int64]$octets[1]*65536 +[int64]$octets[2]*256 +[int64]$octets[3])
+    }
+
+    function Convert-INT64toIP() {
+        param ([int64]$int)
+        return (([math]::truncate($int/16777216)).tostring()+"."+([math]::truncate(($int%16777216)/65536)).tostring()+"."+([math]::truncate(($int%65536)/256)).tostring()+"."+([math]::truncate($int%256)).tostring())
+    }
+
+    if ($IP) {$ipaddr = [Net.IPAddress]::Parse($IP)}
+    if ($CIDR) {$maskaddr = [Net.IPAddress]::Parse((Convert-INT64toIP -int ([convert]::ToInt64(("1"*$CIDR+"0"*(32-$CIDR)),2)))) }
+    if ($Subnet) {$maskaddr = [Net.IPAddress]::Parse($Subnet)}
+    if ($IP) {$networkaddr = new-object net.ipaddress ($maskaddr.address -band $ipaddr.address)}
+    if ($IP) {$broadcastaddr = new-object net.ipaddress (([system.net.ipaddress]::parse("255.255.255.255").address -bxor $maskaddr.address -bor $networkaddr.address))}
+
+    if ($IP) {
+        $startaddr = Convert-IPtoINT64 -IP $networkaddr.ipaddresstostring
+        $endaddr = Convert-IPtoINT64 -IP $broadcastaddr.ipaddresstostring
+    } else {
+        $startaddr = Convert-IPtoINT64 -IP $start
+        $endaddr = Convert-IPtoINT64 -IP $end
+    }
+
+    for ($i = $startaddr; $i -le $endaddr; $i++) {
+        Convert-INT64toIP -int $i
+    }
 }
 
 
@@ -4405,11 +4361,11 @@ function Set-WindowState {
 #source: https://gist.github.com/jakeballard/11240204
 param(
     [Parameter()]
-    [ValidateSet('FORCEMINIMIZE', 'HIDE', 'MAXIMIZE', 'MINIMIZE', 'RESTORE', 
-                 'SHOW', 'SHOWDEFAULT', 'SHOWMAXIMIZED', 'SHOWMINIMIZED', 
-                 'SHOWMINNOACTIVE', 'SHOWNA', 'SHOWNOACTIVATE', 'SHOWNORMAL')]
+    [ValidateSet('FORCEMINIMIZE','HIDE','MAXIMIZE','MINIMIZE','RESTORE',
+                 'SHOW','SHOWDEFAULT','SHOWMAXIMIZED','SHOWMINIMIZED',
+                 'SHOWMINNOACTIVE','SHOWNA','SHOWNOACTIVATE','SHOWNORMAL')]
     $Style = 'SHOW',
-    
+
     [Parameter()]
     $MainWindowHandle = (Get-Process –id $pid).MainWindowHandle
 )
@@ -4428,12 +4384,12 @@ param(
         'SHOWNOACTIVATE'  = 4
         'SHOWNORMAL'      = 1
     }
-    
-    $Win32ShowWindowAsync = Add-Type –memberDefinition @” 
-    [DllImport("user32.dll")] 
+
+    $Win32ShowWindowAsync = Add-Type –memberDefinition @”
+    [DllImport("user32.dll")]
     public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 “@ -name “Win32ShowWindowAsync” -namespace Win32Functions –passThru
-    
+
     $Win32ShowWindowAsync::ShowWindowAsync($MainWindowHandle, $WindowStates[$Style]) | Out-Null
     Write-Verbose ("Set Window Style '{1} on '{0}'" -f $MainWindowHandle, $Style)
 
@@ -4443,89 +4399,72 @@ param(
 function Start-CommandMultiThreaded {
 <#.Synopsis
 #    This is a quick and open-ended script multi-threader searcher
-#    
 #.Description
 #    This script will allow any general, external script to be multithreaded by providing a single
-#    argument to that script and opening it in a seperate thread.  It works as a filter in the 
+#    argument to that script and opening it in a seperate thread.  It works as a filter in the
 #    pipeline, or as a standalone script.  It will read the argument either from the pipeline
 #    or from a filename provided.  It will send the results of the child script down the pipeline,
 #    so it is best to use a script that returns some sort of object.
 #
 #    Authored by Ryan Witschger - http://www.Get-Blog.com
-#    
 #.PARAMETER Command
-#    This is where you provide the PowerShell Cmdlet / Script file that you want to multithread.  
-#    You can also choose a built in cmdlet.  Keep in mind that your script.  This script is read into 
+#    This is where you provide the PowerShell Cmdlet / Script file that you want to multithread.
+#    You can also choose a built in cmdlet.  Keep in mind that your script.  This script is read into
 #    a scriptblock, so any unforeseen errors are likely caused by the conversion to a script block.
-#    
 #.PARAMETER ObjectList
 #    The objectlist represents the arguments that are provided to the child script.  This is an open ended
-#    argument and can take a single object from the pipeline, an array, a collection, or a file name.  The 
-#    multithreading script does it's best to find out which you have provided and handle it as such.  
-#    If you would like to provide a file, then the file is read with one object on each line and will 
+#    argument and can take a single object from the pipeline, an array, a collection, or a file name.  The
+#    multithreading script does it's best to find out which you have provided and handle it as such.
+#    If you would like to provide a file, then the file is read with one object on each line and will
 #    be provided as is to the script you are running as a string.  If this is not desired, then use an array.
-#    
+#
 #.PARAMETER InputParam
-#    This allows you to specify the parameter for which your input objects are to be evaluated.  As an example, 
-#    if you were to provide a computer name to the Get-Process cmdlet as just an argument, it would attempt to 
-#    find all processes where the name was the provided computername and fail.  You need to specify that the 
+#    This allows you to specify the parameter for which your input objects are to be evaluated.  As an example,
+#    if you were to provide a computer name to the Get-Process cmdlet as just an argument, it would attempt to
+#    find all processes where the name was the provided computername and fail.  You need to specify that the
 #    parameter that you are providing is the "ComputerName".
 #
 #.PARAMETER AddParam
 #    This allows you to specify additional parameters to the running command.  For instance, if you are trying
 #    to find the status of the "BITS" service on all servers in your list, you will need to specify the "Name"
-#    parameter.  This command takes a hash pair formatted as follows:  
+#    parameter.  This command takes a hash pair formatted as follows:
 #
 #    @{"ParameterName" = "Value"}
 #    @{"ParameterName" = "Value" ; "ParameterTwo" = "Value2"}
-#
 #.PARAMETER AddSwitch
-#    This allows you to add additional switches to the command you are running.  For instance, you may want 
-#    to include "RequiredServices" to the "Get-Service" cmdlet.  This parameter will take a single string, or 
+#    This allows you to add additional switches to the command you are running.  For instance, you may want
+#    to include "RequiredServices" to the "Get-Service" cmdlet.  This parameter will take a single string, or
 #    an aray of strings as follows:
 #
 #    "RequiredServices"
 #    @("RequiredServices", "DependentServices")
-#
 #.PARAMETER MaxThreads
 #    This is the maximum number of threads to run at any given time.  If resources are too congested try lowering
 #    this number.  The default value is 20.
-#    
+#
 #.PARAMETER SleepTimer
-#    This is the time between cycles of the child process detection cycle.  The default value is 200ms.  If CPU 
+#    This is the time between cycles of the child process detection cycle.  The default value is 200ms.  If CPU
 #    utilization is high then you can consider increasing this delay.  If the child script takes a long time to
 #    run, then you might increase this value to around 1000 (or 1 second in the detection cycle).
-#
-#    
 #.EXAMPLE
 #    Both of these will execute the script named ServerInfo.ps1 and provide each of the server names in AllServers.txt
 #    while providing the results to the screen.  The results will be the output of the child script.
-#    
+#
 #    gc AllServers.txt | .\Start-CommandMultiThreaded.ps1 -Command .\ServerInfo.ps1
 #    .\Run-CommandMultiThreaded.ps1 -Command .\ServerInfo.ps1 -ObjectList (gc .\AllServers.txt)
-#
 #.EXAMPLE
 #    The following demonstrates the use of the AddParam statement
-#    
 #    $ObjectList | .\Start-CommandMultiThreaded.ps1 -Command "Get-Service" -InputParam ComputerName -AddParam @{"Name" = "BITS"}
-#    
 #.EXAMPLE
 #    The following demonstrates the use of the AddSwitch statement
-#    
 #    $ObjectList | .\Start-CommandMultiThreaded.ps1 -Command "Get-Service" -AddSwitch @("RequiredServices", "DependentServices")
-#
 #.EXAMPLE
 #    The following demonstrates the use of the script in the pipeline
-#    
 #    $ObjectList | .\Start-CommandMultiThreaded.ps1 -Command "Get-Service" -InputParam ComputerName -AddParam @{"Name" = "BITS"} | Select Status, MachineName
-#
-# 
 #.Link
 #    http://www.get-blog.com/?p=189
 #>
-
- 
-Param($Command = $(Read-Host "Enter the script file"), 
+Param($Command = $(Read-Host "Enter the script file"),
     [Parameter(ValueFromPipeline=$true,ValueFromPipelineByPropertyName=$true)]$ObjectList,
     $InputParam = $Null,
     $MaxThreads = 20,
@@ -4534,12 +4473,10 @@ Param($Command = $(Read-Host "Enter the script file"),
     [HashTable]$AddParam = @{},
     [Array]$AddSwitch = @()
 )
- 
 Begin{
     $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
     $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
     $RunspacePool.Open()
-        
     If ($(Get-Command | Select-Object Name) -match $Command){
         $Code = $Null
     }Else{
@@ -4549,7 +4486,6 @@ Begin{
     }
     $Jobs = @()
 }
- 
 Process{
     Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
     ForEach ($Object in $ObjectList){
@@ -4578,13 +4514,10 @@ Process{
         $Job.Object = $Object.ToString()
         $Jobs += $Job
     }
-        
 }
- 
 End{
     $ResultTimer = Get-Date
     While (@($Jobs | Where-Object {$null -ne $_.Handle}).count -gt 0)  {
-    
         $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
         If ($Remaining.Length -gt 60){
             $Remaining = $Remaining.Substring(0,60) + "..."
@@ -4592,8 +4525,7 @@ End{
         Write-Progress `
             -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
             -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-            -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining" 
- 
+            -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
         ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
             $Job.Thread.EndInvoke($Job.Handle)
             $Job.Thread.Dispose()
@@ -4606,8 +4538,7 @@ End{
             Exit
         }
         Start-Sleep -Milliseconds $SleepTimer
-        
-    } 
+    }
     $RunspacePool.Close() | Out-Null
     $RunspacePool.Dispose() | Out-Null
 }
@@ -4621,10 +4552,10 @@ Find and fix broken permissions inheritance.
 All envrionments perform differently. Please test this code before using it
 in production.
 
-THIS CODE AND ANY ASSOCIATED INFORMATION ARE PROVIDED “AS IS” WITHOUT WARRANTY 
-OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE 
+THIS CODE AND ANY ASSOCIATED INFORMATION ARE PROVIDED “AS IS” WITHOUT WARRANTY
+OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
 IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
-PURPOSE. THE ENTIRE RISK OF USE, INABILITY TO USE, OR RESULTS FROM THE USE OF 
+PURPOSE. THE ENTIRE RISK OF USE, INABILITY TO USE, OR RESULTS FROM THE USE OF
 THIS CODE REMAINS WITH THE USER.
 
 Author: Aaron Guilmette
@@ -4714,41 +4645,37 @@ Else
 # Find All Matching Users
 $Users = $DirectorySearcher.FindAll()
 
-Foreach ($obj in $users)
-    {
+Foreach ($obj in $users) {
     # Set 'objBefore' to the current object so we can track any changes
     $objBefore = $obj.GetDirectoryEntry()
-    
+
     # Check to see if user has Inheritance Disabled; $True is inheritance disabled, $False is inheritance enabled
-    If ($objBefore.psBase.ObjectSecurity.AreAccessRulesProtected -eq $True)
-        {
+    If ($objBefore.psBase.ObjectSecurity.AreAccessRulesProtected -eq $True) {
         Write-Host "User: $($objBefore.sAMAccountName) Inheritance is disabled: $($objBefore.psBase.ObjectSecurity.AreAccessRulesProtected) ; adminSDHolder: $($objBefore.Properties.AdminCount)"
         $objBeforeACL = $($objBefore.psBase.ObjectSecurity.AreAccessRulesProtected)
         #$user.psBase.ObjectSecurity | GM "*get*access*"
-        
+
         # If Confirm switch was enabled to make changes
-        If ($Confirm)
-            {
+        If ($Confirm) {
             Write-Host -ForegroundColor Green "Updating $($objBefore.sAMAccountName)."
             $objBefore.psbase.ObjectSecurity.SetAccessRuleProtection($false,$true)
             $objBefore.psbase.CommitChanges()
-            }
-        
+        }
+
         # Set 'objAfter' so we can see the updated change
         $objAfter = $obj.GetDirectoryEntry()
         $objAfterACL = $($objAfter.psBase.ObjectSecurity.AreAccessRulesProtected)
-        
+
         # If logging is enabled, write a log file
         If ($LogFile)
 		    {
 		    $LogData = """" + $objBefore.DistinguishedName + """" + "," + """" + $objBefore.UserPrincipalName + """" + "," + """" + $objBeforeACL + """" + "," + """" + $objAfterACL + """" + "," + """" + $objBefore.Properties.AdminCount + """"
 		    $LogData | Out-File $LogFile -Append
 		    }
-        }
-    Else
-        {
+    }
+    Else {
         # User has inheritance enabled, so do nothing
-        }
+    }
     }
 }
 

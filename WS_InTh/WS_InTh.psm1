@@ -315,7 +315,7 @@ function Export-MessagesToPST {
    .Example
     Export-MessagesToPST -TargetUserAlias joe.snuffy -ExportPath "c:\test"
     Exports joe.snuffy's mailbox to C:\test\joe.snuffy_mailboxyyyyMMddhhmm.pst where yyyyMMddhhmm is the date
-    and time the mailbox was exported.  
+    and time the mailbox was exported.
    .Parameter TargetUserAlias
     Mandatory parameter. Specify the users alias in Exchange or primary smtp address.
    .Parameter ExportPath
@@ -333,7 +333,7 @@ function Export-MessagesToPST {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$true, Position=0)] 
+        [Parameter(Mandatory=$true, Position=0)]
         [string]$TargetUserAlias,
 
         [Parameter(Mandatory=$false, Position=1)]
@@ -404,13 +404,13 @@ function Get-CurrentUser {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$true, Position=0)] 
+        [Parameter(Mandatory=$true, Position=0)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName
     )
-          
+
     Write-Host "`n Checking Users . . . "
-    $i = 0            
+    $i = 0
 
     $number = $ComputerName.length
     $ComputerName | Foreach-object {
@@ -424,12 +424,11 @@ function Get-CurrentUser {
     try
         {
             $processinfo = @(Get-WmiObject -class win32_process -ComputerName $Computer -EA "Stop")
-                if ($processinfo)
-                {    
-                    $processinfo | Foreach-Object {$_.GetOwner().User} | 
+                if ($processinfo) {
+                    $processinfo | Foreach-Object {$_.GetOwner().User} |
                     Where-Object {$_ -ne "NETWORK SERVICE" -and $_ -ne "LOCAL SERVICE" -and $_ -ne "SYSTEM"} |
                     Sort-Object -Unique |
-                    ForEach-Object { New-Object psobject -Property @{Computer=$Computer;LoggedOn=$_} } | 
+                    ForEach-Object { New-Object psobject -Property @{Computer=$Computer;LoggedOn=$_} } |
                     Select-Object Computer,LoggedOn
                 }#If
         }
@@ -437,7 +436,7 @@ function Get-CurrentUser {
         {
             "Cannot find any processes running on $computer" | Out-Host
         }
-     }#Forech-object(ComputerName)       
+     }#Forech-object(ComputerName)
 }#Get-CurrentUser
 
 
@@ -458,10 +457,10 @@ function Get-LoggedOnUser {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME",
-      
+
         [Switch]$Lookup
      )
 
@@ -530,7 +529,7 @@ function Get-RecentUsers {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)] 
+        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -581,40 +580,36 @@ Process Name:"
 
             #Process information on all events for the computer
             $events = Import-Csv "$env:Temp\events.csv"
-
             $notcomp = $comp + "$"
             $notcomp2 = "*$*"
-        
             #Filter by type of logon, username, and domain
             $events | Where-Object {$_.LogonType1 -eq "2" -or $_.LogonType1 -eq "3" -or $_.LogonType1 -eq "7" -or $_.LogonType1 -eq "10" -or $_.LogonType1 -eq "11" `
                 -and $_.Domain1 -ne "NT AUTHORITY" -and $_.Domain1 -ne "Window Manager" -and $_.Username1 -ne "$notcomp" -and $_.Username1 -notlike "$notcomp2" `
                 -and $_.Username1 -ne "UMFD-1" -and $_.Username1 -ne "UMFD-0"} | Select-Object Computer1,When1,LogonType1,Username1,ProcessName1 | ForEach-Object {
-                
                     if ($_.LogonType1 -eq 2) {$type2 = "Local"}#if 2
                     if ($_.LogonType1 -eq 3) {$type2 = "Remote"}#if 3
                     if ($_.LogonType1 -eq 7) {$type2 = "UnlockScreen"}#if 7
                     if ($_.LogonType1 -eq 11) {$type2 = "CachedLocal"}#if 11
-
                     New-Object psobject -Property @{
                         When = $_.When1
                         Computer = $_.Computer1
                         Type = $type2
                         User = $_.Username1
                         #ProcessName = $_.ProcessName1
-                    } | Select-Object Computer,When,Type,User #,ProcessName 
+                    } | Select-Object Computer,When,Type,User #,ProcessName
                 } | Select-Object Computer,When,Type,User | Export-Csv "$env:Temp\events2.csv" -Force -NoTypeInformation
-        
+
             #Get 2nd and 3rd most recent users
             #$users = $null
             Clear-Variable -Name notuser1,notuser2,user2,user3 -ErrorAction SilentlyContinue | Out-Null
-        
+
             $events2 = Import-Csv "$env:Temp\events2.csv"
             if (null -ne $($events2).User) {$user1 = ($events2).User[0]}
 
             ($events2) | Select-Object Computer,When,Type,User | ForEach-Object {
                 if ($_.User -ne $user1) {[string[]]$notuser1 += $_.User}
             }#get unique users
-        
+
             if ($null -ne $notuser1) {
                 $user2 = $notuser1[0]
                 foreach ($person in $notuser1) {
@@ -653,17 +648,17 @@ function Get-USBDevice {
     CREATED: 08/18/2017 02:34:40
     LASTEDIT: 08/18/2017 21:00:23
     KEYWORDS:
-    REQUIRES: 
+    REQUIRES:
         #Requires -Version 3.0
         #Requires -Modules ActiveDirectory
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
-#> 
+#>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0)] 
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -697,8 +692,7 @@ function Get-USBStorageDevice {
     Author: Skyler Hart
     Created: Sometime before 8/7/2017
     Last Edit: 2020-08-12 19:44:46
-    Keywords: 
-    Other: 
+    Keywords:
 .LINK
     https://wstools.dev
 #>
@@ -737,32 +731,31 @@ function Get-USBStorageDevice {
             ==================================
             #>
             try {
-                $Reg = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey($Hive,$Comp) 
-                $USBSTORKey = $Reg.OpenSubKey($Key) 
+                $Reg = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey($Hive,$Comp)
+                $USBSTORKey = $Reg.OpenSubKey($Key)
                 $USBSTORSubKeys1  = $USBSTORKey.GetSubKeyNames()
             }
             catch {
                 #do nothing
             }
-            
+
             foreach ($SubKey1 in $USBSTORSubKeys1) {
                 $ErrorActionPreference = "Continue"
-                $Key2 = "SYSTEM\CurrentControlSet\Enum\USBSTOR\$SubKey1" 
-                $RegSubKey2 = $Reg.OpenSubKey($Key2) 
-                $SubkeyName2 = $RegSubKey2.GetSubKeyNames() 
-                $ChildSubkeys += "$Key2\$SubKeyName2" 
+                $Key2 = "SYSTEM\CurrentControlSet\Enum\USBSTOR\$SubKey1"
+                $RegSubKey2 = $Reg.OpenSubKey($Key2)
+                $SubkeyName2 = $RegSubKey2.GetSubKeyNames()
+                $ChildSubkeys += "$Key2\$SubKeyName2"
                 $RegSubKey2.Close()
             }#foreach subkey1
-    
+
             foreach ($Child in $ChildSubKeys) {
                 if ($Child -match " ") {
                     $BabySubKey = $null
                     $ChildSubKey1 = ($Child.Split(" "))[0]
-    
                     $SplitChildSubKey1 - $ChildSubKey1.Split("\")
-    
+
                     0..4 | ForEach-Object {[String]$BabySubKey += ($SplitChildSubkey1[$_]) + "\"}
-    
+
                     $ChildSubKeys1 += $BabySubKey + ($Child.Split(" ")[-1])
                     $ChildSubKeys1 += $ChildSubKey1
                 }#if
@@ -771,15 +764,15 @@ function Get-USBStorageDevice {
                 }
                 $ChildSubKeys1.count
             }#foreach sub-child subkey
-    
+
             foreach ($ChildSubKey1 in $ChildSubKeys1) {
-                $USBKey = $Reg.OpenSubKey($ChildSubKey1) 
+                $USBKey = $Reg.OpenSubKey($ChildSubKey1)
                 $USBDevice = $USBKey.GetValue('FriendlyName')
-    
+
                 if ($USBDevice) {
                     $USBDevices += New-Object -TypeName PSObject -Property @{ 
-                        USBDevice = $USBDevice 
-                        Computer  = $Comp 
+                        USBDevice = $USBDevice
+                        Computer  = $Comp
                         SerialNumber = ($ChildSubkey1.Split("\")[-1]).Split("&")[0]
                         Status = "Not connected"
                     }#new object
@@ -799,7 +792,7 @@ function Get-USBStorageDevice {
                 $mac = $null
                 $usbinfo = (Get-WmiObject -Class Win32_PnPEntity -Namespace "root\CIMV2" -ComputerName $Comp -ErrorAction Stop | Where-Object {$_.DeviceID -like "USBSTOR*" -and $_.DeviceID -notlike "*USBSTOR\CDROM&*"} | Select-Object Description,DeviceID,Manufacturer,Name)
                 $mac = (Get-WmiObject Win32_NetworkAdapterConfiguration -ComputerName $Comp -ErrorAction SilentlyContinue | Where-Object {$_.DNSDomainSuffixSearchOrder -match $dns}).MACAddress | Where-Object {$_ -ne $null}
-            
+
                 foreach ($usbinfo2 in $usbinfo) {
                     Clear-Variable Description,DeviceId,Manu,Name,sn -ErrorAction SilentlyContinue | Out-Null
 
@@ -818,7 +811,7 @@ function Get-USBStorageDevice {
                     #remove everything up to the first \: -creplace '^[^\\]*\\', ''
                     #remove everything to the last \: -creplace '(?s)^.*\\', ''
                     $sn = $sn -replace "____",""
-                
+
                     if ($Description -match "Flash" -or $Name -match "Flash" -or $Name -match " FD ") {$DT = "Flash Drive"}
                     else {$DT = "External Hard Drive"}
 
@@ -915,20 +908,17 @@ function Get-UserLogonLogoffTimes {
     AUTHOR: Skyler Hart
     LASTEDIT: 08/18/2017 21:00:47
     KEYWORDS:
-    REQUIRES: 
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
+    REQUIRES:
+        -RunAsAdministrator
 .LINK
     https://wstools.dev
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0)] 
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME",
-        
+
         [Parameter(Mandatory=$false, Position=1)]
         [Alias('Date','Time')]
         [string]$DaysBackToSearch = "1"
@@ -938,10 +928,8 @@ function Get-UserLogonLogoffTimes {
     #$Comp = "$env:ComputerName"
     #$DaysBackToSearch = "1"
 
-
     #Event ID(s) to search for
     [int32[]]$ID = @(4624,4634)
-
 
     #Strings to search for
     $filecontent = "TaskDisplayName
@@ -951,7 +939,6 @@ Account Name:
 Account Domain:
 Logon Type:
 Process Name:"
-
 
     #Setting initial values
     $i = 0
@@ -999,26 +986,19 @@ Process Name:"
 
         $notcomp = $comp + "$"
         $notcomp2 = "*$*"
-        
+
         #Filter by type of logon, username, and domain
         $events | Where-Object {$_.LogonType1 -eq "2" -or $_.LogonType1 -eq "3" -or $_.LogonType1 -eq "7" -or $_.LogonType1 -eq "10" -or $_.LogonType1 -eq "11" `
             -and ($_.Domain1 -eq "$env:USERDOMAIN" -or $null -eq $_.Domain1) -and $_.Username1 -ne "$notcomp" -and $_.Username1 -notlike "$notcomp2"} |
             Select-Object Computer1,When1,Task,LogonType1,AccountName,Username1,ProcessName1 | ForEach-Object {
-                
                 $usrnm = $null
                 if ($null -ne $_.Username1 -and $_.Username1 -ne "$notcomp" -and $_.Username1 -ne "$notcomp2") {$usrnm = $_.Username1}
                 if ($null -eq $_.Username1  -and $_.AccountName -ne "$notcomp" -and $_.AccountName -ne "$notcomp2") {$usrnm = $_.AccountName}
-
-
                 #if ($_.AccountName -ne "$notcomp" -or $_.AccountName -ne "$notcomp2") {$User = $_.AccountName}
-                
-
                 if ($_.LogonType1 -eq 2) {$type2 = "Local"}#if 2
                 if ($_.LogonType1 -eq 3) {$type2 = "Remote"}#if 3
                 if ($_.LogonType1 -eq 7) {$type2 = "UnlockScreen"}#if 7
                 if ($_.LogonType1 -eq 11) {$type2 = "CachedLocal"}#if 11
-
-
                 New-Object psobject -Property @{
                     When = $_.When1
                     Computer = $_.Computer1
@@ -1026,7 +1006,7 @@ Process Name:"
                     Type = $type2
                     User = $usrnm
                     ProcessName = $_.ProcessName1
-                } | Select-Object Computer,When,Task,Type,User,ProcessName 
+                } | Select-Object Computer,When,Task,Type,User,ProcessName
             } | Select-Object Computer,When,Task,Type,User | Export-Csv "$env:Temp\events2.csv" -Force -NoTypeInformation
 
 
