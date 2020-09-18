@@ -770,7 +770,7 @@ function Get-USBStorageDevice {
                 $USBDevice = $USBKey.GetValue('FriendlyName')
 
                 if ($USBDevice) {
-                    $USBDevices += New-Object -TypeName PSObject -Property @{ 
+                    $USBDevices += New-Object -TypeName PSObject -Property @{
                         USBDevice = $USBDevice
                         Computer  = $Comp
                         SerialNumber = ($ChildSubkey1.Split("\")[-1]).Split("&")[0]

@@ -3978,7 +3978,7 @@ Function Get-FileMetaData {
             } #end for
             $a=0
             $FileMetaData
-        } #end foreach $file 
+        } #end foreach $file
     } #end foreach $sfolder
 } #end Get-FileMetaData
 
@@ -4124,7 +4124,7 @@ Function Get-LockedOutLocation {
         $LockedOutStats | Format-Table -Property Name,LockedOut,DomainController,BadPwdCount,AccountLockoutTime,LastBadPasswordAttempt -AutoSize
 
         #Get User Info
-        Try {  
+        Try {
            Write-Verbose "Querying event log on $($PDCEmulator.HostName)"
            $LockedOutEvents = Get-WinEvent -ComputerName $PDCEmulator.HostName -FilterHashtable @{LogName='Security';Id=4740} -ErrorAction Stop | Sort-Object -Property TimeCreated -Descending
         }
@@ -4132,20 +4132,18 @@ Function Get-LockedOutLocation {
            Write-Warning $_
            Continue
         }#end catch
-        Foreach($Event in $LockedOutEvents)
-        {            
-           If($Event | Where-Object {$_.Properties[2].value -match $UserInfo.SID.Value})
-           {
-              $Event | Select-Object -Property @(
-                @{Label = 'User';               Expression = {$_.Properties[0].Value}}
-                @{Label = 'DomainController';   Expression = {$_.MachineName}}
-                @{Label = 'EventId';            Expression = {$_.Id}}
-                @{Label = 'LockedOutTimeStamp'; Expression = {$_.TimeCreated}}
-                @{Label = 'Message';            Expression = {$_.Message -split "`r" | Select-Object -First 1}}
-                @{Label = 'LockedOutLocation';  Expression = {$_.Properties[1].Value}}
-              )
+        Foreach($Event in $LockedOutEvents) {
+            If($Event | Where-Object {$_.Properties[2].value -match $UserInfo.SID.Value}) {
+                $Event | Select-Object -Property @(
+                    @{Label = 'User';               Expression = {$_.Properties[0].Value}}
+                    @{Label = 'DomainController';   Expression = {$_.MachineName}}
+                    @{Label = 'EventId';            Expression = {$_.Id}}
+                    @{Label = 'LockedOutTimeStamp'; Expression = {$_.TimeCreated}}
+                    @{Label = 'Message';            Expression = {$_.Message -split "`r" | Select-Object -First 1}}
+                    @{Label = 'LockedOutLocation';  Expression = {$_.Properties[1].Value}}
+                )
             }#end ifevent
-       }#end foreach lockedout event
+        }#end foreach lockedout event
     }#end process
 }#end function
 
