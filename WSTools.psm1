@@ -2128,7 +2128,7 @@ function Save-MaintenanceReport {
 .NOTES
     Author: Skyler Hart
     Created: 2020-06-16 14:39:04
-    Last Edit: 2020-08-20 14:31:30
+    Last Edit: 2020-09-28 11:28:46
     Keywords:
 .LINK
     https://wstools.dev
@@ -2137,11 +2137,9 @@ function Save-MaintenanceReport {
     Param (
         [Parameter(
             Mandatory=$false,
-            Position=0,
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true
+            Position=0
         )]
-        [int32]$Days = 20
+        [int32]$Days = ((Get-Date -Format yyyyMMdd) - ((Get-Date -Format yyyyMMdd).Substring(0,6) + "01"))
     )
 
     $UHPath = ($Global:WSToolsConfig).UHPath
@@ -2154,7 +2152,7 @@ function Save-MaintenanceReport {
         $fi = import-csv $file
         $finfo += $fi
     }
-    $finfo | Select-Object Date,ComputerName,KB,Result,Title,Description,Category,ClientApplicationID,SupportUrl | Sort-Object ComputerName | Export-Csv $sp -NoTypeInformation
+    $finfo | Select-Object Date,ComputerName,KB,Result,Title,Description,Category,ClientApplicationID,SupportUrl | Where-Object {$_.Date -gt $Days} | Sort-Object ComputerName | Export-Csv $sp -NoTypeInformation
 }
 
 
@@ -2163,13 +2161,21 @@ function Save-UpdateHistory {
 .NOTES
     Author: Skyler Hart
     Created: 2020-06-15 13:03:22
-    Last Edit: 2020-06-16 14:38:42
+    Last Edit: 2020-09-28 11:29:05
     Keywords:
 .LINK
     https://wstools.dev
 #>
+    [CmdletBinding()]
+    Param (
+        [Parameter(
+            Mandatory=$false,
+            Position=0
+        )]
+        [int32]$Days = ((Get-Date -Format yyyyMMdd) - ((Get-Date -Format yyyyMMdd).Substring(0,6) + "01"))
+    )
     $UHPath = ($Global:WSToolsConfig).UHPath + "\" + $env:computername + ".csv"
-    $info = Get-UpdateHistory -Days 30
+    $info = Get-UpdateHistory -Days $Days
     $info | Export-Csv $UHPath -Force
 }
 
