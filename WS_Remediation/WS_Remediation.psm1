@@ -6920,17 +6920,16 @@ function Open-ConfigurationManager {
 <#
 .Notes
     AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 21:10:11
+    CREATED: Sometime before 2017-08-07
+    LASTEDIT: 2020-09-28 09:31:24
     KEYWORDS:
     REQUIRES:
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
 #>
-    if (Test-Path "C:\Windows\SysWOW64\CCM\SMSCFGRC.cpl") {Start-Process C:\Windows\SysWOW64\CCM\SMSCFGRC.cpl}
+    if (Test-Path "C:\Windows\CCM\SMSCFGRC.cpl") {Start-Process C:\Windows\CCM\SMSCFGRC.cpl}
+    elseif (Test-Path "C:\Windows\SysWOW64\CCM\SMSCFGRC.cpl") {Start-Process C:\Windows\SysWOW64\CCM\SMSCFGRC.cpl}
     elseif (Test-Path "C:\Windows\System32\CCM\SMSCFGRC.cpl") {Start-Process C:\Windows\System32\CCM\SMSCFGRC.cpl}
     else {Throw "Configuration Manager not found"}
 }
@@ -6958,17 +6957,43 @@ function Open-RunAdvertisedPrograms {
 New-Alias -Name "rap" -Value Open-RunAdvertisedPrograms
 
 
+function Open-SoftwareCenter {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2020-09-28 09:36:19
+    Last Edit: 2020-09-28 09:36:19
+    Keywords:
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    param(
+        [Parameter(
+            Mandatory=$false
+        )]
+        [ValidateSet('AvailableSoftware','Updates','OSD','InstallationStatus','Compliance','Options')]
+        [ValidateNotNullOrEmpty()]
+        [Alias('Tab')]
+        [string]$Page = "AvailableSoftware"
+    )
+
+    Start-Process softwarecenter:Page=$Page
+}
+New-Alias -Name "softwarecenter" -Value Open-SoftwareCenter
+New-Alias -Name "SCCM" -Value Open-SoftwareCenter
+New-Alias -Name "MECM" -Value Open-SoftwareCenter
+
+
 function Open-SCCMLogsFolder {
 <#
 .Notes
     AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 21:10:27
+    CREATED: Sometime before 2017-08-07
+    LASTEDIT: 2020-09-28 09:25:48
     KEYWORDS:
     REQUIRES:
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
+        -RunAsAdministrator on remote computers
 .LINK
     https://wstools.dev
 #>
@@ -7042,17 +7067,22 @@ This log is only on the client computer configured as the synchronization host f
     )
 
     foreach ($comp in $ComputerName) {
-        try {
-            $wmiq = Get-WmiObject win32_operatingsystem -ComputerName $comp -ErrorAction Stop | Select-Object OSArchitecture
-            if ($wmiq -like "*64-bit*") {
-                explorer \\$comp\c$\Windows\SysWOW64\CCM\Logs
+        if (Test-Path \\$comp\c$\Windows\CCM\Logs) {
+            explorer \\$comp\c$\Windows\CCM\Logs
+        }
+        else {
+            try {
+                $wmiq = Get-WmiObject win32_operatingsystem -ComputerName $comp -ErrorAction Stop | Select-Object OSArchitecture
+                if ($wmiq -like "*64-bit*") {
+                    explorer \\$comp\c$\Windows\SysWOW64\CCM\Logs
+                }
+                else {
+                    explorer \\$comp\c$\Windows\System32\CCM\Logs
+                }
+            }#try
+            catch {
+                Throw "Unable to connect to $comp"
             }
-            else {
-                explorer \\$comp\c$\Windows\System32\CCM\Logs
-            }
-        }#try
-        catch {
-            Throw "Unable to connect to $comp"
         }
     }#foreach computer
 }

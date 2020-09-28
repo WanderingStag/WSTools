@@ -49,6 +49,9 @@ New features and other changes:
 37. Added admin check to Get-OperatingSystem for remote computers.
 38. Generalized then added Get-PrivilegedGroups function from another internal module.
 39. Changed Set-DirtyShutdown to Clear-DirtyShutdown.
+40. Changed Open-SCCMLogsFolder so that it will try to open the newer logs folder path.
+41. Changed Open-ConfigurationManager so it also uses the newer folder path.
+42. Added Open-SoftwareCenter.
 
 Removed items:
 1. Get-202001UpdateStatus: We are in August 2020 now so if computers don't have newer cumulative updates there is a problem.
