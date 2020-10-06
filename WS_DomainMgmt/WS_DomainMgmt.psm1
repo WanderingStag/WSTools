@@ -342,6 +342,11 @@ Function Get-PrivilegedGroups {
 .Link
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
     $config = $Global:WSToolsConfig
     $agroups = $config.PrivGroups
 
@@ -661,6 +666,11 @@ function Open-iLO {
 .LINK
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory=$false)]
@@ -756,6 +766,11 @@ Function Open-vCenter {
 .LINK
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory=$false)]

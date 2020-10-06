@@ -1,4 +1,10 @@
-﻿$Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
+﻿[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+    "PSAvoidGlobalVars",
+    "",
+    Justification = "Have tried other methods and they do not work consistently."
+)]
+
+$Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     # WSTools config v1.0.6
     # Remove the # symbol infront of a line to enable it
     ###########################################################################################################################################

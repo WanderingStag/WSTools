@@ -325,7 +325,7 @@ function Disable-ServerManager {
 .NOTES
     Author: Skyler Hart
     Created: 2020-05-08 23:18:39
-    Last Edit: 2020-05-08 23:18:39
+    Last Edit: 2020-10-06 13:25:11
     Keywords:
 .LINK
     https://wstools.dev
@@ -1906,70 +1906,75 @@ Function Get-SysInternals {
 .LINK
     https://wstools.dev
 #>
-        [CmdletBinding()]
-        Param (
-            [Parameter(ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
-            [string]$zipPath = "c:\temp",
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSUseSingularNouns",
+        "",
+        Justification = "SysInternals is the name of the application."
+    )]
+    [CmdletBinding()]
+    Param (
+        [Parameter(ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [string]$zipPath = "c:\temp",
 
-            [Parameter(ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
-            [string]$tempFolder = "c:\temp\SysInternalsSuite",
+        [Parameter(ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [string]$tempFolder = "c:\temp\SysInternalsSuite",
 
-            [Parameter(ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
-            [string]$PlaceIn = "$env:userprofile\Downloads\SysInternals",
+        [Parameter(ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [string]$PlaceIn = "$env:userprofile\Downloads\SysInternals",
 
-            [Parameter(ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
-            [string]$url = "https://download.sysinternals.com/files/SysinternalsSuite.zip"
-        )
+        [Parameter(ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [string]$url = "https://download.sysinternals.com/files/SysinternalsSuite.zip"
+    )
 
-        $zipname = $zipPath + "\SysinternalsSuite.zip"
-        $continue = $false
+    $zipname = $zipPath + "\SysinternalsSuite.zip"
+    $continue = $false
 
-        if (!(Test-Path $PlaceIn)) {mkdir $PlaceIn | Out-Null}
-        if (!(Test-Path $zipPath)) {mkdir $zipPath | Out-Null}
-        if (!(Test-Path $tempFolder)) {mkdir $tempFolder | Out-Null}
+    if (!(Test-Path $PlaceIn)) {mkdir $PlaceIn | Out-Null}
+    if (!(Test-Path $zipPath)) {mkdir $zipPath | Out-Null}
+    if (!(Test-Path $tempFolder)) {mkdir $tempFolder | Out-Null}
 
-        $ErrorActionPreference = "Stop"
-        Write-Host "Downloading $url to $zipPath"
+    $ErrorActionPreference = "Stop"
+    Write-Host "Downloading $url to $zipPath"
+    try {
+        Write-Host "--Trying System.Net.WebClinet"
+        $web = New-Object System.Net.WebClient
+        $web.DownloadFile($url, $zipPath)
+        $continue = $true
+    }
+    catch {
         try {
-            Write-Host "--Trying System.Net.WebClinet"
-            $web = New-Object System.Net.WebClient
-            $web.DownloadFile($url, $zipPath)
+            Write-Host "--Trying BitsTransfer"
+            Start-BitsTransfer -Source $url -Destination $zipPath -ErrorAction Stop
             $continue = $true
         }
         catch {
+            Write-Host "--Trying Invoke WebRequest"
+            Invoke-WebRequest -Uri $url -OutFile $zipPath
+            $continue = $true
+        }
+    }
+
+    if ($continue) {
+        Write-Host "Extracting $zipname to $tempFolder"
+        try {
+            Add-Type -assembly 'System.IO.Compression.FileSystem'
+            [System.IO.Compression.ZipFile]::ExtractToDirectory($zipname, $tempFolder)
+
             try {
-                Write-Host "--Trying BitsTransfer"
-                Start-BitsTransfer -Source $url -Destination $zipPath -ErrorAction Stop
-                $continue = $true
+                Write-Host "Copying files from $tempFolder to $PlaceIn"
+                Copy-Item "$tempFolder\*.*" $PlaceIn
             }
             catch {
-                Write-Host "--Trying Invoke WebRequest"
-                Invoke-WebRequest -Uri $url -OutFile $zipPath
-                $continue = $true
+                Write-Host "Failed to copy items from $tempFolder to $PlaceIn" -ForegroundColor Red
             }
         }
-
-        if ($continue) {
-            Write-Host "Extracting $zipname to $tempFolder"
-            try {
-                Add-Type -assembly 'System.IO.Compression.FileSystem'
-                [System.IO.Compression.ZipFile]::ExtractToDirectory($zipname, $tempFolder)
-
-                try {
-                    Write-Host "Copying files from $tempFolder to $PlaceIn"
-                    Copy-Item "$tempFolder\*.*" $PlaceIn
-                }
-                catch {
-                    Write-Host "Failed to copy items from $tempFolder to $PlaceIn" -ForegroundColor Red
-                }
-            }
-            catch {
-                Write-Host "Failed extracting zip file" -ForegroundColor Red
-            }
-        }#continue
-        else {
-            Write-Host "Failed to download SysInternalsSuite from https://docs.microsoft.com/en-us/sysinternals/downloads/sysinternals-suite" -ForegroundColor Red
+        catch {
+            Write-Host "Failed extracting zip file" -ForegroundColor Red
         }
+    }#continue
+    else {
+        Write-Host "Failed to download SysInternalsSuite from https://docs.microsoft.com/en-us/sysinternals/downloads/sysinternals-suite" -ForegroundColor Red
+    }
 }
 
 
@@ -2135,6 +2140,11 @@ function Save-MaintenanceReport {
 .LINK
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
 	[CmdletBinding()]
     Param (
         [Parameter(
@@ -2168,6 +2178,11 @@ function Save-UpdateHistory {
 .LINK
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
     [CmdletBinding()]
     Param (
         [Parameter(
@@ -2330,6 +2345,11 @@ function Get-WSToolsConfig {
 .LINK
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
     $Global:WSToolsConfig
 }
 New-Alias -Name "Import-WSToolsConfig" -Value Get-WSToolsConfig
@@ -2424,7 +2444,11 @@ Function Import-DRAModule {
 .LINK
     https://wstools.dev
 #>
-
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
     $config = $Global:WSToolsConfig
     $ip = $config.DRAInstallLocation
     $if = $config.DRAInstallFile
@@ -2529,6 +2553,16 @@ Function Install-WSTools {
 .LINK
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSUseSingularNouns",
+        "",
+        Justification = "WSTools is the proper name for the module."
+    )]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory=$false, Position=0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
@@ -2682,7 +2716,12 @@ Function Test-EmailRelay {
     https://wstools.dev
 .LINK
     https://www.skylerhart.com
-    #>
+#>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory=$true, Position=0, HelpMessage="Enter e-mail address of recipient")]
@@ -2812,6 +2851,16 @@ Function Update-WSTools {
 .LINK
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSUseSingularNouns",
+        "",
+        Justification = "WSTools is the proper name for the module."
+    )]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
     $config = $Global:WSToolsConfig
     $UPath = $config.UpdatePath
     $UComp = $config.UpdateComp
@@ -3038,6 +3087,11 @@ function Set-Preferences {
 .LINK
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
     $config = $Global:WSToolsConfig
     $explorer = $config.Explorer
     $store = $config.StoreLookup
@@ -3227,6 +3281,11 @@ Function Show-HiddenFiles {
 .LINK
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSUseSingularNouns",
+        "",
+        Justification = "Expresses exactly what the function does."
+    )]
     [CmdletBinding()]
     Param (
         [Switch]$Yes,
@@ -3254,6 +3313,11 @@ Function Show-FileExtensions {
 .LINK
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSUseSingularNouns",
+        "",
+        Justification = "Expresses exactly what the function does."
+    )]
     [CmdletBinding()]
     Param (
         [Switch]$Yes,
@@ -3622,6 +3686,11 @@ Function Open-Remedy {
 .LINK
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory=$false)]

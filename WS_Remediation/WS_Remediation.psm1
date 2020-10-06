@@ -33,6 +33,11 @@
 .LINK
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSUseSingularNouns",
+        "",
+        Justification = "Expresses exactly what the function does and is what the folder name is called."
+    )]
     [CmdletBinding()]
     Param (
         [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
@@ -258,6 +263,16 @@ Function Copy-7Zip {
 .Link
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
     [CmdletBinding()]
     Param (
         [Parameter(
@@ -407,6 +422,11 @@ Function Copy-90Meter {
 .Link
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
     [CmdletBinding()]
     Param (
         [Parameter(
@@ -555,6 +575,11 @@ Function Copy-ActivClient {
 .Link
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
     [CmdletBinding()]
     Param (
         [Parameter(
@@ -702,6 +727,11 @@ Function Copy-AdobeAcrobat {
 .Link
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
     [CmdletBinding()]
     Param (
         [Parameter(
@@ -850,6 +880,11 @@ Function Copy-Axway {
 .Link
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
     [CmdletBinding()]
     Param (
         [Parameter(
@@ -1021,6 +1056,11 @@ Function Copy-Chrome {
 .Link
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
     [CmdletBinding()]
     Param (
         [Parameter(
@@ -1168,6 +1208,11 @@ Function Copy-DSET {
 .Link
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
 [CmdletBinding()]
 Param (
     [Parameter(
@@ -1316,6 +1361,11 @@ Function Copy-Encase {
 .Link
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
     [CmdletBinding()]
     Param (
         [Parameter(
@@ -1463,6 +1513,11 @@ Function Copy-Firefox {
 .Link
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
 [CmdletBinding()]
 Param (
     [Parameter(
@@ -1611,6 +1666,11 @@ Function Copy-Flash {
 .Link
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
 [CmdletBinding()]
 Param (
     [Parameter(
@@ -1759,6 +1819,11 @@ Function Copy-IE11 {
 .Link
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
 [CmdletBinding()]
 Param (
     [Parameter(
@@ -1907,6 +1972,11 @@ Function Copy-Java {
 .Link
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
 [CmdletBinding()]
 Param (
     [Parameter(
@@ -2055,6 +2125,11 @@ Function Copy-NetBanner {
 .Link
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
 [CmdletBinding()]
 Param (
     [Parameter(
@@ -2203,6 +2278,11 @@ Function Copy-Office2016 {
 .Link
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
 [CmdletBinding()]
 Param (
     [Parameter(
@@ -2351,6 +2431,11 @@ Function Copy-Silverlight {
 .Link
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
 [CmdletBinding()]
 Param (
     [Parameter(
@@ -2499,6 +2584,11 @@ Function Copy-Tanium {
 .Link
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
 [CmdletBinding()]
 Param (
     [Parameter(
@@ -2647,6 +2737,16 @@ Function Copy-Teams {
 .Link
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSUseSingularNouns",
+        "",
+        Justification = "Teams is the name of the application."
+    )]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
 [CmdletBinding()]
 Param (
     [Parameter(
@@ -2795,6 +2895,16 @@ Function Copy-Titus {
 .Link
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSUseSingularNouns",
+        "",
+        Justification = "Titus is the name of the application and is not plural."
+    )]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
 [CmdletBinding()]
 Param (
     [Parameter(
@@ -2943,6 +3053,11 @@ Function Copy-VPN {
 .Link
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
 [CmdletBinding()]
 Param (
     [Parameter(
@@ -3091,6 +3206,11 @@ Function Copy-VLC {
 .Link
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
 [CmdletBinding()]
 Param (
     [Parameter(
@@ -3239,6 +3359,11 @@ Function Copy-Wireshark {
 .Link
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
 [CmdletBinding()]
 Param (
     [Parameter(
@@ -3387,6 +3512,11 @@ Function Copy-WMF3 {
 .Link
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
 [CmdletBinding()]
 Param (
     [Parameter(
@@ -3535,6 +3665,11 @@ Function Copy-WMF4 {
 .Link
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
 [CmdletBinding()]
 Param (
     [Parameter(
@@ -3683,6 +3818,11 @@ Function Copy-WMF5 {
 .Link
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
 [CmdletBinding()]
 Param (
     [Parameter(
@@ -3843,6 +3983,16 @@ Function Install-Patches {
 .LINK
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSUseSingularNouns",
+        "",
+        Justification = "Expresses exactly what the function does."
+    )]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
     [CmdletBinding()]
     Param (
         [Parameter(
@@ -4993,6 +5143,11 @@ Function Uninstall-IBMForms {
 .LINK
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSUseSingularNouns",
+        "",
+        Justification = "Expresses exactly what the function does and is the name of the application."
+    )]
     [CmdletBinding()]
     Param (
         [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",

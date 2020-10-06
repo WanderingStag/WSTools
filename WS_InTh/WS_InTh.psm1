@@ -512,7 +512,7 @@ function Get-LoggedOnUser {
 # Add check for currently logged on
 # Add try catch
 # Add progress bar
-function Get-RecentUsers {
+function Get-RecentUser {
 <#
 .Notes
     AUTHOR: Skyler Hart
@@ -736,7 +736,7 @@ function Get-USBStorageDevice {
                 $USBSTORSubKeys1  = $USBSTORKey.GetSubKeyNames()
             }
             catch {
-                #do nothing
+                $USBSTORSubKeys1 = $null
             }
 
             foreach ($SubKey1 in $USBSTORSubKeys1) {
@@ -901,8 +901,7 @@ function Get-USBStorageDevice {
 }#end get-usbstoragedevice
 
 
-#Tested for InTh and it seems to work
-function Get-UserLogonLogoffTimes {
+function Get-UserLogonLogoffTime {
 <#
 .Notes
     AUTHOR: Skyler Hart
