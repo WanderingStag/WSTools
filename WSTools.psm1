@@ -330,7 +330,9 @@ function Disable-ServerManager {
 .LINK
     https://wstools.dev
 #>
-    Get-ScheduledTask -TaskName ServerManager | Disable-ScheduledTask
+    $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+    if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {Get-ScheduledTask -TaskName ServerManager | Disable-ScheduledTask}
+    else {Write-Host "Must run this function as admin"}
 }
 
 
