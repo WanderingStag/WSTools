@@ -2164,7 +2164,7 @@ function Save-MaintenanceReport {
         $fi = import-csv $file
         $finfo += $fi
     }
-    $finfo | Select-Object Date,ComputerName,KB,Result,Title,Description,Category,ClientApplicationID,SupportUrl | Where-Object {$_.Date -gt $Days} | Sort-Object ComputerName | Export-Csv $sp -NoTypeInformation
+    $finfo | Select-Object Date,ComputerName,KB,Result,Title,Description,Category,ClientApplicationID,SupportUrl | Where-Object {$_.Date -gt $stime} | Sort-Object ComputerName | Export-Csv $sp -NoTypeInformation
 }
 
 
