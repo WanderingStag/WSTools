@@ -4620,6 +4620,60 @@ End{
 }
 
 
+function Stop-Exchange {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2020-10-24 11:00:45
+    Last Edit: 2020-10-24 11:00:45
+    Keywords:
+    Requires:
+        -RunAsAdministrator
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
+#>
+    Get-Service -Name * | Where-Object {$_.DisplayName -match "Exchange"} | Stop-Service -Force
+}
+
+
+function Stop-Oracle {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2020-10-24 11:03:00
+    Last Edit: 2020-10-24 11:03:00
+    Keywords:
+    Requires:
+        -RunAsAdministrator
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
+#>
+    Get-Service -Name * | Where-Object {$_.DisplayName -match "Oracle"} | Stop-Service -Force
+}
+
+
+function Stop-SQL {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2020-10-24 11:05:03
+    Last Edit: 2020-10-24 11:05:03
+    Keywords:
+    Requires:
+        -RunAsAdministrator
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
+#>
+    Get-Service -Name * | Where-Object {$_.DisplayName -match "SQL"} | Stop-Service -Force
+}
+
+
 function Update-BrokenInheritance {
 <#
 Find and fix broken permissions inheritance.
