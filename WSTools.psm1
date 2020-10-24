@@ -4620,6 +4620,32 @@ End{
 }
 
 
+function Stop-Database {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2020-10-24 19:01:26
+    Last Edit: 2020-10-24 19:01:26
+    Keywords:
+    Requires:
+        -RunAsAdministrator
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
+#>
+    $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+    if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+        Get-Service -Name * | Where-Object {$_.DisplayName -match "Oracle" -or $_.DisplayName -match "SQL"} | Stop-Service -Force
+    }
+    else {
+        Write-Host "Must run PowerShell as admin to run Stop-Database."
+    }
+}
+New-Alias -Name "Stop-Oracle" -Value Stop-Database
+New-Alias -Name "Stop-SQL" -Value Stop-Database
+
+
 function Stop-Exchange {
 <#
 .NOTES
@@ -4634,43 +4660,13 @@ function Stop-Exchange {
 .LINK
     https://www.skylerhart.com
 #>
-    Get-Service -Name * | Where-Object {$_.DisplayName -match "Exchange"} | Stop-Service -Force
-}
-
-
-function Stop-Oracle {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2020-10-24 11:03:00
-    Last Edit: 2020-10-24 11:03:00
-    Keywords:
-    Requires:
-        -RunAsAdministrator
-.LINK
-    https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#>
-    Get-Service -Name * | Where-Object {$_.DisplayName -match "Oracle"} | Stop-Service -Force
-}
-
-
-function Stop-SQL {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2020-10-24 11:05:03
-    Last Edit: 2020-10-24 11:05:03
-    Keywords:
-    Requires:
-        -RunAsAdministrator
-.LINK
-    https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#>
-    Get-Service -Name * | Where-Object {$_.DisplayName -match "SQL"} | Stop-Service -Force
+    $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+    if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+        Get-Service -Name * | Where-Object {$_.DisplayName -match "Exchange"} | Stop-Service -Force
+    }
+    else {
+        Write-Host "Must run PowerShell as admin to run Stop-Exchange."
+    }
 }
 
 
