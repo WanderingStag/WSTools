@@ -53,6 +53,7 @@ New features and other changes:
 41. Changed Open-ConfigurationManager so it also uses the newer folder path.
 42. Added Open-SoftwareCenter.
 43. Added Stop-Exchange and Stop-Database.
+44. Added Set-ServerConfig and associated config file settings.
 
 Removed items:
 1. Get-202001UpdateStatus: We are in August 2020 now so if computers don't have newer cumulative updates there is a problem.

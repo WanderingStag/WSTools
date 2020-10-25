@@ -5,7 +5,7 @@
 )]
 
 $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
-    # WSTools config v1.0.6
+    # WSTools config v1.1.0
     # Remove the # symbol infront of a line to enable it
     ###########################################################################################################################################
     #Path to where module files are stored on a central server. Used in Install-WSTools (aka Copy-WSTools) and Update-WSTools
@@ -198,5 +198,46 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
 
     #Privileged groups list - used for some monitoring and reporting features.
     #PrivGroups = @('group1','group2')
+
+    ################################
+    ##        Server Config       ##
+    ################################
+    #DHCP Enabled or Disabled. $true=Enable $false=Disable
+    SCDHCP = $false
+
+    #IPv6 $true=Enable $false=Disable
+    SCIPv6 = $false
+
+    #Link-Layer Topology Discovery Mapper I/O Driver $true=Enable $false=Disable
+    #The Mapper I/O network protocol (LLTDIO) driver allows the discovery of the connected network and allows various options to be enabled. Disabling this helps protect the system from potentially discovering and connecting to unauthorized devices.
+    SClltdio = $false
+
+    #Link-Layer Topology Discovery Responder $true=Enable $false=Disable
+    #The Responder network protocol driver allows a computer to be discovered and located on a network. Disabling this helps protect the system from potentially being discovered and connected to by unauthorized devices.
+    SCllrspndr = $false
+
+    #NetBIOS over TCP/IP
+    # 0=use default from DHCP. If static enable NetBios over TCP/IP. 1=Enable NetBIOS over TCP/IP. 2=Disable NetBIOS over TCP/IP
+    SCNetBios = 1
+
+    #Offloading of Checksums and Large Files to the NIC see more info at https://docs.microsoft.com/en-us/windows-server/networking/technologies/hpn/hpn-hardware-only-features
+    <#Skyler speaking here, "I personally and professionally recommend disabling these. I've ran into WAY to many issues over my 20 years in IT that have been caused by these being enabled. I've
+    had several Premier Field Engineers from Microsoft also tell me to disable them and 10/10 times it will improve network performance. If you have a small site at a single location you might 
+    be able to get away with enabling these. But even on my small personal network at home I've noticed significant network improvements by disabling these offload settings."#>
+    # $true=Enable $false=Disable
+    SCOffload = $false
+    
+    #RDP 0=Enable 1=Disable
+    SCRDP = 0
+
+    #Server Manager $true=Enable $false=Disable
+    SCServerMgr = $false
+
+    #WINS settings
+    ##true = Domain Name System (DNS) is enabled for name resolution over WINS resolution.
+    SCWDNS = $false
+
+    ##true = local lookup files are used. Lookup files will contain mappings of IP addresses to host names.
+    SCLMHost = $false
     ###########################################################################################################################################
 }#new object
