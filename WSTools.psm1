@@ -2158,7 +2158,7 @@ function Save-MaintenanceReport {
     $dt = get-date -Format yyyyMMdd
     $sp = $UHPath + "\" + $dt + "_MaintenanceReport.csv"
     $stime = (Get-Date) - (New-TimeSpan -Day $Days)
-    $info = Get-ChildItem $UHPath | Where-Object {$_.LastWriteTime -gt $stime} | Select-Object FullName -ExpandProperty FullName
+    $info = Get-ChildItem $UHPath | Where-Object {$_.LastWriteTime -gt $stime -and $_.Name -notlike "*MaintenanceReport.csv"} | Select-Object FullName -ExpandProperty FullName
     $finfo = @()
     foreach ($file in $info) {
         $fi = import-csv $file
