@@ -3065,6 +3065,47 @@ Function Split-File {
 }
 
 
+function Get-HomeDrive {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2020-11-03 15:02:09
+    Last Edit: 2020-11-03 15:02:09
+    Keywords:
+.LINK
+    https://wstools.dev
+#>
+    $env:HOMESHARE
+}
+
+
+function Mount-HomeDrive {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2020-11-03 14:58:38
+    Last Edit: 2020-11-03 14:58:38
+    Keywords:
+.LINK
+    https://wstools.dev
+#>
+    net use $env:HOMEDRIVE $env:HOMESHARE /persistent:yes
+}
+New-Alias -Name "Add-HomeDrive" -Value Mount-HomeDrive
+
+
+function Open-HomeDrive {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2020-11-03 15:03:52
+    Last Edit: 2020-11-03 15:03:52
+    Keywords:
+.LINK
+    https://wstools.dev
+#>
+    explorer.exe $env:HOMESHARE
+}
 
 ###########################################################################
 ###########################################################################
