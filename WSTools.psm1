@@ -2578,6 +2578,7 @@ Function Install-WSTools {
     }
 }
 New-Alias -Name "Copy-WSTools" -Value Install-WSTools
+New-Alias -Name "Push-WSTools" -Value Install-WSTools
 
 
 Function Set-SpeakerVolume {
