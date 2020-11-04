@@ -58,6 +58,7 @@ New features and other changes:
 46. Added Get-HomeDrive, Mount-HomeDrive, and Open-HomeDrive.
 47. Added Register-NotificationApp.
 48. Added WSTools_GUI.ps1 and WSTools.ico files. *NOT FUNCTIONAL YET**
+49. Added Convert-ImageToBase64.
 
 Removed items:
 1. Get-202001UpdateStatus: We are in August 2020 now so if computers don't have newer cumulative updates there is a problem.
