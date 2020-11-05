@@ -1100,7 +1100,7 @@ Function Get-OperatingSystem {
    .Notes
     AUTHOR: Skyler Hart
     CREATED: 06/06/2015 20:11:37
-    LASTEDIT: 2020-08-31 21:56:19
+    LASTEDIT: 2020-11-05 09:57:19
     KEYWORDS: Operating System, OS
     REMARKS: For local computer it can be ran as user. For remote computers, it needs to be ran as a user who has administrative rights on the remote computer.
 .LINK
@@ -1181,6 +1181,9 @@ Function Get-OperatingSystem {
                     elseif ($Build -eq 19041) {
                         $OS = $OS + " v2004"
                     }
+                    elseif ($Build -eq 19042) {
+                        $OS = $OS + " v20H2"
+                    }
                 }#if os win 10, srv 2016, or srv 2019
             }#try
             catch {
@@ -1235,6 +1238,9 @@ Function Get-OperatingSystem {
                         }
                         elseif ($Build -eq 19041) {
                             $OS = $OS + " v2004"
+                        }
+                        elseif ($Build -eq 19042) {
+                            $OS = $OS + " v20H2"
                         }
                     }#if os win 10, srv 2016, or srv 2019
                     else {$OS = $value}
@@ -1355,6 +1361,9 @@ Function Get-OperatingSystem {
                 }
                 elseif ($Build -eq 19041) {
                     $OS = $value + " v2004"
+                }
+                elseif ($Build -eq 19042) {
+                    $OS = $OS + " v20H2"
                 }
             }#if os win 10, srv 2016, or srv 2019
             else {$OS = $value}
