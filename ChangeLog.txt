@@ -1,7 +1,7 @@
 ######################
 #                    #
 #      v1.3.0 unpublished        #
-#   September 2020   #
+#   November 2020   #
 ######################
 Known issues:
 1. Get-NICInfo doesn't always run.
