@@ -61,6 +61,7 @@ New features and other changes:
 49. Added Convert-ImageToBase64.
 50. Added Windows 10 v20H2 to Get-OperatingSystem.
 51. Added ADmoduleCheck snippet to powershell.json file.
+52. Added Send-ToastNotification.
 
 Removed items:
 1. Get-202001UpdateStatus: We are in August 2020 now so if computers don't have newer cumulative updates there is a problem.

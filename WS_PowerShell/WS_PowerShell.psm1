@@ -701,4 +701,107 @@ Function Start-PowerShell {
 New-Alias -Name "Open-PowerShell" -Value Start-PowerShell
 
 
+function Send-ToastNotification {
+<#
+.SYNOPSIS
+    Short description
+.DESCRIPTION
+    Long description
+.PARAMETER ComputerName
+    Specifies the name of one or more computers.
+.PARAMETER Path
+    Specifies a path to one or more locations.
+.EXAMPLE
+    C:\PS>Send-ToastNotification
+    Example of how to use this cmdlet
+.EXAMPLE
+    C:\PS>Send-ToastNotification -PARAMETER
+    Another example of how to use this cmdlet but with a parameter or switch.
+.NOTES
+    Author: Skyler Hart
+    Created: 2020-11-08 14:57:29
+    Last Edit: 2020-11-08 14:57:29
+    Keywords: 
+    Other: 
+    Requires:
+        -Module ActiveDirectory
+        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        -RunAsAdministrator
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
+#>
+    [CmdletBinding()]
+    param(
+        [Parameter(
+            HelpMessage = "Enter the name of the sender.",
+            Mandatory=$true,
+            Position=0
+        )]
+        [ValidateNotNullOrEmpty()]
+        [string]$Sender,
+
+        [Parameter(
+            HelpMessage = "Enter the message to send.",
+            Mandatory=$true,
+            Position=1
+        )]
+        [ValidateNotNullOrEmpty()]
+        [string]$Message,
+
+        [Parameter(
+            Mandatory=$false,
+            Position=2
+        )]
+        [Alias('Host','Name','Computer','CN')]
+        [string[]]$ComputerName = "$env:COMPUTERNAME"
+    )
+    Begin {
+        $AudioSource = "ms-winsoundevent:Notification.Looping.Alarm5"
+        $Notifier = "WSTools"
+        [xml]$ToastTemplate = @"
+            <toast duration="long">
+                <visual>
+                <binding template="ToastGeneric">
+                    <text>$Sender</text> 
+                    <group>
+                        <subgroup>
+                            <text hint-style="subtitle" hint-wrap="true">$Message</text>
+                        </subgroup>
+                    </group>
+                </binding>
+                </visual>
+                <audio src="$AudioSource"/>
+            </toast>
+"@
+
+        [scriptblock]$ToastScript = {
+            #Load required assemblies
+            [void][Windows.UI.Notifications.ToastNotification,Windows.UI.Notifications,ContentType=WindowsRuntime]
+            [void][Windows.Data.Xml.Dom.XmlDocument,Windows.Data.Xml.Dom,ContentType=WindowsRuntime]
+
+            #Format XML
+            $FinalXML = [Windows.Data.Xml.Dom.XmlDocument]::new()
+            $FinalXML.LoadXml($ToastTemplate.OuterXml)
+
+            #Create the Toast
+            $Toast = [Windows.UI.Notifications.ToastNotification]::new($FinalXML)
+
+            #Show the Toast message
+            [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier($Notifier).show($Toast)
+        }
+    }
+    Process {
+        if (![string]::IsNullOrEmpty($ComputerName)) {
+            Invoke-Command -ComputerName $ComputerName -ScriptBlock $ToastScript #DevSkim: ignore DS104456 
+        }
+        else {$ToastScript.Invoke()}
+    }
+    End {
+        #done
+    }
+}
+
+
 Export-ModuleMember -Alias * -Function *
