@@ -385,6 +385,15 @@
 			"if (\\$currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {\\$Role = 'Admin'}",
 			"else {\\$Role = 'User'}"
 		],
-		"description": "Adds admin check code (checks the Security roles to see what the user is running the window as."
+		"description": "Adds admin check code (checks the Security roles to see what the user is running the window as.)"
+	},
+	"ADmoduleCheck": {
+		"prefix": "ADmoduleCheck",
+		"body": [
+			"if (\\$null -eq (Get-Module -ListAvailable ActiveDir*).Path) {",
+			"\t#module not loaded",
+			"}"
+		],
+		"description": "Adds Active Directory module check code."
 	}
 }

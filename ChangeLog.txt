@@ -60,6 +60,7 @@ New features and other changes:
 48. Added WSTools_GUI.ps1 and WSTools.ico files. *NOT FUNCTIONAL YET**
 49. Added Convert-ImageToBase64.
 50. Added Windows 10 v20H2 to Get-OperatingSystem.
+51. Added ADmoduleCheck snippet to powershell.json file.
 
 Removed items:
 1. Get-202001UpdateStatus: We are in August 2020 now so if computers don't have newer cumulative updates there is a problem.
