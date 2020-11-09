@@ -755,16 +755,33 @@ function Send-ToastNotification {
             Position=2
         )]
         [Alias('Host','Name','Computer','CN')]
-        [string[]]$ComputerName = "$env:COMPUTERNAME"
+        [string[]]$ComputerName,
+
+        [Parameter(
+            Mandatory=$false
+        )]
+        [string]$Notifier = "Windows.SystemToast.SecurityAndMaintenance", #IT HAS TO BE A REGISTERED NOTIFIER. Look here for the registered notifiers: HKEY_CLASSES_ROOT\AppUserModelId.
+        #Can also use the WSTools Register-NotificationApp to register a new one.
+
+        [Parameter(
+            Mandatory=$false
+        )]
+        [string]$Title
     )
     Begin {
         $AudioSource = "ms-winsoundevent:Notification.Looping.Alarm5"
-        $Notifier = "WSTools"
+        if ($null -eq $Title -or $Title -eq '') {
+            $ttext = $null
+        }
+        else {
+            $ttext = "<text>$Title</text>"
+        }
         [xml]$ToastTemplate = @"
             <toast duration="long">
                 <visual>
                 <binding template="ToastGeneric">
-                    <text>$Sender</text> 
+                    <text>$Sender</text>
+                    $ttext
                     <group>
                         <subgroup>
                             <text hint-style="subtitle" hint-wrap="true">$Message</text>
@@ -777,6 +794,7 @@ function Send-ToastNotification {
 "@
 
         [scriptblock]$ToastScript = {
+            Param($ToastTemplate)
             #Load required assemblies
             [void][Windows.UI.Notifications.ToastNotification,Windows.UI.Notifications,ContentType=WindowsRuntime]
             [void][Windows.Data.Xml.Dom.XmlDocument,Windows.Data.Xml.Dom,ContentType=WindowsRuntime]
@@ -794,9 +812,9 @@ function Send-ToastNotification {
     }
     Process {
         if (![string]::IsNullOrEmpty($ComputerName)) {
-            Invoke-Command -ComputerName $ComputerName -ScriptBlock $ToastScript #DevSkim: ignore DS104456 
+            Invoke-Command -ComputerName $ComputerName -ScriptBlock $ToastScript -ArgumentList $ToastTemplate #DevSkim: ignore DS104456 
         }
-        else {$ToastScript.Invoke()}
+        else {Invoke-Command -ScriptBlock $ToastScript -ArgumentList $ToastTemplate} #DevSkim: ignore DS104456 
     }
     End {
         #done
