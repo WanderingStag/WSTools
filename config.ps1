@@ -5,7 +5,7 @@
 )]
 
 $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
-    # WSTools config v1.1.0
+    # WSTools config v1.1.1
     # Remove the # symbol infront of a line to enable it
     ###########################################################################################################################################
     #Path to where module files are stored on a central server. Used in Install-WSTools (aka Copy-WSTools) and Update-WSTools
@@ -96,7 +96,7 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
 
     #Install file locations - for normal installation files.
     a7Zip = "J:\Tools\7zip" #64-bit only unless you change Copy-7Zip to use 32-bit
-    Firefox = "J:\Tools\Firefox" #32-bit only unless you change Copy-Firefox to use 64-bit
+    #Firefox = "J:\Tools\Firefox" #32-bit only unless you change Copy-Firefox to use 64-bit
     IE11 = "J:\Patches\IE\IE11"
     SysInternals = "J:\Tools\SysinternalsSuite"
     VLC = "J:\Tools\VLC"
@@ -114,7 +114,7 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     Chrome = "J:\Patches\SDC-APPS\Chrome"
     DSET = "J:\Patches\SDC-APPS\DSET"
     Encase = "J:\Patches\SDC-APPS\Encase"
-    #Firefox = "\\serverunc\apps\Firefox"
+    Firefox = "J:\Patches\SDC-APPS\Firefox"
     Flash = "J:\Patches\SDC-APPS\Adobe\Flash"
     Java = "J:\Patches\SDC-APPS\Java\NIPR"
     NetBanner = "J:\Patches\SDC-APPS\NetBanner"

@@ -3913,8 +3913,15 @@ function Convert-AppIconToBase64 {
         [string]$Path
     )
     Add-Type -AssemblyName System.Drawing
+    Add-Type -AssemblyName System.IO
     $Icon = [System.Drawing.Icon]::ExtractAssociatedIcon($Path)
-    $Icon
+    $stream = New-Object System.IO.MemoryStream
+    $Icon.Save($stream)
+    $Bytes = $stream.ToArray()
+    $stream.Flush()
+    $stream.Dispose()
+    $b64 = [convert]::ToBase64String($Bytes)
+    $b64
 }
 
 
