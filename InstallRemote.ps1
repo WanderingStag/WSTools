@@ -355,9 +355,29 @@ if (Test-Path $acrobat) {
 }
 
 if (Test-Path $axway) {
-    Write-Host "$cn`: Installing Axway."
-    Start-Process c:\Patches\Axway\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
-    Start-Sleep 150
+    $sv = $null
+    $sv = Get-Content $axway\SoftwareVersion.txt
+    $sv = $sv.Split('.')
+    $ipax = ($ip | Where-Object {$_.ProgramName -like "Axway*"} | Select-Object Version)[0].Version
+    $ipax = $ipax.Split('.')
+    if ($sv[0] -ge $ipax[0]) {
+        if ($sv[0] -gt $ipax[0]) {
+            Write-Host "$cn`: Axway in patches folder same as installed version or older. Skipping install..."
+        }
+        elseif ($sv[1] -eq $ipax[1]) {
+            Write-Host "$cn`: Axway in patches folder same as installed version. Skipping install..."
+        }
+        elseif ($sv[1] -lt $ipax[1]) {
+            Write-Host "$cn`: Installing Axway."
+            Start-Process c:\Patches\Axway\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
+            Start-Sleep 150
+        }
+    }
+    else {
+        Write-Host "$cn`: Installing Axway."
+        Start-Process c:\Patches\Axway\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
+        Start-Sleep 150
+    }
 }
 
 if (Test-Path $chrome) {
@@ -416,19 +436,21 @@ if (Test-Path $firefox) {
             Start-Sleep 60
         }
         Write-Host "$cn`: Installing Firefox."
-        $ffi = Get-ChildItem $firefox | Where-Object {$_.Name -like "firef*.exe"}
-        if ($ffi.count -eq 1) {
-            $ffp = $ffi.FullName
-        }
-        else {
-            $ffp = $ffi.FullName[0]
-        }
-        Start-Process $ffp -ArgumentList "-ms" -NoNewWindow -Wait
+        Start-Process c:\Patches\Flash\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 150
-        Write-Host "$cn`: Uninstalling Firefox Maintenance Service."
-        Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList 'cmd /c "C:\Program Files (x86)\Mozilla Maintenance Service\uninstall.exe" /S' -ErrorAction SilentlyContinue | Out-Null
-        Get-WmiObject -Class Win32_Product -Filter "Name LIKE 'Mozilla Maintenance%'"| Remove-WmiObject
-        Start-Sleep 30
+        #$ffi = Get-ChildItem $firefox | Where-Object {$_.Name -like "firef*.exe"}
+        #if ($ffi.count -eq 1) {
+        #    $ffp = $ffi.FullName
+        #}
+        #else {
+        #    $ffp = $ffi.FullName[0]
+        #}
+        #Start-Process $ffp -ArgumentList "-ms" -NoNewWindow -Wait
+        #Start-Sleep 150
+        #Write-Host "$cn`: Uninstalling Firefox Maintenance Service."
+        #Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList 'cmd /c "C:\Program Files (x86)\Mozilla Maintenance Service\uninstall.exe" /S' -ErrorAction SilentlyContinue | Out-Null
+        #Get-WmiObject -Class Win32_Product -Filter "Name LIKE 'Mozilla Maintenance%'"| Remove-WmiObject
+        #Start-Sleep 30
     }#else firefox same as installed
 }
 
