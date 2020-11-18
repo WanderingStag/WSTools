@@ -203,7 +203,7 @@ $patch2 = $PatchFolderPath + "\Patch2\Setup.exe"
 $patch4 = $PatchFolderPath + "\Patch4\Setup.exe"
 $patch11 = $PatchFolderPath + "\Patch11\Setup.exe"
 
-$7zip = $PatchFolderPath + "\7zip"
+#$7zip = $PatchFolderPath + "\7zip"
 $90meter = $PatchFolderPath + "\90Meter"
 $activclient = $PatchFolderPath + "\ActivClient"
 $acrobat = $PatchFolderPath + "\Acrobat"
@@ -301,13 +301,13 @@ if (Test-Path $dn48path) {
     Start-Process $dn48path -ArgumentList "/q /norestart" -NoNewWindow -Wait
 }
 
-if (Test-Path $7zip) {
-    Write-Host "$cn`: Installing 7zip."
-    $7i = Get-ChildItem $7zip
-    $7p = $7i.FullName[0]
-    Start-Process $7p -ArgumentList "/S" -NoNewWindow -Wait
-    Start-Sleep 120
-}
+#if (Test-Path $7zip) {
+#    Write-Host "$cn`: Installing 7zip."
+#    $7i = Get-ChildItem $7zip
+#    $7p = $7i.FullName[0]
+#    Start-Process $7p -ArgumentList "/S" -NoNewWindow -Wait
+#    Start-Sleep 120
+#}
 
 if (Test-Path $90meter) {
     $ip9 = ($ip | Where-Object {$_.ProgramName -like "90meter*"} | Select-Object Version,Comment)[0]
@@ -433,11 +433,11 @@ if (Test-Path $firefox) {
             Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList 'cmd /c "C:\Program Files (x86)\Mozilla Firefox\uninstall\helper.exe" -ms' -ErrorAction SilentlyContinue | Out-Null
             Start-Sleep -Seconds 30
             Get-WmiObject -Class Win32_Product -Filter "Name LIKE '%Firefox%'" | Remove-WmiObject
-            Start-Sleep 60
+            Start-Sleep 120
         }
         Write-Host "$cn`: Installing Firefox."
         Start-Process c:\Patches\Flash\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
-        Start-Sleep 150
+        Start-Sleep 350
         #$ffi = Get-ChildItem $firefox | Where-Object {$_.Name -like "firef*.exe"}
         #if ($ffi.count -eq 1) {
         #    $ffp = $ffi.FullName
@@ -492,20 +492,6 @@ if (Test-Path $java) {
 if (Test-Path $onedrive) {
     Start-Process $onedrive -ArgumentList "/AllUsers /Silent" -NoNewWindow -Wait
 }
-
-#if (Test-Path $shockwave) {
-#    $sv = $null
-#    $sv = gc $shockwave\SoftwareVersion.txt
-#    $ips = ($ip | where {$_.ProgramName -like "Adobe Shockwave*"} | select Version)[0].Version
-#    if ($sv -match $ips) {
-#        Write-Host "$cn`: Shockwave in patches folder same as installed version. Skipping install..."
-#    }
-#    else {
-#        Write-Host "$cn`: Installing Shockwave."
-#        Start-Process c:\Patches\Shockwave\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
-#        Start-Sleep 150
-#    }
-#}
 
 if (Test-Path $silverlight) {
     $slv = $null
