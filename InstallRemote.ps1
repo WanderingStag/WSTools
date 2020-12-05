@@ -350,7 +350,7 @@ if (Test-Path $acrobat) {
     else {
         Write-Host "$cn`: Installing Adobe Acrobat."
         Start-Process c:\Patches\Acrobat\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
-        Start-Sleep 200
+        Start-Sleep 600
     }
 }
 
