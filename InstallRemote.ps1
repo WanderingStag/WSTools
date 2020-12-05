@@ -197,7 +197,6 @@ $hf = (Get-HotFix | Select-Object HotFixID).HotFixID
 
 #$scripts = Get-ChildItem -Path $PatchFolderPath | Where-Object {$_.Name -match ".ps1" -and $_.Name -notmatch "Install.ps1" -and $_.Name -notmatch "InstallRemote.ps1"}
 
-$dn472path = $PatchFolderPath + "\NDP472-KB4054530-x86-x64-AllOS-ENU.exe"
 $dn48path = $PatchFolderPath + "\ndp48-x86-x64-allos-enu.exe"
 $patch2 = $PatchFolderPath + "\Patch2\Setup.exe"
 $patch4 = $PatchFolderPath + "\Patch4\Setup.exe"
@@ -291,11 +290,6 @@ foreach ($obj in $cabs) {
     Start-Sleep 5
 }
 
-if (Test-Path $dn472path) {
-    Write-Host "$cn`: Installing .NET Framework 4.7.2."
-    Start-Process $dn472path -ArgumentList "/q /norestart" -NoNewWindow -Wait
-}
-
 if (Test-Path $dn48path) {
     Write-Host "$cn`: Installing .NET Framework 4.8."
     Start-Process $dn48path -ArgumentList "/q /norestart" -NoNewWindow -Wait
@@ -309,7 +303,7 @@ if (Test-Path $dn48path) {
 #    Start-Sleep 120
 #}
 
-if (Test-Path $90meter) {
+if (Test-Path $90meter -and $env:USERDNSDOMAIN -like "*.smil.mil") {
     $ip9 = ($ip | Where-Object {$_.ProgramName -like "90meter*"} | Select-Object Version,Comment)[0]
     $ip9c = ($ip9 | Select-Object Comment).Comment
     if ($ip9c -eq " -- SDC SIPR - 90Meter Smart Card Manager - 190712") {
@@ -327,7 +321,7 @@ if (Test-Path $90meter) {
     }
 }
 
-if (Test-Path $activclient) {
+if (Test-Path $activclient -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
     $inac = $null
     $inac = Get-WmiObject -Class Win32_Product -Filter "Name LIKE '%ActivClient%'"
     if ($null -ne $inac -and $inac -ne "") {
@@ -401,7 +395,7 @@ if (Test-Path $chrome) {
     }
 }
 
-if (Test-Path $dset) {
+if (Test-Path $dset -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
     $sv = $null
     $sv = Get-Content $dset\SoftwareVersion.txt
     $ipd = ($ip | Where-Object {$_.ProgramName -like "DSET*"} | Select-Object Version)[0].Version
@@ -433,7 +427,7 @@ if (Test-Path $firefox) {
             Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList 'cmd /c "C:\Program Files (x86)\Mozilla Firefox\uninstall\helper.exe" -ms' -ErrorAction SilentlyContinue | Out-Null
             Start-Sleep -Seconds 30
             Get-WmiObject -Class Win32_Product -Filter "Name LIKE '%Firefox%'" | Remove-WmiObject
-            Start-Sleep 120
+            Start-Sleep 200
         }
         Write-Host "$cn`: Installing Firefox."
         Start-Process c:\Patches\Flash\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
@@ -517,7 +511,7 @@ if (Test-Path $tanium) {
     else {
         Write-Host "$cn`: Installing Tanium."
         Start-Process c:\Patches\Tanium\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
-        Start-Sleep 150
+        Start-Sleep 200
     }
 }
 
@@ -535,7 +529,7 @@ if (Test-Path $teams) {
     }
 }
 
-if (Test-Path $titus) {
+if (Test-Path $titus -and $env:USERDNSDOMAIN -like "*.smil.mil") {
     Write-Host "$cn`: Installing Titus."
     Start-Process c:\Patches\Titus\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
     Start-Sleep 150
