@@ -3381,10 +3381,10 @@ function Set-ServerConfig {
 
         #Offloading
         if ($sc.SCOffload -eq $true) {
-            Set-NetAdapterAdvancedProperty -Name "Ethernet" -DisplayName "*Offloa*" -DisplayValue "Enabled"
+            Set-NetAdapterAdvancedProperty -Name $ia -DisplayName "*Offloa*" -DisplayValue "Enabled"
         }
         else {
-            Set-NetAdapterAdvancedProperty -Name "Ethernet" -DisplayName "*Offloa*" -DisplayValue "Disabled"
+            Set-NetAdapterAdvancedProperty -Name $ia -DisplayName "*Offloa*" -DisplayValue "Disabled"
         }
     }#foreach network adapter
 
