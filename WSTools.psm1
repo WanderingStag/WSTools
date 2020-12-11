@@ -3412,7 +3412,6 @@ function Set-ServerConfig {
     $nicClass = Get-WmiObject -list Win32_NetworkAdapterConfiguration
     $nicClass.enablewins($wdns,$lmh)
 
-    Set-RemediationValues
 }
 
 
