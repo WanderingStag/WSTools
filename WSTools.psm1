@@ -3332,7 +3332,7 @@ function Set-ServerConfig {
 .NOTES
     Author: Skyler Hart
     Created: 2020-10-24 20:09:27
-    Last Edit: 2020-10-24 20:09:27
+    Last Edit: 2020-12-10 23:05:57
     Keywords:
     Requires:
         -RunAsAdministrator
@@ -3381,10 +3381,10 @@ function Set-ServerConfig {
 
         #Offloading
         if ($sc.SCOffload -eq $true) {
-            Set-NetAdapterAdvancedProperty -Name "Ethernet" -DisplayName "*Offloa*" -DisplayValue "Enabled"
+            Set-NetAdapterAdvancedProperty -Name $ia -DisplayName "*Offloa*" -DisplayValue "Enabled"
         }
         else {
-            Set-NetAdapterAdvancedProperty -Name "Ethernet" -DisplayName "*Offloa*" -DisplayValue "Disabled"
+            Set-NetAdapterAdvancedProperty -Name $ia -DisplayName "*Offloa*" -DisplayValue "Disabled"
         }
     }#foreach network adapter
 
@@ -3411,6 +3411,8 @@ function Set-ServerConfig {
     $lmh = $sc.SCLMHost
     $nicClass = Get-WmiObject -list Win32_NetworkAdapterConfiguration
     $nicClass.enablewins($wdns,$lmh)
+
+    Set-RemediationValues
 }
 
 
