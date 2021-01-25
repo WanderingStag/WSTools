@@ -11,6 +11,7 @@ Bug fixes:
 
 New features and other changes:
 1. Changed Connect-RDP so that if it is blank, it just opens a new Remote Desktop window.
+2. Added Uninstall-WinRAR and Uninstall-WinZip.
 
 Removed items:
 1. 
