@@ -1,7 +1,7 @@
 ######################
 #                    #
 #      v1.3.0 unpublished        #
-#   November 2020   #
+#   January 2021   #
 ######################
 Known issues:
 1. Get-NICInfo doesn't always run.
@@ -63,6 +63,8 @@ New features and other changes:
 51. Added ADmoduleCheck snippet to powershell.json file.
 52. Added Send-ToastNotification.
 53. Added Convert-AppIconToBase64.
+54. Removed/commented out Copy-Flash function and install references.
+55. Added McAfee Patch 15 to InstallRemote.ps1.
 
 Removed items:
 1. Get-202001UpdateStatus: We are in August 2020 now so if computers don't have newer cumulative updates there is a problem.
