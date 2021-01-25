@@ -109,6 +109,7 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     a90Meter = "J:\Patches\SDC-APPS\90Meter"
     ActivClient = "J:\Patches\SDC-APPS\ActivClient"
     Acrobat = "J:\Patches\SDC-APPS\Adobe\Acrobat NIPR"
+    AEM = "J:\Patches\SDC-APPS\Adobe\AEM_FormsDesigner"
     AxwayServer = "J:\Patches\SDC-APPS\Axway\DSCC"
     AxwayClient = "J:\Patches\SDC-APPS\Axway\NIPR"
     Chrome = "J:\Patches\SDC-APPS\Chrome"
