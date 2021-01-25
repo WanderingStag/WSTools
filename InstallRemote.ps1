@@ -201,6 +201,7 @@ $dn48path = $PatchFolderPath + "\ndp48-x86-x64-allos-enu.exe"
 $patch2 = $PatchFolderPath + "\Patch2\Setup.exe"
 $patch4 = $PatchFolderPath + "\Patch4\Setup.exe"
 $patch11 = $PatchFolderPath + "\Patch11\Setup.exe"
+$patch15 = $PatchFolderPath + "\Patch15\Setup.exe"
 
 #$7zip = $PatchFolderPath + "\7zip"
 $90meter = $PatchFolderPath + "\90Meter"
@@ -210,7 +211,7 @@ $axway = $PatchFolderPath + "\Axway"
 $chrome = $PatchFolderPath + "\Chrome"
 $dset = $PatchFolderPath + "\DSET"
 $firefox = $PatchFolderPath + "\firefox"
-$flash = $PatchFolderPath + "\Flash"
+#$flash = $PatchFolderPath + "\Flash"
 $java = $PatchFolderPath + "\Java"
 #$shockwave = $PatchFolderPath + "\Shockwave"
 $silverlight = $PatchFolderPath + "\Silverlight"
@@ -448,19 +449,19 @@ if (Test-Path $firefox) {
     }#else firefox same as installed
 }
 
-if (Test-Path $flash) {
-    $sv = $null
-    $sv = Get-Content $flash\SoftwareVersion.txt
-    $ipf = ($ip | Where-Object {$_.ProgramName -like "Adobe Flash Player*"} | Select-Object Version)[0].Version
-    if ($sv -match $ipf) {
-        Write-Host "$cn`: Flash in patches folder same as installed version. Skipping install..."
-    }
-    else {
-        Write-Host "$cn`: Installing Flash."
-        Start-Process c:\Patches\Flash\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
-        Start-Sleep 150
-    }
-}
+#if (Test-Path $flash) {
+#    $sv = $null
+#    $sv = Get-Content $flash\SoftwareVersion.txt
+#    $ipf = ($ip | Where-Object {$_.ProgramName -like "Adobe Flash Player*"} | Select-Object Version)[0].Version
+#    if ($sv -match $ipf) {
+#        Write-Host "$cn`: Flash in patches folder same as installed version. Skipping install..."
+#    }
+#    else {
+#        Write-Host "$cn`: Installing Flash."
+#        Start-Process c:\Patches\Flash\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
+#        Start-Sleep 150
+#    }
+#}
 
 if (Test-Path $java) {
     $sv = $null
@@ -558,6 +559,12 @@ if (Test-Path $patch4) {
 if (Test-Path $patch11) {
     Write-Host "$cn`: Installing McAfee Patch 11."
     Start-Process $patch11 -ArgumentList "/quiet /norestart" -NoNewWindow -Wait
+    Start-Sleep -Seconds 30
+}
+
+if (Test-Path $patch15) {
+    Write-Host "$cn`: Installing McAfee Patch 15."
+    Start-Process $patch15 -ArgumentList "/quiet /norestart" -NoNewWindow -Wait
     Start-Sleep -Seconds 30
 }
 
