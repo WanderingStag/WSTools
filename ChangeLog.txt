@@ -65,7 +65,7 @@ New features and other changes:
 53. Added Convert-AppIconToBase64.
 54. Removed/commented out Copy-Flash function, install references, and config setting.
 55. Added McAfee Patch 15 to InstallRemote.ps1.
-56. Added Uninstall-AdobeExperienceManager, Copy-AdobeExperienceManager, Uninstall-MicrosoftInfoPath, Copy-MicrosoftInfoPath
+56. Added Uninstall-AdobeExperienceManager, Copy-AdobeExperienceManager, Uninstall-MicrosoftInfoPath, Copy-MicrosoftInfoPath, Uninstall-CiscoAnyConnect
 
 
 Removed items:
