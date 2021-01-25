@@ -1,7 +1,7 @@
 ######################
 #                    #
-#      v1.3.0 unpublished        #
-#   January 2021   #
+#       v1.3.0       #
+#    January 2021    #
 ######################
 Known issues:
 1. Get-NICInfo doesn't always run.
@@ -65,7 +65,6 @@ New features and other changes:
 53. Added Convert-AppIconToBase64.
 54. Added McAfee Patch 15 to InstallRemote.ps1.
 55. Added Uninstall-AdobeExperienceManager, Copy-AdobeExperienceManager, Uninstall-MicrosoftInfoPath, Copy-MicrosoftInfoPath, Uninstall-CiscoAnyConnect, Uninstall-F5BigIPEdgeClient, Uninstall-Wireshark
-56. 
 
 
 Removed items:
