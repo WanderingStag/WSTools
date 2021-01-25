@@ -116,6 +116,7 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     DSET = "J:\Patches\SDC-APPS\DSET"
     Encase = "J:\Patches\SDC-APPS\Encase"
     Firefox = "J:\Patches\SDC-APPS\Firefox"
+    InfoPath = "J:\Patches\SDC-APPS\InfoPath"
     Java = "J:\Patches\SDC-APPS\Java\NIPR"
     NetBanner = "J:\Patches\SDC-APPS\NetBanner"
     Office2016 = "J:\Patches\SDC-APPS\Office2016"

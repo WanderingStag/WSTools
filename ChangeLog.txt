@@ -65,6 +65,8 @@ New features and other changes:
 53. Added Convert-AppIconToBase64.
 54. Removed/commented out Copy-Flash function, install references, and config setting.
 55. Added McAfee Patch 15 to InstallRemote.ps1.
+56. Added Uninstall-AdobeExperienceManager and Copy-AdobeExperienceManager.
+
 
 Removed items:
 1. Get-202001UpdateStatus: We are in August 2020 now so if computers don't have newer cumulative updates there is a problem.
