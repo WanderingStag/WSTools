@@ -63,7 +63,7 @@ New features and other changes:
 51. Added ADmoduleCheck snippet to powershell.json file.
 52. Added Send-ToastNotification.
 53. Added Convert-AppIconToBase64.
-54. Removed/commented out Copy-Flash function and install references.
+54. Removed/commented out Copy-Flash function, install references, and config setting.
 55. Added McAfee Patch 15 to InstallRemote.ps1.
 
 Removed items:
