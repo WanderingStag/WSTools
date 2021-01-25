@@ -124,6 +124,7 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     Tanium = "J:\Patches\SDC-APPS\Tanium\NIPR"
     Teams = "J:\Patches\SDC-APPS\Teams"
     Titus = "J:\Patches\SDC-APPS\Titus"
+    TransVerse = "J:\Patches\SDC-APPS\TransVerse"
     VPN = "J:\Patches\SDC-APPS\VPN"
 
     #Ciphers - changes take effect immediately after change
