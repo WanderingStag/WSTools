@@ -3849,14 +3849,8 @@ function Connect-RDP {
 <#
    .Notes
     AUTHOR: Skyler Hart
-    CREATED: 08/18/2017 20:48:07
-    LASTEDIT: 10/20/2017 15:25:56
-    KEYWORDS:
-    REQUIRES:
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
+    CREATED: 2017-08-18 20:48:07
+    LASTEDIT: 2021-01-25 18:06:26
 .LINK
     https://wstools.dev
 #>
@@ -3867,7 +3861,12 @@ function Connect-RDP {
         [string]$ComputerName
     )
 
-    mstsc /v:$ComputerName /admin
+    if ($null -ne $ComputerName -or $ComputerName -ne "") {
+        mstsc /v:$ComputerName /admin
+    }
+    else {
+        mstsc
+    }
 }
 New-Alias -Name "rdp" -Value Connect-RDP
 
