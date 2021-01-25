@@ -386,19 +386,15 @@ function Get-ExchangeLastLoggedOnUser {
 }#end get lastloggedonuser
 
 
-#Sort of working. Change to my script style
-#Add progress bar
+#Change to WS script style
 function Get-CurrentUser {
 <#
-.Notes
-    AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 20:58:42
-    KEYWORDS:
-    REQUIRES:
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
+.NOTES
+    Author: Skyler Hart
+    Created: 08/18/2017 20:58:42
+    Last Edit: 2021-01-25 15:35:47
+    Requires:
+        -RunAsAdministrator
 .LINK
     https://wstools.dev
 #>
@@ -426,7 +422,7 @@ function Get-CurrentUser {
             $processinfo = @(Get-WmiObject -class win32_process -ComputerName $Computer -EA "Stop")
                 if ($processinfo) {
                     $processinfo | Foreach-Object {$_.GetOwner().User} |
-                    Where-Object {$_ -ne "NETWORK SERVICE" -and $_ -ne "LOCAL SERVICE" -and $_ -ne "SYSTEM"} |
+                    Where-Object {$_ -ne "NETWORK SERVICE" -and $_ -ne "LOCAL SERVICE" -and $_ -ne "SYSTEM" -and $_ -ne "DWM-1" -and $_ -ne "UMFD-0" -and $_ -ne "UMFD-1 "} |
                     Sort-Object -Unique |
                     ForEach-Object { New-Object psobject -Property @{Computer=$Computer;LoggedOn=$_} } |
                     Select-Object Computer,LoggedOn

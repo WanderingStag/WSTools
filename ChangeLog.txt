@@ -63,9 +63,9 @@ New features and other changes:
 51. Added ADmoduleCheck snippet to powershell.json file.
 52. Added Send-ToastNotification.
 53. Added Convert-AppIconToBase64.
-54. Removed/commented out Copy-Flash function, install references, and config setting.
-55. Added McAfee Patch 15 to InstallRemote.ps1.
-56. Added Uninstall-AdobeExperienceManager, Copy-AdobeExperienceManager, Uninstall-MicrosoftInfoPath, Copy-MicrosoftInfoPath, Uninstall-CiscoAnyConnect, Uninstall-F5BigIPEdgeClient, Uninstall-Wireshark
+54. Added McAfee Patch 15 to InstallRemote.ps1.
+55. Added Uninstall-AdobeExperienceManager, Copy-AdobeExperienceManager, Uninstall-MicrosoftInfoPath, Copy-MicrosoftInfoPath, Uninstall-CiscoAnyConnect, Uninstall-F5BigIPEdgeClient, Uninstall-Wireshark
+56. 
 
 
 Removed items:
@@ -74,6 +74,7 @@ Removed items:
 3. Import-WSToolsConfig not needed anymore with the change to a global variable for the config.
 4. Open-WSToolsManifests and Open-WSToolsModules changed process for editing the module so this is no longer needed.
 5. Add-CreatedPriorTo2017 and Add-Link. These are no longer needed since moving to Visual Studio Code for editing.
+6. Removed/commented out Copy-Flash function, install references, and config setting.
 
 ######################
 #                    #
