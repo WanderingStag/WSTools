@@ -3856,7 +3856,7 @@ function Connect-RDP {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$true, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
         [string]$ComputerName
     )
