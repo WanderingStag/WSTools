@@ -337,41 +337,96 @@ if (Test-Path $activclient -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
 
 if (Test-Path $acrobat) {
     $sv = $null
+    $ipv = $null
+    $install = $false
+    $pn = "Acrobat"
     $sv = Get-Content $acrobat\SoftwareVersion.txt
-    $ipa = ($ip | Where-Object {$_.ProgramName -like "Adobe Acrobat*"} | Select-Object Version)[0].Version
-    if ($sv -match $ipa) {
-        Write-Host "$cn`: Adobe Acrobat in patches folder same as installed version. Skipping install..."
+    $ipv = ($ip | Where-Object {$_.ProgramName -like "Adobe Acrobat*"} | Select-Object Version)[0].Version
+    
+    $ipv = $ipv.Split('.')
+    $ipv = $ipv.Split(' ')
+    $sv = $sv.Split('.')
+    $sv = $sv.Split(' ')
+    
+    #Determine if need to install
+    if ($sv[0] -gt $ipv[0]) {
+        $install = $true
+    }
+    elseif ($sv[0] -eq $ipv[0]) {
+        if ($sv[1] -gt $ipv[1]) {
+            $install = $true
+        }
+        elseif ($sv[1] -eq $ipv[1]) {
+            #$install = $false #uncomment and remove below lines if stopping at Major.Minor
+            if ($sv[2] -gt $ipv[2]) {
+                $install = $true
+            }
+            elseif ($sv[2] -eq $ipv[2]) {
+                $install = $false
+            }
+            elseif ($sv[2] -lt $ipv[2]) {
+                $install = $false
+            }
+        }
+        elseif ($sv[1] -lt $ipv[1]) {
+            $install = $false
+        }
+    }
+    elseif ($sv[0] -lt $ipv[0]) {
+        $install = $false
+    }
+
+    #Install or not
+    if ($install -eq $true) {
+        Write-Host "$cn`: Installing $pn." -ForegroundColor Gray
+        Start-Process $acrobat\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
+        Start-Sleep 600
     }
     else {
-        Write-Host "$cn`: Installing Adobe Acrobat."
-        Start-Process c:\Patches\Acrobat\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
-        Start-Sleep 600
+        Write-Host "$cn`: $pn same as installed version or older. Skipping..." -ForegroundColor Green
     }
 }
 
 if (Test-Path $axway) {
     $sv = $null
+    $ipv = $null
+    $install = $false
+    $pn = "Axway"
     $sv = Get-Content $axway\SoftwareVersion.txt
+    $ipv = ($ip | Where-Object {$_.ProgramName -like "Axway*"} | Select-Object Version)[0].Version
+    
+    $ipv = $ipv.Split('.')
+    $ipv = $ipv.Split(' ')
     $sv = $sv.Split('.')
-    $ipax = ($ip | Where-Object {$_.ProgramName -like "Axway*"} | Select-Object Version)[0].Version
-    $ipax = $ipax.Split('.')
-    if ($sv[0] -ge $ipax[0]) {
-        if ($sv[0] -gt $ipax[0]) {
-            Write-Host "$cn`: Axway in patches folder same as installed version or older. Skipping install..."
+    $sv = $sv.Split(' ')
+    
+    #Determine if need to install
+    if ($sv[0] -gt $ipv[0]) {
+        $install = $true
+    }
+    elseif ($sv[0] -eq $ipv[0]) {
+        if ($sv[1] -gt $ipv[1]) {
+            $install = $true
         }
-        elseif ($sv[1] -eq $ipax[1]) {
-            Write-Host "$cn`: Axway in patches folder same as installed version. Skipping install..."
+        elseif ($sv[1] -eq $ipv[1]) {
+            $install = $false
         }
-        elseif ($sv[1] -lt $ipax[1]) {
-            Write-Host "$cn`: Installing Axway."
-            Start-Process c:\Patches\Axway\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
-            Start-Sleep 150
+        elseif ($sv[1] -lt $ipv[1]) {
+            $install = $false
         }
     }
-    else {
-        Write-Host "$cn`: Installing Axway."
-        Start-Process c:\Patches\Axway\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
+    elseif ($sv[0] -lt $ipv[0]) {
+        $install = $false
+    }
+
+    #Install or not
+    if ($install -eq $true) {
+        Write-Host "$cn`: Installing $pn." -ForegroundColor Gray
+        Start-Process $axway\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 150
+    }
+    else {
+        Write-Host "$cn`: $pn same as installed version or older. Skipping..." -ForegroundColor Green
     }
 }
 
@@ -398,15 +453,53 @@ if (Test-Path $chrome) {
 
 if (Test-Path $dset -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
     $sv = $null
+    $ipv = $null
+    $install = $false
+    $pn = "DSET"
     $sv = Get-Content $dset\SoftwareVersion.txt
-    $ipd = ($ip | Where-Object {$_.ProgramName -like "DSET*"} | Select-Object Version)[0].Version
-    if ($sv -match $ipd) {
-        Write-Host "$cn`: DSET in patches folder same as installed version. Skipping install..."
+    $ipv = ($ip | Where-Object {$_.ProgramName -like "DSET*"} | Select-Object Version)[0].Version
+    
+    $ipv = $ipv.Split('.')
+    $ipv = $ipv.Split(' ')
+    $sv = $sv.Split('.')
+    $sv = $sv.Split(' ')
+    
+    #Determine if need to install
+    if ($sv[0] -gt $ipv[0]) {
+        $install = $true
+    }
+    elseif ($sv[0] -eq $ipv[0]) {
+        if ($sv[1] -gt $ipv[1]) {
+            $install = $true
+        }
+        elseif ($sv[1] -eq $ipv[1]) {
+            #$install = $false #uncomment and remove below lines if stopping at Major.Minor
+            if ($sv[2] -gt $ipv[2]) {
+                $install = $true
+            }
+            elseif ($sv[2] -eq $ipv[2]) {
+                $install = $false
+            }
+            elseif ($sv[2] -lt $ipv[2]) {
+                $install = $false
+            }
+        }
+        elseif ($sv[1] -lt $ipv[1]) {
+            $install = $false
+        }
+    }
+    elseif ($sv[0] -lt $ipv[0]) {
+        $install = $false
+    }
+
+    #Install or not
+    if ($install -eq $true) {
+        Write-Host "$cn`: Installing $pn." -ForegroundColor Gray
+        Start-Process $dset\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
+        Start-Sleep 150
     }
     else {
-        Write-Host "$cn`: Installing DSET."
-        Start-Process c:\Patches\DSET\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
-        Start-Sleep 150
+        Write-Host "$cn`: $pn same as installed version or older. Skipping..." -ForegroundColor Green
     }
 }
 
@@ -449,20 +542,6 @@ if (Test-Path $firefox) {
     }#else firefox same as installed
 }
 
-#if (Test-Path $flash) {
-#    $sv = $null
-#    $sv = Get-Content $flash\SoftwareVersion.txt
-#    $ipf = ($ip | Where-Object {$_.ProgramName -like "Adobe Flash Player*"} | Select-Object Version)[0].Version
-#    if ($sv -match $ipf) {
-#        Write-Host "$cn`: Flash in patches folder same as installed version. Skipping install..."
-#    }
-#    else {
-#        Write-Host "$cn`: Installing Flash."
-#        Start-Process c:\Patches\Flash\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
-#        Start-Sleep 150
-#    }
-#}
-
 if (Test-Path $java) {
     $sv = $null
     $sv = Get-Content $java\SoftwareVersion.txt
@@ -503,37 +582,182 @@ if (Test-Path $silverlight) {
 }
 
 if (Test-Path $tanium) {
-    $tav = $null
-    $tav = Get-Content $tanium\SoftwareVersion.txt
-    $ipta = ($ip | Where-Object {$_.ProgramName -like "Tanium Cli*"} | Select-Object Version)[0].Version
-    if ($tav -match $ipta) {
-        Write-Host "$cn`: Tanium in patches folder same as installed version. Skipping install..."
+    $sv = $null
+    $ipv = $null
+    $install = $false
+    $pn = "Tanium"
+    $sv = Get-Content $tanium\SoftwareVersion.txt
+    $ipv = ($ip | Where-Object {$_.ProgramName -like "Tanium*"} | Select-Object Version)[0].Version
+    
+    $ipv = $ipv.Split('.')
+    $ipv = $ipv.Split(' ')
+    $sv = $sv.Split('.')
+    $sv = $sv.Split(' ')
+    
+    #Determine if need to install
+    if ($sv[0] -gt $ipv[0]) {
+        $install = $true
+    }
+    elseif ($sv[0] -eq $ipv[0]) {
+        if ($sv[1] -gt $ipv[1]) {
+            $install = $true
+        }
+        elseif ($sv[1] -eq $ipv[1]) {
+            if ($sv[2] -gt $ipv[2]) {
+                $install = $true
+            }
+            elseif ($sv[2] -eq $ipv[2]) {
+                if ($sv[3] -gt $ipv[3]) {
+                    $install = $true
+                }
+                elseif ($sv[3] -eq $ipv[3]) {
+                    $install = $false
+                }
+                elseif ($sv[3] -lt $ipv[3]) {
+                    $install = $false
+                }
+            }
+            elseif ($sv[2] -lt $ipv[2]) {
+                $install = $false
+            }
+        }
+        elseif ($sv[1] -lt $ipv[1]) {
+            $install = $false
+        }
+    }
+    elseif ($sv[0] -lt $ipv[0]) {
+        $install = $false
+    }
+
+    #Install or not
+    if ($install -eq $true) {
+        Write-Host "$cn`: Installing $pn." -ForegroundColor Gray
+        Start-Process $tanium\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
+        Start-Sleep 150
     }
     else {
-        Write-Host "$cn`: Installing Tanium."
-        Start-Process c:\Patches\Tanium\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
-        Start-Sleep 200
+        Write-Host "$cn`: $pn same as installed version or older. Skipping..." -ForegroundColor Green
     }
 }
 
 if (Test-Path $teams) {
-    $tev = $null
-    $tev = Get-Content $teams\SoftwareVersion.txt
-    $ipt = ($ip | Where-Object {$_.ProgramName -like "Teams Mach*"} | Select-Object Version)[0].Version
-    if ($tev -match $ipt) {
-        Write-Host "$cn`: Teams in patches folder same as installed version. Skipping install..."
+    $sv = $null
+    $ipv = $null
+    $install = $false
+    $pn = "Teams"
+    $sv = Get-Content $teams\SoftwareVersion.txt
+    $ipv = ($ip | Where-Object {$_.ProgramName -like "Teams Mach*"} | Select-Object Version)[0].Version
+    
+    $ipv = $ipv.Split('.')
+    $ipv = $ipv.Split(' ')
+    $sv = $sv.Split('.')
+    $sv = $sv.Split(' ')
+    
+    #Determine if need to install
+    if ($sv[0] -gt $ipv[0]) {
+        $install = $true
+    }
+    elseif ($sv[0] -eq $ipv[0]) {
+        if ($sv[1] -gt $ipv[1]) {
+            $install = $true
+        }
+        elseif ($sv[1] -eq $ipv[1]) {
+            #$install = $false #uncomment and remove below lines if stopping at Major.Minor
+            if ($sv[2] -gt $ipv[2]) {
+                $install = $true
+            }
+            elseif ($sv[2] -eq $ipv[2]) {
+                #$install = $false #uncomment and remove below lines if stopping at Major.Minor.Patch/Revision
+                if ($sv[3] -gt $ipv[3]) {
+                    $install = $true
+                }
+                elseif ($sv[3] -eq $ipv[3]) {
+                    $install = $false #stopping at Major.Minor.Build.Revision
+                }
+                elseif ($sv[3] -lt $ipv[3]) {
+                    $install = $false
+                }
+            }
+            elseif ($sv[2] -lt $ipv[2]) {
+                $install = $false
+            }
+        }
+        elseif ($sv[1] -lt $ipv[1]) {
+            $install = $false
+        }
+    }
+    elseif ($sv[0] -lt $ipv[0]) {
+        $install = $false
+    }
+
+    #Install or not
+    if ($install -eq $true) {
+        Write-Host "$cn`: Installing $pn." -ForegroundColor Gray
+        Start-Process $teams\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
+        Start-Sleep 150
     }
     else {
-        Write-Host "$cn`: Installing Teams."
-        Start-Process c:\Patches\Teams\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
-        Start-Sleep 150
+        Write-Host "$cn`: $pn same as installed version or older. Skipping..." -ForegroundColor Green
     }
 }
 
 if (Test-Path $titus -and $env:USERDNSDOMAIN -like "*.smil.mil") {
-    Write-Host "$cn`: Installing Titus."
-    Start-Process c:\Patches\Titus\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
-    Start-Sleep 150
+    $sv = $null
+    $ipv = $null
+    $install = $false
+    $pn = "Titus"
+    $sv = Get-Content $titus\SoftwareVersion.txt
+    $ipv = ($ip | Where-Object {$_.ProgramName -like "Titus*"} | Select-Object Version)[0].Version
+    
+    $ipv = $ipv.Split('.')
+    $ipv = $ipv.Split(' ')
+    $sv = $sv.Split('.')
+    $sv = $sv.Split(' ')
+    
+    #Determine if need to install
+    if ($sv[0] -gt $ipv[0]) {
+        $install = $true
+    }
+    elseif ($sv[0] -eq $ipv[0]) {
+        if ($sv[1] -gt $ipv[1]) {
+            $install = $true
+        }
+        elseif ($sv[1] -eq $ipv[1]) {
+            if ($sv[2] -gt $ipv[2]) {
+                $install = $true
+            }
+            elseif ($sv[2] -eq $ipv[2]) {
+                if ($sv[3] -gt $ipv[3]) {
+                    $install = $true
+                }
+                elseif ($sv[3] -eq $ipv[3]) {
+                    $install = $false
+                }
+                elseif ($sv[3] -lt $ipv[3]) {
+                    $install = $false
+                }
+            }
+            elseif ($sv[2] -lt $ipv[2]) {
+                $install = $false
+            }
+        }
+        elseif ($sv[1] -lt $ipv[1]) {
+            $install = $false
+        }
+    }
+    elseif ($sv[0] -lt $ipv[0]) {
+        $install = $false
+    }
+
+    #Install or not
+    if ($install -eq $true) {
+        Write-Host "$cn`: Installing $pn." -ForegroundColor Gray
+        Start-Process $titus\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
+        Start-Sleep 150
+    }
+    else {
+        Write-Host "$cn`: $pn same as installed version or older. Skipping..." -ForegroundColor Green
+    }
 }
 
 if (Test-Path $vlc) {
