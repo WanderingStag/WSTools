@@ -893,7 +893,7 @@ Function Copy-AdobeExperienceManager {
         )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = $env:COMPUTERNAME,
-    
+
         [Parameter()]
         [int32]$MaxThreads = 5,
 
@@ -1985,7 +1985,7 @@ Function Copy-MicrosoftInfoPath {
         )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = $env:COMPUTERNAME,
-    
+
         [Parameter()]
         [int32]$MaxThreads = 5,
 
@@ -3220,13 +3220,13 @@ Function Copy-TransVerse {
         )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = $env:COMPUTERNAME,
-    
+
         [Parameter()]
         [int32]$MaxThreads = 5,
-    
+
         [Parameter()]
         $SleepTimer = 200,
-    
+
         [Parameter()]
         $MaxResultTime = 1200
     )
@@ -4689,10 +4689,10 @@ Function Uninstall-AdobeExperienceManager {
         )]
         [Alias('Host','Name','Computer','CN','ComputerName')]
         [string[]]$ObjectList,
-    
+
         [Parameter()]
         [int32]$MaxThreads = 5,
-    
+
         [Parameter()]
         $SleepTimer = 200,
 
@@ -7101,7 +7101,7 @@ Function Disable-3DES {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -7150,7 +7150,7 @@ Function Enable-3DES {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -7199,7 +7199,7 @@ Function Disable-DiffieHellman {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -7239,7 +7239,7 @@ Function Enable-DiffieHellman {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -7279,7 +7279,7 @@ Function Disable-RC4 {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -7330,7 +7330,7 @@ Function Enable-RC4 {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -7381,11 +7381,9 @@ Function Set-FeatureSettingsOverride {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
+        [Parameter(
             Mandatory=$false,
-            Position=0,
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true
+            Position=0
         )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
@@ -7448,7 +7446,7 @@ function Set-MS15124 {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -7486,11 +7484,9 @@ Function Set-RemediationValues {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
+        [Parameter(
             Mandatory=$false,
-            Position=0,
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true
+            Position=0
         )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
@@ -7807,7 +7803,7 @@ function Set-SCHANNELsettings {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -8063,11 +8059,9 @@ Function Set-SMBv1Fix {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
+        [Parameter(
             Mandatory=$false,
-            Position=0,
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true
+            Position=0
         )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
@@ -8110,8 +8104,7 @@ function Get-NetworkLevelAuthentication {
     [CmdletBinding()]
     param(
         [Parameter(
-            Mandatory=$false,
-            ValueFromPipeline = $true
+            Mandatory=$false
         )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
@@ -8181,11 +8174,9 @@ function Set-NetworkLevelAuthentication {
 #>
     [CmdletBinding()]
     param(
-        [Parameter(#HelpMessage = "Enter one or more computer names separated by commas.",
+        [Parameter(
             Mandatory=$false,
-            Position=0,
-            ValueFromPipelineByPropertyName = $true,
-            ValueFromPipeline = $true
+            Position=0
         )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME",
@@ -8383,7 +8374,7 @@ This log is only on the client computer configured as the synchronization host f
 --#>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -8430,7 +8421,7 @@ software updates for compliance assessment and whether there are updates to the 
 --#>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -8444,10 +8435,10 @@ software updates for compliance assessment and whether there are updates to the 
     $result = $host.ui.PromptForChoice($title, $message, $options, 1)
     switch ($result) {
         0 {
-            Write-Host "Yes"
+            Write-Output "Yes"
         }
         1 {
-            Write-Host "No"
+            Write-Output "No"
         }
     }
 
@@ -8494,7 +8485,7 @@ Function Get-ENSStatus {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -8613,7 +8604,7 @@ Function Get-ENSStatus {
             } | Select-Object ComputerName,FrameworkInstalled,FrameworkVersion,ePOServerList,LastServerComms,LastSecurityUpdateCheck
         }#if host version gt 2
         else {
-            Write-Host "  PowerShell must be at least version 3. Current version:  $version" -BackgroundColor Red -ForegroundColor Black
+            Write-Output "  PowerShell must be at least version 3. Current version:  $version"
         }#else host version
     }#foreach computer
 }#get ensstatus
@@ -8641,7 +8632,7 @@ function Get-HBSSStatus {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -8833,7 +8824,7 @@ function Get-HBSSStatus {
             } | Select-Object Computer,DatDate,DatVersion,DATOutdated,EngineVersion,EngineOutdated,PatchesInstalled,PatchesNeeded,McAfeeVersion,McAfeeOutdated,HIPSVersion,HBSS_Framework,HBSSOutdated
         }#if host version gt 2
         else {
-            Write-Host "  PowerShell must be at least version 3. Current version:  $version  `n  Click OK to continue.  " -BackgroundColor Red -ForegroundColor Black
+            Write-Output "  PowerShell must be at least version 3. Current version:  $version  `n  Click OK to continue.  "
             [void][reflection.assembly]::LoadWithPartialName("System.Windows.Forms")
             [System.Windows.Forms.MessageBox]::Show("                               Error:`n`nPowerShell must be at least version 3.`n`nCurrent version is:  $version");
         }#else host version
@@ -9038,7 +9029,7 @@ function Sync-HBSSWithServer {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -9049,39 +9040,39 @@ function Sync-HBSSWithServer {
 
             if ($wmiq -like "*64-bit*") {
                 #Collecting and sending Props
-                Write-Host "Collecting and sending Props on $Comp"
+                Write-Output "Collecting and sending Props on $Comp"
                 Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c "C:\Program Files (x86)\McAfee\Common Framework\CmdAgent.exe" /P' -ErrorAction Stop | Out-Null #DevSkim: ignore DS104456
                 Start-Sleep -s 10
 
                 #Checking for new policies
-                Write-Host "Checking for new policies on $Comp"
+                Write-Output "Checking for new policies on $Comp"
                 Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c "C:\Program Files (x86)\McAfee\Common Framework\CmdAgent.exe" /C' -ErrorAction Stop | Out-Null #DevSkim: ignore DS104456
                 Start-Sleep -s 10
 
                 #Enforcing new policies
-                Write-Host "Enforcing new policies on $Comp"
+                Write-Output "Enforcing new policies on $Comp"
                 Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c "C:\Program Files (x86)\McAfee\Common Framework\CmdAgent.exe" /E' -ErrorAction Stop | Out-Null #DevSkim: ignore DS104456
                 Start-Sleep -s 15
 
-                Write-Host "HBSS client on $Comp should be updating." -ForegroundColor Green
+                Write-Output "HBSS client on $Comp should be updating."
             }#if wmiq 64bit
             else {
                 #Collecting and sending Props
-                Write-Host "Collecting and sending Props on $Comp"
+                Write-Output "Collecting and sending Props on $Comp"
                 Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c "C:\Program Files\McAfee\Common Framework\CmdAgent.exe" /P' -ErrorAction Stop | Out-Null #DevSkim: ignore DS104456
                 Start-Sleep -s 10
 
                 #Checking for new policies
-                Write-Host "Checking for new policies on $Comp"
+                Write-Output "Checking for new policies on $Comp"
                 Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c "C:\Program Files\McAfee\Common Framework\CmdAgent.exe" /C' -ErrorAction Stop | Out-Null #DevSkim: ignore DS104456
                 Start-Sleep -s 10
 
                 #Enforcing new policies
-                Write-Host "Enforcing new policies on $Comp"
+                Write-Output "Enforcing new policies on $Comp"
                 Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c "C:\Program Files\McAfee\Common Framework\CmdAgent.exe" /E' -ErrorAction Stop | Out-Null #DevSkim: ignore DS104456
                 Start-Sleep -s 15
 
-                Write-Host "HBSS client on $Comp should be updating." -ForegroundColor Green
+                Write-Output "HBSS client on $Comp should be updating."
             }#else 32bit
         }#try 32or64 bit
         catch {

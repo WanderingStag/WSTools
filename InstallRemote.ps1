@@ -108,18 +108,14 @@ Function Join-File {
     Param (
         [Parameter(HelpMessage = "Enter the path of the folder with the part files you want to join.",
             Mandatory=$true,
-            Position=0,
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true
+            Position=0
         )]
         [Alias('Source','InputLocation','SourceFolder')]
         [string]$Path,
 
-        [Parameter(HelpMessage = "Enter the path where you want the joined file placed.",
+        [Parameter(
             Mandatory=$false,
-            Position=1,
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true
+            Position=1
         )]
         [Alias('OutputLocation','Output','DestinationPath','Destination')]
         [string]$DestinationFolder
@@ -164,7 +160,7 @@ Function Join-File {
 
     if ($host.Version.Major -ge 3) {
         $sobj.FullName | ForEach-Object {
-            Write-Host "Appending $_ to $fop"
+            Write-Output "Appending $_ to $fop"
             $ReadObj = New-Object System.IO.BinaryReader([System.IO.File]::Open($_, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read))
             $WriteObj.BaseStream.Position = $WriteObj.BaseStream.Length
             $ReadObj.BaseStream.CopyTo($WriteObj.BaseStream)
@@ -175,7 +171,7 @@ Function Join-File {
     else {
         [Byte[]]$Buffer = New-Object Byte[] 100MB
         $sobj.FullName | ForEach-Object {
-            Write-Host "Appending $_ to $fop"
+            Write-Output "Appending $_ to $fop"
             $ReadObj = New-Object System.IO.BinaryReader([System.IO.File]::Open($_, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read))
             while ($ReadObj.BaseStream.Position -lt $ReadObj.BaseStream.Length) {
                 $ReadBytes = $ReadObj.Read($Buffer, 0, $Buffer.Length)
@@ -248,7 +244,7 @@ foreach ($msu in $msus) {
     $nn = $name -replace "1_SSU_windows10.0-","" -replace "2_windows10.0-","" -replace "3_net_windows10.0-","" -replace "windows10.0-","" -replace "windows8.1-","" -replace "windows6.1-","" -replace "windows6.0-",""
     $nn = $nn.Substring(0,9)
     if ($hf -match $nn) {
-        Write-Host "$cn`: Patch $nn already installed. Skipping..."
+        Write-Output "$cn`: Patch $nn already installed. Skipping..."
     }
     else {
         expand.exe -F:* "$fname" $cab | Out-Null
@@ -286,18 +282,18 @@ foreach ($obj in $cabs) {
     $i++
     $oname = $obj.FullName
     $obname = $obj.Name
-    Write-Host "$cn`: Installing $obname. Patch $i of $n."
+    Write-Output "$cn`: Installing $obname. Patch $i of $n."
     dism.exe /online /add-package /PackagePath:$oname /NoRestart | Out-Null
     Start-Sleep 5
 }
 
 if (Test-Path $dn48path) {
-    Write-Host "$cn`: Installing .NET Framework 4.8."
+    Write-Output "$cn`: Installing .NET Framework 4.8."
     Start-Process $dn48path -ArgumentList "/q /norestart" -NoNewWindow -Wait
 }
 
 #if (Test-Path $7zip) {
-#    Write-Host "$cn`: Installing 7zip."
+#    Write-Output "$cn`: Installing 7zip."
 #    $7i = Get-ChildItem $7zip
 #    $7p = $7i.FullName[0]
 #    Start-Process $7p -ArgumentList "/S" -NoNewWindow -Wait
@@ -308,15 +304,15 @@ if (Test-Path $90meter -and $env:USERDNSDOMAIN -like "*.smil.mil") {
     $ip9 = ($ip | Where-Object {$_.ProgramName -like "90meter*"} | Select-Object Version,Comment)[0]
     $ip9c = ($ip9 | Select-Object Comment).Comment
     if ($ip9c -eq " -- SDC SIPR - 90Meter Smart Card Manager - 190712") {
-        Write-Host "$cn`: 90Meter in patches folder same as installed version. Skipping install..."
+        Write-Output "$cn`: 90Meter in patches folder same as installed version. Skipping install..."
     }
     else {
-        Write-Host "$cn`: Uninstalling old 90Meter"
+        Write-Output "$cn`: Uninstalling old 90Meter"
         Get-WmiObject -Class Win32_Product -Filter "Name LIKE '90Meter%'" | Remove-WmiObject
         Start-Sleep 30
         Start-Process C:\windows\System32\msiexec.exe -ArgumentList "/uninstall {54C965FF-E457-4993-A083-61B9A6AEFEC1} /quiet /norestart" -NoNewWindow -Wait
         Start-Sleep 30
-        Write-Host "$cn`: Installing 90meter."
+        Write-Output "$cn`: Installing 90meter."
         Start-Process c:\Patches\90Meter\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 150
     }
@@ -326,11 +322,11 @@ if (Test-Path $activclient -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
     $inac = $null
     $inac = Get-WmiObject -Class Win32_Product -Filter "Name LIKE '%ActivClient%'"
     if ($null -ne $inac -and $inac -ne "") {
-        Write-Host "$cn`: Uninstalling old version of ActivClient."
+        Write-Output "$cn`: Uninstalling old version of ActivClient."
         Get-WmiObject -Class Win32_Product -Filter "Name LIKE '%ActivClient%'" | Remove-WmiObject
         Start-Sleep 150
     }
-    Write-Host "$cn`: Installing ActivClient."
+    Write-Output "$cn`: Installing ActivClient."
     Start-Process c:\Patches\ActivClient\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
     Start-Sleep 150
 }
@@ -342,12 +338,12 @@ if (Test-Path $acrobat) {
     $pn = "Acrobat"
     $sv = Get-Content $acrobat\SoftwareVersion.txt
     $ipv = ($ip | Where-Object {$_.ProgramName -like "Adobe Acrobat*"} | Select-Object Version)[0].Version
-    
+
     $ipv = $ipv.Split('.')
     $ipv = $ipv.Split(' ')
     $sv = $sv.Split('.')
     $sv = $sv.Split(' ')
-    
+
     #Determine if need to install
     if ($sv[0] -gt $ipv[0]) {
         $install = $true
@@ -378,12 +374,12 @@ if (Test-Path $acrobat) {
 
     #Install or not
     if ($install -eq $true) {
-        Write-Host "$cn`: Installing $pn." -ForegroundColor Gray
+        Write-Output "$cn`: Installing $pn."
         Start-Process $acrobat\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 600
     }
     else {
-        Write-Host "$cn`: $pn same as installed version or older. Skipping..." -ForegroundColor Green
+        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
     }
 }
 
@@ -394,12 +390,12 @@ if (Test-Path $axway) {
     $pn = "Axway"
     $sv = Get-Content $axway\SoftwareVersion.txt
     $ipv = ($ip | Where-Object {$_.ProgramName -like "Axway*"} | Select-Object Version)[0].Version
-    
+
     $ipv = $ipv.Split('.')
     $ipv = $ipv.Split(' ')
     $sv = $sv.Split('.')
     $sv = $sv.Split(' ')
-    
+
     #Determine if need to install
     if ($sv[0] -gt $ipv[0]) {
         $install = $true
@@ -421,12 +417,12 @@ if (Test-Path $axway) {
 
     #Install or not
     if ($install -eq $true) {
-        Write-Host "$cn`: Installing $pn." -ForegroundColor Gray
+        Write-Output "$cn`: Installing $pn."
         Start-Process $axway\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 150
     }
     else {
-        Write-Host "$cn`: $pn same as installed version or older. Skipping..." -ForegroundColor Green
+        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
     }
 }
 
@@ -435,17 +431,17 @@ if (Test-Path $chrome) {
     $sv = Get-Content $chrome\SoftwareVersion.txt
     $ipc = ($ip | Where-Object {$_.ProgramName -like "Google Chrom*"} | Select-Object Version)[0].Version
     if ($sv -match $ipc) {
-        Write-Host "$cn`: Google Chrome in patches folder same as installed version. Skipping install..."
+        Write-Output "$cn`: Google Chrome in patches folder same as installed version. Skipping install..."
     }
     else {
         $inchrome = $null
         $inchrome = Get-WmiObject -Class Win32_Product -Filter "Name LIKE '%Chrome%'"
         if ($null -ne $inchrome -and $inchrome -ne "") {
-            Write-Host "$cn`: Uninstalling old version of Chrome."
+            Write-Output "$cn`: Uninstalling old version of Chrome."
             Get-WmiObject -Class Win32_Product -Filter "Name LIKE '%Chrome%'" | Remove-WmiObject
             Start-Sleep 150
         }
-        Write-Host "$cn`: Installing Chrome."
+        Write-Output "$cn`: Installing Chrome."
         Start-Process c:\Patches\Chrome\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 150
     }
@@ -458,12 +454,12 @@ if (Test-Path $dset -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
     $pn = "DSET"
     $sv = Get-Content $dset\SoftwareVersion.txt
     $ipv = ($ip | Where-Object {$_.ProgramName -like "DSET*"} | Select-Object Version)[0].Version
-    
+
     $ipv = $ipv.Split('.')
     $ipv = $ipv.Split(' ')
     $sv = $sv.Split('.')
     $sv = $sv.Split(' ')
-    
+
     #Determine if need to install
     if ($sv[0] -gt $ipv[0]) {
         $install = $true
@@ -494,12 +490,12 @@ if (Test-Path $dset -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
 
     #Install or not
     if ($install -eq $true) {
-        Write-Host "$cn`: Installing $pn." -ForegroundColor Gray
+        Write-Output "$cn`: Installing $pn."
         Start-Process $dset\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 150
     }
     else {
-        Write-Host "$cn`: $pn same as installed version or older. Skipping..." -ForegroundColor Green
+        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
     }
 }
 
@@ -511,11 +507,11 @@ if (Test-Path $firefox) {
     $ipff = ($inff | Select-Object Version)[0].Version
 
     if ($sv -match $ipff) {
-        Write-Host "$cn`: Firefox in patches folder same as installed version. Skipping install..."
+        Write-Output "$cn`: Firefox in patches folder same as installed version. Skipping install..."
     }
     else {
         if ($null -ne $inff -and $inff -ne "") {
-            Write-Host "$cn`: Uninstalling old versions of Firefox."
+            Write-Output "$cn`: Uninstalling old versions of Firefox."
             Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList 'cmd /c "C:\Program Files\Mozilla Firefox\uninstall\helper.exe" -ms' -ErrorAction SilentlyContinue | Out-Null
             Start-Sleep -Seconds 10
             Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList 'cmd /c "C:\Program Files (x86)\Mozilla Firefox\uninstall\helper.exe" -ms' -ErrorAction SilentlyContinue | Out-Null
@@ -523,7 +519,7 @@ if (Test-Path $firefox) {
             Get-WmiObject -Class Win32_Product -Filter "Name LIKE '%Firefox%'" | Remove-WmiObject
             Start-Sleep 200
         }
-        Write-Host "$cn`: Installing Firefox."
+        Write-Output "$cn`: Installing Firefox."
         Start-Process c:\Patches\Flash\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 350
         #$ffi = Get-ChildItem $firefox | Where-Object {$_.Name -like "firef*.exe"}
@@ -535,7 +531,7 @@ if (Test-Path $firefox) {
         #}
         #Start-Process $ffp -ArgumentList "-ms" -NoNewWindow -Wait
         #Start-Sleep 150
-        #Write-Host "$cn`: Uninstalling Firefox Maintenance Service."
+        #Write-Output "$cn`: Uninstalling Firefox Maintenance Service."
         #Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList 'cmd /c "C:\Program Files (x86)\Mozilla Maintenance Service\uninstall.exe" /S' -ErrorAction SilentlyContinue | Out-Null
         #Get-WmiObject -Class Win32_Product -Filter "Name LIKE 'Mozilla Maintenance%'"| Remove-WmiObject
         #Start-Sleep 30
@@ -547,17 +543,17 @@ if (Test-Path $java) {
     $sv = Get-Content $java\SoftwareVersion.txt
     $ipj = ($ip | Where-Object {$_.ProgramName -like "Java*"} | Select-Object Version)[0].Version
     if ($sv -match $ipj) {
-        Write-Host "$cn`: Java in patches folder same as installed version. Skipping install..."
+        Write-Output "$cn`: Java in patches folder same as installed version. Skipping install..."
     }
     else {
         $inja = $null
         $inja = Get-WmiObject -Class Win32_Product -Filter "Name LIKE '%Java%'"
         if ($null -ne $inja -and $inja -ne "") {
-            Write-Host "$cn`: Uninstalling old version of Java."
+            Write-Output "$cn`: Uninstalling old version of Java."
             Get-WmiObject -Class Win32_Product -Filter "Name LIKE '%Java%'" | Remove-WmiObject
             Start-Sleep 450
         }
-        Write-Host "$cn`: Installing Java."
+        Write-Output "$cn`: Installing Java."
         Start-Process c:\Patches\Java\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 400
     }
@@ -572,10 +568,10 @@ if (Test-Path $silverlight) {
     $slv = Get-Content $silverlight\SoftwareVersion.txt
     $ips = ($ip | Where-Object {$_.ProgramName -like "Microsoft Silverligh*"} | Select-Object Version)[0].Version
     if ($slv -match $ips) {
-        Write-Host "$cn`: Silverlight in patches folder same as installed version. Skipping install..."
+        Write-Output "$cn`: Silverlight in patches folder same as installed version. Skipping install..."
     }
     else {
-        Write-Host "$cn`: Installing Silverlight."
+        Write-Output "$cn`: Installing Silverlight."
         Start-Process c:\Patches\Silverlight\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 150
     }
@@ -588,12 +584,12 @@ if (Test-Path $tanium) {
     $pn = "Tanium"
     $sv = Get-Content $tanium\SoftwareVersion.txt
     $ipv = ($ip | Where-Object {$_.ProgramName -like "Tanium*"} | Select-Object Version)[0].Version
-    
+
     $ipv = $ipv.Split('.')
     $ipv = $ipv.Split(' ')
     $sv = $sv.Split('.')
     $sv = $sv.Split(' ')
-    
+
     #Determine if need to install
     if ($sv[0] -gt $ipv[0]) {
         $install = $true
@@ -631,12 +627,12 @@ if (Test-Path $tanium) {
 
     #Install or not
     if ($install -eq $true) {
-        Write-Host "$cn`: Installing $pn." -ForegroundColor Gray
+        Write-Output "$cn`: Installing $pn."
         Start-Process $tanium\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 150
     }
     else {
-        Write-Host "$cn`: $pn same as installed version or older. Skipping..." -ForegroundColor Green
+        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
     }
 }
 
@@ -647,12 +643,12 @@ if (Test-Path $teams) {
     $pn = "Teams"
     $sv = Get-Content $teams\SoftwareVersion.txt
     $ipv = ($ip | Where-Object {$_.ProgramName -like "Teams Mach*"} | Select-Object Version)[0].Version
-    
+
     $ipv = $ipv.Split('.')
     $ipv = $ipv.Split(' ')
     $sv = $sv.Split('.')
     $sv = $sv.Split(' ')
-    
+
     #Determine if need to install
     if ($sv[0] -gt $ipv[0]) {
         $install = $true
@@ -692,12 +688,12 @@ if (Test-Path $teams) {
 
     #Install or not
     if ($install -eq $true) {
-        Write-Host "$cn`: Installing $pn." -ForegroundColor Gray
+        Write-Output "$cn`: Installing $pn."
         Start-Process $teams\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 150
     }
     else {
-        Write-Host "$cn`: $pn same as installed version or older. Skipping..." -ForegroundColor Green
+        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
     }
 }
 
@@ -708,12 +704,12 @@ if (Test-Path $titus -and $env:USERDNSDOMAIN -like "*.smil.mil") {
     $pn = "Titus"
     $sv = Get-Content $titus\SoftwareVersion.txt
     $ipv = ($ip | Where-Object {$_.ProgramName -like "Titus*"} | Select-Object Version)[0].Version
-    
+
     $ipv = $ipv.Split('.')
     $ipv = $ipv.Split(' ')
     $sv = $sv.Split('.')
     $sv = $sv.Split(' ')
-    
+
     #Determine if need to install
     if ($sv[0] -gt $ipv[0]) {
         $install = $true
@@ -751,17 +747,17 @@ if (Test-Path $titus -and $env:USERDNSDOMAIN -like "*.smil.mil") {
 
     #Install or not
     if ($install -eq $true) {
-        Write-Host "$cn`: Installing $pn." -ForegroundColor Gray
+        Write-Output "$cn`: Installing $pn."
         Start-Process $titus\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 150
     }
     else {
-        Write-Host "$cn`: $pn same as installed version or older. Skipping..." -ForegroundColor Green
+        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
     }
 }
 
 if (Test-Path $vlc) {
-    Write-Host "$cn`: Installing VLC."
+    Write-Output "$cn`: Installing VLC."
     $vi = Get-ChildItem $vlc
     $vp = $vi.FullName[0]
     Start-Process $vp -ArgumentList "/L=1033 /S" -NoNewWindow -Wait
@@ -769,31 +765,31 @@ if (Test-Path $vlc) {
 }
 
 if (Test-Path $patch2) {
-    Write-Host "$cn`: Installing McAfee Patch 2."
+    Write-Output "$cn`: Installing McAfee Patch 2."
     Start-Process $patch2 -ArgumentList "/quiet /norestart" -NoNewWindow -Wait
     Start-Sleep -Seconds 30
 }
 
 if (Test-Path $patch4) {
-    Write-Host "$cn`: Installing McAfee Patch 4."
+    Write-Output "$cn`: Installing McAfee Patch 4."
     Start-Process $patch4 -ArgumentList "/quiet /norestart" -NoNewWindow -Wait
     Start-Sleep -Seconds 30
 }
 
 if (Test-Path $patch11) {
-    Write-Host "$cn`: Installing McAfee Patch 11."
+    Write-Output "$cn`: Installing McAfee Patch 11."
     Start-Process $patch11 -ArgumentList "/quiet /norestart" -NoNewWindow -Wait
     Start-Sleep -Seconds 30
 }
 
 if (Test-Path $patch15) {
-    Write-Host "$cn`: Installing McAfee Patch 15."
+    Write-Output "$cn`: Installing McAfee Patch 15."
     Start-Process $patch15 -ArgumentList "/quiet /norestart" -NoNewWindow -Wait
     Start-Sleep -Seconds 30
 }
 
 if ($datun -ge 1) {
-    Write-Host "$cn`: Installing McAfee DAT update."
+    Write-Output "$cn`: Installing McAfee DAT update."
     foreach ($dat in $datu) {
         Start-Process $dat -ArgumentList "/silent" -NoNewWindow -Wait
     }

@@ -560,7 +560,7 @@ Function Open-ADSIEdit {
             adsiedit.msc
         }
         catch {
-            Write-Host "Active Directory snapins are not installed/enabled."
+            Write-Output "Active Directory snapins are not installed/enabled."
         }
     }
 }
@@ -846,7 +846,7 @@ Function Restart-ActiveDirectory {
         $AllDCs = (Get-ADForest).Domains | ForEach-Object {Get-ADDomainController -Filter * -Server $_}
         foreach ($Srv in $AllDCs) {
             $SrvName = $Srv.HostName
-            "Restarting Active Directory service on $SrvName"
+            Write-Output "Restarting Active Directory service on $SrvName"
         	try {Restart-Service -inputobject $(Get-Service -ComputerName $SrvName -Name NTDS) -Force}
             catch {Throw "Unable to connect to $DC or failed to restart service."}
         }#foreach dc
@@ -875,7 +875,7 @@ Function Restart-DNS {
         [Switch]$All
     )
     if (!($All)) {
-        "Restarting DNS service on $DC"
+        Write-Output "Restarting DNS service on $DC"
         try {Restart-Service -inputobject $(Get-Service -ComputerName $DC -Name DNS) -Force}
         catch {Throw "Unable to connect to $DC or failed to restart service."}
     }#if not all
@@ -883,7 +883,7 @@ Function Restart-DNS {
         $AllDCs = (Get-ADForest).Domains | ForEach-Object {Get-ADDomainController -Filter * -Server $_}
         foreach ($Srv in $AllDCs) {
             $SrvName = $Srv.HostName
-            "Restarting DNS service on $SrvName"
+            Write-Output "Restarting DNS service on $SrvName"
         	try {Restart-Service -inputobject $(Get-Service -ComputerName $SrvName -Name DNS) -Force}
             catch {Throw "Unable to connect to $DC or failed to restart service."}
         }#foreach dc
@@ -912,7 +912,7 @@ Function Restart-KDC {
         [Switch]$All
     )
     if (!($All)) {
-        "Restarting KDC service on $DC"
+        Write-Output "Restarting KDC service on $DC"
         try {Restart-Service -inputobject $(Get-Service -ComputerName $DC -Name kdc) -Force}
         catch {Throw "Unable to connect to $DC or failed to restart service."}
     }#if not all
@@ -920,7 +920,7 @@ Function Restart-KDC {
         $AllDCs = (Get-ADForest).Domains | ForEach-Object {Get-ADDomainController -Filter * -Server $_}
         foreach ($Srv in $AllDCs) {
             $SrvName = $Srv.HostName
-            "Restarting KDC service on $SrvName"
+            Write-Output "Restarting KDC service on $SrvName"
         	try {Restart-Service -inputobject $(Get-Service -ComputerName $SrvName -Name kdc) -Force}
             catch {Throw "Unable to connect to $DC or failed to restart service."}
         }#foreach dc

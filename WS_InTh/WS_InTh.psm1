@@ -39,7 +39,7 @@
     )
     Begin {
         if ($Destination -eq $null) {
-            Write-Host "The destination folder selection window is open. It may be hidden behind windows." -ForegroundColor Yellow
+            Write-Output "The destination folder selection window is open. It may be hidden behind windows."
             Add-Type -AssemblyName System.Windows.Forms
             $FolderBrowser = New-Object System.Windows.Forms.FolderBrowserDialog
             $FolderBrowser.Description = "Select destination folder for user profile."
@@ -182,11 +182,11 @@ function Find-UserProfileWithPSTSearch {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME",
 
-        [Parameter(Mandatory=$false, Position=1, ValueFromPipeline=$true, ValueFromPipelineByPropertyName=$true)]
+        [Parameter(Mandatory=$false, Position=1)]
         [Alias('User','SamAccountname')]
         [string[]]$Username = "$env:USERNAME"
     )
@@ -405,7 +405,7 @@ function Get-CurrentUser {
         [string[]]$ComputerName
     )
 
-    Write-Host "`n Checking Users . . . "
+    Write-Output "`n Checking Users . . . "
     $i = 0
 
     $number = $ComputerName.length
@@ -453,7 +453,7 @@ function Get-LoggedOnUser {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME",
 

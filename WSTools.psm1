@@ -104,7 +104,7 @@ function Clear-ImproperProfileCopy {
         Remove-Item -Path $folder1 -Recurse -Force
         Start-Sleep 1
         $i++
-        Write-Host "Completed Pass $i" -ForegroundColor Gray
+        Write-Output "Completed Pass $i"
     }
     until (!(Test-Path $folder3))
 
@@ -147,7 +147,7 @@ Function Clear-Space {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME",
 
@@ -332,7 +332,7 @@ function Disable-ServerManager {
 #>
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
     if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {Get-ScheduledTask -TaskName ServerManager | Disable-ScheduledTask}
-    else {Write-Host "Must run this function as admin"}
+    else {Write-Output "Must run this function as admin"}
 }
 
 
@@ -380,9 +380,7 @@ Function Get-ComputerHWInfo {
     Param (
         [Parameter(
             Mandatory=$false,
-            Position=0,
-            ValueFromPipeline=$true,
-            ValueFromPipelineByPropertyName = $true
+            Position=0
         )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
@@ -572,9 +570,7 @@ Function Get-WMIClass {
     Param (
         [Parameter(
             Mandatory=$false,
-            Position=0,
-            ValueFromPipeline=$true,
-            ValueFromPipelineByPropertyName = $true
+            Position=0
         )]
         [Alias('Host','Name','Computer','CN')]
         [string]$ComputerName = "$env:COMPUTERNAME"
@@ -598,9 +594,7 @@ Function Get-WMINameSpace {
     Param (
         [Parameter(
             Mandatory=$false,
-            Position=0,
-            ValueFromPipeline=$true,
-            ValueFromPipelineByPropertyName = $true
+            Position=0
         )]
         [Alias('Host','Name','Computer','CN')]
         [string]$ComputerName = "$env:COMPUTERNAME",
@@ -637,7 +631,12 @@ function Get-Error {
 .LINK
     https://wstools.dev
 #>
-	[CmdletBinding()]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
+    [CmdletBinding()]
     Param (
         [Parameter(
             Mandatory=$false,
@@ -779,9 +778,7 @@ Function Get-IEVersion {
     Param (
         [Parameter(
             Mandatory=$false,
-            Position=0,
-            ValueFromPipeline=$true,
-            ValueFromPipelineByPropertyName = $true
+            Position=0
         )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
@@ -817,9 +814,7 @@ Function Get-MTU {
     Param (
         [Parameter(
             Mandatory=$false,
-            Position=0,
-            ValueFromPipeline=$true,
-            ValueFromPipelineByPropertyName = $true
+            Position=0
         )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
@@ -895,9 +890,7 @@ Function Get-NICInfo {
     Param (
         [Parameter(
             Mandatory=$false,
-            Position=0,
-            ValueFromPipeline=$true,
-            ValueFromPipelineByPropertyName = $true
+            Position=0
         )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
@@ -1110,9 +1103,7 @@ Function Get-OperatingSystem {
     Param (
         [Parameter(
             Mandatory=$false,
-            Position=0,
-            ValueFromPipeline=$true,
-            ValueFromPipelineByPropertyName = $true
+            Position=0
         )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME",
@@ -1404,9 +1395,7 @@ function Get-BitLockerStatus {
     [CmdletBinding()]
     param(
         [Parameter(
-            Mandatory=$false,
-            ValueFromPipelineByPropertyName = $true,
-            ValueFromPipeline = $true
+            Mandatory=$false
         )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
@@ -1490,7 +1479,7 @@ function Get-BitLockerStatus {
             }#foreach
         }#try
         catch {
-            Write-Host "Unable to connect to $Comp"
+            Write-Output "Unable to connect to $Comp"
             $status = "Insuffiect permissions or unable to connect"
         }
 
@@ -1531,9 +1520,7 @@ Function Get-ProcessorCapability {
     Param (
         [Parameter(
             Mandatory=$false,
-            Position=0,
-            ValueFromPipeline=$true,
-            ValueFromPipelineByPropertyName = $true
+            Position=0
         )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
@@ -1615,9 +1602,7 @@ Function Get-PSVersion {
     Param (
         [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
             Mandatory=$false,
-            Position=0,
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true
+            Position=0
         )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME",
@@ -1725,9 +1710,7 @@ Function Get-SerialNumber {
     Param (
         [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
             Mandatory=$false,
-            Position=0,
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true
+            Position=0
         )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
@@ -1777,9 +1760,7 @@ Function Get-ShutdownLog {
     Param (
         [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
             Mandatory=$false,
-            Position=0,
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true
+            Position=0
         )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME",
@@ -1922,16 +1903,16 @@ Function Get-SysInternals {
     )]
     [CmdletBinding()]
     Param (
-        [Parameter(ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter()]
         [string]$zipPath = "c:\temp",
 
-        [Parameter(ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter()]
         [string]$tempFolder = "c:\temp\SysInternalsSuite",
 
-        [Parameter(ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter()]
         [string]$PlaceIn = "$env:userprofile\Downloads\SysInternals",
 
-        [Parameter(ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter()]
         [string]$url = "https://download.sysinternals.com/files/SysinternalsSuite.zip"
     )
 
@@ -1943,46 +1924,46 @@ Function Get-SysInternals {
     if (!(Test-Path $tempFolder)) {mkdir $tempFolder | Out-Null}
 
     $ErrorActionPreference = "Stop"
-    Write-Host "Downloading $url to $zipPath"
+    Write-Output "Downloading $url to $zipPath"
     try {
-        Write-Host "--Trying System.Net.WebClinet"
+        Write-Output "--Trying System.Net.WebClinet"
         $web = New-Object System.Net.WebClient
         $web.DownloadFile($url, $zipPath)
         $continue = $true
     }
     catch {
         try {
-            Write-Host "--Trying BitsTransfer"
+            Write-Output "--Trying BitsTransfer"
             Start-BitsTransfer -Source $url -Destination $zipPath -ErrorAction Stop
             $continue = $true
         }
         catch {
-            Write-Host "--Trying Invoke WebRequest"
+            Write-Output "--Trying Invoke WebRequest"
             Invoke-WebRequest -Uri $url -OutFile $zipPath
             $continue = $true
         }
     }
 
     if ($continue) {
-        Write-Host "Extracting $zipname to $tempFolder"
+        Write-Output "Extracting $zipname to $tempFolder"
         try {
             Add-Type -assembly 'System.IO.Compression.FileSystem'
             [System.IO.Compression.ZipFile]::ExtractToDirectory($zipname, $tempFolder)
 
             try {
-                Write-Host "Copying files from $tempFolder to $PlaceIn"
+                Write-Output "Copying files from $tempFolder to $PlaceIn"
                 Copy-Item "$tempFolder\*.*" $PlaceIn
             }
             catch {
-                Write-Host "Failed to copy items from $tempFolder to $PlaceIn" -ForegroundColor Red
+                Write-Output "Failed to copy items from $tempFolder to $PlaceIn"
             }
         }
         catch {
-            Write-Host "Failed extracting zip file" -ForegroundColor Red
+            Write-Output "Failed extracting zip file"
         }
     }#continue
     else {
-        Write-Host "Failed to download SysInternalsSuite from https://docs.microsoft.com/en-us/sysinternals/downloads/sysinternals-suite" -ForegroundColor Red
+        Write-Output "Failed to download SysInternalsSuite from https://docs.microsoft.com/en-us/sysinternals/downloads/sysinternals-suite"
     }
 }
 
@@ -2001,9 +1982,7 @@ Function Get-UpTime {
     Param (
         [Parameter(
             Mandatory=$false,
-            Position=0,
-            ValueFromPipeline=$true,
-            ValueFromPipelineByPropertyName = $true
+            Position=0
         )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
@@ -2220,9 +2199,7 @@ function Get-WindowsSetupLog {
     Param (
         [Parameter(
             Mandatory=$false,
-            Position=0,
-            ValueFromPipeline=$true,
-            ValueFromPipelineByPropertyName = $true
+            Position=0
         )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME",
@@ -2379,7 +2356,7 @@ Function Get-WSToolsVersion {
         [Parameter(Mandatory=$false)]
         [Switch]$Remote,
 
-        [Parameter(Mandatory=$false, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory=$false)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName
     )
@@ -2483,7 +2460,7 @@ Function Import-XML {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$true, Position=0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory=$true, Position=0)]
         [string]$Path
     )
 
@@ -2520,9 +2497,7 @@ Function Import-MOF {
         [Parameter(
             HelpMessage = "Enter the path of the .mof file you want to import. Ex: C:\Example\examplewmi.mof",
             Mandatory=$true,
-            Position=0,
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true
+            Position=0
         )]
         [Alias('mof','Name','File')]
         [string]$Path
@@ -2574,7 +2549,7 @@ Function Install-WSTools {
     )]
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -2769,7 +2744,7 @@ Function Test-Online {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -2880,7 +2855,7 @@ Function Update-WSTools {
         Robocopy.exe $env:ProgramFiles\WindowsPowerShell\Modules\WSTools $UPath /mir /mt:4 /r:3 /w:5 /njh /njs
         if ($null -ne $APaths -or $APaths -eq "") {
             ForEach ($apath in $APaths) {
-                Write-Host "Updating $apath"
+                Write-Output "Updating $apath"
                 Robocopy.exe $env:ProgramFiles\WindowsPowerShell\Modules\WSTools $apath /mir /mt:4 /r:3 /w:5 /njh /njs
             }
         }
@@ -2910,18 +2885,14 @@ Function Join-File {
     Param (
         [Parameter(HelpMessage = "Enter the path of the folder with the part files you want to join.",
             Mandatory=$true,
-            Position=0,
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true
+            Position=0
         )]
         [Alias('Source','InputLocation','SourceFolder')]
         [string]$Path,
 
         [Parameter(HelpMessage = "Enter the path where you want the joined file placed.",
             Mandatory=$false,
-            Position=1,
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true
+            Position=1
         )]
         [Alias('OutputLocation','Output','DestinationPath','Destination')]
         [string]$DestinationFolder
@@ -2969,7 +2940,7 @@ Function Join-File {
 
     if ($host.Version.Major -ge 3) {
         $sobj.FullName | ForEach-Object {
-            Write-Host "Appending $_ to $fop"
+            Write-Output "Appending $_ to $fop"
             $ReadObj = New-Object System.IO.BinaryReader([System.IO.File]::Open($_, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read))
 
             $WriteObj.BaseStream.Position = $WriteObj.BaseStream.Length
@@ -2983,7 +2954,7 @@ Function Join-File {
         [Byte[]]$Buffer = New-Object Byte[] 100MB
 
         $sobj.FullName | ForEach-Object {
-            Write-Host "Appending $_ to $fop"
+            Write-Output "Appending $_ to $fop"
             $ReadObj = New-Object System.IO.BinaryReader([System.IO.File]::Open($_, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read))
 
             while ($ReadObj.BaseStream.Position -lt $ReadObj.BaseStream.Length) {
@@ -3019,27 +2990,21 @@ Function Split-File {
     Param (
         [Parameter(HelpMessage = "Enter the path of the file you want to split.",
             Mandatory=$true,
-            Position=0,
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true
+            Position=0
         )]
         [Alias('Source','InputLocation','SourceFile')]
         [string]$Path,
 
         [Parameter(HelpMessage = "Enter the path of where you want the part files placed.",
             Mandatory=$false,
-            Position=1,
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true
+            Position=1
         )]
         [Alias('OutputLocation','Output','DestinationPath','Destination')]
         [string]$DestinationFolder,
 
         [Parameter(HelpMessage = "Enter the size you want the part files to be. Can be bytes or you can specify a size. Ex: 100MB",
             Mandatory=$false,
-            Position=2,
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true
+            Position=2
         )]
         [Alias('Size','Newsize')]
         [int]$PartFileSize = 10MB
@@ -3063,7 +3028,7 @@ Function Split-File {
 	[int]$BytesRead = 0
 
     $N = 1
-    Write-Host "Saving part files to $FilePath"
+    Write-Output "Saving part files to $FilePath"
     while (($BytesRead = $ReadObj.Read($Buffer, 0, $Buffer.Length)) -gt 0) {
         $NewName = "{0}{1}{2}{3,2:00}{4}" -f ($FilePath,$FileName,$Part,$N,$Extension)
         $WriteObj = New-Object System.IO.BinaryWriter([System.IO.File]::Create($NewName))
@@ -3341,7 +3306,12 @@ function Set-ServerConfig {
 .LINK
     https://www.skylerhart.com
 #>
-    $sc = $Global:WSToolsConfig    
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
+    $sc = $Global:WSToolsConfig
 
     $netadapter = Get-NetAdapter
     foreach ($na in $netadapter) {
@@ -3631,7 +3601,7 @@ function Open-ComputerManagement {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
         [string]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -3655,7 +3625,7 @@ function Open-DeviceManager {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
         [string]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -3719,7 +3689,7 @@ function Open-DiskManagement {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
         [string]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -3743,7 +3713,7 @@ function Open-EventViewer {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -3891,8 +3861,8 @@ function Convert-AppIconToBase64 {
     Author: Skyler Hart
     Created: 2020-11-10 18:57:12
     Last Edit: 2020-11-10 18:57:12
-    Keywords: 
-    Other: 
+    Keywords:
+    Other:
     Requires:
         -Module ActiveDirectory
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
@@ -4018,7 +3988,7 @@ Function Open-Services {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
         [string]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -4066,9 +4036,7 @@ function Clear-DirtyShutdown {
     [CmdletBinding()]
     param(
         [Parameter(
-            Mandatory=$false,
-            ValueFromPipelineByPropertyName = $true,
-            ValueFromPipeline = $true
+            Mandatory=$false
         )]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
@@ -4122,9 +4090,7 @@ function Set-LAPSshortcut {
         [Parameter(
             HelpMessage = "Enter either PublicDesktop or UserDesktop. PublicDesktop requires admin rights.",
             Mandatory=$true,
-            Position=0,
-            ValueFromPipelineByPropertyName = $true,
-            ValueFromPipeline = $true
+            Position=0
         )]
         [ValidateSet('PublicDesktop','UserDesktop')]
         [ValidateNotNullOrEmpty()]
@@ -4164,9 +4130,7 @@ function Set-MTU {
     Param (
         [Parameter(
             Mandatory=$false,
-            Position=0,
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true
+            Position=0
         )]
         [int32]$Size = 1500
     )
@@ -4193,9 +4157,7 @@ function Set-NetworkConnectionsShortcut {
         [Parameter(
             HelpMessage = "Enter either PublicDesktop or UserDesktop. PublicDesktop requires admin rights.",
             Mandatory=$true,
-            Position=0,
-            ValueFromPipelineByPropertyName = $true,
-            ValueFromPipeline = $true
+            Position=0
         )]
         [ValidateSet('PublicDesktop','UserDesktop')]
         [ValidateNotNullOrEmpty()]
@@ -4236,7 +4198,7 @@ function Set-Reboot0100 {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME",
 
@@ -4353,9 +4315,7 @@ function Get-User {
     param(
         [Parameter(
             Mandatory=$false,
-            Position=0,
-            ValueFromPipelineByPropertyName = $true,
-            ValueFromPipeline = $true
+            Position=0
         )]
         [ValidateNotNullorEmpty()]
         [Alias('Host','Name','Computer','CN')]
@@ -4363,9 +4323,7 @@ function Get-User {
 
         [Parameter(
             Mandatory=$false,
-            Position=1,
-            ValueFromPipelineByPropertyName = $true,
-            ValueFromPipeline = $true
+            Position=1
         )]
         [Alias('Username')]
         [string]$User
@@ -4933,7 +4891,7 @@ function Stop-Database {
         Get-Service -Name * | Where-Object {$_.DisplayName -match "Oracle" -or $_.DisplayName -match "SQL"} | Stop-Service -Force
     }
     else {
-        Write-Host "Must run PowerShell as admin to run Stop-Database."
+        Write-Output "Must run PowerShell as admin to run Stop-Database."
     }
 }
 New-Alias -Name "Stop-Oracle" -Value Stop-Database
@@ -4959,7 +4917,7 @@ function Stop-Exchange {
         Get-Service -Name * | Where-Object {$_.DisplayName -match "Exchange"} | Stop-Service -Force
     }
     else {
-        Write-Host "Must run PowerShell as admin to run Stop-Exchange."
+        Write-Output "Must run PowerShell as admin to run Stop-Exchange."
     }
 }
 
@@ -5050,7 +5008,7 @@ If (!($Identity))
 	}
 Else
 	{
-	Write-Host "Searching for User $($Identity)"
+        Write-Output "Searching for User $($Identity)"
 	If ($Identity -like "CN=*")
         {
         $DirectorySearcher = New-Object System.DirectoryServices.DirectorySearcher([ADSI]"LDAP://$Identity")
@@ -5070,13 +5028,13 @@ Foreach ($obj in $users) {
 
     # Check to see if user has Inheritance Disabled; $True is inheritance disabled, $False is inheritance enabled
     If ($objBefore.psBase.ObjectSecurity.AreAccessRulesProtected -eq $True) {
-        Write-Host "User: $($objBefore.sAMAccountName) Inheritance is disabled: $($objBefore.psBase.ObjectSecurity.AreAccessRulesProtected) ; adminSDHolder: $($objBefore.Properties.AdminCount)"
+        Write-Output "User: $($objBefore.sAMAccountName) Inheritance is disabled: $($objBefore.psBase.ObjectSecurity.AreAccessRulesProtected) ; adminSDHolder: $($objBefore.Properties.AdminCount)"
         $objBeforeACL = $($objBefore.psBase.ObjectSecurity.AreAccessRulesProtected)
         #$user.psBase.ObjectSecurity | GM "*get*access*"
 
         # If Confirm switch was enabled to make changes
         If ($Confirm) {
-            Write-Host -ForegroundColor Green "Updating $($objBefore.sAMAccountName)."
+            Write-Output "Updating $($objBefore.sAMAccountName)."
             $objBefore.psbase.ObjectSecurity.SetAccessRuleProtection($false,$true)
             $objBefore.psbase.CommitChanges()
         }

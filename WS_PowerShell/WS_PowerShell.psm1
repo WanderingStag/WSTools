@@ -514,7 +514,7 @@ Function Get-FolderPath {
 .LINK
     https://wstools.dev
 #>
-    Write-Host "The folder selection window is open. It may be hidden behind windows." -ForegroundColor Yellow
+    Write-Output "The folder selection window is open. It may be hidden behind windows."
     Add-Type -AssemblyName System.Windows.Forms
     $FolderBrowser = New-Object System.Windows.Forms.FolderBrowserDialog
     #$FolderBrowser.Description = "Select Folder"
@@ -721,8 +721,6 @@ function Send-ToastNotification {
     Author: Skyler Hart
     Created: 2020-11-08 14:57:29
     Last Edit: 2020-11-08 14:57:29
-    Keywords: 
-    Other: 
     Requires:
         -Module ActiveDirectory
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
@@ -812,9 +810,9 @@ function Send-ToastNotification {
     }
     Process {
         if (![string]::IsNullOrEmpty($ComputerName)) {
-            Invoke-Command -ComputerName $ComputerName -ScriptBlock $ToastScript -ArgumentList $ToastTemplate #DevSkim: ignore DS104456 
+            Invoke-Command -ComputerName $ComputerName -ScriptBlock $ToastScript -ArgumentList $ToastTemplate #DevSkim: ignore DS104456
         }
-        else {Invoke-Command -ScriptBlock $ToastScript -ArgumentList $ToastTemplate} #DevSkim: ignore DS104456 
+        else {Invoke-Command -ScriptBlock $ToastScript -ArgumentList $ToastTemplate} #DevSkim: ignore DS104456
     }
     End {
         #done
