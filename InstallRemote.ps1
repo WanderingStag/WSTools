@@ -300,7 +300,7 @@ if (Test-Path $dn48path) {
 #    Start-Sleep 120
 #}
 
-if (Test-Path $90meter -and $env:USERDNSDOMAIN -like "*.smil.mil") {
+if ((Test-Path $90meter) -and $env:USERDNSDOMAIN -like "*.smil.mil") {
     $ip9 = ($ip | Where-Object {$_.ProgramName -like "90meter*"} | Select-Object Version,Comment)[0]
     $ip9c = ($ip9 | Select-Object Comment).Comment
     if ($ip9c -eq " -- SDC SIPR - 90Meter Smart Card Manager - 190712") {
@@ -318,7 +318,7 @@ if (Test-Path $90meter -and $env:USERDNSDOMAIN -like "*.smil.mil") {
     }
 }
 
-if (Test-Path $activclient -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
+if ((Test-Path $activclient) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
     $inac = $null
     $inac = Get-WmiObject -Class Win32_Product -Filter "Name LIKE '%ActivClient%'"
     if ($null -ne $inac -and $inac -ne "") {
@@ -447,7 +447,7 @@ if (Test-Path $chrome) {
     }
 }
 
-if (Test-Path $dset -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
+if ((Test-Path $dset) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
     $sv = $null
     $ipv = $null
     $install = $false
@@ -697,7 +697,7 @@ if (Test-Path $teams) {
     }
 }
 
-if (Test-Path $titus -and $env:USERDNSDOMAIN -like "*.smil.mil") {
+if ((Test-Path $titus) -and $env:USERDNSDOMAIN -like "*.smil.mil") {
     $sv = $null
     $ipv = $null
     $install = $false
