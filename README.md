@@ -17,7 +17,7 @@ Then look at the _`Version`_ attribute.
 
 ## Download WSTools
 
-> Intended only for Windows computers.
+> Intended only for Windows computers at this time. Some functions may work on other OS's though.
 
 1. On the left side, click on the **Repos** menu item.
 2. On the right side next to the Clone button, click on the **More actions** (three dots) button and select **Download as Zip**.
