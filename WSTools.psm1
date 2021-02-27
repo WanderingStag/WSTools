@@ -496,6 +496,452 @@ Function Get-ComputerModel {
 New-Alias -Name "Get-Model" -Value Get-ComputerModel
 
 
+Function Get-DefaultBrowserPath {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: Sometime before 2017-08-07
+    Last Edit: 2020-08-20 15:09:53
+    Keywords:
+    Requires:
+        -Module ActiveDirectory
+        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    New-PSDrive -Name HKCR -PSProvider Registry -Root Hkey_Classes_Root | Out-Null
+    $BrowserPath = ((Get-ItemProperty 'HKCR:\http\shell\open\command').'(default)').Split('"')[1]
+    return $BrowserPath
+    Remove-PSDrive -Name HKCR -Force -ErrorAction SilentlyContinue | Out-Null
+}
+
+
+Function Get-FileMetaData {
+<#
+.Synopsis
+    This function gets file metadata and returns it as a custom PS Object
+.Description
+    This function gets file metadata using the Shell.Application object and
+    returns a custom PSObject object that can be sorted, filtered or otherwise
+    manipulated.
+.Example
+    Get-FileMetaData -folder "e:\music"
+    Gets file metadata for all files in the e:\music directory
+.Example
+    Get-FileMetaData -folder (gci e:\music -Recurse -Directory).FullName
+    This example uses the Get-ChildItem cmdlet to do a recursive lookup of
+    all directories in the e:\music folder and then it goes through and gets
+    all of the file metada for all the files in the directories and in the
+    subdirectories.
+.Example
+    Get-FileMetaData -folder "c:\fso","E:\music\Big Boi"
+    Gets file metadata from files in both the c:\fso directory and the
+    e:\music\big boi directory.
+.Example
+    $meta = Get-FileMetaData -folder "E:\music"
+    This example gets file metadata from all files in the root of the
+    e:\music directory and stores the returned custom objects in a $meta
+    variable for later processing and manipulation.
+.Parameter Folder
+    The folder that is parsed for files
+.Notes
+    NAME:  Get-FileMetaData
+    AUTHOR: ed wilson, msft
+    LASTEDIT: 01/24/2014 14:08:24
+    KEYWORDS: Storage, Files, Metadata
+    HSG: HSG-2-5-14
+.Link
+    https://devblogs.microsoft.com/scripting/
+#Requires -Version 2.0
+#>
+    Param([string[]]$folder)
+    foreach($sFolder in $folder) {
+        $a = 0
+        $objShell = New-Object -ComObject Shell.Application
+        $objFolder = $objShell.namespace($sFolder)
+        foreach ($File in $objFolder.items()) {
+            $FileMetaData = New-Object PSOBJECT
+            for ($a ; $a  -le 266; $a++) {
+                if($objFolder.getDetailsOf($File, $a)) {
+                    $hash += @{$($objFolder.getDetailsOf($objFolder.items, $a)) = $($objFolder.getDetailsOf($File, $a))}
+                    $FileMetaData | Add-Member $hash
+                    $hash.clear()
+                } #end if
+            } #end for
+            $a=0
+            $FileMetaData
+        } #end foreach $file
+    } #end foreach $sfolder
+} #end Get-FileMetaData
+
+
+function Get-User {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2020-04-20 19:51:03
+    Last Edit: 2020-04-20 23:14:32
+    Requires:
+        -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    param(
+        [Parameter(
+            Mandatory=$false,
+            Position=0
+        )]
+        [ValidateNotNullorEmpty()]
+        [Alias('Host','Name','Computer','CN')]
+        [string[]]$ComputerName = "$env:COMPUTERNAME",
+
+        [Parameter(
+            Mandatory=$false,
+            Position=1
+        )]
+        [Alias('Username')]
+        [string]$User
+    )
+
+    foreach ($Comp in $ComputerName) {
+        try {
+            #Connect to computer and get information on user/users
+            if ($null -ne $User) {
+                $ui = Get-WmiObject -Class Win32_UserAccount -filter "LocalAccount='True'" -ComputerName $comp -ErrorAction Stop | Select-Object Name,Description,Disabled,Lockout,PasswordChangeable,PasswordExpires,PasswordRequired | Where-Object {$_.Name -match $User}
+            }#if user not null
+            else {
+                $ui = Get-WmiObject -Class Win32_UserAccount -filter "LocalAccount='True'" -ComputerName $comp -ErrorAction Stop | Select-Object Name,Description,Disabled,Lockout,PasswordChangeable,PasswordExpires,PasswordRequired
+            }
+
+            ForEach ($u in $ui) {
+                New-Object -TypeName PSObject -Property @{
+                    Computer = $Comp
+                    User = $u.Name
+                    Description = $u.Description
+                    Disabled = $u.Disabled
+                    Locked = $u.Lockout
+                    PasswordChangeable = $u.PasswordChangeable
+                    PasswordExpires = $u.PasswordExpires
+                    PasswordRequired = $u.PasswordRequired
+                } | Select-Object Computer,User,Description,Disabled,Locked,PasswordChangeable,PasswordExpires,PasswordRequired
+            }#foreach u
+        }#try
+        catch {
+            New-Object -TypeName PSObject -Property @{
+                Computer = $Comp
+                User = $null
+                Description = $null
+                Disabled = $null
+                Locked = $null
+                PasswordChangeable = $null
+                PasswordExpires = $null
+                PasswordRequired = $null
+            } | Select-Object Computer,User,Description,Disabled,Locked,PasswordChangeable,PasswordExpires,PasswordRequired
+        }#catch
+    }#foreach comp
+}
+
+
+function Get-UserGroup {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2020-11-03 11:14:26
+    Last Edit: 2020-11-03 11:14:26
+    Keywords:
+.LINK
+    https://wstools.dev
+#>
+    $id = [Security.Principal.WindowsIdentity]::GetCurrent()
+    $groups = $id.Groups | foreach-object {$_.Translate([Security.Principal.NTAccount])}
+    $groups | Select-Object Value -ExpandProperty Value
+}
+
+
+Function Get-LockedOutLocation {
+<#
+.SYNOPSIS
+    This function will locate the computer that processed a failed user logon attempt which caused the user account to become locked out.
+.DESCRIPTION
+    This function will locate the computer that processed a failed user logon attempt which caused the user account to become locked out.
+    The locked out location is found by querying the PDC Emulator for locked out events (4740).
+    The function will display the BadPasswordTime attribute on all of the domain controllers to add in further troubleshooting.
+.EXAMPLE
+    PS C:\>Get-LockedOutLocation -Identity Joe.Davis
+    This example will find the locked out location for Joe Davis.
+.NOTES
+    This function is only compatible with an environment where the domain controller with the PDCe role to be running Windows Server 2008 SP2 and up.
+    The script is also dependent the ActiveDirectory PowerShell module, which requires the AD Web services to be running on at least one domain controller.
+    Author:Jason Walker
+    Last Modified: 3/20/2013
+#>
+    [CmdletBinding()]
+    Param(
+      [Parameter(Mandatory=$True)]
+        [String]$Identity
+    )
+
+    Begin {
+        $DCCounter = 0
+        $LockedOutStats = @()
+        Try {
+            Import-Module ActiveDirectory -ErrorAction Stop
+        }
+        Catch {
+           Write-Warning $_
+           Break
+        }
+    }#end begin
+    Process {
+        #Get all domain controllers in domain
+        $DomainControllers = Get-ADDomainController -Filter *
+        $PDCEmulator = ($DomainControllers | Where-Object {$_.OperationMasterRoles -contains "PDCEmulator"})
+
+        Write-Verbose "Finding the domain controllers in the domain"
+        Foreach($DC in $DomainControllers) {
+            $DCCounter++
+            Write-Progress -Activity "Contacting DCs for lockout info" -Status "Querying $($DC.Hostname)" -PercentComplete (($DCCounter/$DomainControllers.Count) * 100)
+            Try {
+                $UserInfo = Get-ADUser -Identity $Identity  -Server $DC.Hostname -Properties AccountLockoutTime,LastBadPasswordAttempt,BadPwdCount,LockedOut -ErrorAction Stop
+            }
+            Catch {
+                Write-Warning $_
+                Continue
+            }
+            If($UserInfo.LastBadPasswordAttempt) {
+                $LockedOutStats += New-Object -TypeName PSObject -Property @{
+                        Name                   = $UserInfo.SamAccountName
+                        SID                    = $UserInfo.SID.Value
+                        LockedOut              = $UserInfo.LockedOut
+                        BadPwdCount            = $UserInfo.BadPwdCount
+                        BadPasswordTime        = $UserInfo.BadPasswordTime
+                        DomainController       = $DC.Hostname
+                        AccountLockoutTime     = $UserInfo.AccountLockoutTime
+                        LastBadPasswordAttempt = ($UserInfo.LastBadPasswordAttempt).ToLocalTime()
+                    }
+            }#end if
+        }#end foreach DCs
+        $LockedOutStats | Format-Table -Property Name,LockedOut,DomainController,BadPwdCount,AccountLockoutTime,LastBadPasswordAttempt -AutoSize
+
+        #Get User Info
+        Try {
+           Write-Verbose "Querying event log on $($PDCEmulator.HostName)"
+            $LockedOutEvents = Get-WinEvent -ComputerName $PDCEmulator.HostName -FilterHashtable @{LogName='Security';Id=4740} -ErrorAction Stop | Sort-Object -Property TimeCreated -Descending
+        }
+        Catch {
+           Write-Warning $_
+            Continue
+        }#end catch
+        Foreach($Event in $LockedOutEvents) {
+            If($Event | Where-Object {$_.Properties[2].value -match $UserInfo.SID.Value}) {
+                $Event | Select-Object -Property @(
+                    @{Label = 'User';               Expression = {$_.Properties[0].Value}}
+                    @{Label = 'DomainController';   Expression = {$_.MachineName}}
+                    @{Label = 'EventId';            Expression = {$_.Id}}
+                    @{Label = 'LockedOutTimeStamp'; Expression = {$_.TimeCreated}}
+                    @{Label = 'Message';            Expression = {$_.Message -split "`r" | Select-Object -First 1}}
+                    @{Label = 'LockedOutLocation';  Expression = {$_.Properties[1].Value}}
+                )
+            }#end ifevent
+        }#end foreach lockedout event
+    }#end process
+}#end function
+
+
+Function Get-InstalledProgram {
+<#
+.SYNOPSIS
+    Displays installed programs on a computer.
+.DESCRIPTION
+    Displays a list of installed programs on a local or remote computer by querying the registry.
+.PARAMETER ComputerName
+    Specifies the name of one or more computers.
+.PARAMETER Path
+    Specifies a path to one or more locations.
+.EXAMPLE
+    C:\PS>Get-InstalledProgram
+    Shows the installed programs on the local computer.
+.EXAMPLE
+    C:\PS>Get-InstalledProgram -ComputerName COMPUTER1
+    Shows the installed programs on the remote computer COMPUTER1.
+.EXAMPLE
+    C:\PS>Get-InstalledProgram -ComputerName COMPUTER1,COMPUTER2
+    Shows the installed programs on the remote computers COMPUTER1 and COMPUTER2.
+.EXAMPLE
+    C:\PS>Get-InstalledProgram (gc C:\Temp\computers.txt)
+    Shows the installed programs on the remote computers listed in the computers.txt file (each computer name on a new line.)
+.EXAMPLE
+    C:\PS>Get-InstalledProgram COMPUTER1 -Property InstallSource
+    Shows the installed programs on the remote computer COMPUTER1 and also shows the additional property InstallSource from the registry.
+.EXAMPLE
+    C:\PS>Get-InstalledProgram COMPUTER1,COMPUTER2 -Property InstallSource,Comments
+    Shows the installed programs on the remote computers COMPUTER1 and COMPUTER2. Also shows the additional properties InstallSource and Comments from the registry.
+.NOTES
+    Author: Skyler Hart
+    Created: Sometime prior to 2017-08
+    Last Edit: 2020-08-19 23:03:32
+    Keywords:
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding(SupportsShouldProcess=$true)]
+    param(
+        [Parameter(ValueFromPipeline=$true,
+            ValueFromPipelineByPropertyName=$true,
+            Position=0)]
+        [Alias('Host','Name','DNSHostName','Computer')]
+        [string[]]$ComputerName = $env:COMPUTERNAME,
+
+        [Parameter(Position=1)]
+        [string[]]$Property
+    )
+
+    Begin {
+        $RegistryLocation = 'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\',
+                            'SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\'
+        $HashProperty = @{}
+        $SelectProperty = @('ComputerName','Installed','ProgramName','Version','Uninstall','Comment')
+        if ($Property) {
+            $SelectProperty += $Property
+        }
+    }#begin
+
+    Process {
+        foreach ($Computer in $ComputerName) {
+            $RegBase = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine,$Computer)
+            $installed = @()
+            foreach ($CurrentReg in $RegistryLocation) {
+                if ($RegBase) {
+                    $CurrentRegKey = $RegBase.OpenSubKey($CurrentReg)
+                    if ($CurrentRegKey) {
+                        $CurrentRegKey.GetSubKeyNames() | ForEach-Object {
+                            if ($Property) {
+                                foreach ($CurrentProperty in $Property) {
+                                    $HashProperty.$CurrentProperty = ($RegBase.OpenSubKey("$CurrentReg$_")).GetValue($CurrentProperty)
+                                }
+                            }
+                            $HashProperty.ComputerName = $Computer
+                            $HashProperty.ProgramName = ($DisplayName = ($RegBase.OpenSubKey("$CurrentReg$_")).GetValue('DisplayName'))
+                            $HashProperty.Version = ($DisplayVersion = ($RegBase.OpenSubKey("$CurrentReg$_")).GetValue('DisplayVersion'))
+                            $HashProperty.Installed = ($InstallDate = ($RegBase.OpenSubKey("$CurrentReg$_")).GetValue('InstallDate'))
+                            $HashProperty.Uninstall = ($UninstallString = ($RegBase.OpenSubKey("$CurrentReg$_")).GetValue('UninstallString'))
+                            $HashProperty.Comment = ($Comments = ($RegBase.OpenSubKey("$CurrentReg$_")).GetValue('Comments'))
+                            if ($DisplayName -and ($DisplayName -notmatch "Update for" -and $DisplayName -notmatch " Security Update for" -and $DisplayName -notmatch "Hotfix for" -and $DisplayName -notlike "Windows Setup Remediations*" `
+                                -and $DisplayName -notlike "Outils de v*" -and $DisplayName -notlike "Intel(R) Processor*" -and $DisplayName -notlike "Intel(R) Chipset*" -and $DisplayName -notlike "herramientas de corr*" `
+                                -and $DisplayName -notlike "Dell Touchpa*" -and $DisplayName -notmatch "Crystal Reports" -and $DisplayName -notmatch "Catalyst Control" -and $DisplayName -notlike "AMD *" -and $DisplayName -notlike "Microsoft * MUI*" `
+                                -and $DisplayName -notlike "Microsoft Visual C* Redist*" -and $DisplayName -notlike "Vulkan Run Time Libraries*" -and $DisplayName -notlike "Microsoft Visual C* Minimum*" -and $DisplayName -notlike "Microsoft Visual C* Additional*")) {
+                                $installed += New-Object -TypeName PSCustomObject -Property $HashProperty |
+                                Select-Object -Property $SelectProperty
+                            }
+                            $DisplayVersion | Out-Null
+                            $InstallDate | Out-Null
+                            $UninstallString | Out-Null
+                            $Comments | Out-Null
+                        }#foreach object
+                    }#if currentregkey
+                }#if regbase
+            }#foreach registry entry in registry location
+            $installed | Select-Object $SelectProperty | Sort-Object ProgramName
+        }#foreach computer
+    }#process
+}
+
+
+function Get-IPrange {
+<#
+.SYNOPSIS
+    Lists IPs within a range, subnet, or CIDR block.
+.DESCRIPTION
+    Lists IPs within a range, subnet, or CIDR block.
+.PARAMETER CIDR
+    Specifies what CIDR block notation you want to list IPs from.
+.PARAMETER End
+    The ending IP in a range.
+.PARAMETER IP
+    An IP from the subnet mask or CIDR block you want a range for.
+.PARAMETER Start
+    Specifies a path to one or more locations.
+.PARAMETER Subnet
+    The subnet mask you want a range for.
+.EXAMPLE
+    C:\PS>Get-IPrange -ip 192.168.0.3 -subnet 255.255.255.192
+    Will show all IPs within the 192.168.0.0 space with a subnet mask of 255.255.255.192 (CIDR 26.)
+.EXAMPLE
+    C:\PS>Get-IPrange -PARAMETER
+    Another example of how to use this cmdlet but with a parameter or switch.
+.NOTES
+    Author: Skyler Hart
+    Created: Sometime before 8/7/2017
+    Last Edit: 2020-08-20 09:11:46
+    Keywords:
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    Param (
+        [Parameter(
+            Mandatory=$false,
+            Position=0
+        )]
+        [Alias('IPv4','Address','IPv4Address')]
+        [string]$IP,
+
+        [Parameter(
+            Mandatory=$false
+        )]
+        [Alias('Notation','Block')]
+        [string]$CIDR,
+
+        [Parameter(
+            Mandatory=$false
+        )]
+        [Alias('Mask')]
+        [string]$Subnet,
+
+        [Parameter(
+            Mandatory=$false
+        )]
+        [string]$Start,
+
+        [Parameter(
+            Mandatory=$false
+        )]
+        [string]$End
+    )
+
+    function Convert-IPtoINT64 () {
+        param ($IP)
+        $octets = $IP.split(".")
+        return [int64]([int64]$octets[0]*16777216 +[int64]$octets[1]*65536 +[int64]$octets[2]*256 +[int64]$octets[3])
+    }
+
+    function Convert-INT64toIP() {
+        param ([int64]$int)
+        return (([math]::truncate($int/16777216)).tostring()+"."+([math]::truncate(($int%16777216)/65536)).tostring()+"."+([math]::truncate(($int%65536)/256)).tostring()+"."+([math]::truncate($int%256)).tostring())
+    }
+
+    if ($IP) {$ipaddr = [Net.IPAddress]::Parse($IP)}
+    if ($CIDR) {$maskaddr = [Net.IPAddress]::Parse((Convert-INT64toIP -int ([convert]::ToInt64(("1"*$CIDR+"0"*(32-$CIDR)),2)))) }
+    if ($Subnet) {$maskaddr = [Net.IPAddress]::Parse($Subnet)}
+    if ($IP) {$networkaddr = new-object net.ipaddress ($maskaddr.address -band $ipaddr.address)}
+    if ($IP) {$broadcastaddr = new-object net.ipaddress (([system.net.ipaddress]::parse("255.255.255.255").address -bxor $maskaddr.address -bor $networkaddr.address))}
+
+    if ($IP) {
+        $startaddr = Convert-IPtoINT64 -IP $networkaddr.ipaddresstostring
+        $endaddr = Convert-IPtoINT64 -IP $broadcastaddr.ipaddresstostring
+    } else {
+        $startaddr = Convert-IPtoINT64 -IP $start
+        $endaddr = Convert-IPtoINT64 -IP $end
+    }
+
+    for ($i = $startaddr; $i -le $endaddr; $i++) {
+        Convert-INT64toIP -int $i
+    }
+}
+
+
 function Get-DirectoryStat {
 <#
 .NOTES
@@ -4216,455 +4662,6 @@ function Set-Reboot0100 {
                 Throw "Could not schedule rebooot on $Comp"
             }
         }#else
-    }
-}
-
-
-Function Get-DefaultBrowserPath {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: Sometime before 2017-08-07
-    Last Edit: 2020-08-20 15:09:53
-    Keywords:
-    Requires:
-        -Module ActiveDirectory
-        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
-    New-PSDrive -Name HKCR -PSProvider Registry -Root Hkey_Classes_Root | Out-Null
-    $BrowserPath = ((Get-ItemProperty 'HKCR:\http\shell\open\command').'(default)').Split('"')[1]
-    return $BrowserPath
-    Remove-PSDrive -Name HKCR -Force -ErrorAction SilentlyContinue | Out-Null
-}
-
-
-Function Get-FileMetaData {
-  <#
-   .Synopsis
-    This function gets file metadata and returns it as a custom PS Object
-   .Description
-    This function gets file metadata using the Shell.Application object and
-    returns a custom PSObject object that can be sorted, filtered or otherwise
-    manipulated.
-   .Example
-    Get-FileMetaData -folder "e:\music"
-    Gets file metadata for all files in the e:\music directory
-   .Example
-    Get-FileMetaData -folder (gci e:\music -Recurse -Directory).FullName
-    This example uses the Get-ChildItem cmdlet to do a recursive lookup of
-    all directories in the e:\music folder and then it goes through and gets
-    all of the file metada for all the files in the directories and in the
-    subdirectories.
-   .Example
-    Get-FileMetaData -folder "c:\fso","E:\music\Big Boi"
-    Gets file metadata from files in both the c:\fso directory and the
-    e:\music\big boi directory.
-   .Example
-    $meta = Get-FileMetaData -folder "E:\music"
-    This example gets file metadata from all files in the root of the
-    e:\music directory and stores the returned custom objects in a $meta
-    variable for later processing and manipulation.
-   .Parameter Folder
-    The folder that is parsed for files
-   .Notes
-    NAME:  Get-FileMetaData
-    AUTHOR: ed wilson, msft
-    LASTEDIT: 01/24/2014 14:08:24
-    KEYWORDS: Storage, Files, Metadata
-    HSG: HSG-2-5-14
-   .Link
-     https://devblogs.microsoft.com/scripting/
- #Requires -Version 2.0
- #>
-    Param([string[]]$folder)
-    foreach($sFolder in $folder) {
-        $a = 0
-        $objShell = New-Object -ComObject Shell.Application
-        $objFolder = $objShell.namespace($sFolder)
-        foreach ($File in $objFolder.items()) {
-            $FileMetaData = New-Object PSOBJECT
-            for ($a ; $a  -le 266; $a++) {
-                if($objFolder.getDetailsOf($File, $a)) {
-                    $hash += @{$($objFolder.getDetailsOf($objFolder.items, $a)) = $($objFolder.getDetailsOf($File, $a))}
-                    $FileMetaData | Add-Member $hash
-                    $hash.clear()
-                } #end if
-            } #end for
-            $a=0
-            $FileMetaData
-        } #end foreach $file
-    } #end foreach $sfolder
-} #end Get-FileMetaData
-
-
-function Get-User {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2020-04-20 19:51:03
-    Last Edit: 2020-04-20 23:14:32
-    Requires:
-        -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
-    [CmdletBinding()]
-    param(
-        [Parameter(
-            Mandatory=$false,
-            Position=0
-        )]
-        [ValidateNotNullorEmpty()]
-        [Alias('Host','Name','Computer','CN')]
-        [string[]]$ComputerName = "$env:COMPUTERNAME",
-
-        [Parameter(
-            Mandatory=$false,
-            Position=1
-        )]
-        [Alias('Username')]
-        [string]$User
-    )
-
-    foreach ($Comp in $ComputerName) {
-        try {
-            #Connect to computer and get information on user/users
-            if ($null -ne $User) {
-                $ui = Get-WmiObject -Class Win32_UserAccount -filter "LocalAccount='True'" -ComputerName $comp -ErrorAction Stop | Select-Object Name,Description,Disabled,Lockout,PasswordChangeable,PasswordExpires,PasswordRequired | Where-Object {$_.Name -match $User}
-            }#if user not null
-            else {
-                $ui = Get-WmiObject -Class Win32_UserAccount -filter "LocalAccount='True'" -ComputerName $comp -ErrorAction Stop | Select-Object Name,Description,Disabled,Lockout,PasswordChangeable,PasswordExpires,PasswordRequired
-            }
-
-            ForEach ($u in $ui) {
-                New-Object -TypeName PSObject -Property @{
-                    Computer = $Comp
-                    User = $u.Name
-                    Description = $u.Description
-                    Disabled = $u.Disabled
-                    Locked = $u.Lockout
-                    PasswordChangeable = $u.PasswordChangeable
-                    PasswordExpires = $u.PasswordExpires
-                    PasswordRequired = $u.PasswordRequired
-                } | Select-Object Computer,User,Description,Disabled,Locked,PasswordChangeable,PasswordExpires,PasswordRequired
-            }#foreach u
-        }#try
-        catch {
-            New-Object -TypeName PSObject -Property @{
-                Computer = $Comp
-                User = $null
-                Description = $null
-                Disabled = $null
-                Locked = $null
-                PasswordChangeable = $null
-                PasswordExpires = $null
-                PasswordRequired = $null
-            } | Select-Object Computer,User,Description,Disabled,Locked,PasswordChangeable,PasswordExpires,PasswordRequired
-        }#catch
-    }#foreach comp
-}
-
-
-function Get-UserGroup {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2020-11-03 11:14:26
-    Last Edit: 2020-11-03 11:14:26
-    Keywords:
-.LINK
-    https://wstools.dev
-#>
-    $id = [Security.Principal.WindowsIdentity]::GetCurrent()
-    $groups = $id.Groups | foreach-object {$_.Translate([Security.Principal.NTAccount])}
-    $groups | Select-Object Value -ExpandProperty Value
-}
-
-
-Function Get-LockedOutLocation {
-<#
-.SYNOPSIS
-	This function will locate the computer that processed a failed user logon attempt which caused the user account to become locked out.
-.DESCRIPTION
-	This function will locate the computer that processed a failed user logon attempt which caused the user account to become locked out.
-	The locked out location is found by querying the PDC Emulator for locked out events (4740).
-	The function will display the BadPasswordTime attribute on all of the domain controllers to add in further troubleshooting.
-.EXAMPLE
-	PS C:\>Get-LockedOutLocation -Identity Joe.Davis
-	This example will find the locked out location for Joe Davis.
-.NOTE
-	This function is only compatible with an environment where the domain controller with the PDCe role to be running Windows Server 2008 SP2 and up.
-	The script is also dependent the ActiveDirectory PowerShell module, which requires the AD Web services to be running on at least one domain controller.
-	Author:Jason Walker
-	Last Modified: 3/20/2013
-#>
-    [CmdletBinding()]
-    Param(
-      [Parameter(Mandatory=$True)]
-      [String]$Identity
-    )
-
-    Begin {
-        $DCCounter = 0
-        $LockedOutStats = @()
-        Try {
-            Import-Module ActiveDirectory -ErrorAction Stop
-        }
-        Catch {
-           Write-Warning $_
-           Break
-        }
-    }#end begin
-    Process {
-        #Get all domain controllers in domain
-        $DomainControllers = Get-ADDomainController -Filter *
-        $PDCEmulator = ($DomainControllers | Where-Object {$_.OperationMasterRoles -contains "PDCEmulator"})
-
-        Write-Verbose "Finding the domain controllers in the domain"
-        Foreach($DC in $DomainControllers)
-        {
-            $DCCounter++
-            Write-Progress -Activity "Contacting DCs for lockout info" -Status "Querying $($DC.Hostname)" -PercentComplete (($DCCounter/$DomainControllers.Count) * 100)
-            Try
-            {
-                $UserInfo = Get-ADUser -Identity $Identity  -Server $DC.Hostname -Properties AccountLockoutTime,LastBadPasswordAttempt,BadPwdCount,LockedOut -ErrorAction Stop
-            }
-            Catch
-            {
-                Write-Warning $_
-                Continue
-            }
-            If($UserInfo.LastBadPasswordAttempt) {
-                $LockedOutStats += New-Object -TypeName PSObject -Property @{
-                        Name                   = $UserInfo.SamAccountName
-                        SID                    = $UserInfo.SID.Value
-                        LockedOut              = $UserInfo.LockedOut
-                        BadPwdCount            = $UserInfo.BadPwdCount
-                        BadPasswordTime        = $UserInfo.BadPasswordTime
-                        DomainController       = $DC.Hostname
-                        AccountLockoutTime     = $UserInfo.AccountLockoutTime
-                        LastBadPasswordAttempt = ($UserInfo.LastBadPasswordAttempt).ToLocalTime()
-                    }
-            }#end if
-        }#end foreach DCs
-        $LockedOutStats | Format-Table -Property Name,LockedOut,DomainController,BadPwdCount,AccountLockoutTime,LastBadPasswordAttempt -AutoSize
-
-        #Get User Info
-        Try {
-           Write-Verbose "Querying event log on $($PDCEmulator.HostName)"
-           $LockedOutEvents = Get-WinEvent -ComputerName $PDCEmulator.HostName -FilterHashtable @{LogName='Security';Id=4740} -ErrorAction Stop | Sort-Object -Property TimeCreated -Descending
-        }
-        Catch {
-           Write-Warning $_
-           Continue
-        }#end catch
-        Foreach($Event in $LockedOutEvents) {
-            If($Event | Where-Object {$_.Properties[2].value -match $UserInfo.SID.Value}) {
-                $Event | Select-Object -Property @(
-                    @{Label = 'User';               Expression = {$_.Properties[0].Value}}
-                    @{Label = 'DomainController';   Expression = {$_.MachineName}}
-                    @{Label = 'EventId';            Expression = {$_.Id}}
-                    @{Label = 'LockedOutTimeStamp'; Expression = {$_.TimeCreated}}
-                    @{Label = 'Message';            Expression = {$_.Message -split "`r" | Select-Object -First 1}}
-                    @{Label = 'LockedOutLocation';  Expression = {$_.Properties[1].Value}}
-                )
-            }#end ifevent
-        }#end foreach lockedout event
-    }#end process
-}#end function
-
-
-Function Get-InstalledProgram {
-<#
-.SYNOPSIS
-    Displays installed programs on a computer.
-.DESCRIPTION
-    Displays a list of installed programs on a local or remote computer by querying the registry.
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.PARAMETER Path
-    Specifies a path to one or more locations.
-.EXAMPLE
-    C:\PS>Get-InstalledProgram
-    Shows the installed programs on the local computer.
-.EXAMPLE
-    C:\PS>Get-InstalledProgram -ComputerName COMPUTER1
-    Shows the installed programs on the remote computer COMPUTER1.
-.EXAMPLE
-    C:\PS>Get-InstalledProgram -ComputerName COMPUTER1,COMPUTER2
-    Shows the installed programs on the remote computers COMPUTER1 and COMPUTER2.
-.EXAMPLE
-    C:\PS>Get-InstalledProgram (gc C:\Temp\computers.txt)
-    Shows the installed programs on the remote computers listed in the computers.txt file (each computer name on a new line.)
-.EXAMPLE
-    C:\PS>Get-InstalledProgram COMPUTER1 -Property InstallSource
-    Shows the installed programs on the remote computer COMPUTER1 and also shows the additional property InstallSource from the registry.
-.EXAMPLE
-    C:\PS>Get-InstalledProgram COMPUTER1,COMPUTER2 -Property InstallSource,Comments
-    Shows the installed programs on the remote computers COMPUTER1 and COMPUTER2. Also shows the additional properties InstallSource and Comments from the registry.
-.NOTES
-    Author: Skyler Hart
-    Created: Sometime prior to 2017-08
-    Last Edit: 2020-08-19 23:03:32
-    Keywords:
-.LINK
-    https://wstools.dev
-#>
-    [CmdletBinding(SupportsShouldProcess=$true)]
-    param(
-        [Parameter(ValueFromPipeline=$true,
-            ValueFromPipelineByPropertyName=$true,
-            Position=0)]
-        [Alias('Host','Name','DNSHostName','Computer')]
-        [string[]]$ComputerName = $env:COMPUTERNAME,
-
-        [Parameter(Position=1)]
-        [string[]]$Property
-    )
-
-    Begin {
-        $RegistryLocation = 'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\',
-                            'SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\'
-        $HashProperty = @{}
-        $SelectProperty = @('ComputerName','Installed','ProgramName','Version','Uninstall','Comment')
-        if ($Property) {
-            $SelectProperty += $Property
-        }
-    }#begin
-
-    Process {
-        foreach ($Computer in $ComputerName) {
-            $RegBase = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine,$Computer)
-            $installed = @()
-            foreach ($CurrentReg in $RegistryLocation) {
-                if ($RegBase) {
-                    $CurrentRegKey = $RegBase.OpenSubKey($CurrentReg)
-                    if ($CurrentRegKey) {
-                        $CurrentRegKey.GetSubKeyNames() | ForEach-Object {
-                            if ($Property) {
-                                foreach ($CurrentProperty in $Property) {
-                                    $HashProperty.$CurrentProperty = ($RegBase.OpenSubKey("$CurrentReg$_")).GetValue($CurrentProperty)
-                                }
-                            }
-                            $HashProperty.ComputerName = $Computer
-                            $HashProperty.ProgramName = ($DisplayName = ($RegBase.OpenSubKey("$CurrentReg$_")).GetValue('DisplayName'))
-                            $HashProperty.Version = ($DisplayVersion = ($RegBase.OpenSubKey("$CurrentReg$_")).GetValue('DisplayVersion'))
-                            $HashProperty.Installed = ($InstallDate = ($RegBase.OpenSubKey("$CurrentReg$_")).GetValue('InstallDate'))
-                            $HashProperty.Uninstall = ($UninstallString = ($RegBase.OpenSubKey("$CurrentReg$_")).GetValue('UninstallString'))
-                            $HashProperty.Comment = ($Comments = ($RegBase.OpenSubKey("$CurrentReg$_")).GetValue('Comments'))
-                            if ($DisplayName -and ($DisplayName -notmatch "Update for" -and $DisplayName -notmatch " Security Update for" -and $DisplayName -notmatch "Hotfix for" -and $DisplayName -notlike "Windows Setup Remediations*" `
-                                -and $DisplayName -notlike "Outils de v*" -and $DisplayName -notlike "Intel(R) Processor*" -and $DisplayName -notlike "Intel(R) Chipset*" -and $DisplayName -notlike "herramientas de corr*" `
-                                -and $DisplayName -notlike "Dell Touchpa*" -and $DisplayName -notmatch "Crystal Reports" -and $DisplayName -notmatch "Catalyst Control" -and $DisplayName -notlike "AMD *" -and $DisplayName -notlike "Microsoft * MUI*" `
-                                -and $DisplayName -notlike "Microsoft Visual C* Redist*" -and $DisplayName -notlike "Vulkan Run Time Libraries*" -and $DisplayName -notlike "Microsoft Visual C* Minimum*" -and $DisplayName -notlike "Microsoft Visual C* Additional*")) {
-                                $installed += New-Object -TypeName PSCustomObject -Property $HashProperty |
-                                Select-Object -Property $SelectProperty
-                            }
-                            $DisplayVersion | Out-Null
-                            $InstallDate | Out-Null
-                            $UninstallString | Out-Null
-                            $Comments | Out-Null
-                        }#foreach object
-                    }#if currentregkey
-                }#if regbase
-            }#foreach registry entry in registry location
-            $installed | Select-Object $SelectProperty | Sort-Object ProgramName
-        }#foreach computer
-    }#process
-}
-
-
-function Get-IPrange {
-<#
-.SYNOPSIS
-    Lists IPs within a range, subnet, or CIDR block.
-.DESCRIPTION
-    Lists IPs within a range, subnet, or CIDR block.
-.PARAMETER CIDR
-    Specifies what CIDR block notation you want to list IPs from.
-.PARAMETER End
-    The ending IP in a range.
-.PARAMETER IP
-    An IP from the subnet mask or CIDR block you want a range for.
-.PARAMETER Start
-    Specifies a path to one or more locations.
-.PARAMETER Subnet
-    The subnet mask you want a range for.
-.EXAMPLE
-    C:\PS>Get-IPrange -ip 192.168.0.3 -subnet 255.255.255.192
-    Will show all IPs within the 192.168.0.0 space with a subnet mask of 255.255.255.192 (CIDR 26.)
-.EXAMPLE
-    C:\PS>Get-IPrange -PARAMETER
-    Another example of how to use this cmdlet but with a parameter or switch.
-.NOTES
-    Author: Skyler Hart
-    Created: Sometime before 8/7/2017
-    Last Edit: 2020-08-20 09:11:46
-    Keywords:
-.LINK
-    https://wstools.dev
-#>
-    [CmdletBinding()]
-    Param (
-        [Parameter(
-            Mandatory=$false,
-            Position=0
-        )]
-        [Alias('IPv4','Address','IPv4Address')]
-        [string]$IP,
-
-        [Parameter(
-            Mandatory=$false
-        )]
-        [Alias('Notation','Block')]
-        [string]$CIDR,
-
-        [Parameter(
-            Mandatory=$false
-        )]
-        [Alias('Mask')]
-        [string]$Subnet,
-
-        [Parameter(
-            Mandatory=$false
-        )]
-        [string]$Start,
-
-        [Parameter(
-            Mandatory=$false
-        )]
-        [string]$End
-    )
-
-    function Convert-IPtoINT64 () {
-        param ($IP)
-        $octets = $IP.split(".")
-        return [int64]([int64]$octets[0]*16777216 +[int64]$octets[1]*65536 +[int64]$octets[2]*256 +[int64]$octets[3])
-    }
-
-    function Convert-INT64toIP() {
-        param ([int64]$int)
-        return (([math]::truncate($int/16777216)).tostring()+"."+([math]::truncate(($int%16777216)/65536)).tostring()+"."+([math]::truncate(($int%65536)/256)).tostring()+"."+([math]::truncate($int%256)).tostring())
-    }
-
-    if ($IP) {$ipaddr = [Net.IPAddress]::Parse($IP)}
-    if ($CIDR) {$maskaddr = [Net.IPAddress]::Parse((Convert-INT64toIP -int ([convert]::ToInt64(("1"*$CIDR+"0"*(32-$CIDR)),2)))) }
-    if ($Subnet) {$maskaddr = [Net.IPAddress]::Parse($Subnet)}
-    if ($IP) {$networkaddr = new-object net.ipaddress ($maskaddr.address -band $ipaddr.address)}
-    if ($IP) {$broadcastaddr = new-object net.ipaddress (([system.net.ipaddress]::parse("255.255.255.255").address -bxor $maskaddr.address -bor $networkaddr.address))}
-
-    if ($IP) {
-        $startaddr = Convert-IPtoINT64 -IP $networkaddr.ipaddresstostring
-        $endaddr = Convert-IPtoINT64 -IP $broadcastaddr.ipaddresstostring
-    } else {
-        $startaddr = Convert-IPtoINT64 -IP $start
-        $endaddr = Convert-IPtoINT64 -IP $end
-    }
-
-    for ($i = $startaddr; $i -le $endaddr; $i++) {
-        Convert-INT64toIP -int $i
     }
 }
 
