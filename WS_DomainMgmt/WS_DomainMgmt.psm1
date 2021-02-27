@@ -508,22 +508,6 @@ Function Get-UserWithThumbnail {
 }
 
 
-function Register-ADSIEdit {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2020-04-19 19:53:38
-    Last Edit: 2020-04-19 19:53:38
-    Keywords:
-.LINK
-    https://wstools.dev
-#>
-    regsvr32.exe adsiedit.dll
-}
-New-Alias -Name "Initialize-ADSIEdit" -Value Register-ADSIEdit
-New-Alias -Name "Enable-ADSIEdit" -Value Register-ADSIEdit
-
-
 Function Open-ADDomainsAndTrusts {
 <#
    .Notes
@@ -799,6 +783,22 @@ Function Open-vCenter {
     }
 }
 New-Alias -Name "vCenter" -Value Open-vCenter
+
+
+function Register-ADSIEdit {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2020-04-19 19:53:38
+    Last Edit: 2020-04-19 19:53:38
+    Keywords:
+.LINK
+    https://wstools.dev
+#>
+    regsvr32.exe adsiedit.dll
+}
+New-Alias -Name "Initialize-ADSIEdit" -Value Register-ADSIEdit
+New-Alias -Name "Enable-ADSIEdit" -Value Register-ADSIEdit
 
 
 Function Register-Schema {
