@@ -1,13 +1,23 @@
 ######################
 #                    #
+#      v1.3.1.0      #
+#    February 2021   #
+######################
+Known issues:
+1. Get-NICInfo doesn't always run.
+
+New features and other changes:
+1. Reordered several functions to be more alphabetical.
+2. Added Disable-RDP.
+3. Added admin check to Enable-RDP.
+
+######################
+#                    #
 #      v1.3.0.1      #
 #    January 2021    #
 ######################
 Known issues:
 1. Get-NICInfo doesn't always run.
-
-Bug fixes:
-1. 
 
 New features and other changes:
 1. Changed Connect-RDP so that if it is blank, it just opens a new Remote Desktop window.
@@ -15,8 +25,6 @@ New features and other changes:
 3. Added more detailed version checking to 6 programs in InstallRemote.ps1.
 4. Removed 130+ PSScriptAnalyzer issues.
 
-Removed items:
-1. 
 
 ######################
 #                    #
@@ -134,21 +142,21 @@ New features and other changes:
     allowing them to easily setup the Visual Studio Code Snippets.
 2. Added the README markdown file.
 3. Started a changelog.
-4. Added a config file for the WSTools module so settings can be modified easily. Mainly for use internally in functions. Started converting 
+4. Added a config file for the WSTools module so settings can be modified easily. Mainly for use internally in functions. Started converting
     some functions to work with the new config file.
 5. Added Set-WSToolsConfig function with aliases Open-WSToolsConfig and Update-WSToolsConfig.
 6. Modified Install-Patches to use the InstallRemote.ps1 file in the WSTools module folder instead of a file on a file server. Also copied the
     updated Get-InstalledPrograms and Join-File functions to InstallRemote.ps1.
 7. Added Set-Preferences function (pulls from values in config.ps1.)
-8. Wrote Get-NetworkLevelAuthentication and Set-NetworkLevelAuthentication (aliases Get-NLA and Set-NLA respectively) using registry key methods. 
-    Removed the 3rd party functions with same names that used CimInstance methods as they were unreliable on secure networks and could not get 
+8. Wrote Get-NetworkLevelAuthentication and Set-NetworkLevelAuthentication (aliases Get-NLA and Set-NLA respectively) using registry key methods.
+    Removed the 3rd party functions with same names that used CimInstance methods as they were unreliable on secure networks and could not get
     WMIInstance methods to work.
 9. Added Get-Errors function which will display information on errors in the current session. Removed the Get-PowerShellErrorLog function as it was inop.
 10. Added error checking to some functions and more detailed error checking to some that previously had error checking.
 11. Added Register-ADSIEdit function. Changed Open-ADSIEdit to try registering the dll automatically if it is not registered already but installed.
 12. Added Get-Drives which just does a Get-PSDrive -Name *. Mainly so the alias Drives can be used to show all drives without typing extra text.
 13. Added aliases to several functions. To many to list.
-14. Added function Get-LocalUsers which works on local and remote computers (not to be confused with the built-in Get-LocalUser that only works on a 
+14. Added function Get-LocalUsers which works on local and remote computers (not to be confused with the built-in Get-LocalUser that only works on a
     local computer.)
 15. Added Get-BitLockerStatus which uses the built-in manage-bde.exe unstructured data reported and makes it structured.
 16. Added Set-DirtyShutdown which will clear a dirty shutdown and prevent the Shutdown Tracker from continually showing up.
