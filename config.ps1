@@ -223,13 +223,13 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     SCNetBios = 1
 
     #Offloading of Checksums and Large Files to the NIC see more info at https://docs.microsoft.com/en-us/windows-server/networking/technologies/hpn/hpn-hardware-only-features
-    <#Skyler speaking here, "I personally and professionally recommend disabling these. I've ran into WAY to many issues over my 20 years in IT that have been caused by these being enabled. I've
+    <#Skyler speaking here, I personally and professionally recommend disabling these. I've ran into WAY to many issues over my 20 years in IT that have been caused by these being enabled. I've
     had several Premier Field Engineers from Microsoft also tell me to disable them and 10/10 times it will improve network performance. If you have a small site at a single location you might
     be able to get away with enabling these. But even on my small personal network at home I've noticed significant network improvements by disabling these offload settings.
 
     However, please note on newer operating systems and hardware disabling this (setting to $false) may actually hinder performance. Such as on Windows 10, Windows Server 2016/2019, and
     newer operating systems or those running on VMWare 6.7+.
-    "#>
+    #>
     # $true=Enable $false=Disable
     SCOffload = $false
 
