@@ -320,6 +320,32 @@ Function Clear-Space {
 }
 
 
+function Connect-RDP {
+<#
+   .Notes
+    AUTHOR: Skyler Hart
+    CREATED: 2017-08-18 20:48:07
+    LASTEDIT: 2021-01-25 18:06:26
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$false, Position=0)]
+        [Alias('Host','Name','Computer','CN')]
+        [string]$ComputerName
+    )
+
+    if ($null -ne $ComputerName -or $ComputerName -ne "") {
+        mstsc /v:$ComputerName /admin
+    }
+    else {
+        mstsc
+    }
+}
+New-Alias -Name "rdp" -Value Connect-RDP
+
+
 function Convert-AppIconToBase64 {
 <#
 .SYNOPSIS
@@ -402,6 +428,24 @@ function Convert-ImageToBase64 {
 New-Alias -Name "Convert-ICOtoBase64" -Value Convert-ImageToBase64
 
 
+function Disable-RDP {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2021-02-27 11:44:34
+    Last Edit: 2021-02-27 11:47:07
+    Keywords:
+    Requires:
+        -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+    if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -value 1}
+    else {throw {"Must be ran as admin"}}
+}
+
+
 function Disable-ServerManager {
 <#
 .NOTES
@@ -423,14 +467,142 @@ function Enable-RDP {
 .NOTES
     Author: Skyler Hart
     Created: 2020-05-08 23:21:17
-    Last Edit: 2020-05-08 23:21:17
+    Last Edit: 2021-02-27 11:47:20
     Keywords:
     Requires:
         -RunAsAdministrator
 .LINK
     https://wstools.dev
 #>
-    Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -value 0
+    $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+    if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -value 0}
+    else {throw {"Must be ran as admin"}}
+}
+
+
+function Get-BitLockerStatus {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2020-04-22 22:10:27
+    Last Edit: 2020-04-22 22:10:27
+    Keywords: BitLocker, Local, Remote, manage, manage-bde, bde
+    Requires:
+        -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    param(
+        [Parameter(
+            Mandatory=$false
+        )]
+        [Alias('Host','Name','Computer','CN')]
+        [string[]]$ComputerName = "$env:COMPUTERNAME"
+    )
+
+    $overall = @()
+    foreach ($Comp in $ComputerName) {
+        $i = 0
+        try {
+            $ErrorActionPreference = "Stop"
+            $bi = manage-bde.exe -ComputerName $Comp -status
+
+            #Get Drives
+            $drives = @()
+            $d = $bi | Select-String -Pattern 'Volume '
+            $drives += $d | ForEach-Object {
+                $_.ToString().Trim().Substring(0,8) -replace "Volume ",""
+            }#foreach drive
+
+            #Get Size
+            $size = @()
+            $si = $bi | Select-String -Pattern 'Size'
+            $size += $si | ForEach-Object {
+                $_.ToString().Trim().Substring(22)
+            }#foreach size
+
+            #Get BitLocker Version
+            $ver = @()
+            $v = $bi | Select-String -Pattern 'BitLocker Version'
+            $ver += $v | ForEach-Object {
+                $_.ToString().Trim().Substring(22)
+            }#foreach version
+
+            #Get Status
+            $status = @()
+            $s = $bi | Select-String -Pattern 'Conversion Status'
+            $status += $s | ForEach-Object {
+                $_.ToString().Trim().Substring(22)
+            }#foreach status
+
+            #Get Percent Encrypted
+            $per = @()
+            $p = $bi | Select-String -Pattern 'Percentage Encrypt'
+            $per += $p | ForEach-Object {
+                $_.ToString().Trim().Substring(22)
+            }#foreach percentage
+
+            #Get Encryption Method
+            $em = @()
+            $e = $bi | Select-String -Pattern 'Encryption Method'
+            $em += $e | ForEach-Object {
+                $_.ToString().Trim().Substring(22)
+            }#foreach encryption method
+
+            #Get Protection Status
+            $ps = @()
+            $pi = $bi | Select-String -Pattern 'Protection Status'
+            $ps += $pi | ForEach-Object {
+                $_.ToString().Trim().Substring(22)
+            }#foreach pro status
+
+            #Get Lock Status
+            $ls = @()
+            $li = $bi | Select-String -Pattern 'Lock Status'
+            $ls += $li | ForEach-Object {
+                $_.ToString().Trim().Substring(22)
+            }#foreach Lock Status
+
+            #Get ID Field
+            $id = @()
+            $ii = $bi | Select-String -Pattern 'Identification Field'
+            $id += $ii | ForEach-Object {
+                $_.ToString().Trim().Substring(22)
+            }#foreach ID
+
+            #Get Key Protectors
+            $key = @()
+            $k = $bi | Select-String -Pattern 'Key Protect'
+            $key += $k | ForEach-Object {
+                $_.ToString().Trim().Substring(22)
+            }#foreach
+        }#try
+        catch {
+            Write-Output "Unable to connect to $Comp"
+            $status = "Insuffiect permissions or unable to connect"
+        }
+
+        $num = $drives.Length
+        do {
+            $overall += New-Object -TypeName PSObject -Property @{
+                ComputerName = $Comp
+                Drive = $drives[$i]
+                Size = $size[$i]
+                BitLockerVersion = $ver[$i]
+                Status = $status[$i]
+                PercentEncrypted = $per[$i]
+                EncryptionMethod = $em[$i]
+                ProtectionStatus = $ps[$i]
+                LockStatus = $ls[$i]
+                ID_Field = $id[$i]
+                KeyProtectors = $key[$i]
+            }
+            $i++
+        }#do
+        while ($i -lt $num)
+    }#foreach comp
+    $overall | Select-Object ComputerName,Drive,Size,BitLockerVersion,Status,PercentEncrypted,EncryptionMethod,ProtectionStatus,LockStatus,ID_Field,KeyProtectors | Sort-Object ComputerName,Drive
 }
 
 
@@ -599,6 +771,223 @@ Function Get-DefaultBrowserPath {
 }
 
 
+function Get-DirectoryStat {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2020-08-09 10:07:49
+    Last Edit: 2020-08-09 21:35:14
+    Keywords:
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    param(
+        [Parameter(
+            HelpMessage = "Enter the path of the folder you want stats on. Ex: C:\Temp or \\computername\c$\temp",
+            Mandatory=$true,
+            Position=0,
+            ValueFromPipelineByPropertyName = $true,
+            ValueFromPipeline = $true
+        )]
+        [ValidateNotNullOrEmpty()]
+        [Alias('Dir','Folder','UNC')]
+        [string[]]$DirectoryName
+    )
+    Begin {}
+    Process {
+        foreach ($Directory in $DirectoryName) {
+            $stats = New-Object PsObject -Property @{Directory = $null; FileCount = 0; SizeBytes = [long]0; SizeKB = 0; SizeMB = 0; SizeGB = 0; Over100MB = 0; Over1GB = 0; Over5GB = 0}
+            $stats.Directory = $Directory
+            foreach ($d in [system.io.Directory]::EnumerateDirectories($Directory)) {
+                foreach ($f in [system.io.Directory]::EnumerateFiles($d)) {
+                    $length = (New-Object io.FileInfo $f).Length
+                    $stats.FileCount++
+                    $stats.SizeBytes += $length
+                    if ($length -gt 104857600) {$stats.Over100MB++}
+                    if ($length -gt 1073741824) {$stats.Over1GB++}
+                    if ($length -gt 5368709120) {$stats.Over5GB++}
+                    $stats.SizeKB += ("{0:N2}" -f ($length / 1KB))
+                    $stats.SizeMB += ("{0:N2}" -f ($length / 1MB))
+                    $stats.SizeGB += ("{0:N2}" -f ($length / 1GB))
+                } #foreach file
+            }#foreach subfolder get stats
+            foreach ($f in [system.io.Directory]::EnumerateFiles($Directory)) {
+                $length = (New-Object io.FileInfo $f).Length
+                $stats.FileCount++
+                $stats.SizeBytes += $length
+                if ($length -gt 104857600) {$stats.Over100MB++}
+                if ($length -gt 1073741824) {$stats.Over1GB++}
+                if ($length -gt 5368709120) {$stats.Over5GB++}
+                $stats.SizeKB += ("{0:N2}" -f ($length / 1KB))
+                $stats.SizeMB += ("{0:N2}" -f ($length / 1MB))
+                $stats.SizeGB += ("{0:N2}" -f ($length / 1GB))
+            }#foreach file
+            $stats | Select-Object Directory,FileCount,Over100MB,Over1GB,Over5GB,SizeBytes,SizeKB,SizeMB,SizeGB
+        }#foreach directory in #directoryname
+    }
+    End {}
+}
+
+
+function Get-Drive {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2020-04-19 20:29:58
+    Last Edit: 2020-04-19 20:29:58
+    Keywords:
+.LINK
+    https://wstools.dev
+#>
+    Get-PSDrive -Name *
+}
+New-Alias -Name "Drive" -Value Get-Drive
+
+
+function Get-Error {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2020-04-18 16:42:46
+    Last Edit: 2020-04-18 19:08:44
+    Keywords:
+.LINK
+    https://wstools.dev
+#>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
+    [CmdletBinding()]
+    Param (
+        [Parameter(
+            Mandatory=$false,
+            Position=0
+        )]
+        [int32]$HowMany
+    )
+
+    $Errors = $Global:Error
+
+    if ($null -eq $HowMany -or $HowMany -eq "") {
+        [int32]$HowMany = $Errors.Count
+    }
+
+    $n = $HowMany - 1
+    $logs = $Errors[0..$n]
+    $info = @()
+
+    foreach ($log in $logs) {
+        $scriptn = $log.InvocationInfo.ScriptName
+        $line = $log.InvocationInfo.ScriptLineNumber
+        $char = $log.InvocationInfo.OffsetInline
+        $command = $log.InvocationInfo.Line.Trim()
+        $exc = $log.Exception.GetType().fullname
+        $mes = $log.Exception.message.Trim()
+        $info += New-Object -TypeName PSObject -Property @{
+            Exception = "[$exc]"
+            Message = $mes
+            Script = $scriptn
+            Command = $command
+            Line = $line
+            Character = $char
+        } | Select-Object Exception,Message,Script,Command,Line,Character
+    }
+    $info
+}
+New-Alias -Name "Error" -Value Get-Error
+
+
+Function Get-ExpiredCertsComputer {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 10/04/2018 20:46:38
+    LASTEDIT: 10/04/2018 21:08:31
+    KEYWORDS:
+.LINK
+    https://wstools.dev
+#>
+    $cd = Get-Date
+    $certs = Get-ChildItem -Path Cert:\LocalMachine -Recurse | Select-Object *
+
+    $excerts = $null
+    $excerts = @()
+
+    foreach ($cer in $certs) {
+        if ($null -ne $cer.NotAfter -and $cer.NotAfter -lt $cd) {
+            $excerts += ($cer | Where-Object {$_.PSParentPath -notlike "*Root"} | Select-Object FriendlyName,SubjectName,NotBefore,NotAfter,SerialNumber,EnhancedKeyUsageList,DnsNameList,Issuer,Thumbprint,PSParentPath)
+        }
+    }
+}
+
+
+Function Get-ExpiredCertsUser {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 10/04/2018 21:08:39
+    LASTEDIT: 10/04/2018 21:09:34
+    KEYWORDS:
+.LINK
+    https://wstools.dev
+#>
+    $cd = Get-Date
+    $certs = Get-ChildItem -Path Cert:\CurrentUser -Recurse | Select-Object *
+
+    $excerts = $null
+    $excerts = @()
+
+    foreach ($cer in $certs) {
+        if ($null -ne $cer.NotAfter -and $cer.NotAfter -lt $cd) {
+            $excerts += ($cer | Where-Object {$_.PSParentPath -notlike "*Root"} | Select-Object FriendlyName,SubjectName,NotBefore,NotAfter,SerialNumber,EnhancedKeyUsageList,DnsNameList,Issuer,Thumbprint,PSParentPath)
+        }
+    }
+}
+
+
+Function Get-FeaturesOnDemand {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 09/25/2019 14:13:50
+    LASTEDIT: 2020-08-31 21:44:37
+    KEYWORDS:
+    REQUIRES:
+        Requires -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    $ninfo = @()
+    $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+    if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {$Role = 'Admin'}
+    else {$Role = 'User'}
+
+    if ($Role -eq "Admin") {
+        $info = (dism /online /get-capabilities | Where-Object {$_ -like "Capability Identity*" -or $_ -like "State*"})
+        $idents = ($info | Where-Object {$_ -like "Capa*"}).Split(' : ') | Where-Object {$_ -ne "Capability" -and $_ -ne "Identity" -and $_ -ne $null -and $_ -ne ""}
+        $state = $info | Where-Object {$_ -like "State*"}
+        $state = $state -replace "State : "
+
+        $i = 0
+        foreach ($ident in $idents) {
+            $state2 = $state[$i]
+            $ninfo = New-Object -TypeName PSObject -Property @{
+                CapabilityIdentity = $ident
+                State = $state2
+            }#new object
+            $ninfo | Select-Object CapabilityIdentity,State
+            $i++
+        }
+    }#if admin
+    else {
+        Write-Error "Not admin. Please run PowerShell as admin."
+    }
+}
+
+
 Function Get-FileMetaData {
 <#
 .Synopsis
@@ -658,178 +1047,54 @@ Function Get-FileMetaData {
 } #end Get-FileMetaData
 
 
-function Get-User {
+function Get-HomeDrive {
 <#
 .NOTES
     Author: Skyler Hart
-    Created: 2020-04-20 19:51:03
-    Last Edit: 2020-04-20 23:14:32
-    Requires:
-        -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
-    [CmdletBinding()]
-    param(
-        [Parameter(
-            Mandatory=$false,
-            Position=0
-        )]
-        [ValidateNotNullorEmpty()]
-        [Alias('Host','Name','Computer','CN')]
-        [string[]]$ComputerName = "$env:COMPUTERNAME",
-
-        [Parameter(
-            Mandatory=$false,
-            Position=1
-        )]
-        [Alias('Username')]
-        [string]$User
-    )
-
-    foreach ($Comp in $ComputerName) {
-        try {
-            #Connect to computer and get information on user/users
-            if ($null -ne $User) {
-                $ui = Get-WmiObject -Class Win32_UserAccount -filter "LocalAccount='True'" -ComputerName $comp -ErrorAction Stop | Select-Object Name,Description,Disabled,Lockout,PasswordChangeable,PasswordExpires,PasswordRequired | Where-Object {$_.Name -match $User}
-            }#if user not null
-            else {
-                $ui = Get-WmiObject -Class Win32_UserAccount -filter "LocalAccount='True'" -ComputerName $comp -ErrorAction Stop | Select-Object Name,Description,Disabled,Lockout,PasswordChangeable,PasswordExpires,PasswordRequired
-            }
-
-            ForEach ($u in $ui) {
-                New-Object -TypeName PSObject -Property @{
-                    Computer = $Comp
-                    User = $u.Name
-                    Description = $u.Description
-                    Disabled = $u.Disabled
-                    Locked = $u.Lockout
-                    PasswordChangeable = $u.PasswordChangeable
-                    PasswordExpires = $u.PasswordExpires
-                    PasswordRequired = $u.PasswordRequired
-                } | Select-Object Computer,User,Description,Disabled,Locked,PasswordChangeable,PasswordExpires,PasswordRequired
-            }#foreach u
-        }#try
-        catch {
-            New-Object -TypeName PSObject -Property @{
-                Computer = $Comp
-                User = $null
-                Description = $null
-                Disabled = $null
-                Locked = $null
-                PasswordChangeable = $null
-                PasswordExpires = $null
-                PasswordRequired = $null
-            } | Select-Object Computer,User,Description,Disabled,Locked,PasswordChangeable,PasswordExpires,PasswordRequired
-        }#catch
-    }#foreach comp
-}
-
-
-function Get-UserGroup {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2020-11-03 11:14:26
-    Last Edit: 2020-11-03 11:14:26
+    Created: 2020-11-03 15:02:09
+    Last Edit: 2020-11-03 15:02:09
     Keywords:
 .LINK
     https://wstools.dev
 #>
-    $id = [Security.Principal.WindowsIdentity]::GetCurrent()
-    $groups = $id.Groups | foreach-object {$_.Translate([Security.Principal.NTAccount])}
-    $groups | Select-Object Value -ExpandProperty Value
+    $env:HOMESHARE
 }
 
 
-Function Get-LockedOutLocation {
+Function Get-IEVersion {
 <#
-.SYNOPSIS
-    This function will locate the computer that processed a failed user logon attempt which caused the user account to become locked out.
-.DESCRIPTION
-    This function will locate the computer that processed a failed user logon attempt which caused the user account to become locked out.
-    The locked out location is found by querying the PDC Emulator for locked out events (4740).
-    The function will display the BadPasswordTime attribute on all of the domain controllers to add in further troubleshooting.
-.EXAMPLE
-    PS C:\>Get-LockedOutLocation -Identity Joe.Davis
-    This example will find the locked out location for Joe Davis.
-.NOTES
-    This function is only compatible with an environment where the domain controller with the PDCe role to be running Windows Server 2008 SP2 and up.
-    The script is also dependent the ActiveDirectory PowerShell module, which requires the AD Web services to be running on at least one domain controller.
-    Author:Jason Walker
-    Last Modified: 3/20/2013
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 09/21/2017 13:06:15
+    LASTEDIT: 09/21/2017 13:06:15
+    KEYWORDS:
+.LINK
+    https://wstools.dev
 #>
     [CmdletBinding()]
-    Param(
-      [Parameter(Mandatory=$True)]
-        [String]$Identity
+    Param (
+        [Parameter(
+            Mandatory=$false,
+            Position=0
+        )]
+        [Alias('Host','Name','Computer','CN')]
+        [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
 
-    Begin {
-        $DCCounter = 0
-        $LockedOutStats = @()
-        Try {
-            Import-Module ActiveDirectory -ErrorAction Stop
-        }
-        Catch {
-           Write-Warning $_
-           Break
-        }
-    }#end begin
-    Process {
-        #Get all domain controllers in domain
-        $DomainControllers = Get-ADDomainController -Filter *
-        $PDCEmulator = ($DomainControllers | Where-Object {$_.OperationMasterRoles -contains "PDCEmulator"})
-
-        Write-Verbose "Finding the domain controllers in the domain"
-        Foreach($DC in $DomainControllers) {
-            $DCCounter++
-            Write-Progress -Activity "Contacting DCs for lockout info" -Status "Querying $($DC.Hostname)" -PercentComplete (($DCCounter/$DomainControllers.Count) * 100)
-            Try {
-                $UserInfo = Get-ADUser -Identity $Identity  -Server $DC.Hostname -Properties AccountLockoutTime,LastBadPasswordAttempt,BadPwdCount,LockedOut -ErrorAction Stop
-            }
-            Catch {
-                Write-Warning $_
-                Continue
-            }
-            If($UserInfo.LastBadPasswordAttempt) {
-                $LockedOutStats += New-Object -TypeName PSObject -Property @{
-                        Name                   = $UserInfo.SamAccountName
-                        SID                    = $UserInfo.SID.Value
-                        LockedOut              = $UserInfo.LockedOut
-                        BadPwdCount            = $UserInfo.BadPwdCount
-                        BadPasswordTime        = $UserInfo.BadPasswordTime
-                        DomainController       = $DC.Hostname
-                        AccountLockoutTime     = $UserInfo.AccountLockoutTime
-                        LastBadPasswordAttempt = ($UserInfo.LastBadPasswordAttempt).ToLocalTime()
-                    }
-            }#end if
-        }#end foreach DCs
-        $LockedOutStats | Format-Table -Property Name,LockedOut,DomainController,BadPwdCount,AccountLockoutTime,LastBadPasswordAttempt -AutoSize
-
-        #Get User Info
-        Try {
-           Write-Verbose "Querying event log on $($PDCEmulator.HostName)"
-            $LockedOutEvents = Get-WinEvent -ComputerName $PDCEmulator.HostName -FilterHashtable @{LogName='Security';Id=4740} -ErrorAction Stop | Sort-Object -Property TimeCreated -Descending
-        }
-        Catch {
-           Write-Warning $_
-            Continue
-        }#end catch
-        Foreach($Event in $LockedOutEvents) {
-            If($Event | Where-Object {$_.Properties[2].value -match $UserInfo.SID.Value}) {
-                $Event | Select-Object -Property @(
-                    @{Label = 'User';               Expression = {$_.Properties[0].Value}}
-                    @{Label = 'DomainController';   Expression = {$_.MachineName}}
-                    @{Label = 'EventId';            Expression = {$_.Id}}
-                    @{Label = 'LockedOutTimeStamp'; Expression = {$_.TimeCreated}}
-                    @{Label = 'Message';            Expression = {$_.Message -split "`r" | Select-Object -First 1}}
-                    @{Label = 'LockedOutLocation';  Expression = {$_.Properties[1].Value}}
-                )
-            }#end ifevent
-        }#end foreach lockedout event
-    }#end process
-}#end function
+    $keyname = 'SOFTWARE\\Microsoft\\Internet Explorer'
+    foreach ($comp in $ComputerName) {
+        $reg = $null
+        $key = $null
+        $value = $null
+        $reg = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey('LocalMachine', $comp)
+        $key = $reg.OpenSubkey($keyname)
+        $value = $key.GetValue('Version')
+        New-Object psobject -Property @{
+            ComputerName = $comp
+            IEVersion = $value
+        }#new object
+    }#foreach computer
+}
 
 
 Function Get-InstalledProgram {
@@ -1024,308 +1289,94 @@ function Get-IPrange {
 }
 
 
-function Get-DirectoryStat {
+Function Get-LockedOutLocation {
 <#
+.SYNOPSIS
+    This function will locate the computer that processed a failed user logon attempt which caused the user account to become locked out.
+.DESCRIPTION
+    This function will locate the computer that processed a failed user logon attempt which caused the user account to become locked out.
+    The locked out location is found by querying the PDC Emulator for locked out events (4740).
+    The function will display the BadPasswordTime attribute on all of the domain controllers to add in further troubleshooting.
+.EXAMPLE
+    PS C:\>Get-LockedOutLocation -Identity Joe.Davis
+    This example will find the locked out location for Joe Davis.
 .NOTES
-    Author: Skyler Hart
-    Created: 2020-08-09 10:07:49
-    Last Edit: 2020-08-09 21:35:14
-    Keywords:
-.LINK
-    https://wstools.dev
+    This function is only compatible with an environment where the domain controller with the PDCe role to be running Windows Server 2008 SP2 and up.
+    The script is also dependent the ActiveDirectory PowerShell module, which requires the AD Web services to be running on at least one domain controller.
+    Author:Jason Walker
+    Last Modified: 3/20/2013
 #>
     [CmdletBinding()]
-    param(
-        [Parameter(
-            HelpMessage = "Enter the path of the folder you want stats on. Ex: C:\Temp or \\computername\c$\temp",
-            Mandatory=$true,
-            Position=0,
-            ValueFromPipelineByPropertyName = $true,
-            ValueFromPipeline = $true
-        )]
-        [ValidateNotNullOrEmpty()]
-        [Alias('Dir','Folder','UNC')]
-        [string[]]$DirectoryName
+    Param(
+      [Parameter(Mandatory=$True)]
+        [String]$Identity
     )
-    Begin {}
+
+    Begin {
+        $DCCounter = 0
+        $LockedOutStats = @()
+        Try {
+            Import-Module ActiveDirectory -ErrorAction Stop
+        }
+        Catch {
+           Write-Warning $_
+           Break
+        }
+    }#end begin
     Process {
-        foreach ($Directory in $DirectoryName) {
-            $stats = New-Object PsObject -Property @{Directory = $null; FileCount = 0; SizeBytes = [long]0; SizeKB = 0; SizeMB = 0; SizeGB = 0; Over100MB = 0; Over1GB = 0; Over5GB = 0}
-            $stats.Directory = $Directory
-            foreach ($d in [system.io.Directory]::EnumerateDirectories($Directory)) {
-                foreach ($f in [system.io.Directory]::EnumerateFiles($d)) {
-                    $length = (New-Object io.FileInfo $f).Length
-                    $stats.FileCount++
-                    $stats.SizeBytes += $length
-                    if ($length -gt 104857600) {$stats.Over100MB++}
-                    if ($length -gt 1073741824) {$stats.Over1GB++}
-                    if ($length -gt 5368709120) {$stats.Over5GB++}
-                    $stats.SizeKB += ("{0:N2}" -f ($length / 1KB))
-                    $stats.SizeMB += ("{0:N2}" -f ($length / 1MB))
-                    $stats.SizeGB += ("{0:N2}" -f ($length / 1GB))
-                } #foreach file
-            }#foreach subfolder get stats
-            foreach ($f in [system.io.Directory]::EnumerateFiles($Directory)) {
-                $length = (New-Object io.FileInfo $f).Length
-                $stats.FileCount++
-                $stats.SizeBytes += $length
-                if ($length -gt 104857600) {$stats.Over100MB++}
-                if ($length -gt 1073741824) {$stats.Over1GB++}
-                if ($length -gt 5368709120) {$stats.Over5GB++}
-                $stats.SizeKB += ("{0:N2}" -f ($length / 1KB))
-                $stats.SizeMB += ("{0:N2}" -f ($length / 1MB))
-                $stats.SizeGB += ("{0:N2}" -f ($length / 1GB))
-            }#foreach file
-            $stats | Select-Object Directory,FileCount,Over100MB,Over1GB,Over5GB,SizeBytes,SizeKB,SizeMB,SizeGB
-        }#foreach directory in #directoryname
-    }
-    End {}
-}
+        #Get all domain controllers in domain
+        $DomainControllers = Get-ADDomainController -Filter *
+        $PDCEmulator = ($DomainControllers | Where-Object {$_.OperationMasterRoles -contains "PDCEmulator"})
 
+        Write-Verbose "Finding the domain controllers in the domain"
+        Foreach($DC in $DomainControllers) {
+            $DCCounter++
+            Write-Progress -Activity "Contacting DCs for lockout info" -Status "Querying $($DC.Hostname)" -PercentComplete (($DCCounter/$DomainControllers.Count) * 100)
+            Try {
+                $UserInfo = Get-ADUser -Identity $Identity  -Server $DC.Hostname -Properties AccountLockoutTime,LastBadPasswordAttempt,BadPwdCount,LockedOut -ErrorAction Stop
+            }
+            Catch {
+                Write-Warning $_
+                Continue
+            }
+            If($UserInfo.LastBadPasswordAttempt) {
+                $LockedOutStats += New-Object -TypeName PSObject -Property @{
+                        Name                   = $UserInfo.SamAccountName
+                        SID                    = $UserInfo.SID.Value
+                        LockedOut              = $UserInfo.LockedOut
+                        BadPwdCount            = $UserInfo.BadPwdCount
+                        BadPasswordTime        = $UserInfo.BadPasswordTime
+                        DomainController       = $DC.Hostname
+                        AccountLockoutTime     = $UserInfo.AccountLockoutTime
+                        LastBadPasswordAttempt = ($UserInfo.LastBadPasswordAttempt).ToLocalTime()
+                    }
+            }#end if
+        }#end foreach DCs
+        $LockedOutStats | Format-Table -Property Name,LockedOut,DomainController,BadPwdCount,AccountLockoutTime,LastBadPasswordAttempt -AutoSize
 
-#Look up "root\WMI" or "root\CCM" using Get-ComputerWMINamespaces
-Function Get-WMIClass {
-<#
-.Notes
-    AUTHOR: Skyler Hart
-    CREATED: 09/21/2017 13:05:10
-    LASTEDIT: 09/21/2017 13:05:10
-    KEYWORDS:
-.LINK
-    https://wstools.dev
-#>
-    [CmdletBinding()]
-    Param (
-        [Parameter(
-            Mandatory=$false,
-            Position=0
-        )]
-        [Alias('Host','Name','Computer','CN')]
-        [string]$ComputerName = "$env:COMPUTERNAME"
-    )
-
-    Get-WmiObject -Namespace root\WMI -ComputerName $ComputerName -List
-}
-
-
-Function Get-WMINameSpace {
-<#
-.Notes
-    AUTHOR: Skyler Hart
-    CREATED: 09/21/2017 13:05:21
-    LASTEDIT: 09/21/2017 13:05:21
-    KEYWORDS:
-.LINK
-    https://wstools.dev
-#>
-    [CmdletBinding()]
-    Param (
-        [Parameter(
-            Mandatory=$false,
-            Position=0
-        )]
-        [Alias('Host','Name','Computer','CN')]
-        [string]$ComputerName = "$env:COMPUTERNAME",
-
-        [string]$Namespace = "root"
-    )
-
-    Get-WmiObject -Namespace $Namespace -Class "__Namespace" -ComputerName $ComputerName | Select-Object Name
-}
-
-
-function Get-Drive {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2020-04-19 20:29:58
-    Last Edit: 2020-04-19 20:29:58
-    Keywords:
-.LINK
-    https://wstools.dev
-#>
-    Get-PSDrive -Name *
-}
-New-Alias -Name "Drive" -Value Get-Drive
-
-
-function Get-Error {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2020-04-18 16:42:46
-    Last Edit: 2020-04-18 19:08:44
-    Keywords:
-.LINK
-    https://wstools.dev
-#>
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-        "PSAvoidGlobalVars",
-        "",
-        Justification = "Have tried other methods and they do not work consistently."
-    )]
-    [CmdletBinding()]
-    Param (
-        [Parameter(
-            Mandatory=$false,
-            Position=0
-        )]
-        [int32]$HowMany
-    )
-
-    $Errors = $Global:Error
-
-    if ($null -eq $HowMany -or $HowMany -eq "") {
-        [int32]$HowMany = $Errors.Count
-    }
-
-    $n = $HowMany - 1
-    $logs = $Errors[0..$n]
-    $info = @()
-
-    foreach ($log in $logs) {
-        $scriptn = $log.InvocationInfo.ScriptName
-        $line = $log.InvocationInfo.ScriptLineNumber
-        $char = $log.InvocationInfo.OffsetInline
-        $command = $log.InvocationInfo.Line.Trim()
-        $exc = $log.Exception.GetType().fullname
-        $mes = $log.Exception.message.Trim()
-        $info += New-Object -TypeName PSObject -Property @{
-            Exception = "[$exc]"
-            Message = $mes
-            Script = $scriptn
-            Command = $command
-            Line = $line
-            Character = $char
-        } | Select-Object Exception,Message,Script,Command,Line,Character
-    }
-    $info
-}
-New-Alias -Name "Error" -Value Get-Error
-
-
-Function Get-ExpiredCertsComputer {
-<#
-.Notes
-    AUTHOR: Skyler Hart
-    CREATED: 10/04/2018 20:46:38
-    LASTEDIT: 10/04/2018 21:08:31
-    KEYWORDS:
-.LINK
-    https://wstools.dev
-#>
-    $cd = Get-Date
-    $certs = Get-ChildItem -Path Cert:\LocalMachine -Recurse | Select-Object *
-
-    $excerts = $null
-    $excerts = @()
-
-    foreach ($cer in $certs) {
-        if ($null -ne $cer.NotAfter -and $cer.NotAfter -lt $cd) {
-            $excerts += ($cer | Where-Object {$_.PSParentPath -notlike "*Root"} | Select-Object FriendlyName,SubjectName,NotBefore,NotAfter,SerialNumber,EnhancedKeyUsageList,DnsNameList,Issuer,Thumbprint,PSParentPath)
+        #Get User Info
+        Try {
+           Write-Verbose "Querying event log on $($PDCEmulator.HostName)"
+            $LockedOutEvents = Get-WinEvent -ComputerName $PDCEmulator.HostName -FilterHashtable @{LogName='Security';Id=4740} -ErrorAction Stop | Sort-Object -Property TimeCreated -Descending
         }
-    }
-}
-
-
-Function Get-ExpiredCertsUser {
-<#
-.Notes
-    AUTHOR: Skyler Hart
-    CREATED: 10/04/2018 21:08:39
-    LASTEDIT: 10/04/2018 21:09:34
-    KEYWORDS:
-.LINK
-    https://wstools.dev
-#>
-    $cd = Get-Date
-    $certs = Get-ChildItem -Path Cert:\CurrentUser -Recurse | Select-Object *
-
-    $excerts = $null
-    $excerts = @()
-
-    foreach ($cer in $certs) {
-        if ($null -ne $cer.NotAfter -and $cer.NotAfter -lt $cd) {
-            $excerts += ($cer | Where-Object {$_.PSParentPath -notlike "*Root"} | Select-Object FriendlyName,SubjectName,NotBefore,NotAfter,SerialNumber,EnhancedKeyUsageList,DnsNameList,Issuer,Thumbprint,PSParentPath)
-        }
-    }
-}
-
-
-Function Get-FeaturesOnDemand {
-<#
-.Notes
-    AUTHOR: Skyler Hart
-    CREATED: 09/25/2019 14:13:50
-    LASTEDIT: 2020-08-31 21:44:37
-    KEYWORDS:
-    REQUIRES:
-        Requires -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
-    $ninfo = @()
-    $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
-    if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {$Role = 'Admin'}
-    else {$Role = 'User'}
-
-    if ($Role -eq "Admin") {
-        $info = (dism /online /get-capabilities | Where-Object {$_ -like "Capability Identity*" -or $_ -like "State*"})
-        $idents = ($info | Where-Object {$_ -like "Capa*"}).Split(' : ') | Where-Object {$_ -ne "Capability" -and $_ -ne "Identity" -and $_ -ne $null -and $_ -ne ""}
-        $state = $info | Where-Object {$_ -like "State*"}
-        $state = $state -replace "State : "
-
-        $i = 0
-        foreach ($ident in $idents) {
-            $state2 = $state[$i]
-            $ninfo = New-Object -TypeName PSObject -Property @{
-                CapabilityIdentity = $ident
-                State = $state2
-            }#new object
-            $ninfo | Select-Object CapabilityIdentity,State
-            $i++
-        }
-    }#if admin
-    else {
-        Write-Error "Not admin. Please run PowerShell as admin."
-    }
-}
-
-
-Function Get-IEVersion {
-<#
-.Notes
-    AUTHOR: Skyler Hart
-    CREATED: 09/21/2017 13:06:15
-    LASTEDIT: 09/21/2017 13:06:15
-    KEYWORDS:
-.LINK
-    https://wstools.dev
-#>
-    [CmdletBinding()]
-    Param (
-        [Parameter(
-            Mandatory=$false,
-            Position=0
-        )]
-        [Alias('Host','Name','Computer','CN')]
-        [string[]]$ComputerName = "$env:COMPUTERNAME"
-    )
-
-    $keyname = 'SOFTWARE\\Microsoft\\Internet Explorer'
-    foreach ($comp in $ComputerName) {
-        $reg = $null
-        $key = $null
-        $value = $null
-        $reg = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey('LocalMachine', $comp)
-        $key = $reg.OpenSubkey($keyname)
-        $value = $key.GetValue('Version')
-        New-Object psobject -Property @{
-            ComputerName = $comp
-            IEVersion = $value
-        }#new object
-    }#foreach computer
-}
+        Catch {
+           Write-Warning $_
+            Continue
+        }#end catch
+        Foreach($Event in $LockedOutEvents) {
+            If($Event | Where-Object {$_.Properties[2].value -match $UserInfo.SID.Value}) {
+                $Event | Select-Object -Property @(
+                    @{Label = 'User';               Expression = {$_.Properties[0].Value}}
+                    @{Label = 'DomainController';   Expression = {$_.MachineName}}
+                    @{Label = 'EventId';            Expression = {$_.Id}}
+                    @{Label = 'LockedOutTimeStamp'; Expression = {$_.TimeCreated}}
+                    @{Label = 'Message';            Expression = {$_.Message -split "`r" | Select-Object -First 1}}
+                    @{Label = 'LockedOutLocation';  Expression = {$_.Properties[1].Value}}
+                )
+            }#end ifevent
+        }#end foreach lockedout event
+    }#end process
+}#end function
 
 
 Function Get-MTU {
@@ -1905,132 +1956,6 @@ Function Get-OperatingSystem {
         }#newobject
     }
     }#foreach comp
-}
-
-
-function Get-BitLockerStatus {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2020-04-22 22:10:27
-    Last Edit: 2020-04-22 22:10:27
-    Keywords: BitLocker, Local, Remote, manage, manage-bde, bde
-    Requires:
-        -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
-    [CmdletBinding()]
-    param(
-        [Parameter(
-            Mandatory=$false
-        )]
-        [Alias('Host','Name','Computer','CN')]
-        [string[]]$ComputerName = "$env:COMPUTERNAME"
-    )
-
-    $overall = @()
-    foreach ($Comp in $ComputerName) {
-        $i = 0
-        try {
-            $ErrorActionPreference = "Stop"
-            $bi = manage-bde.exe -ComputerName $Comp -status
-
-            #Get Drives
-            $drives = @()
-            $d = $bi | Select-String -Pattern 'Volume '
-            $drives += $d | ForEach-Object {
-                $_.ToString().Trim().Substring(0,8) -replace "Volume ",""
-            }#foreach drive
-
-            #Get Size
-            $size = @()
-            $si = $bi | Select-String -Pattern 'Size'
-            $size += $si | ForEach-Object {
-                $_.ToString().Trim().Substring(22)
-            }#foreach size
-
-            #Get BitLocker Version
-            $ver = @()
-            $v = $bi | Select-String -Pattern 'BitLocker Version'
-            $ver += $v | ForEach-Object {
-                $_.ToString().Trim().Substring(22)
-            }#foreach version
-
-            #Get Status
-            $status = @()
-            $s = $bi | Select-String -Pattern 'Conversion Status'
-            $status += $s | ForEach-Object {
-                $_.ToString().Trim().Substring(22)
-            }#foreach status
-
-            #Get Percent Encrypted
-            $per = @()
-            $p = $bi | Select-String -Pattern 'Percentage Encrypt'
-            $per += $p | ForEach-Object {
-                $_.ToString().Trim().Substring(22)
-            }#foreach percentage
-
-            #Get Encryption Method
-            $em = @()
-            $e = $bi | Select-String -Pattern 'Encryption Method'
-            $em += $e | ForEach-Object {
-                $_.ToString().Trim().Substring(22)
-            }#foreach encryption method
-
-            #Get Protection Status
-            $ps = @()
-            $pi = $bi | Select-String -Pattern 'Protection Status'
-            $ps += $pi | ForEach-Object {
-                $_.ToString().Trim().Substring(22)
-            }#foreach pro status
-
-            #Get Lock Status
-            $ls = @()
-            $li = $bi | Select-String -Pattern 'Lock Status'
-            $ls += $li | ForEach-Object {
-                $_.ToString().Trim().Substring(22)
-            }#foreach Lock Status
-
-            #Get ID Field
-            $id = @()
-            $ii = $bi | Select-String -Pattern 'Identification Field'
-            $id += $ii | ForEach-Object {
-                $_.ToString().Trim().Substring(22)
-            }#foreach ID
-
-            #Get Key Protectors
-            $key = @()
-            $k = $bi | Select-String -Pattern 'Key Protect'
-            $key += $k | ForEach-Object {
-                $_.ToString().Trim().Substring(22)
-            }#foreach
-        }#try
-        catch {
-            Write-Output "Unable to connect to $Comp"
-            $status = "Insuffiect permissions or unable to connect"
-        }
-
-        $num = $drives.Length
-        do {
-            $overall += New-Object -TypeName PSObject -Property @{
-                ComputerName = $Comp
-                Drive = $drives[$i]
-                Size = $size[$i]
-                BitLockerVersion = $ver[$i]
-                Status = $status[$i]
-                PercentEncrypted = $per[$i]
-                EncryptionMethod = $em[$i]
-                ProtectionStatus = $ps[$i]
-                LockStatus = $ls[$i]
-                ID_Field = $id[$i]
-                KeyProtectors = $key[$i]
-            }
-            $i++
-        }#do
-        while ($i -lt $num)
-    }#foreach comp
-    $overall | Select-Object ComputerName,Drive,Size,BitLockerVersion,Status,PercentEncrypted,EncryptionMethod,ProtectionStatus,LockStatus,ID_Field,KeyProtectors | Sort-Object ComputerName,Drive
 }
 
 
@@ -2646,70 +2571,138 @@ function Get-UpdateHistory {
 }
 
 
-function Save-MaintenanceReport {
+function Get-User {
 <#
 .NOTES
     Author: Skyler Hart
-    Created: 2020-06-16 14:39:04
-    Last Edit: 2020-09-28 11:28:46
-    Keywords:
+    Created: 2020-04-20 19:51:03
+    Last Edit: 2020-04-20 23:14:32
+    Requires:
+        -RunAsAdministrator
 .LINK
     https://wstools.dev
 #>
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-        "PSAvoidGlobalVars",
-        "",
-        Justification = "Have tried other methods and they do not work consistently."
-    )]
-	[CmdletBinding()]
-    Param (
+    [CmdletBinding()]
+    param(
         [Parameter(
             Mandatory=$false,
             Position=0
         )]
-        [int32]$Days = ((Get-Date -Format yyyyMMdd) - ((Get-Date -Format yyyyMMdd).Substring(0,6) + "01"))
+        [ValidateNotNullorEmpty()]
+        [Alias('Host','Name','Computer','CN')]
+        [string[]]$ComputerName = "$env:COMPUTERNAME",
+
+        [Parameter(
+            Mandatory=$false,
+            Position=1
+        )]
+        [Alias('Username')]
+        [string]$User
     )
 
-    $UHPath = ($Global:WSToolsConfig).UHPath
-    $dt = get-date -Format yyyyMMdd
-    $sp = $UHPath + "\" + $dt + "_MaintenanceReport.csv"
-    $stime = (Get-Date) - (New-TimeSpan -Day $Days)
-    $info = Get-ChildItem $UHPath | Where-Object {$_.LastWriteTime -gt $stime -and $_.Name -notlike "*MaintenanceReport.csv"} | Select-Object FullName -ExpandProperty FullName
-    $finfo = @()
-    foreach ($file in $info) {
-        $fi = import-csv $file
-        $finfo += $fi
-    }
-    $finfo | Select-Object Date,ComputerName,KB,Result,Title,Description,Category,ClientApplicationID,SupportUrl | Where-Object {$_.Date -gt $stime} | Sort-Object ComputerName | Export-Csv $sp -NoTypeInformation
+    foreach ($Comp in $ComputerName) {
+        try {
+            #Connect to computer and get information on user/users
+            if ($null -ne $User) {
+                $ui = Get-WmiObject -Class Win32_UserAccount -filter "LocalAccount='True'" -ComputerName $comp -ErrorAction Stop | Select-Object Name,Description,Disabled,Lockout,PasswordChangeable,PasswordExpires,PasswordRequired | Where-Object {$_.Name -match $User}
+            }#if user not null
+            else {
+                $ui = Get-WmiObject -Class Win32_UserAccount -filter "LocalAccount='True'" -ComputerName $comp -ErrorAction Stop | Select-Object Name,Description,Disabled,Lockout,PasswordChangeable,PasswordExpires,PasswordRequired
+            }
+
+            ForEach ($u in $ui) {
+                New-Object -TypeName PSObject -Property @{
+                    Computer = $Comp
+                    User = $u.Name
+                    Description = $u.Description
+                    Disabled = $u.Disabled
+                    Locked = $u.Lockout
+                    PasswordChangeable = $u.PasswordChangeable
+                    PasswordExpires = $u.PasswordExpires
+                    PasswordRequired = $u.PasswordRequired
+                } | Select-Object Computer,User,Description,Disabled,Locked,PasswordChangeable,PasswordExpires,PasswordRequired
+            }#foreach u
+        }#try
+        catch {
+            New-Object -TypeName PSObject -Property @{
+                Computer = $Comp
+                User = $null
+                Description = $null
+                Disabled = $null
+                Locked = $null
+                PasswordChangeable = $null
+                PasswordExpires = $null
+                PasswordRequired = $null
+            } | Select-Object Computer,User,Description,Disabled,Locked,PasswordChangeable,PasswordExpires,PasswordRequired
+        }#catch
+    }#foreach comp
 }
 
 
-function Save-UpdateHistory {
+function Get-UserGroup {
 <#
 .NOTES
     Author: Skyler Hart
-    Created: 2020-06-15 13:03:22
-    Last Edit: 2020-09-28 11:29:05
+    Created: 2020-11-03 11:14:26
+    Last Edit: 2020-11-03 11:14:26
     Keywords:
 .LINK
     https://wstools.dev
 #>
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-        "PSAvoidGlobalVars",
-        "",
-        Justification = "Have tried other methods and they do not work consistently."
-    )]
+    $id = [Security.Principal.WindowsIdentity]::GetCurrent()
+    $groups = $id.Groups | foreach-object {$_.Translate([Security.Principal.NTAccount])}
+    $groups | Select-Object Value -ExpandProperty Value
+}
+
+
+#Look up "root\WMI" or "root\CCM" using Get-ComputerWMINamespaces
+Function Get-WMIClass {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 09/21/2017 13:05:10
+    LASTEDIT: 09/21/2017 13:05:10
+    KEYWORDS:
+.LINK
+    https://wstools.dev
+#>
     [CmdletBinding()]
     Param (
         [Parameter(
             Mandatory=$false,
             Position=0
         )]
-        [int32]$Days = ((Get-Date -Format yyyyMMdd) - ((Get-Date -Format yyyyMMdd).Substring(0,6) + "01"))
+        [Alias('Host','Name','Computer','CN')]
+        [string]$ComputerName = "$env:COMPUTERNAME"
     )
-    $UHPath = ($Global:WSToolsConfig).UHPath + "\" + $env:computername + ".csv"
-    $info = Get-UpdateHistory -Days $Days
-    $info | Export-Csv $UHPath -Force
+
+    Get-WmiObject -Namespace root\WMI -ComputerName $ComputerName -List
+}
+
+
+Function Get-WMINameSpace {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 09/21/2017 13:05:21
+    LASTEDIT: 09/21/2017 13:05:21
+    KEYWORDS:
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    Param (
+        [Parameter(
+            Mandatory=$false,
+            Position=0
+        )]
+        [Alias('Host','Name','Computer','CN')]
+        [string]$ComputerName = "$env:COMPUTERNAME",
+
+        [string]$Namespace = "root"
+    )
+
+    Get-WmiObject -Namespace $Namespace -Class "__Namespace" -ComputerName $ComputerName | Select-Object Name
 }
 
 
@@ -2868,6 +2861,7 @@ function Get-WSToolsConfig {
 }
 New-Alias -Name "Import-WSToolsConfig" -Value Get-WSToolsConfig
 New-Alias -Name "WSToolsConfig" -Value Get-WSToolsConfig
+
 
 Function Get-WSToolsVersion {
 <#
@@ -3091,6 +3085,316 @@ Function Install-WSTools {
 }
 New-Alias -Name "Copy-WSTools" -Value Install-WSTools
 New-Alias -Name "Push-WSTools" -Value Install-WSTools
+
+
+#get more open commands here: https://sysadminstricks.com/tricks/most-useful-microsoft-management-console-snap-in-control-files-msc-files.html
+function Open-AdminTools {
+<#
+   .Notes
+    AUTHOR: Skyler Hart
+    LASTEDIT: 08/18/2017 20:48:27
+    KEYWORDS:
+    REQUIRES:
+        #Requires -Version 3.0
+        #Requires -Modules ActiveDirectory
+        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        #Requires -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    control.exe admintools
+}
+New-Alias -Name "tools" -Value Open-AdminTools
+New-Alias -Name "admintools" -Value Open-AdminTools
+New-Alias -Name "admin" -Value Open-AdminTools
+
+
+function Open-BitLocker {
+<#
+   .Notes
+    AUTHOR: Skyler Hart
+    CREATED: 08/19/2017 21:56:03
+    LASTEDIT: 08/19/2017 21:56:03
+    KEYWORDS:
+    REQUIRES:
+        #Requires -Version 3.0
+        #Requires -Modules ActiveDirectory
+        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        #Requires -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    control.exe /name Microsoft.BitLockerDriveEncryption
+}
+New-Alias -Name "BitLocker" -Value Open-BitLocker
+
+
+function Open-CertificatesComputer {
+<#
+   .Notes
+    AUTHOR: Skyler Hart
+    CREATED: 08/19/2017 22:22:46
+    LASTEDIT: 08/19/2017 22:22:46
+    KEYWORDS:
+    REQUIRES:
+        #Requires -Version 3.0
+        #Requires -Modules ActiveDirectory
+        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        #Requires -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    certlm.msc
+}
+
+
+function Open-CertificatesUser {
+<#
+   .Notes
+    AUTHOR: Skyler Hart
+    CREATED: 08/19/2017 22:22:46
+    LASTEDIT: 08/19/2017 22:22:46
+    KEYWORDS:
+    REQUIRES:
+        #Requires -Version 3.0
+        #Requires -Modules ActiveDirectory
+        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        #Requires -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    certmgr.msc
+}
+
+
+function Open-ComputerManagement {
+<#
+   .Notes
+    AUTHOR: Skyler Hart
+    LASTEDIT: 08/18/2017 20:48:35
+    KEYWORDS:
+    REQUIRES:
+        #Requires -Version 3.0
+        #Requires -Modules ActiveDirectory
+        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        #Requires -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$false, Position=0)]
+        [Alias('Host','Name','Computer','CN')]
+        [string]$ComputerName = "$env:COMPUTERNAME"
+    )
+    compmgmt.msc /computer:\\$ComputerName
+}
+
+
+function Open-DeviceManager {
+<#
+   .Notes
+    AUTHOR: Skyler Hart
+    LASTEDIT: 08/18/2017 20:48:43
+    KEYWORDS:
+    REQUIRES:
+        #Requires -Version 3.0
+        #Requires -Modules ActiveDirectory
+        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        #Requires -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$false, Position=0)]
+        [Alias('Host','Name','Computer','CN')]
+        [string]$ComputerName = "$env:COMPUTERNAME"
+    )
+    devmgmt.msc /computer:\\$ComputerName
+}
+
+
+function Open-DevicesAndPrinters {
+<#
+   .Notes
+    AUTHOR: Skyler Hart
+    LASTEDIT: 08/18/2017 20:48:52
+    KEYWORDS:
+    REQUIRES:
+        #Requires -Version 3.0
+        #Requires -Modules ActiveDirectory
+        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        #Requires -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    control.exe printers
+}
+New-Alias -Name "printers" -Value Open-DevicesAndPrinters
+
+
+function Open-DiscDrive {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2020-05-08 23:26:34
+    Last Edit: 2020-05-08 23:26:34
+    Keywords:
+    Requires:
+        -Module ActiveDirectory
+        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    $sh = New-Object -ComObject "Shell.Application"
+    $sh.Namespace(17).Items() | Where-Object {$_.Type -eq "CD Drive"} | ForEach-Object {$_.InvokeVerb("Eject")}
+}
+New-Alias -Name "Eject-Disc" -Value Open-DiscDrive
+
+
+function Open-DiskManagement {
+<#
+   .Notes
+    AUTHOR: Skyler Hart
+    CREATED: 08/19/2017 22:19:32
+    LASTEDIT: 08/19/2017 22:19:32
+    KEYWORDS:
+    REQUIRES:
+        #Requires -Version 3.0
+        #Requires -Modules ActiveDirectory
+        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        #Requires -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$false, Position=0)]
+        [Alias('Host','Name','Computer','CN')]
+        [string]$ComputerName = "$env:COMPUTERNAME"
+    )
+    diskmgmt.msc /computer:\\$ComputerName
+}
+
+
+function Open-EventViewer {
+<#
+   .Notes
+    AUTHOR: Skyler Hart
+    LASTEDIT: 08/18/2017 20:48:35
+    KEYWORDS:
+    REQUIRES:
+        #Requires -Version 3.0
+        #Requires -Modules ActiveDirectory
+        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        #Requires -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$false, Position=0)]
+        [Alias('Host','Name','Computer','CN')]
+        [string[]]$ComputerName = "$env:COMPUTERNAME"
+    )
+    eventvwr.msc /computer:\\$ComputerName
+}
+New-Alias -Name "events" -Value Open-EventViewer
+
+
+Function Open-FirewallLog {
+<#
+   .Notes
+    AUTHOR: Skyler Hart
+    CREATED: 09/11/2017 14:50:51
+    LASTEDIT: 09/11/2017 14:50:51
+    KEYWORDS:
+    REQUIRES:
+        #Requires -Version 3.0
+        #Requires -Modules ActiveDirectory
+        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        #Requires -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    Param (
+        [Parameter()]
+        [Switch]$Domain,
+
+        [Parameter()]
+        [Switch]$Private,
+
+        [Parameter()]
+        [Switch]$Public
+    )
+
+    if ($Private -eq $true) {notepad %systemroot%\system32\logfiles\firewall\domainfirewall.log}
+    elseif ($Public -eq $true) {notepad %systemroot%\system32\logfiles\firewall\privatefirewall.log}
+    elseif ($Domain -eq $true -or ($Private -eq $false -and $Public -eq $false)) {notepad %systemroot%\system32\logfiles\firewall\publicfirewall.log}
+}
+
+
+function Open-LocalGPeditor {
+<#
+   .Notes
+    AUTHOR: Skyler Hart
+    CREATED: 08/19/2017 22:31:01
+    LASTEDIT: 08/19/2017 22:31:01
+    KEYWORDS:
+    REQUIRES:
+        #Requires -Version 3.0
+        #Requires -Modules ActiveDirectory
+        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        #Requires -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    gpedit.msc
+}
+New-Alias -Name "Open-LocalPolicyEditor" -Value Open-LocalGPeditor
+New-Alias -Name "LocalPolicy" -Value Open-LocalGPeditor
+
+
+Function Open-NetworkConnections {
+<#
+   .Notes
+    AUTHOR: Skyler Hart
+    LASTEDIT: 08/18/2017 20:49:17
+    KEYWORDS:
+    REQUIRES:
+        #Requires -Version 3.0
+        #Requires -Modules ActiveDirectory
+        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        #Requires -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    control.exe ncpa.cpl
+}
+New-Alias -Name "network" -Value Open-NetworkConnections
+New-Alias -Name "connections" -Value Open-NetworkConnections
+
+
+function Open-ProgramsAndFeatures {
+<#
+   .Notes
+    AUTHOR: Skyler Hart
+    LASTEDIT: 08/18/2017 20:49:23
+    KEYWORDS:
+    REQUIRES:
+        #Requires -Version 3.0
+        #Requires -Modules ActiveDirectory
+        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        #Requires -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    Start-Process appwiz.cpl
+}
+New-Alias -Name "programs" -Value Open-ProgramsAndFeatures
 
 
 Function Set-SpeakerVolume {
@@ -3568,20 +3872,6 @@ Function Split-File {
 }
 
 
-function Get-HomeDrive {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2020-11-03 15:02:09
-    Last Edit: 2020-11-03 15:02:09
-    Keywords:
-.LINK
-    https://wstools.dev
-#>
-    $env:HOMESHARE
-}
-
-
 function Mount-HomeDrive {
 <#
 .NOTES
@@ -3669,13 +3959,100 @@ function Register-NotificationApp {
 }
 
 
-###########################################################################
-###########################################################################
-##                                                                       ##
-##                             Preferences                               ##
-##                                                                       ##
-###########################################################################
-###########################################################################
+function Save-MaintenanceReport {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2020-06-16 14:39:04
+    Last Edit: 2020-09-28 11:28:46
+    Keywords:
+.LINK
+    https://wstools.dev
+#>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
+	[CmdletBinding()]
+    Param (
+        [Parameter(
+            Mandatory=$false,
+            Position=0
+        )]
+        [int32]$Days = ((Get-Date -Format yyyyMMdd) - ((Get-Date -Format yyyyMMdd).Substring(0,6) + "01"))
+    )
+
+    $UHPath = ($Global:WSToolsConfig).UHPath
+    $dt = get-date -Format yyyyMMdd
+    $sp = $UHPath + "\" + $dt + "_MaintenanceReport.csv"
+    $stime = (Get-Date) - (New-TimeSpan -Day $Days)
+    $info = Get-ChildItem $UHPath | Where-Object {$_.LastWriteTime -gt $stime -and $_.Name -notlike "*MaintenanceReport.csv"} | Select-Object FullName -ExpandProperty FullName
+    $finfo = @()
+    foreach ($file in $info) {
+        $fi = import-csv $file
+        $finfo += $fi
+    }
+    $finfo | Select-Object Date,ComputerName,KB,Result,Title,Description,Category,ClientApplicationID,SupportUrl | Where-Object {$_.Date -gt $stime} | Sort-Object ComputerName | Export-Csv $sp -NoTypeInformation
+}
+
+
+function Save-UpdateHistory {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2020-06-15 13:03:22
+    Last Edit: 2020-09-28 11:29:05
+    Keywords:
+.LINK
+    https://wstools.dev
+#>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
+    [CmdletBinding()]
+    Param (
+        [Parameter(
+            Mandatory=$false,
+            Position=0
+        )]
+        [int32]$Days = ((Get-Date -Format yyyyMMdd) - ((Get-Date -Format yyyyMMdd).Substring(0,6) + "01"))
+    )
+    $UHPath = ($Global:WSToolsConfig).UHPath + "\" + $env:computername + ".csv"
+    $info = Get-UpdateHistory -Days $Days
+    $info | Export-Csv $UHPath -Force
+}
+
+
+Function Set-Explorer {
+<#
+   .Notes
+    AUTHOR: Skyler Hart
+    CREATED: 02/08/2018 21:26:47
+    LASTEDIT: 02/08/2018 21:26:47
+    KEYWORDS:
+    REQUIRES:
+        #Requires -Version 3.0
+        #Requires -Modules ActiveDirectory
+        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        #Requires -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    Param (
+        [Switch]$ThisPC,
+        [Switch]$QuickAccess
+    )
+
+    if ($ThisPC) {Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name LaunchTo -Type DWord -Value 1 -Force}
+    elseif ($QuickAccess) {Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name LaunchTo -Type DWord -Value 2 -Force}
+    else {Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name LaunchTo -Type DWord -Value 1 -Force}
+}
+
+
 function Set-Preferences {
 <#
 .NOTES
@@ -3790,33 +4167,6 @@ function Set-Preferences {
             New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name Link -PropertyType Binary -Value ([byte[]](17,00,00,00)) -Force -ErrorAction SilentlyContinue
         }
     }
-}
-
-
-Function Set-Explorer {
-<#
-   .Notes
-    AUTHOR: Skyler Hart
-    CREATED: 02/08/2018 21:26:47
-    LASTEDIT: 02/08/2018 21:26:47
-    KEYWORDS:
-    REQUIRES:
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
-    [CmdletBinding()]
-    Param (
-        [Switch]$ThisPC,
-        [Switch]$QuickAccess
-    )
-
-    if ($ThisPC) {Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name LaunchTo -Type DWord -Value 1 -Force}
-    elseif ($QuickAccess) {Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name LaunchTo -Type DWord -Value 2 -Force}
-    else {Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name LaunchTo -Type DWord -Value 1 -Force}
 }
 
 
@@ -4023,350 +4373,6 @@ Function Show-FileExtensions {
     elseif ($No) {Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideFileExt -Type DWord -Value 1 -Force}
     else {Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideFileExt -Type DWord -Value 0 -Force}
 }
-
-
-###########################################################################
-###########################################################################
-##                                                                       ##
-##                                Admin                                  ##
-##                                                                       ##
-###########################################################################
-###########################################################################
-
-#get more open commands here: https://sysadminstricks.com/tricks/most-useful-microsoft-management-console-snap-in-control-files-msc-files.html
-function Open-AdminTools {
-<#
-   .Notes
-    AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 20:48:27
-    KEYWORDS:
-    REQUIRES:
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
-    control.exe admintools
-}
-New-Alias -Name "tools" -Value Open-AdminTools
-New-Alias -Name "admintools" -Value Open-AdminTools
-New-Alias -Name "admin" -Value Open-AdminTools
-
-
-function Open-BitLocker {
-<#
-   .Notes
-    AUTHOR: Skyler Hart
-    CREATED: 08/19/2017 21:56:03
-    LASTEDIT: 08/19/2017 21:56:03
-    KEYWORDS:
-    REQUIRES:
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
-    control.exe /name Microsoft.BitLockerDriveEncryption
-}
-New-Alias -Name "BitLocker" -Value Open-BitLocker
-
-
-function Open-CertificatesComputer {
-<#
-   .Notes
-    AUTHOR: Skyler Hart
-    CREATED: 08/19/2017 22:22:46
-    LASTEDIT: 08/19/2017 22:22:46
-    KEYWORDS:
-    REQUIRES:
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
-    certlm.msc
-}
-
-
-function Open-CertificatesUser {
-<#
-   .Notes
-    AUTHOR: Skyler Hart
-    CREATED: 08/19/2017 22:22:46
-    LASTEDIT: 08/19/2017 22:22:46
-    KEYWORDS:
-    REQUIRES:
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
-    certmgr.msc
-}
-
-
-function Open-ComputerManagement {
-<#
-   .Notes
-    AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 20:48:35
-    KEYWORDS:
-    REQUIRES:
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
-    [CmdletBinding()]
-    Param (
-        [Parameter(Mandatory=$false, Position=0)]
-        [Alias('Host','Name','Computer','CN')]
-        [string]$ComputerName = "$env:COMPUTERNAME"
-    )
-    compmgmt.msc /computer:\\$ComputerName
-}
-
-
-function Open-DeviceManager {
-<#
-   .Notes
-    AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 20:48:43
-    KEYWORDS:
-    REQUIRES:
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
-    [CmdletBinding()]
-    Param (
-        [Parameter(Mandatory=$false, Position=0)]
-        [Alias('Host','Name','Computer','CN')]
-        [string]$ComputerName = "$env:COMPUTERNAME"
-    )
-    devmgmt.msc /computer:\\$ComputerName
-}
-
-
-function Open-DevicesAndPrinters {
-<#
-   .Notes
-    AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 20:48:52
-    KEYWORDS:
-    REQUIRES:
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
-    control.exe printers
-}
-New-Alias -Name "printers" -Value Open-DevicesAndPrinters
-
-
-function Open-DiscDrive {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2020-05-08 23:26:34
-    Last Edit: 2020-05-08 23:26:34
-    Keywords:
-    Requires:
-        -Module ActiveDirectory
-        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
-    $sh = New-Object -ComObject "Shell.Application"
-    $sh.Namespace(17).Items() | Where-Object {$_.Type -eq "CD Drive"} | ForEach-Object {$_.InvokeVerb("Eject")}
-}
-New-Alias -Name "Eject-Disc" -Value Open-DiscDrive
-
-
-function Open-DiskManagement {
-<#
-   .Notes
-    AUTHOR: Skyler Hart
-    CREATED: 08/19/2017 22:19:32
-    LASTEDIT: 08/19/2017 22:19:32
-    KEYWORDS:
-    REQUIRES:
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
-    [CmdletBinding()]
-    Param (
-        [Parameter(Mandatory=$false, Position=0)]
-        [Alias('Host','Name','Computer','CN')]
-        [string]$ComputerName = "$env:COMPUTERNAME"
-    )
-    diskmgmt.msc /computer:\\$ComputerName
-}
-
-
-function Open-EventViewer {
-<#
-   .Notes
-    AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 20:48:35
-    KEYWORDS:
-    REQUIRES:
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
-    [CmdletBinding()]
-    Param (
-        [Parameter(Mandatory=$false, Position=0)]
-        [Alias('Host','Name','Computer','CN')]
-        [string[]]$ComputerName = "$env:COMPUTERNAME"
-    )
-    eventvwr.msc /computer:\\$ComputerName
-}
-New-Alias -Name "events" -Value Open-EventViewer
-
-
-Function Open-FirewallLog {
-<#
-   .Notes
-    AUTHOR: Skyler Hart
-    CREATED: 09/11/2017 14:50:51
-    LASTEDIT: 09/11/2017 14:50:51
-    KEYWORDS:
-    REQUIRES:
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
-    [CmdletBinding()]
-    Param (
-        [Parameter()]
-        [Switch]$Domain,
-
-        [Parameter()]
-        [Switch]$Private,
-
-        [Parameter()]
-        [Switch]$Public
-    )
-
-    if ($Private -eq $true) {notepad %systemroot%\system32\logfiles\firewall\domainfirewall.log}
-    elseif ($Public -eq $true) {notepad %systemroot%\system32\logfiles\firewall\privatefirewall.log}
-    elseif ($Domain -eq $true -or ($Private -eq $false -and $Public -eq $false)) {notepad %systemroot%\system32\logfiles\firewall\publicfirewall.log}
-}
-
-
-function Open-LocalGPeditor {
-<#
-   .Notes
-    AUTHOR: Skyler Hart
-    CREATED: 08/19/2017 22:31:01
-    LASTEDIT: 08/19/2017 22:31:01
-    KEYWORDS:
-    REQUIRES:
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
-    gpedit.msc
-}
-New-Alias -Name "Open-LocalPolicyEditor" -Value Open-LocalGPeditor
-New-Alias -Name "LocalPolicy" -Value Open-LocalGPeditor
-
-
-Function Open-NetworkConnections {
-<#
-   .Notes
-    AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 20:49:17
-    KEYWORDS:
-    REQUIRES:
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
-    control.exe ncpa.cpl
-}
-New-Alias -Name "network" -Value Open-NetworkConnections
-New-Alias -Name "connections" -Value Open-NetworkConnections
-
-
-function Open-ProgramsAndFeatures {
-<#
-   .Notes
-    AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 20:49:23
-    KEYWORDS:
-    REQUIRES:
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
-    Start-Process appwiz.cpl
-}
-New-Alias -Name "programs" -Value Open-ProgramsAndFeatures
-
-
-function Connect-RDP {
-<#
-   .Notes
-    AUTHOR: Skyler Hart
-    CREATED: 2017-08-18 20:48:07
-    LASTEDIT: 2021-01-25 18:06:26
-.LINK
-    https://wstools.dev
-#>
-    [CmdletBinding()]
-    Param (
-        [Parameter(Mandatory=$false, Position=0)]
-        [Alias('Host','Name','Computer','CN')]
-        [string]$ComputerName
-    )
-
-    if ($null -ne $ComputerName -or $ComputerName -ne "") {
-        mstsc /v:$ComputerName /admin
-    }
-    else {
-        mstsc
-    }
-}
-New-Alias -Name "rdp" -Value Connect-RDP
 
 
 Function Open-Remedy {
