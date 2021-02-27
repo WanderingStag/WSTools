@@ -11,6 +11,11 @@ New features and other changes:
 2. Added Disable-RDP.
 3. Added admin check to Enable-RDP.
 
+Removed items:
+1. Get-PublicIP was removed as it's a security risk for main client.
+2. Removed Get-SysInternals since it downloads files. Will re-write at a later time to only copy/install from local source.
+3. Removed New-WMIFilter alias from Import-MOF as while it does create new WMI filters, it requires you to have an existing .mof file.
+
 ######################
 #                    #
 #      v1.3.0.1      #

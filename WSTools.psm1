@@ -23,27 +23,51 @@
 }
 
 
-function Copy-PowerShellJSON {
+function Clear-DirtyShutdown {
 <#
-.SYNOPSIS
-    Enables PowerShell Snippets in Visual Studio Code.
-.DESCRIPTION
-    Copies the powershell.json file from the WSTools module folder to %AppData%\Roaming\Code\User\snippets for the currently logged on user.
 .EXAMPLE
-    C:\PS>Copy-PowerShellJSON
-    Copies the powershell.json file from the WSTools module folder to %AppData%\Roaming\Code\User\snippets for the currently logged on user.
+    C:\PS>Clear-DirtyShutdown
+    Example of how to use this cmdlet. Will clear a dirty shutdown that causes the shutdown tracker to appear.
+.EXAMPLE
+    C:\PS>Clear-DirtyShutdown -ComputerName COMP1
+    Another example of how to use this cmdlet. Will clear the dirty shutdown on COMP1
 .NOTES
     Author: Skyler Hart
-    Created: 2020-04-13 22:44:11
-    Last Edit: 2020-04-17 14:24:07
-    Keywords: WSTools, Visual Studio Code, PowerShell, JSON, Preferences, snippets, code blocks
+    Created: 2020-05-08 17:54:09
+    Last Edit: 2020-05-08 18:28:01
+    Keywords:
+    Requires:
+        -RunAsAdministrator
 .LINK
     https://wstools.dev
 #>
-    Copy-Item -Path $PSScriptRoot\powershell.json -Destination $env:APPDATA\Code\User\snippets\powershell.json
+    [CmdletBinding()]
+    param(
+        [Parameter(
+            Mandatory=$false
+        )]
+        [Alias('Host','Name','Computer','CN')]
+        [string[]]$ComputerName = "$env:COMPUTERNAME"
+    )
+
+    $i = 0
+    $number = $ComputerName.length
+    foreach ($Comp in $ComputerName) {
+        #Progress Bar
+        if ($number -gt "1") {
+            $i++
+            $amount = ($i / $number)
+            $perc1 = $amount.ToString("P")
+            Write-Progress -activity "Setting Dirty Shutdown Fix" -status "Computer $i of $number. Percent complete:  $perc1" -PercentComplete (($i / $ComputerName.length)  * 100)
+        }#if length
+
+        $k = "DirtyShutdown"
+        $v = 0
+        $BaseKey = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine, $Comp)
+        $SubKey = $BaseKey.OpenSubKey('SOFTWARE\Microsoft\Windows\CurrentVersion\Reliability',$true)
+        $SubKey.SetValue($k, $v, [Microsoft.Win32.RegistryValueKind]::DWORD)
+    }
 }
-New-Alias -Name "Update-PowerShellJSON" -Value Copy-PowerShellJSON
-New-Alias -Name "Set-PowerShellJSON" -Value Copy-PowerShellJSON
 
 
 function Clear-ImproperProfileCopy {
@@ -426,6 +450,41 @@ function Convert-ImageToBase64 {
     #}#new object
 }
 New-Alias -Name "Convert-ICOtoBase64" -Value Convert-ImageToBase64
+
+
+function Convert-IPtoINT64 () {
+    param ($IP)
+    $octets = $IP.split(".")
+    return [int64]([int64]$octets[0]*16777216 +[int64]$octets[1]*65536 +[int64]$octets[2]*256 +[int64]$octets[3])
+}
+
+function Convert-INT64toIP() {
+    param ([int64]$int)
+    return (([math]::truncate($int/16777216)).tostring()+"."+([math]::truncate(($int%16777216)/65536)).tostring()+"."+([math]::truncate(($int%65536)/256)).tostring()+"."+([math]::truncate($int%256)).tostring())
+}
+
+
+function Copy-PowerShellJSON {
+<#
+.SYNOPSIS
+    Enables PowerShell Snippets in Visual Studio Code.
+.DESCRIPTION
+    Copies the powershell.json file from the WSTools module folder to %AppData%\Roaming\Code\User\snippets for the currently logged on user.
+.EXAMPLE
+    C:\PS>Copy-PowerShellJSON
+    Copies the powershell.json file from the WSTools module folder to %AppData%\Roaming\Code\User\snippets for the currently logged on user.
+.NOTES
+    Author: Skyler Hart
+    Created: 2020-04-13 22:44:11
+    Last Edit: 2020-04-17 14:24:07
+    Keywords: WSTools, Visual Studio Code, PowerShell, JSON, Preferences, snippets, code blocks
+.LINK
+    https://wstools.dev
+#>
+    Copy-Item -Path $PSScriptRoot\powershell.json -Destination $env:APPDATA\Code\User\snippets\powershell.json
+}
+New-Alias -Name "Update-PowerShellJSON" -Value Copy-PowerShellJSON
+New-Alias -Name "Set-PowerShellJSON" -Value Copy-PowerShellJSON
 
 
 function Disable-RDP {
@@ -1258,16 +1317,6 @@ function Get-IPrange {
         [string]$End
     )
 
-    function Convert-IPtoINT64 () {
-        param ($IP)
-        $octets = $IP.split(".")
-        return [int64]([int64]$octets[0]*16777216 +[int64]$octets[1]*65536 +[int64]$octets[2]*256 +[int64]$octets[3])
-    }
-
-    function Convert-INT64toIP() {
-        param ([int64]$int)
-        return (([math]::truncate($int/16777216)).tostring()+"."+([math]::truncate(($int%16777216)/65536)).tostring()+"."+([math]::truncate(($int%65536)/256)).tostring()+"."+([math]::truncate($int%256)).tostring())
-    }
 
     if ($IP) {$ipaddr = [Net.IPAddress]::Parse($IP)}
     if ($CIDR) {$maskaddr = [Net.IPAddress]::Parse((Convert-INT64toIP -int ([convert]::ToInt64(("1"*$CIDR+"0"*(32-$CIDR)),2)))) }
@@ -2135,20 +2184,6 @@ Function Get-PSVersion {
 New-Alias -Name "Get-PowerShellVersion" -Value Get-PSVersion
 
 
-Function Get-PublicIP {
-<#
-.Notes
-    AUTHOR: Skyler Hart
-    CREATED: 08/18/2017 05:25:00
-    LASTEDIT: 08/18/2017 20:44:24
-    KEYWORDS:
-.LINK
-    https://wstools.dev
-#>
-        (Resolve-DnsName -Name myip.opendns.com -Server resolver1.opendns.com).IPAddress
-}
-
-
 Function Get-SerialNumber {
 <#
 .Notes
@@ -2316,108 +2351,6 @@ Function Get-ShutdownLog {
 
         $info | Select-Object ComputerName,Time,Type,Status,User,Program,Reason | Select-Object -First $MostRecent
     }#foreach computer
-}
-
-
-Function Get-SysInternals {
-<#
-    .Synopsis
-        Download the SysInternals Suite
-    .Description
-        Downloads the SysInternals Suite. Several customizable options included.
-    .Example
-        Get-SysInternals
-        Downloads the most recent zip file to c:\temp\SysinternalsSuite.zip, extracts it to c:\temp\SysInternalsSuite, copies the files to $env:userprofile\Downloads\SysInternals.
-    .Example
-        Get-SysInternals -PlaceIn "C:\Windows\System32"
-        Downloads the most recent zip file to c:\temp\SysinternalsSuite.zip, extracts it to c:\temp\SysInternalsSuite, copies the files to C:\Windows\System32.
-    .Parameter zipPath
-        Specifies the folder path to save the zip file to.
-    .Parameter tempFolder
-        Specifies where to save the extracted temporary files to
-    .Parameter PlaceIn
-        Specifies the folder path of where to save the extracted files
-    .Parameter url
-        Specifies the download link for the SysInternals Suite.
-    .Notes
-        AUTHOR: Skyler Hart
-        CREATED: 2017-08-19 19:11:47
-        LASTEDIT: 2020-08-20 10:43:45
-        KEYWORDS: SysInternals, tools, utilities
-        REQUIRES:
-            #Requires running as administrator in some instances, primarily if saving to a system path
-.LINK
-    https://wstools.dev
-#>
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-        "PSUseSingularNouns",
-        "",
-        Justification = "SysInternals is the name of the application."
-    )]
-    [CmdletBinding()]
-    Param (
-        [Parameter()]
-        [string]$zipPath = "c:\temp",
-
-        [Parameter()]
-        [string]$tempFolder = "c:\temp\SysInternalsSuite",
-
-        [Parameter()]
-        [string]$PlaceIn = "$env:userprofile\Downloads\SysInternals",
-
-        [Parameter()]
-        [string]$url = "https://download.sysinternals.com/files/SysinternalsSuite.zip"
-    )
-
-    $zipname = $zipPath + "\SysinternalsSuite.zip"
-    $continue = $false
-
-    if (!(Test-Path $PlaceIn)) {mkdir $PlaceIn | Out-Null}
-    if (!(Test-Path $zipPath)) {mkdir $zipPath | Out-Null}
-    if (!(Test-Path $tempFolder)) {mkdir $tempFolder | Out-Null}
-
-    $ErrorActionPreference = "Stop"
-    Write-Output "Downloading $url to $zipPath"
-    try {
-        Write-Output "--Trying System.Net.WebClinet"
-        $web = New-Object System.Net.WebClient
-        $web.DownloadFile($url, $zipPath)
-        $continue = $true
-    }
-    catch {
-        try {
-            Write-Output "--Trying BitsTransfer"
-            Start-BitsTransfer -Source $url -Destination $zipPath -ErrorAction Stop
-            $continue = $true
-        }
-        catch {
-            Write-Output "--Trying Invoke WebRequest"
-            Invoke-WebRequest -Uri $url -OutFile $zipPath
-            $continue = $true
-        }
-    }
-
-    if ($continue) {
-        Write-Output "Extracting $zipname to $tempFolder"
-        try {
-            Add-Type -assembly 'System.IO.Compression.FileSystem'
-            [System.IO.Compression.ZipFile]::ExtractToDirectory($zipname, $tempFolder)
-
-            try {
-                Write-Output "Copying files from $tempFolder to $PlaceIn"
-                Copy-Item "$tempFolder\*.*" $PlaceIn
-            }
-            catch {
-                Write-Output "Failed to copy items from $tempFolder to $PlaceIn"
-            }
-        }
-        catch {
-            Write-Output "Failed extracting zip file"
-        }
-    }#continue
-    else {
-        Write-Output "Failed to download SysInternalsSuite from https://docs.microsoft.com/en-us/sysinternals/downloads/sysinternals-suite"
-    }
 }
 
 
@@ -2811,137 +2744,6 @@ New-Alias -Name "Get-UpdateStatus" -Value Get-WindowsSetupLog
 New-Alias -Name "Get-UpdateLog" -Value Get-WindowsSetupLog
 
 
-Function Get-WSToolsAlias {
-<#
-.Notes
-    AUTHOR: Skyler Hart
-    CREATED: 01/31/2018 23:42:55
-    LASTEDIT: 01/31/2018 23:42:55
-    KEYWORDS:
-.LINK
-    https://wstools.dev
-#>
-    Get-Alias | Where-Object {$_.Source -eq "WSTools"}
-}
-New-Alias -Name "WSToolsAliases" -Value Get-WSToolsAlias
-
-
-Function Get-WSToolsCommand {
-<#
-   .Notes
-    AUTHOR: Skyler Hart
-    CREATED: 01/31/2018 23:52:54
-    LASTEDIT: 01/31/2018 23:52:54
-    KEYWORDS:
-.LINK
-    https://wstools.dev
-#>
-    $commands = (Get-Module WSTools | Select-Object ExportedCommands).ExportedCommands
-    $commands.Values | Select-Object CommandType,Name,Source
-}
-New-Alias -Name "WSToolsCommands" -Value Get-WSToolsCommand
-
-
-function Get-WSToolsConfig {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2020-05-23 12:27:36
-    Last Edit: 2020-08-20 11:18:58
-    Keywords:
-.LINK
-    https://wstools.dev
-#>
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-        "PSAvoidGlobalVars",
-        "",
-        Justification = "Have tried other methods and they do not work consistently."
-    )]
-    $Global:WSToolsConfig
-}
-New-Alias -Name "Import-WSToolsConfig" -Value Get-WSToolsConfig
-New-Alias -Name "WSToolsConfig" -Value Get-WSToolsConfig
-
-
-Function Get-WSToolsVersion {
-<#
-.Notes
-    AUTHOR: Skyler Hart
-    CREATED: 02/09/2018 00:23:25
-    LASTEDIT: 02/14/2018 11:05:37
-    KEYWORDS:
-.LINK
-    https://wstools.dev
-#>
-    [CmdletBinding()]
-    Param (
-        [Parameter(Mandatory=$false)]
-        [Switch]$Remote,
-
-        [Parameter(Mandatory=$false)]
-        [Alias('Host','Name','Computer','CN')]
-        [string[]]$ComputerName
-    )
-
-    if ($Remote) {
-        foreach ($comp in $ComputerName) {
-            $path = "\\$comp\c$\Program Files\WindowsPowerShell\Modules\WSTools\WSTools.psd1"
-            try {
-                $info = Test-ModuleManifest $path
-                $ver = $info.Version
-            }
-            catch {
-                $ver = "NA"
-            }
-
-            try {
-                $info2 = Get-Item $path
-                $i2 = $info2.LastWriteTime
-            }
-            catch {
-                $i2 = "NA"
-            }
-
-            $version = New-Object -TypeName PSObject -Property @{
-                ComputerName = $comp
-                WSToolsVersion = $ver
-                Date = $i2
-                Path = $path
-            }#new object
-            $version | Select-Object ComputerName,WSToolsVersion,Date,Path
-        }
-    }
-    else {
-        $path = "$PSScriptRoot\WSTools.psd1"
-        try {
-            $info = Test-ModuleManifest $path
-            $ver = $info.Version
-        }
-        catch {
-            $ver = "NA"
-        }
-
-        try {
-            $info2 = Get-Item $path
-            $i2 = $info2.LastWriteTime
-        }
-        catch {
-            $i2 = "NA"
-        }
-        $cn = $env:COMPUTERNAME
-
-        $version = New-Object -TypeName PSObject -Property @{
-            ComputerName = $cn
-            WSToolsVersion = $ver
-            Date = $i2
-            Path = $path
-        }#new object
-        $version | Select-Object ComputerName,WSToolsVersion,Date,Path
-    }
-}
-New-Alias -Name "WSToolsVersion" -Value Get-WSToolsVersion
-
-
 Function Import-DRAModule {
 <#
 .Notes
@@ -2967,27 +2769,6 @@ Function Import-DRAModule {
     else {
         Write-Output "DRA module not found. Please install it from $if"
     }
-}
-
-
-Function Import-XML {
-<#
-.Notes
-    AUTHOR: Skyler Hart
-    CREATED: 10/25/2017 17:03:54
-    LASTEDIT: 10/25/2017 17:03:54
-    KEYWORDS:
-.LINK
-    https://wstools.dev
-#>
-    [CmdletBinding()]
-    Param (
-        [Parameter(Mandatory=$true, Position=0)]
-        [string]$Path
-    )
-
-    [xml]$XmlFile = Get-Content -Path $Path
-    $XmlFile
 }
 
 
@@ -3034,57 +2815,147 @@ Function Import-MOF {
     mofcomp -N:root\Policy $Path
 }
 New-Alias -Name "Import-WMIFilter" -Value Import-MOF
-New-Alias -Name "New-WMIFilter" -Value Import-MOF
 
 
-Function Install-WSTools {
+Function Import-XML {
 <#
-.SYNOPSIS
-    Installs/copies the WSTools PowerShell module to a remote computer.
-.DESCRIPTION
-    Copies the WSTools module from the location specified in the WSTools config file (config.ps1) for UpdatePath to the C:\Program Files\WindowsPowerShell\Modules\WSTools folder on the remote computer.
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.EXAMPLE
-    C:\PS>Install-WSTools COMPNAME
-    How to install the WSTools PowerShell module on the remote computer COMPNAME.
-.EXAMPLE
-    C:\PS>Install-WSTools -ComputerName COMPNAME1,COMPNAME2
-    How to install the WSTools PowerShell module on the remote computers COMPNAME1 and COMPNAME2.
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 10/25/2017 17:03:54
+    LASTEDIT: 10/25/2017 17:03:54
+    KEYWORDS:
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$true, Position=0)]
+        [string]$Path
+    )
+
+    [xml]$XmlFile = Get-Content -Path $Path
+    $XmlFile
+}
+
+
+Function Join-File {
+<#
+   .Notes
+    AUTHOR: Skyler Hart
+    CREATED: 04/30/2019 14:52:40
+    LASTEDIT: 04/30/2019 17:17:50
+    KEYWORDS:
+    REQUIRES:
+        #Requires -Version 3.0
+        #Requires -Modules ActiveDirectory
+        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        #Requires -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    Param (
+        [Parameter(HelpMessage = "Enter the path of the folder with the part files you want to join.",
+            Mandatory=$true,
+            Position=0
+        )]
+        [Alias('Source','InputLocation','SourceFolder')]
+        [string]$Path,
+
+        [Parameter(HelpMessage = "Enter the path where you want the joined file placed.",
+            Mandatory=$false,
+            Position=1
+        )]
+        [Alias('OutputLocation','Output','DestinationPath','Destination')]
+        [string]$DestinationFolder
+    )
+
+    $og = (Get-Location).Path
+    $objs = Get-ChildItem $Path | Where-Object {$_.Name -like "*_Part*"}
+
+    $myobjs = @()
+    foreach ($obj in $objs) {
+        $ext = $obj.Extension
+        $name = $obj.Name
+        $num = $name -replace "[\s\S]*.*(_Part)","" -replace $ext,""
+        $fn = $obj.FullName
+        $dp = $obj.Directory.FullName
+
+        $myobjs += New-Object -TypeName PSObject -Property @{
+            FullName = $fn
+            Name = $name
+            Extension = $ext
+            Num = [int]$num
+            Directory = $dp
+        }#new object
+    }
+
+    $sobj = $myobjs | Sort-Object Num | Select-Object FullName,Name,Extension,Directory
+
+    $fo = $sobj[0]
+    $fon = $fo.Name
+    $fon = $fon -replace "_Part01",""
+    $fd = $fo.Directory
+    if ($DestinationFolder -eq "") {
+        $fop = $fd + "\" + $fon
+        Set-Location $fd
+    }
+    else {
+        $fop = $DestinationFolder + "\" + $fon
+        if (!(Test-Path $DestinationFolder)) {
+         New-Item -Path $DestinationFolder -ItemType Directory
+        }
+        Set-Location $DestinationFolder
+    }
+
+    $WriteObj = New-Object System.IO.BinaryWriter([System.IO.File]::Create($fop))
+
+    if ($host.Version.Major -ge 3) {
+        $sobj.FullName | ForEach-Object {
+            Write-Output "Appending $_ to $fop"
+            $ReadObj = New-Object System.IO.BinaryReader([System.IO.File]::Open($_, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read))
+
+            $WriteObj.BaseStream.Position = $WriteObj.BaseStream.Length
+            $ReadObj.BaseStream.CopyTo($WriteObj.BaseStream)
+            $WriteObj.BaseStream.Flush()
+
+            $ReadObj.Close()
+        }
+    }
+    else {
+        [Byte[]]$Buffer = New-Object Byte[] 100MB
+
+        $sobj.FullName | ForEach-Object {
+            Write-Output "Appending $_ to $fop"
+            $ReadObj = New-Object System.IO.BinaryReader([System.IO.File]::Open($_, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read))
+
+            while ($ReadObj.BaseStream.Position -lt $ReadObj.BaseStream.Length) {
+                $ReadBytes = $ReadObj.Read($Buffer, 0, $Buffer.Length)
+                $WriteObj.Write($Buffer, 0, $ReadBytes)
+            }
+
+            $ReadObj.Close()
+        }
+    }
+
+    $WriteObj.Close()
+    Set-Location $og
+}
+
+
+function Mount-HomeDrive {
+<#
 .NOTES
     Author: Skyler Hart
-    Created: 06/13/2018 14:17:09
-    Last Edit: 2020-08-20 11:18:30
+    Created: 2020-11-03 14:58:38
+    Last Edit: 2020-11-03 14:58:38
     Keywords:
 .LINK
     https://wstools.dev
 #>
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-        "PSUseSingularNouns",
-        "",
-        Justification = "WSTools is the proper name for the module."
-    )]
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-        "PSAvoidGlobalVars",
-        "",
-        Justification = "Have tried other methods and they do not work consistently."
-    )]
-    [CmdletBinding()]
-    Param (
-        [Parameter(Mandatory=$false, Position=0)]
-        [Alias('Host','Name','Computer','CN')]
-        [string[]]$ComputerName = "$env:COMPUTERNAME"
-    )
-
-    $config = $Global:WSToolsConfig
-    $source = $config.UpdatePath
-
-    foreach ($comp in $ComputerName) {
-        robocopy $source "\\$comp\c$\Program Files\WindowsPowerShell\Modules\WSTools" /mir /mt:4 /r:3 /w:5 /njs /njh
-    }
+    net use $env:HOMEDRIVE $env:HOMESHARE /persistent:yes
 }
-New-Alias -Name "Copy-WSTools" -Value Install-WSTools
-New-Alias -Name "Push-WSTools" -Value Install-WSTools
+New-Alias -Name "Add-HomeDrive" -Value Mount-HomeDrive
 
 
 #get more open commands here: https://sysadminstricks.com/tricks/most-useful-microsoft-management-console-snap-in-control-files-msc-files.html
@@ -3337,6 +3208,20 @@ Function Open-FirewallLog {
 }
 
 
+function Open-HomeDrive {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2020-11-03 15:03:52
+    Last Edit: 2020-11-03 15:03:52
+    Keywords:
+.LINK
+    https://wstools.dev
+#>
+    explorer.exe $env:HOMESHARE
+}
+
+
 function Open-LocalGPeditor {
 <#
    .Notes
@@ -3397,142 +3282,16 @@ function Open-ProgramsAndFeatures {
 New-Alias -Name "programs" -Value Open-ProgramsAndFeatures
 
 
-Function Set-SpeakerVolume {
-<#
-.Notes
-    AUTHOR: Skyler Hart
-    CREATED: Sometime before 2017-08-07
-    LASTEDIT: 08/18/2017 20:47:06
-    KEYWORDS:
-.LINK
-    https://wstools.dev
-#>
-    [CmdletBinding()]
-    Param (
-        [switch]$min,
-        [switch]$max,
-        [int32]$volume = "10",
-        [switch]$mute
-    )
-
-    $volume = ($volume/2)
-    $wshShell = new-object -com wscript.shell
-
-    If ($min) {1..50 | ForEach-Object {$wshShell.SendKeys([char]174)}}
-    ElseIf ($max) {1..50 | ForEach-Object {$wshShell.SendKeys([char]175)}}
-    elseif ($mute) {$wshShell.SendKeys([char]173)}#turns sound on or off dependent on what it was before
-    elseif ($volume) {1..50 | ForEach-Object {$wshShell.SendKeys([char]174)};1..$Volume | ForEach-Object {$wshShell.SendKeys([char]175)}}
-}
-New-Alias -Name "Volume" -Value Set-SpeakerVolume
-
-
-Function Show-BalloonTip {
-<#
-   .Notes
-    AUTHOR: Skyler Hart
-    CREATED: Sometime before 2017-08-07
-    LASTEDIT: 08/18/2017 20:47:33
-    KEYWORDS:
-.LINK
-    https://wstools.dev
-#>
-    [CmdletBinding()]
-    Param (
-        [Parameter(Mandatory=$true)]
-        [string]$Text,
-
-        [Parameter(Mandatory=$true)]
-        [string]$Title,
-
-        [Parameter(Mandatory=$false)]
-        [ValidateSet('Info','Error','Warning')]
-        [string]$Icon = 'Info',
-
-        [Parameter(Mandatory=$false)]
-        [int32]$Timeout = 30000
-    )
-
-    Add-Type -AssemblyName System.Windows.Forms
-    If ($null -eq $PopUp)  {$PopUp = New-Object System.Windows.Forms.NotifyIcon}
-    $Path = Get-Process -Id $PID | Select-Object -ExpandProperty Path
-    $PopUp.Icon = [System.Drawing.Icon]::ExtractAssociatedIcon($Path)
-    $PopUp.BalloonTipIcon = $Icon
-    $PopUp.BalloonTipText = $Text
-    $PopUp.BalloonTipTitle = $Title
-    $PopUp.Visible = $true
-    $PopUp.ShowBalloonTip($Timeout)
-}
-New-Alias -Name "tip" -Value Show-BalloonTip
-
-
-Function Show-MessageBox {
-<#
-   .Notes
-    AUTHOR: Skyler Hart
-    CREATED: Sometime before 2017-08-07
-    LASTEDIT: 08/18/2017 20:47:49
-    KEYWORDS:
-.LINK
-    https://wstools.dev
-#>
-#info: https://msdn.microsoft.com/en-us/library/x83z1d9f(v=vs.84).aspx
-    [CmdletBinding()]
-    Param (
-        [Parameter(Mandatory=$true)]
-        [string]$Text,
-
-        [Parameter(Mandatory=$true)]
-        [string]$Title,
-
-        [Parameter(Mandatory=$false)]
-        [int32]$Timeout = 10
-    )
-
-    $wshell = New-Object -ComObject Wscript.Shell
-    $wshell.Popup($Text,$Timeout,$Title,0x0 + 0x40)
-
-#First option:
-#0x0 Show OK button.
-#0x1 Show OK and Cancel buttons.
-#0x2 Show Abort, Retry, and Ignore buttons.
-#0x3 Show Yes, No, and Cancel buttons.
-#0x4 Show Yes and No buttons.
-#0x5 Show Retry and Cancel buttons.
-#0x6 Show Cancel, Try Again, and Continue buttons.
-
-#Second Option
-#0x10 Show "Stop Mark" icon.
-#0x20 Show "Question Mark" icon.
-#0x30 Show "Exclamation Mark" icon.
-#0x40 Show "Information Mark" icon.
-
-#Return values
-#-1 The user did not click a button before nSecondsToWait seconds elapsed.
-#1 OK button
-#2 Cancel button
-#3 Abort button
-#4 Retry button
-#5 Ignore button
-#6 Yes button
-#7 No button
-#10 Try Again button
-#11 Continue button
-}
-New-Alias -Name "message" -Value Show-MessageBox
-
-
-Function Test-EmailRelay {
+Function Open-Remedy {
     <#
        .Notes
         AUTHOR: Skyler Hart
-        CREATED: 08/18/2017 20:40:04
-        LASTEDIT: 2020-08-09 21:36:41
-        KEYWORDS: E-mail, email, relay, smtp
-        REMARKS: On secure networks, port 25 has to be open
+        CREATED: 10/03/2017 10:52:44
+        LASTEDIT: 2020-04-17 15:47:44
+        KEYWORDS:
+        REQUIRES:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -3541,30 +3300,42 @@ Function Test-EmailRelay {
     )]
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$true, Position=0, HelpMessage="Enter e-mail address of recipient")]
-        [string]$Recipient
+        [Parameter(Mandatory=$false)]
+        [Switch]$Chrome,
+
+        [Parameter(Mandatory=$false)]
+        [Switch]$Edge,
+
+        [Parameter(Mandatory=$false)]
+        [Switch]$Firefox,
+
+        [Parameter(Mandatory=$false)]
+        [Switch]$InternetExplorer
     )
 
     $config = $Global:WSToolsConfig
-    $from = $config.Sender
-    $smtpserver = $config.SMTPServer
-    $port = $config.SMTPPort
+    $URL = $config.Remedy
 
-    $date = Get-Date
-    $subject = "Test from $env:COMPUTERNAME $date"
-
-    send-mailmessage -To $Recipient -From $from -Subject $subject -Body "Testing relay of SMTP messages.`nFrom: $from `nTo: $recip `n`nPlease delete this message." -smtpserver $smtpserver -Port $port
+    if ($Chrome) {Start-Process "chrome.exe" $URL}
+    elseif ($Edge) {Start-Process shell:AppsFolder\Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge $URL}
+    elseif ($Firefox) {Start-Process "firefox.exe" $URL}
+    elseif ($InternetExplorer) {Start-Process "iexplore.exe" $URL}
+    else {
+        #open in default browser
+        (New-Object -com Shell.Application).Open($URL)
+    }
 }
+New-Alias -Name "Remedy" -Value Open-Remedy
+New-Alias -Name "EITSM" -Value Open-Remedy
+New-Alias -Name "Open-EITSM" -Value Open-Remedy
 
 
-#Working. Add functionality to convert ip to computername and vice versa. Enter ip range 192.168.0.0/26
-# and have it convert it. Or 192.168.0.0-255 and check all computers. Write help
-# Add alias's and fix pipeline
-Function Test-Online {
+Function Open-Services {
 <#
    .Notes
     AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 20:47:56
+    CREATED: 08/19/2017 22:14:08
+    LASTEDIT: 08/19/2017 22:14:08
     KEYWORDS:
     REQUIRES:
         #Requires -Version 3.0
@@ -3578,50 +3349,18 @@ Function Test-Online {
     Param (
         [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
-        [string[]]$ComputerName = "$env:COMPUTERNAME"
+        [string]$ComputerName = "$env:COMPUTERNAME"
     )
-
-    $i = 0
-    $number = $ComputerName.length
-    foreach ($comp in $ComputerName){
-        if ($number -gt "1") {
-            $i++
-            $amount = ($i / $number)
-            $perc1 = $amount.ToString("P")
-            Write-Progress -activity "Testing whether computers are online or offline. Currently checking $comp" -status "Computer $i of $number. Percent complete:  $perc1" -PercentComplete (($i / $ComputerName.length)  * 100)
-        }#if length
-        try {
-            $testcon = Test-Connection -ComputerName $comp -Count 3 -ErrorAction Stop
-            if ($testcon) {
-                $status = "Online"
-            }#if test
-            else {
-                $status = "Offline"
-            }#else
-        }#try
-        catch [System.Net.NetworkInformation.PingException] {
-            $status = "Comm error"
-        }#catch
-        catch [System.Management.Automation.InvocationInfo] {
-            $status = "Comm error"
-        }
-        catch {
-            $status = "Comm error"
-        }
-        New-Object psobject -Property @{
-            Name = $comp
-            Status = $status
-        }#newobject
-    }#foreach computer
+    services.msc /computer=\\$ComputerName
 }
+New-Alias -Name "services" -Value Open-Services
 
 
-Function Test-RegistryValue {
+Function Open-SystemProperties {
 <#
    .Notes
     AUTHOR: Skyler Hart
-    CREATED: 02/08/2018 22:32:46
-    LASTEDIT: 02/08/2018 22:32:46
+    LASTEDIT: 08/18/2017 20:49:29
     KEYWORDS:
     REQUIRES:
         #Requires -Version 3.0
@@ -3631,273 +3370,7 @@ Function Test-RegistryValue {
 .LINK
     https://wstools.dev
 #>
-    [CmdletBinding()]
-    Param (
-        [Parameter(Mandatory=$true, Position=0)]
-        [ValidateNotNullOrEmpty()]$Path,
-
-        [Parameter(Mandatory=$true, Position=1)]
-        [ValidateNotNullOrEmpty()]$Value
-    )
-
-    try {
-        Get-ItemPropertyValue -Path $Path -Name $Value -ErrorAction Stop | Out-Null
-        return $true
-    }
-    catch {
-        return $false
-    }
-}
-
-
-Function Update-WSTools {
-<#
-   .Synopsis
-    This updates the WSTools module
-   .Description
-    Updates the WSTools module in various locations
-   .Example
-    Update-WSTools
-    Will update the WSTools module
-   .Notes
-    AUTHOR: Skyler Hart
-    CREATED: 09/21/2017 14:48:46
-    LASTEDIT: 10/17/2019 23:14:22
-    KEYWORDS: PowerShell, module, WSTools, personal
-    REMARKS:
-.LINK
-    https://wstools.dev
-#>
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-        "PSUseSingularNouns",
-        "",
-        Justification = "WSTools is the proper name for the module."
-    )]
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-        "PSAvoidGlobalVars",
-        "",
-        Justification = "Have tried other methods and they do not work consistently."
-    )]
-    $config = $Global:WSToolsConfig
-    $UPath = $config.UpdatePath
-    $UComp = $config.UpdateComp
-    $APaths = $config.AdditionalUpdatePaths
-
-    if ($null -ne $UComp -and $env:COMPUTERNAME -eq $UComp) {
-        Robocopy.exe $env:ProgramFiles\WindowsPowerShell\Modules\WSTools $UPath /mir /mt:4 /r:3 /w:5 /njh /njs
-        if ($null -ne $APaths -or $APaths -eq "") {
-            ForEach ($apath in $APaths) {
-                Write-Output "Updating $apath"
-                Robocopy.exe $env:ProgramFiles\WindowsPowerShell\Modules\WSTools $apath /mir /mt:4 /r:3 /w:5 /njh /njs
-            }
-        }
-    }
-    else {
-        robocopy $UPath $env:ProgramFiles\WindowsPowerShell\Modules\WSTools /mir /mt:4 /njs /njh /r:3 /w:15
-    }
-}
-
-
-Function Join-File {
-<#
-   .Notes
-    AUTHOR: Skyler Hart
-    CREATED: 04/30/2019 14:52:40
-    LASTEDIT: 04/30/2019 17:17:50
-    KEYWORDS:
-    REQUIRES:
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
-    [CmdletBinding()]
-    Param (
-        [Parameter(HelpMessage = "Enter the path of the folder with the part files you want to join.",
-            Mandatory=$true,
-            Position=0
-        )]
-        [Alias('Source','InputLocation','SourceFolder')]
-        [string]$Path,
-
-        [Parameter(HelpMessage = "Enter the path where you want the joined file placed.",
-            Mandatory=$false,
-            Position=1
-        )]
-        [Alias('OutputLocation','Output','DestinationPath','Destination')]
-        [string]$DestinationFolder
-    )
-
-    $og = (Get-Location).Path
-    $objs = Get-ChildItem $Path | Where-Object {$_.Name -like "*_Part*"}
-
-    $myobjs = @()
-    foreach ($obj in $objs) {
-        $ext = $obj.Extension
-        $name = $obj.Name
-        $num = $name -replace "[\s\S]*.*(_Part)","" -replace $ext,""
-        $fn = $obj.FullName
-        $dp = $obj.Directory.FullName
-
-        $myobjs += New-Object -TypeName PSObject -Property @{
-            FullName = $fn
-            Name = $name
-            Extension = $ext
-            Num = [int]$num
-            Directory = $dp
-        }#new object
-    }
-
-    $sobj = $myobjs | Sort-Object Num | Select-Object FullName,Name,Extension,Directory
-
-    $fo = $sobj[0]
-    $fon = $fo.Name
-    $fon = $fon -replace "_Part01",""
-    $fd = $fo.Directory
-    if ($DestinationFolder -eq "") {
-        $fop = $fd + "\" + $fon
-        Set-Location $fd
-    }
-    else {
-        $fop = $DestinationFolder + "\" + $fon
-        if (!(Test-Path $DestinationFolder)) {
-         New-Item -Path $DestinationFolder -ItemType Directory
-        }
-        Set-Location $DestinationFolder
-    }
-
-    $WriteObj = New-Object System.IO.BinaryWriter([System.IO.File]::Create($fop))
-
-    if ($host.Version.Major -ge 3) {
-        $sobj.FullName | ForEach-Object {
-            Write-Output "Appending $_ to $fop"
-            $ReadObj = New-Object System.IO.BinaryReader([System.IO.File]::Open($_, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read))
-
-            $WriteObj.BaseStream.Position = $WriteObj.BaseStream.Length
-            $ReadObj.BaseStream.CopyTo($WriteObj.BaseStream)
-            $WriteObj.BaseStream.Flush()
-
-            $ReadObj.Close()
-        }
-    }
-    else {
-        [Byte[]]$Buffer = New-Object Byte[] 100MB
-
-        $sobj.FullName | ForEach-Object {
-            Write-Output "Appending $_ to $fop"
-            $ReadObj = New-Object System.IO.BinaryReader([System.IO.File]::Open($_, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read))
-
-            while ($ReadObj.BaseStream.Position -lt $ReadObj.BaseStream.Length) {
-                $ReadBytes = $ReadObj.Read($Buffer, 0, $Buffer.Length)
-                $WriteObj.Write($Buffer, 0, $ReadBytes)
-            }
-
-            $ReadObj.Close()
-        }
-    }
-
-    $WriteObj.Close()
-    Set-Location $og
-}
-
-
-Function Split-File {
-<#
-   .Notes
-    AUTHOR: Skyler Hart
-    CREATED: 04/30/2019 13:18:22
-    LASTEDIT: 04/30/2019 17:27:34
-    KEYWORDS:
-    REQUIRES:
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
-    [CmdletBinding()]
-    Param (
-        [Parameter(HelpMessage = "Enter the path of the file you want to split.",
-            Mandatory=$true,
-            Position=0
-        )]
-        [Alias('Source','InputLocation','SourceFile')]
-        [string]$Path,
-
-        [Parameter(HelpMessage = "Enter the path of where you want the part files placed.",
-            Mandatory=$false,
-            Position=1
-        )]
-        [Alias('OutputLocation','Output','DestinationPath','Destination')]
-        [string]$DestinationFolder,
-
-        [Parameter(HelpMessage = "Enter the size you want the part files to be. Can be bytes or you can specify a size. Ex: 100MB",
-            Mandatory=$false,
-            Position=2
-        )]
-        [Alias('Size','Newsize')]
-        [int]$PartFileSize = 10MB
-    )
-
-    $FilePath = [IO.Path]::GetDirectoryName($Path)
-    if ((null -eq $$DestinationFolder -or $DestinationFolder -eq "") -and $FilePath -ne "") {$FilePath = $FilePath + "\"}
-    elseif ($null -ne $DestinationFolder -and $DestinationFolder -ne "") {
-        $FilePath = $DestinationFolder + "\"
-    }
-    $FileName = [IO.Path]::GetFileNameWithoutExtension($Path)
-    $Extension = [IO.Path]::GetExtension($Path)
-    $Part = "_Part"
-
-    if (!(Test-Path $FilePath)) {
-        New-Item -Path $FilePath -ItemType Directory
-    }
-
-    $ReadObj = New-Object System.IO.BinaryReader([System.IO.File]::Open($Path, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read))
-	[Byte[]]$Buffer = New-Object Byte[] $PartFileSize
-	[int]$BytesRead = 0
-
-    $N = 1
-    Write-Output "Saving part files to $FilePath"
-    while (($BytesRead = $ReadObj.Read($Buffer, 0, $Buffer.Length)) -gt 0) {
-        $NewName = "{0}{1}{2}{3,2:00}{4}" -f ($FilePath,$FileName,$Part,$N,$Extension)
-        $WriteObj = New-Object System.IO.BinaryWriter([System.IO.File]::Create($NewName))
-        $WriteObj.Write($Buffer, 0, $BytesRead)
-        $WriteObj.Close()
-        $N++
-    }
-    $ReadObj.Close()
-}
-
-
-function Mount-HomeDrive {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2020-11-03 14:58:38
-    Last Edit: 2020-11-03 14:58:38
-    Keywords:
-.LINK
-    https://wstools.dev
-#>
-    net use $env:HOMEDRIVE $env:HOMESHARE /persistent:yes
-}
-New-Alias -Name "Add-HomeDrive" -Value Mount-HomeDrive
-
-
-function Open-HomeDrive {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2020-11-03 15:03:52
-    Last Edit: 2020-11-03 15:03:52
-    Keywords:
-.LINK
-    https://wstools.dev
-#>
-    explorer.exe $env:HOMESHARE
+    control.exe sysdm.cpl
 }
 
 
@@ -4053,467 +3526,6 @@ Function Set-Explorer {
 }
 
 
-function Set-Preferences {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2020-04-18 13:00:47
-    Last Edit: 2020-04-18 13:00:47
-    Keywords:
-    Requires:
-        -Module ActiveDirectory
-        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-        "PSAvoidGlobalVars",
-        "",
-        Justification = "Have tried other methods and they do not work consistently."
-    )]
-    $config = $Global:WSToolsConfig
-    $explorer = $config.Explorer
-    $store = $config.StoreLookup
-    $hidden = $config.HiddenFiles
-    $exten = $config.FileExtensions
-    $sctext = $config.ShortcutText
-
-    if ($explorer -eq $true) {
-        try {
-            Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name LaunchTo -Type DWord -Value 1 -Force -ErrorAction Stop
-        }
-        catch {
-            New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name Advanced -Force -ErrorAction Stop
-            New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name LaunchTo -PropertyType DWord -Value 1 -Force -ErrorAction Stop
-        }
-    }
-    else {
-        try {
-            Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name LaunchTo -Type DWord -Value 2 -Force -ErrorAction Stop
-        }
-        catch {
-            New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name Advanced -Force -ErrorAction Stop
-            New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name LaunchTo -PropertyType DWord -Value 2 -Force -ErrorAction Stop
-        }
-    }
-
-    if ($store -eq $false) {
-        try {
-            Set-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -Type DWord -Value 1 -Force -ErrorAction Stop
-        }
-        catch {
-            New-Item -Path HKCU:\Software\Policies\Microsoft\Windows -Name Explorer -Force -ErrorAction SilentlyContinue
-            New-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -PropertyType DWord -Value 1 -Force -ErrorAction SilentlyContinue
-        }
-    }
-    else {
-        try {
-            Set-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -Type DWord -Value 0 -Force -ErrorAction Stop
-        }
-        catch {
-            New-Item -Path HKCU:\Software\Policies\Microsoft\Windows -Name Explorer -Force -ErrorAction Stop
-            New-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -PropertyType DWord -Value 0 -Force -ErrorAction Stop
-        }
-    }
-
-    if ($hidden -eq $true) {
-        try {
-            Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Hidden -Type DWord -Value 1 -Force -ErrorAction SilentlyContinue
-        }
-        catch {
-            New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Hidden -PropertyType DWord -Value 1 -Force -ErrorAction SilentlyContinue
-        }
-    }
-    else {
-        try {
-            Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Hidden -Type DWord -Value 2 -Force -ErrorAction SilentlyContinue
-        }
-        catch {
-            New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Hidden -PropertyType DWord -Value 2 -Force -ErrorAction SilentlyContinue
-        }
-    }
-
-    if ($exten -eq $true) {
-        try {
-            Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideFileExt -Type DWord -Value 0 -Force -ErrorAction SilentlyContinue
-        }
-        catch {
-            New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideFileExt -PropertyType DWord -Value 0 -Force -ErrorAction SilentlyContinue
-        }
-    }
-    else {
-        try {
-            Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideFileExt -Type DWord -Value 1 -Force -ErrorAction SilentlyContinue
-        }
-        catch {
-            New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideFileExt -PropertyType DWord -Value 1 -Force -ErrorAction SilentlyContinue
-        }
-    }
-
-    if ($sctext -eq $false) {
-        try {
-            Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name Link -Value ([byte[]](00,00,00,00)) -Force -ErrorAction SilentlyContinue
-        }
-        catch {
-            New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name Link -PropertyType Binary -Value ([byte[]](00,00,00,00)) -Force -ErrorAction SilentlyContinue
-        }
-    }
-    else {
-        try {
-            Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name Link -Value ([byte[]](17,00,00,00)) -Force -ErrorAction SilentlyContinue
-        }
-        catch {
-            New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name Link -PropertyType Binary -Value ([byte[]](17,00,00,00)) -Force -ErrorAction SilentlyContinue
-        }
-    }
-}
-
-
-function Set-ServerConfig {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2020-10-24 20:09:27
-    Last Edit: 2020-10-24 20:09:27
-    Keywords:
-    Requires:
-        -RunAsAdministrator
-.LINK
-    https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#>
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-        "PSAvoidGlobalVars",
-        "",
-        Justification = "Have tried other methods and they do not work consistently."
-    )]
-    $sc = $Global:WSToolsConfig
-
-    $netadapter = Get-NetAdapter
-    foreach ($na in $netadapter) {
-        $ia = $na.Name
-
-        #DHCP
-        if ($sc.SCDHCP -eq $true) {
-            $na | Set-NetIPInterface -Dhcp Enabled
-        }
-        else {
-            $na | Set-NetIPInterface -Dhcp Disabled
-        }
-
-        #IPv6
-        if ($sc.SCIPv6 -eq $true) {
-            Enable-NetAdapterBinding -InterfaceAlias $ia -ComponentID ms_tcpip6
-        }
-        else {
-            Disable-NetAdapterBinding -InterfaceAlias $ia -ComponentID ms_tcpip6
-        }
-
-        #Link-Layer Topology Discovery Responder
-        if ($sc.SCllrspndr -eq $true) {
-            Enable-NetAdapterBinding -InterfaceAlias $ia -ComponentID ms_rspndr
-        }
-        else {
-            Disable-NetAdapterBinding -InterfaceAlias $ia -ComponentID ms_rspndr
-        }
-
-        #Link-Layer Topology Discovery Mapper I/O
-        if ($sc.SClltdio -eq $true) {
-            Enable-NetAdapterBinding -InterfaceAlias $ia -ComponentID ms_lltdio
-        }
-        else {
-            Disable-NetAdapterBinding -InterfaceAlias $ia -ComponentID ms_lltdio
-        }
-
-        #Offloading
-        if ($sc.SCOffload -eq $true) {
-            Set-NetAdapterAdvancedProperty -Name $ia -DisplayName "*Offloa*" -DisplayValue "Enabled"
-        }
-        else {
-            Set-NetAdapterAdvancedProperty -Name $ia -DisplayName "*Offloa*" -DisplayValue "Disabled"
-        }
-    }#foreach network adapter
-
-    #NetBIOS
-    $NICS = Get-WmiObject Win32_NetworkAdapterConfiguration
-    $nb = $sc.SCNetBios
-    foreach ($NIC in $NICS) {
-        $NIC.settcpipnetbios($nb)
-    }
-
-    #RDP
-    Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -value ($sc.SCRDP)
-
-    #Server Manager
-    if ($sc.SCServerMgr -eq $true) {
-        Get-ScheduledTask -TaskName ServerManager | Enable-ScheduledTask
-    }
-    else {
-        Get-ScheduledTask -TaskName ServerManager | Disable-ScheduledTask
-    }
-
-    #WINS
-    $wdns = $sc.SCWDNS
-    $lmh = $sc.SCLMHost
-    $nicClass = Get-WmiObject -list Win32_NetworkAdapterConfiguration
-    $nicClass.enablewins($wdns,$lmh)
-}
-
-
-Function Set-ShortcutText {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2020-04-18 20:44:39
-    Last Edit: 2020-04-18 20:44:39
-    Keywords:
-.LINK
-    https://wstools.dev
-#>
-        [CmdletBinding()]
-        Param (
-            [Switch]$Yes,
-            [Switch]$No
-        )
-
-        if ($Yes) {Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name Link -Value ([byte[]](00,00,00,00)) -Force}
-        elseif ($No) {Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name Link -Value ([byte[]](17,00,00,00)) -Force}
-        else {Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name NoUseStoreOpenWith -Value ([byte[]](00,00,00,00)) -Force}
-}
-
-
-Function Set-StoreLookup {
-<#
-   .Notes
-    AUTHOR: Skyler Hart
-    CREATED: 02/08/2018 21:44:31
-    LASTEDIT: 02/08/2018 21:44:31
-    KEYWORDS:
-    REQUIRES:
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
-    [CmdletBinding()]
-    Param (
-        [Switch]$Yes,
-        [Switch]$No
-    )
-
-    if ($Yes) {Set-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -Type DWord -Value 0 -Force}
-    elseif ($No) {Set-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -Type DWord -Value 1 -Force}
-    else {Set-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -Type DWord -Value 1 -Force}
-}
-
-
-Function Show-HiddenFiles {
-<#
-   .Notes
-    AUTHOR: Skyler Hart
-    CREATED: 02/08/2018 21:40:23
-    LASTEDIT: 02/08/2018 21:40:23
-    KEYWORDS:
-    REQUIRES:
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-        "PSUseSingularNouns",
-        "",
-        Justification = "Expresses exactly what the function does."
-    )]
-    [CmdletBinding()]
-    Param (
-        [Switch]$Yes,
-        [Switch]$No
-    )
-
-    if ($Yes) {Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Hidden -Type DWord -Value 1 -Force}
-    elseif ($No) {Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Hidden -Type DWord -Value 2 -Force}
-    else {Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Hidden -Type DWord -Value 1 -Force}
-}
-
-
-Function Show-FileExtensions {
-<#
-   .Notes
-    AUTHOR: Skyler Hart
-    CREATED: 02/08/2018 21:41:37
-    LASTEDIT: 02/08/2018 21:41:37
-    KEYWORDS:
-    REQUIRES:
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-        "PSUseSingularNouns",
-        "",
-        Justification = "Expresses exactly what the function does."
-    )]
-    [CmdletBinding()]
-    Param (
-        [Switch]$Yes,
-        [Switch]$No
-    )
-
-    if ($Yes) {Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideFileExt -Type DWord -Value 0 -Force}
-    elseif ($No) {Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideFileExt -Type DWord -Value 1 -Force}
-    else {Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideFileExt -Type DWord -Value 0 -Force}
-}
-
-
-Function Open-Remedy {
-    <#
-       .Notes
-        AUTHOR: Skyler Hart
-        CREATED: 10/03/2017 10:52:44
-        LASTEDIT: 2020-04-17 15:47:44
-        KEYWORDS:
-        REQUIRES:
-.LINK
-    https://wstools.dev
-#>
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-        "PSAvoidGlobalVars",
-        "",
-        Justification = "Have tried other methods and they do not work consistently."
-    )]
-    [CmdletBinding()]
-    Param (
-        [Parameter(Mandatory=$false)]
-        [Switch]$Chrome,
-
-        [Parameter(Mandatory=$false)]
-        [Switch]$Edge,
-
-        [Parameter(Mandatory=$false)]
-        [Switch]$Firefox,
-
-        [Parameter(Mandatory=$false)]
-        [Switch]$InternetExplorer
-    )
-
-    $config = $Global:WSToolsConfig
-    $URL = $config.Remedy
-
-    if ($Chrome) {Start-Process "chrome.exe" $URL}
-    elseif ($Edge) {Start-Process shell:AppsFolder\Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge $URL}
-    elseif ($Firefox) {Start-Process "firefox.exe" $URL}
-    elseif ($InternetExplorer) {Start-Process "iexplore.exe" $URL}
-    else {
-        #open in default browser
-        (New-Object -com Shell.Application).Open($URL)
-    }
-}
-New-Alias -Name "Remedy" -Value Open-Remedy
-New-Alias -Name "EITSM" -Value Open-Remedy
-New-Alias -Name "Open-EITSM" -Value Open-Remedy
-
-
-Function Open-Services {
-<#
-   .Notes
-    AUTHOR: Skyler Hart
-    CREATED: 08/19/2017 22:14:08
-    LASTEDIT: 08/19/2017 22:14:08
-    KEYWORDS:
-    REQUIRES:
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
-    [CmdletBinding()]
-    Param (
-        [Parameter(Mandatory=$false, Position=0)]
-        [Alias('Host','Name','Computer','CN')]
-        [string]$ComputerName = "$env:COMPUTERNAME"
-    )
-    services.msc /computer=\\$ComputerName
-}
-New-Alias -Name "services" -Value Open-Services
-
-
-Function Open-SystemProperties {
-<#
-   .Notes
-    AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 20:49:29
-    KEYWORDS:
-    REQUIRES:
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
-    control.exe sysdm.cpl
-}
-
-
-function Clear-DirtyShutdown {
-<#
-.EXAMPLE
-    C:\PS>Clear-DirtyShutdown
-    Example of how to use this cmdlet. Will clear a dirty shutdown that causes the shutdown tracker to appear.
-.EXAMPLE
-    C:\PS>Clear-DirtyShutdown -ComputerName COMP1
-    Another example of how to use this cmdlet. Will clear the dirty shutdown on COMP1
-.NOTES
-    Author: Skyler Hart
-    Created: 2020-05-08 17:54:09
-    Last Edit: 2020-05-08 18:28:01
-    Keywords:
-    Requires:
-        -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
-    [CmdletBinding()]
-    param(
-        [Parameter(
-            Mandatory=$false
-        )]
-        [Alias('Host','Name','Computer','CN')]
-        [string[]]$ComputerName = "$env:COMPUTERNAME"
-    )
-
-    $i = 0
-    $number = $ComputerName.length
-    foreach ($Comp in $ComputerName) {
-        #Progress Bar
-        if ($number -gt "1") {
-            $i++
-            $amount = ($i / $number)
-            $perc1 = $amount.ToString("P")
-            Write-Progress -activity "Setting Dirty Shutdown Fix" -status "Computer $i of $number. Percent complete:  $perc1" -PercentComplete (($i / $ComputerName.length)  * 100)
-        }#if length
-
-        $k = "DirtyShutdown"
-        $v = 0
-        $BaseKey = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine, $Comp)
-        $SubKey = $BaseKey.OpenSubKey('SOFTWARE\Microsoft\Windows\CurrentVersion\Reliability',$true)
-        $SubKey.SetValue($k, $v, [Microsoft.Win32.RegistryValueKind]::DWORD)
-    }
-}
-
-
 function Set-LAPSshortcut {
 <#
 .PARAMETER Path
@@ -4634,6 +3646,124 @@ function Set-NetworkConnectionsShortcut {
 }
 
 
+function Set-Preferences {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2020-04-18 13:00:47
+    Last Edit: 2020-04-18 13:00:47
+    Keywords:
+    Requires:
+        -Module ActiveDirectory
+        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
+    $config = $Global:WSToolsConfig
+    $explorer = $config.Explorer
+    $store = $config.StoreLookup
+    $hidden = $config.HiddenFiles
+    $exten = $config.FileExtensions
+    $sctext = $config.ShortcutText
+
+    if ($explorer -eq $true) {
+        try {
+            Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name LaunchTo -Type DWord -Value 1 -Force -ErrorAction Stop
+        }
+        catch {
+            New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name Advanced -Force -ErrorAction Stop
+            New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name LaunchTo -PropertyType DWord -Value 1 -Force -ErrorAction Stop
+        }
+    }
+    else {
+        try {
+            Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name LaunchTo -Type DWord -Value 2 -Force -ErrorAction Stop
+        }
+        catch {
+            New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer -Name Advanced -Force -ErrorAction Stop
+            New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name LaunchTo -PropertyType DWord -Value 2 -Force -ErrorAction Stop
+        }
+    }
+
+    if ($store -eq $false) {
+        try {
+            Set-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -Type DWord -Value 1 -Force -ErrorAction Stop
+        }
+        catch {
+            New-Item -Path HKCU:\Software\Policies\Microsoft\Windows -Name Explorer -Force -ErrorAction SilentlyContinue
+            New-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -PropertyType DWord -Value 1 -Force -ErrorAction SilentlyContinue
+        }
+    }
+    else {
+        try {
+            Set-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -Type DWord -Value 0 -Force -ErrorAction Stop
+        }
+        catch {
+            New-Item -Path HKCU:\Software\Policies\Microsoft\Windows -Name Explorer -Force -ErrorAction Stop
+            New-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -PropertyType DWord -Value 0 -Force -ErrorAction Stop
+        }
+    }
+
+    if ($hidden -eq $true) {
+        try {
+            Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Hidden -Type DWord -Value 1 -Force -ErrorAction SilentlyContinue
+        }
+        catch {
+            New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Hidden -PropertyType DWord -Value 1 -Force -ErrorAction SilentlyContinue
+        }
+    }
+    else {
+        try {
+            Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Hidden -Type DWord -Value 2 -Force -ErrorAction SilentlyContinue
+        }
+        catch {
+            New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Hidden -PropertyType DWord -Value 2 -Force -ErrorAction SilentlyContinue
+        }
+    }
+
+    if ($exten -eq $true) {
+        try {
+            Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideFileExt -Type DWord -Value 0 -Force -ErrorAction SilentlyContinue
+        }
+        catch {
+            New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideFileExt -PropertyType DWord -Value 0 -Force -ErrorAction SilentlyContinue
+        }
+    }
+    else {
+        try {
+            Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideFileExt -Type DWord -Value 1 -Force -ErrorAction SilentlyContinue
+        }
+        catch {
+            New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideFileExt -PropertyType DWord -Value 1 -Force -ErrorAction SilentlyContinue
+        }
+    }
+
+    if ($sctext -eq $false) {
+        try {
+            Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name Link -Value ([byte[]](00,00,00,00)) -Force -ErrorAction SilentlyContinue
+        }
+        catch {
+            New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name Link -PropertyType Binary -Value ([byte[]](00,00,00,00)) -Force -ErrorAction SilentlyContinue
+        }
+    }
+    else {
+        try {
+            Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name Link -Value ([byte[]](17,00,00,00)) -Force -ErrorAction SilentlyContinue
+        }
+        catch {
+            New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name Link -PropertyType Binary -Value ([byte[]](17,00,00,00)) -Force -ErrorAction SilentlyContinue
+        }
+    }
+}
+
+
+#need to look into using Restart-Computer
 function Set-Reboot0100 {
 <#
    .Notes
@@ -4672,19 +3802,174 @@ function Set-Reboot0100 {
 }
 
 
-function Set-WSToolsConfig {
+function Set-ServerConfig {
 <#
 .NOTES
     Author: Skyler Hart
-    Created: 2020-04-17 15:00:06
-    Last Edit: 2020-04-17 15:00:06
+    Created: 2020-10-24 20:09:27
+    Last Edit: 2020-10-24 20:09:27
+    Keywords:
+    Requires:
+        -RunAsAdministrator
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
+#>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
+    $sc = $Global:WSToolsConfig
+
+    $netadapter = Get-NetAdapter
+    foreach ($na in $netadapter) {
+        $ia = $na.Name
+
+        #DHCP
+        if ($sc.SCDHCP -eq $true) {
+            $na | Set-NetIPInterface -Dhcp Enabled
+        }
+        else {
+            $na | Set-NetIPInterface -Dhcp Disabled
+        }
+
+        #IPv6
+        if ($sc.SCIPv6 -eq $true) {
+            Enable-NetAdapterBinding -InterfaceAlias $ia -ComponentID ms_tcpip6
+        }
+        else {
+            Disable-NetAdapterBinding -InterfaceAlias $ia -ComponentID ms_tcpip6
+        }
+
+        #Link-Layer Topology Discovery Responder
+        if ($sc.SCllrspndr -eq $true) {
+            Enable-NetAdapterBinding -InterfaceAlias $ia -ComponentID ms_rspndr
+        }
+        else {
+            Disable-NetAdapterBinding -InterfaceAlias $ia -ComponentID ms_rspndr
+        }
+
+        #Link-Layer Topology Discovery Mapper I/O
+        if ($sc.SClltdio -eq $true) {
+            Enable-NetAdapterBinding -InterfaceAlias $ia -ComponentID ms_lltdio
+        }
+        else {
+            Disable-NetAdapterBinding -InterfaceAlias $ia -ComponentID ms_lltdio
+        }
+
+        #Offloading
+        if ($sc.SCOffload -eq $true) {
+            Set-NetAdapterAdvancedProperty -Name $ia -DisplayName "*Offloa*" -DisplayValue "Enabled"
+        }
+        else {
+            Set-NetAdapterAdvancedProperty -Name $ia -DisplayName "*Offloa*" -DisplayValue "Disabled"
+        }
+    }#foreach network adapter
+
+    #NetBIOS
+    $NICS = Get-WmiObject Win32_NetworkAdapterConfiguration
+    $nb = $sc.SCNetBios
+    foreach ($NIC in $NICS) {
+        $NIC.settcpipnetbios($nb)
+    }
+
+    #RDP
+    Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -value ($sc.SCRDP)
+
+    #Server Manager
+    if ($sc.SCServerMgr -eq $true) {
+        Get-ScheduledTask -TaskName ServerManager | Enable-ScheduledTask
+    }
+    else {
+        Get-ScheduledTask -TaskName ServerManager | Disable-ScheduledTask
+    }
+
+    #WINS
+    $wdns = $sc.SCWDNS
+    $lmh = $sc.SCLMHost
+    $nicClass = Get-WmiObject -list Win32_NetworkAdapterConfiguration
+    $nicClass.enablewins($wdns,$lmh)
+}
+
+
+Function Set-ShortcutText {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2020-04-18 20:44:39
+    Last Edit: 2020-04-18 20:44:39
+    Keywords:
 .LINK
     https://wstools.dev
 #>
-    PowerShell_Ise "$PSScriptRoot\config.ps1"
+        [CmdletBinding()]
+        Param (
+            [Switch]$Yes,
+            [Switch]$No
+        )
+
+        if ($Yes) {Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name Link -Value ([byte[]](00,00,00,00)) -Force}
+        elseif ($No) {Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name Link -Value ([byte[]](17,00,00,00)) -Force}
+        else {Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name NoUseStoreOpenWith -Value ([byte[]](00,00,00,00)) -Force}
 }
-New-Alias -Name "Open-WSToolsConfig" -Value Set-WSToolsConfig
-New-Alias -Name "Update-WSToolsConfig" -Value Set-WSToolsConfig
+
+
+Function Set-SpeakerVolume {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: Sometime before 2017-08-07
+    LASTEDIT: 08/18/2017 20:47:06
+    KEYWORDS:
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    Param (
+        [switch]$min,
+        [switch]$max,
+        [int32]$volume = "10",
+        [switch]$mute
+    )
+
+    $volume = ($volume/2)
+    $wshShell = new-object -com wscript.shell
+
+    If ($min) {1..50 | ForEach-Object {$wshShell.SendKeys([char]174)}}
+    ElseIf ($max) {1..50 | ForEach-Object {$wshShell.SendKeys([char]175)}}
+    elseif ($mute) {$wshShell.SendKeys([char]173)}#turns sound on or off dependent on what it was before
+    elseif ($volume) {1..50 | ForEach-Object {$wshShell.SendKeys([char]174)};1..$Volume | ForEach-Object {$wshShell.SendKeys([char]175)}}
+}
+New-Alias -Name "Volume" -Value Set-SpeakerVolume
+
+
+Function Set-StoreLookup {
+<#
+   .Notes
+    AUTHOR: Skyler Hart
+    CREATED: 02/08/2018 21:44:31
+    LASTEDIT: 02/08/2018 21:44:31
+    KEYWORDS:
+    REQUIRES:
+        #Requires -Version 3.0
+        #Requires -Modules ActiveDirectory
+        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        #Requires -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    Param (
+        [Switch]$Yes,
+        [Switch]$No
+    )
+
+    if ($Yes) {Set-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -Type DWord -Value 0 -Force}
+    elseif ($No) {Set-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -Type DWord -Value 1 -Force}
+    else {Set-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -Type DWord -Value 1 -Force}
+}
 
 
 function Set-WindowState {
@@ -4723,6 +4008,234 @@ param(
     $Win32ShowWindowAsync::ShowWindowAsync($MainWindowHandle, $WindowStates[$Style]) | Out-Null
     Write-Verbose ("Set Window Style '{1} on '{0}'" -f $MainWindowHandle, $Style)
 
+}
+
+
+Function Show-BalloonTip {
+<#
+   .Notes
+    AUTHOR: Skyler Hart
+    CREATED: Sometime before 2017-08-07
+    LASTEDIT: 08/18/2017 20:47:33
+    KEYWORDS:
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$true)]
+        [string]$Text,
+
+        [Parameter(Mandatory=$true)]
+        [string]$Title,
+
+        [Parameter(Mandatory=$false)]
+        [ValidateSet('Info','Error','Warning')]
+        [string]$Icon = 'Info',
+
+        [Parameter(Mandatory=$false)]
+        [int32]$Timeout = 30000
+    )
+
+    Add-Type -AssemblyName System.Windows.Forms
+    If ($null -eq $PopUp)  {$PopUp = New-Object System.Windows.Forms.NotifyIcon}
+    $Path = Get-Process -Id $PID | Select-Object -ExpandProperty Path
+    $PopUp.Icon = [System.Drawing.Icon]::ExtractAssociatedIcon($Path)
+    $PopUp.BalloonTipIcon = $Icon
+    $PopUp.BalloonTipText = $Text
+    $PopUp.BalloonTipTitle = $Title
+    $PopUp.Visible = $true
+    $PopUp.ShowBalloonTip($Timeout)
+}
+New-Alias -Name "tip" -Value Show-BalloonTip
+
+
+Function Show-FileExtensions {
+<#
+   .Notes
+    AUTHOR: Skyler Hart
+    CREATED: 02/08/2018 21:41:37
+    LASTEDIT: 02/08/2018 21:41:37
+    KEYWORDS:
+    REQUIRES:
+        #Requires -Version 3.0
+        #Requires -Modules ActiveDirectory
+        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        #Requires -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSUseSingularNouns",
+        "",
+        Justification = "Expresses exactly what the function does."
+    )]
+    [CmdletBinding()]
+    Param (
+        [Switch]$Yes,
+        [Switch]$No
+    )
+
+    if ($Yes) {Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideFileExt -Type DWord -Value 0 -Force}
+    elseif ($No) {Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideFileExt -Type DWord -Value 1 -Force}
+    else {Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name HideFileExt -Type DWord -Value 0 -Force}
+}
+
+
+Function Show-HiddenFiles {
+<#
+   .Notes
+    AUTHOR: Skyler Hart
+    CREATED: 02/08/2018 21:40:23
+    LASTEDIT: 02/08/2018 21:40:23
+    KEYWORDS:
+    REQUIRES:
+        #Requires -Version 3.0
+        #Requires -Modules ActiveDirectory
+        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        #Requires -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSUseSingularNouns",
+        "",
+        Justification = "Expresses exactly what the function does."
+    )]
+    [CmdletBinding()]
+    Param (
+        [Switch]$Yes,
+        [Switch]$No
+    )
+
+    if ($Yes) {Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Hidden -Type DWord -Value 1 -Force}
+    elseif ($No) {Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Hidden -Type DWord -Value 2 -Force}
+    else {Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Hidden -Type DWord -Value 1 -Force}
+}
+
+
+Function Show-MessageBox {
+<#
+   .Notes
+    AUTHOR: Skyler Hart
+    CREATED: Sometime before 2017-08-07
+    LASTEDIT: 08/18/2017 20:47:49
+    KEYWORDS:
+.LINK
+    https://wstools.dev
+#>
+#info: https://msdn.microsoft.com/en-us/library/x83z1d9f(v=vs.84).aspx
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$true)]
+        [string]$Text,
+
+        [Parameter(Mandatory=$true)]
+        [string]$Title,
+
+        [Parameter(Mandatory=$false)]
+        [int32]$Timeout = 10
+    )
+
+    $wshell = New-Object -ComObject Wscript.Shell
+    $wshell.Popup($Text,$Timeout,$Title,0x0 + 0x40)
+
+#First option:
+#0x0 Show OK button.
+#0x1 Show OK and Cancel buttons.
+#0x2 Show Abort, Retry, and Ignore buttons.
+#0x3 Show Yes, No, and Cancel buttons.
+#0x4 Show Yes and No buttons.
+#0x5 Show Retry and Cancel buttons.
+#0x6 Show Cancel, Try Again, and Continue buttons.
+
+#Second Option
+#0x10 Show "Stop Mark" icon.
+#0x20 Show "Question Mark" icon.
+#0x30 Show "Exclamation Mark" icon.
+#0x40 Show "Information Mark" icon.
+
+#Return values
+#-1 The user did not click a button before nSecondsToWait seconds elapsed.
+#1 OK button
+#2 Cancel button
+#3 Abort button
+#4 Retry button
+#5 Ignore button
+#6 Yes button
+#7 No button
+#10 Try Again button
+#11 Continue button
+}
+New-Alias -Name "message" -Value Show-MessageBox
+
+
+Function Split-File {
+<#
+   .Notes
+    AUTHOR: Skyler Hart
+    CREATED: 04/30/2019 13:18:22
+    LASTEDIT: 04/30/2019 17:27:34
+    KEYWORDS:
+    REQUIRES:
+        #Requires -Version 3.0
+        #Requires -Modules ActiveDirectory
+        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        #Requires -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    Param (
+        [Parameter(HelpMessage = "Enter the path of the file you want to split.",
+            Mandatory=$true,
+            Position=0
+        )]
+        [Alias('Source','InputLocation','SourceFile')]
+        [string]$Path,
+
+        [Parameter(HelpMessage = "Enter the path of where you want the part files placed.",
+            Mandatory=$false,
+            Position=1
+        )]
+        [Alias('OutputLocation','Output','DestinationPath','Destination')]
+        [string]$DestinationFolder,
+
+        [Parameter(HelpMessage = "Enter the size you want the part files to be. Can be bytes or you can specify a size. Ex: 100MB",
+            Mandatory=$false,
+            Position=2
+        )]
+        [Alias('Size','Newsize')]
+        [int]$PartFileSize = 10MB
+    )
+
+    $FilePath = [IO.Path]::GetDirectoryName($Path)
+    if ((null -eq $$DestinationFolder -or $DestinationFolder -eq "") -and $FilePath -ne "") {$FilePath = $FilePath + "\"}
+    elseif ($null -ne $DestinationFolder -and $DestinationFolder -ne "") {
+        $FilePath = $DestinationFolder + "\"
+    }
+    $FileName = [IO.Path]::GetFileNameWithoutExtension($Path)
+    $Extension = [IO.Path]::GetExtension($Path)
+    $Part = "_Part"
+
+    if (!(Test-Path $FilePath)) {
+        New-Item -Path $FilePath -ItemType Directory
+    }
+
+    $ReadObj = New-Object System.IO.BinaryReader([System.IO.File]::Open($Path, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read))
+	[Byte[]]$Buffer = New-Object Byte[] $PartFileSize
+	[int]$BytesRead = 0
+
+    $N = 1
+    Write-Output "Saving part files to $FilePath"
+    while (($BytesRead = $ReadObj.Read($Buffer, 0, $Buffer.Length)) -gt 0) {
+        $NewName = "{0}{1}{2}{3,2:00}{4}" -f ($FilePath,$FileName,$Part,$N,$Extension)
+        $WriteObj = New-Object System.IO.BinaryWriter([System.IO.File]::Create($NewName))
+        $WriteObj.Write($Buffer, 0, $BytesRead)
+        $WriteObj.Close()
+        $N++
+    }
+    $ReadObj.Close()
 }
 
 
@@ -4925,6 +4438,135 @@ function Stop-Exchange {
 }
 
 
+Function Test-EmailRelay {
+    <#
+       .Notes
+        AUTHOR: Skyler Hart
+        CREATED: 08/18/2017 20:40:04
+        LASTEDIT: 2020-08-09 21:36:41
+        KEYWORDS: E-mail, email, relay, smtp
+        REMARKS: On secure networks, port 25 has to be open
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
+#>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$true, Position=0, HelpMessage="Enter e-mail address of recipient")]
+        [string]$Recipient
+    )
+
+    $config = $Global:WSToolsConfig
+    $from = $config.Sender
+    $smtpserver = $config.SMTPServer
+    $port = $config.SMTPPort
+
+    $date = Get-Date
+    $subject = "Test from $env:COMPUTERNAME $date"
+
+    send-mailmessage -To $Recipient -From $from -Subject $subject -Body "Testing relay of SMTP messages.`nFrom: $from `nTo: $recip `n`nPlease delete this message." -smtpserver $smtpserver -Port $port
+}
+
+
+#Working. Add functionality to convert ip to computername and vice versa. Enter ip range 192.168.0.0/26
+# and have it convert it. Or 192.168.0.0-255 and check all computers. Write help
+# Add alias's and fix pipeline
+Function Test-Online {
+<#
+   .Notes
+    AUTHOR: Skyler Hart
+    LASTEDIT: 08/18/2017 20:47:56
+    KEYWORDS:
+    REQUIRES:
+        #Requires -Version 3.0
+        #Requires -Modules ActiveDirectory
+        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        #Requires -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$false, Position=0)]
+        [Alias('Host','Name','Computer','CN')]
+        [string[]]$ComputerName = "$env:COMPUTERNAME"
+    )
+
+    $i = 0
+    $number = $ComputerName.length
+    foreach ($comp in $ComputerName){
+        if ($number -gt "1") {
+            $i++
+            $amount = ($i / $number)
+            $perc1 = $amount.ToString("P")
+            Write-Progress -activity "Testing whether computers are online or offline. Currently checking $comp" -status "Computer $i of $number. Percent complete:  $perc1" -PercentComplete (($i / $ComputerName.length)  * 100)
+        }#if length
+        try {
+            $testcon = Test-Connection -ComputerName $comp -Count 3 -ErrorAction Stop
+            if ($testcon) {
+                $status = "Online"
+            }#if test
+            else {
+                $status = "Offline"
+            }#else
+        }#try
+        catch [System.Net.NetworkInformation.PingException] {
+            $status = "Comm error"
+        }#catch
+        catch [System.Management.Automation.InvocationInfo] {
+            $status = "Comm error"
+        }
+        catch {
+            $status = "Comm error"
+        }
+        New-Object psobject -Property @{
+            Name = $comp
+            Status = $status
+        }#newobject
+    }#foreach computer
+}
+
+
+Function Test-RegistryValue {
+<#
+   .Notes
+    AUTHOR: Skyler Hart
+    CREATED: 02/08/2018 22:32:46
+    LASTEDIT: 02/08/2018 22:32:46
+    KEYWORDS:
+    REQUIRES:
+        #Requires -Version 3.0
+        #Requires -Modules ActiveDirectory
+        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        #Requires -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$true, Position=0)]
+        [ValidateNotNullOrEmpty()]$Path,
+
+        [Parameter(Mandatory=$true, Position=1)]
+        [ValidateNotNullOrEmpty()]$Value
+    )
+
+    try {
+        Get-ItemPropertyValue -Path $Path -Name $Value -ErrorAction Stop | Out-Null
+        return $true
+    }
+    catch {
+        return $false
+    }
+}
+
+
 function Update-BrokenInheritance {
 <#
 Find and fix broken permissions inheritance.
@@ -5056,6 +4698,252 @@ Foreach ($obj in $users) {
     Else {
         # User has inheritance enabled, so do nothing
     }
+    }
+}
+
+#####################################
+#                                   #
+#             WSTools               #
+#                                   #
+#####################################
+Function Get-WSToolsAlias {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 01/31/2018 23:42:55
+    LASTEDIT: 01/31/2018 23:42:55
+    KEYWORDS:
+.LINK
+    https://wstools.dev
+#>
+    Get-Alias | Where-Object {$_.Source -eq "WSTools"}
+}
+New-Alias -Name "WSToolsAliases" -Value Get-WSToolsAlias
+
+
+Function Get-WSToolsCommand {
+<#
+   .Notes
+    AUTHOR: Skyler Hart
+    CREATED: 01/31/2018 23:52:54
+    LASTEDIT: 01/31/2018 23:52:54
+    KEYWORDS:
+.LINK
+    https://wstools.dev
+#>
+    $commands = (Get-Module WSTools | Select-Object ExportedCommands).ExportedCommands
+    $commands.Values | Select-Object CommandType,Name,Source
+}
+New-Alias -Name "WSToolsCommands" -Value Get-WSToolsCommand
+
+
+function Get-WSToolsConfig {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2020-05-23 12:27:36
+    Last Edit: 2020-08-20 11:18:58
+    Keywords:
+.LINK
+    https://wstools.dev
+#>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
+    $Global:WSToolsConfig
+}
+New-Alias -Name "Import-WSToolsConfig" -Value Get-WSToolsConfig
+New-Alias -Name "WSToolsConfig" -Value Get-WSToolsConfig
+
+
+Function Get-WSToolsVersion {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 02/09/2018 00:23:25
+    LASTEDIT: 02/14/2018 11:05:37
+    KEYWORDS:
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$false)]
+        [Switch]$Remote,
+
+        [Parameter(Mandatory=$false)]
+        [Alias('Host','Name','Computer','CN')]
+        [string[]]$ComputerName
+    )
+
+    if ($Remote) {
+        foreach ($comp in $ComputerName) {
+            $path = "\\$comp\c$\Program Files\WindowsPowerShell\Modules\WSTools\WSTools.psd1"
+            try {
+                $info = Test-ModuleManifest $path
+                $ver = $info.Version
+            }
+            catch {
+                $ver = "NA"
+            }
+
+            try {
+                $info2 = Get-Item $path
+                $i2 = $info2.LastWriteTime
+            }
+            catch {
+                $i2 = "NA"
+            }
+
+            $version = New-Object -TypeName PSObject -Property @{
+                ComputerName = $comp
+                WSToolsVersion = $ver
+                Date = $i2
+                Path = $path
+            }#new object
+            $version | Select-Object ComputerName,WSToolsVersion,Date,Path
+        }
+    }
+    else {
+        $path = "$PSScriptRoot\WSTools.psd1"
+        try {
+            $info = Test-ModuleManifest $path
+            $ver = $info.Version
+        }
+        catch {
+            $ver = "NA"
+        }
+
+        try {
+            $info2 = Get-Item $path
+            $i2 = $info2.LastWriteTime
+        }
+        catch {
+            $i2 = "NA"
+        }
+        $cn = $env:COMPUTERNAME
+
+        $version = New-Object -TypeName PSObject -Property @{
+            ComputerName = $cn
+            WSToolsVersion = $ver
+            Date = $i2
+            Path = $path
+        }#new object
+        $version | Select-Object ComputerName,WSToolsVersion,Date,Path
+    }
+}
+New-Alias -Name "WSToolsVersion" -Value Get-WSToolsVersion
+
+
+Function Install-WSTools {
+<#
+.SYNOPSIS
+    Installs/copies the WSTools PowerShell module to a remote computer.
+.DESCRIPTION
+    Copies the WSTools module from the location specified in the WSTools config file (config.ps1) for UpdatePath to the C:\Program Files\WindowsPowerShell\Modules\WSTools folder on the remote computer.
+.PARAMETER ComputerName
+    Specifies the name of one or more computers.
+.EXAMPLE
+    C:\PS>Install-WSTools COMPNAME
+    How to install the WSTools PowerShell module on the remote computer COMPNAME.
+.EXAMPLE
+    C:\PS>Install-WSTools -ComputerName COMPNAME1,COMPNAME2
+    How to install the WSTools PowerShell module on the remote computers COMPNAME1 and COMPNAME2.
+.NOTES
+    Author: Skyler Hart
+    Created: 06/13/2018 14:17:09
+    Last Edit: 2020-08-20 11:18:30
+    Keywords:
+.LINK
+    https://wstools.dev
+#>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSUseSingularNouns",
+        "",
+        Justification = "WSTools is the proper name for the module."
+    )]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$false, Position=0)]
+        [Alias('Host','Name','Computer','CN')]
+        [string[]]$ComputerName = "$env:COMPUTERNAME"
+    )
+
+    $config = $Global:WSToolsConfig
+    $source = $config.UpdatePath
+
+    foreach ($comp in $ComputerName) {
+        robocopy $source "\\$comp\c$\Program Files\WindowsPowerShell\Modules\WSTools" /mir /mt:4 /r:3 /w:5 /njs /njh
+    }
+}
+New-Alias -Name "Copy-WSTools" -Value Install-WSTools
+New-Alias -Name "Push-WSTools" -Value Install-WSTools
+
+
+function Set-WSToolsConfig {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2020-04-17 15:00:06
+    Last Edit: 2020-04-17 15:00:06
+.LINK
+    https://wstools.dev
+#>
+    PowerShell_Ise "$PSScriptRoot\config.ps1"
+}
+
+
+Function Update-WSTools {
+<#
+   .Synopsis
+    This updates the WSTools module
+   .Description
+    Updates the WSTools module in various locations
+   .Example
+    Update-WSTools
+    Will update the WSTools module
+   .Notes
+    AUTHOR: Skyler Hart
+    CREATED: 09/21/2017 14:48:46
+    LASTEDIT: 10/17/2019 23:14:22
+    KEYWORDS: PowerShell, module, WSTools, personal
+    REMARKS:
+.LINK
+    https://wstools.dev
+#>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSUseSingularNouns",
+        "",
+        Justification = "WSTools is the proper name for the module."
+    )]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
+    $config = $Global:WSToolsConfig
+    $UPath = $config.UpdatePath
+    $UComp = $config.UpdateComp
+    $APaths = $config.AdditionalUpdatePaths
+
+    if ($null -ne $UComp -and $env:COMPUTERNAME -eq $UComp) {
+        Robocopy.exe $env:ProgramFiles\WindowsPowerShell\Modules\WSTools $UPath /mir /mt:4 /r:3 /w:5 /njh /njs
+        if ($null -ne $APaths -or $APaths -eq "") {
+            ForEach ($apath in $APaths) {
+                Write-Output "Updating $apath"
+                Robocopy.exe $env:ProgramFiles\WindowsPowerShell\Modules\WSTools $apath /mir /mt:4 /r:3 /w:5 /njh /njs
+            }
+        }
+    }
+    else {
+        robocopy $UPath $env:ProgramFiles\WindowsPowerShell\Modules\WSTools /mir /mt:4 /njs /njh /r:3 /w:15
     }
 }
 
