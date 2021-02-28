@@ -10,6 +10,7 @@ New features and other changes:
 1. Reordered several functions to be more alphabetical.
 2. Added Disable-RDP.
 3. Added admin check to Enable-RDP.
+4. Added Get-WSLocalUser
 
 Removed items:
 1. Get-PublicIP was removed as it's a security risk for main client.
