@@ -1021,7 +1021,7 @@ function Get-WSLocalGroup {
 .NOTES
     Author: Skyler Hart
     Created: 2021-02-28 19:52:59
-    Last Edit: 2021-02-28 20:22:43
+    Last Edit: 2021-02-28 21:06:49
     Keywords:
     Requires:
         -RunAsAdministrator
@@ -1074,33 +1074,10 @@ function Get-WSLocalGroup {
                 )]
                 [string]$Output
             )
+
+            $info = @()
             try {
                 $Role = (Get-WmiObject -ComputerName $comp -Class Win32_ComputerSystem -Property DomainRole -ErrorAction Stop).DomainRole
-                if ($Role -match "4|5") {
-                    $info = New-Object -TypeName PSObject -Property @{
-                        ComputerName = $comp
-                        DatePulled = $Null
-                        Description = $Null
-                        Group = $Null
-                        Members = $Null
-                        Status = "Domain Controller - no local groups"
-                    }#new object
-                }#if DC
-                else {
-                    $td = Get-Date
-                    $GI = ([ADSI]"WinNT://$comp").Children | Where-Object {$_.SchemaClassName -eq 'Group'}
-                    foreach ($group in $GI) {
-                        $members = ($group.Invoke('Members') | ForEach-Object {$_.GetType().InvokeMember("Name", 'GetProperty', $null, $_, $null)}) -join ", "
-                        $info += New-Object -TypeName PSObject -Property @{
-                            ComputerName = $comp
-                            DatePulled = $td
-                            Description = $group.Description[0]
-                            Group = $group.Name[0]
-                            Members = $members
-                            Status = "Connected"
-                        }#new object
-                    }#foreach group on computer
-                }#not DC
             }
             catch {
                 $info = New-Object -TypeName PSObject -Property @{
@@ -1112,6 +1089,32 @@ function Get-WSLocalGroup {
                     Status = "Comm Error"
                 }#new object
             }
+
+            if ($Role -match "4|5") {
+                $info = New-Object -TypeName PSObject -Property @{
+                    ComputerName = $comp
+                    DatePulled = $Null
+                    Description = $Null
+                    Group = $Null
+                    Members = $Null
+                    Status = "Domain Controller - no local groups"
+                }#new object
+            }#if DC
+            elseif ($Role -match "0|1|2|3") {
+                $td = Get-Date
+                $GI = ([ADSI]"WinNT://$comp").Children | Where-Object {$_.SchemaClassName -eq 'Group'}
+                foreach ($group in $GI) {
+                    $members = ($group.Invoke('Members') | ForEach-Object {$_.GetType().InvokeMember("Name", 'GetProperty', $null, $_, $null)}) -join ", "
+                    $info += New-Object -TypeName PSObject -Property @{
+                        ComputerName = $comp
+                        DatePulled = $td
+                        Description = $group.Description[0]
+                        Group = $group.Name[0]
+                        Members = $members
+                        Status = "Connected"
+                    }#new object
+                }#foreach group on computer
+            }#not DC
 
             if (Test-Path $Output) {
                 $info | Select-Object ComputerName,Status,Group,Description,Members,DatePulled | Export-Csv $Output -NoTypeInformation -Append
@@ -1176,7 +1179,7 @@ function Get-WSLocalUser {
 .NOTES
     Author: Skyler Hart
     Created: 2021-02-27 22:05:08
-    Last Edit: 2021-02-27 23:23:32
+    Last Edit: 2021-02-28 21:05:57
     Keywords:
     Requires:
         -RunAsAdministrator
@@ -1271,7 +1274,7 @@ function Get-WSLocalUser {
                     User = $Null
                 }#new object
             }#if DC
-            else {
+            elseif ($Role -match "0|1|2|3") {
                 $UI = ([ADSI]"WinNT://$comp").Children | Where-Object {$_.SchemaClassName -eq 'User'}
                 $td = Get-Date
                 foreach ($user in $UI) {
