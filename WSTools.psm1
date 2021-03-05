@@ -423,6 +423,293 @@ function Convert-AppIconToBase64 {
 }
 
 
+function Convert-DaysToWorkDay {
+<#
+.EXAMPLE
+    C:\PS>Convert-DaysToWorkDay 1
+    Example of how to use this cmdlet
+.EXAMPLE
+    C:\PS>Convert-DaysToWorkDay -1
+    Another example of how to use this cmdlet.
+.NOTES
+    Author: Skyler Hart
+    Created: 2021-03-04 18:54:31
+    Last Edit: 2021-03-04 22:44:35
+    Keywords:
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
+#>
+    [CmdletBinding()]
+    param(
+        [Parameter(
+            HelpMessage = "Enter the amount of days you want to convert. Must an a positive or negative integer (Ex: 1 or -1).",
+            Mandatory=$true,
+            Position=0
+        )]
+        [int32]$Days,
+
+        [Parameter(
+            HelpMessage = "Must be in the format yyyy-MM-dd.",
+            Mandatory=$false,
+            Position=1
+        )]
+        [datetime]$StartDay = (Get-Date).Date
+    )
+
+    if ($Days -lt 0) {
+        $sub = "sub"
+    }
+    elseif ($Days -gt 0) {
+        $sub = "add"
+    }
+    else {$sub = "zero"}
+
+    $holidays = @(
+        #2018
+        (Get-Date -Date '2018-01-01'),  #New Years
+        (Get-Date -Date '2018-01-15'),  #MLK Day
+        (Get-Date -Date '2018-02-19'),  #Washingtons Bday
+        (Get-Date -Date '2018-05-28'),  #Memorial Day
+        (Get-Date -Date '2018-07-04'),  #Independence Day
+        (Get-Date -Date '2018-09-03'),  #Labor Day
+        (Get-Date -Date '2018-10-08'),  #Columbus Day
+        (Get-Date -Date '2018-11-12'),  #Veterans Day
+        (Get-Date -Date '2018-11-22'),  #Thanksgiving Day
+        (Get-Date -Date '2018-12-25'),  #Christmas Day
+
+        #2019
+        (Get-Date -Date '2019-01-01'),  #New Years
+        (Get-Date -Date '2019-01-21'),  #MLK Day
+        (Get-Date -Date '2019-02-18'),  #Washingtons Bday
+        (Get-Date -Date '2019-05-27'),  #Memorial Day
+        (Get-Date -Date '2019-07-04'),  #Independence Day
+        (Get-Date -Date '2019-09-02'),  #Labor Day
+        (Get-Date -Date '2019-10-14'),  #Columbus Day
+        (Get-Date -Date '2019-11-11'),  #Veterans Day
+        (Get-Date -Date '2019-11-28'),  #Thanksgiving Day
+        (Get-Date -Date '2019-12-25'),  #Christmas Day
+
+        #2020
+        (Get-Date -Date '2020-01-01'),  #New Years
+        (Get-Date -Date '2020-01-20'),  #MLK Day
+        (Get-Date -Date '2020-02-17'),  #Washingtons Bday
+        (Get-Date -Date '2020-05-25'),  #Memorial Day
+        (Get-Date -Date '2020-07-03'),  #Independence Day
+        (Get-Date -Date '2020-09-07'),  #Labor Day
+        (Get-Date -Date '2020-10-12'),  #Columbus Day
+        (Get-Date -Date '2020-11-11'),  #Veterans Day
+        (Get-Date -Date '2020-11-26'),  #Thanksgiving Day
+        (Get-Date -Date '2020-12-25'),  #Christmas Day
+
+        #2021
+        (Get-Date -Date '2021-01-01'),  #New Years
+        (Get-Date -Date '2021-01-18'),  #MLK Day
+        (Get-Date -Date '2021-02-15'),  #Washingtons Bday
+        (Get-Date -Date '2021-05-31'),  #Memorial Day
+        (Get-Date -Date '2021-07-05'),  #Independence Day
+        (Get-Date -Date '2021-09-06'),  #Labor Day
+        (Get-Date -Date '2021-10-11'),  #Columbus Day
+        (Get-Date -Date '2021-11-11'),  #Veterans Day
+        (Get-Date -Date '2021-11-25'),  #Thanksgiving Day
+        (Get-Date -Date '2021-12-24'),  #Christmas Day
+
+        #2022
+        (Get-Date -Date '2021-12-31'),  #New Years
+        (Get-Date -Date '2022-01-17'),  #MLK Day
+        (Get-Date -Date '2022-02-21'),  #Washingtons Bday
+        (Get-Date -Date '2022-05-30'),  #Memorial Day
+        (Get-Date -Date '2022-07-04'),  #Independence Day
+        (Get-Date -Date '2022-09-05'),  #Labor Day
+        (Get-Date -Date '2022-10-10'),  #Columbus Day
+        (Get-Date -Date '2022-11-11'),  #Veterans Day
+        (Get-Date -Date '2022-11-24'),  #Thanksgiving Day
+        (Get-Date -Date '2022-12-26'),  #Christmas Day
+
+        #2023
+        (Get-Date -Date '2023-01-02'),  #New Years
+        (Get-Date -Date '2023-01-16'),  #MLK Day
+        (Get-Date -Date '2023-02-20'),  #Washingtons Bday
+        (Get-Date -Date '2023-05-29'),  #Memorial Day
+        (Get-Date -Date '2023-07-04'),  #Independence Day
+        (Get-Date -Date '2023-09-04'),  #Labor Day
+        (Get-Date -Date '2023-10-09'),  #Columbus Day
+        (Get-Date -Date '2023-11-10'),  #Veterans Day
+        (Get-Date -Date '2023-11-23'),  #Thanksgiving Day
+        (Get-Date -Date '2023-12-25'),  #Christmas Day
+
+        #2024
+        (Get-Date -Date '2024-01-01'),  #New Years
+        (Get-Date -Date '2024-01-15'),  #MLK Day
+        (Get-Date -Date '2024-02-19'),  #Washingtons Bday
+        (Get-Date -Date '2024-05-27'),  #Memorial Day
+        (Get-Date -Date '2024-07-04'),  #Independence Day
+        (Get-Date -Date '2024-09-02'),  #Labor Day
+        (Get-Date -Date '2024-10-14'),  #Columbus Day
+        (Get-Date -Date '2024-11-11'),  #Veterans Day
+        (Get-Date -Date '2024-11-28'),  #Thanksgiving Day
+        (Get-Date -Date '2024-12-25'),  #Christmas Day
+
+        #2025
+        (Get-Date -Date '2025-01-01'),  #New Years
+        (Get-Date -Date '2025-01-20'),  #MLK Day
+        (Get-Date -Date '2025-02-17'),  #Washingtons Bday
+        (Get-Date -Date '2025-05-26'),  #Memorial Day
+        (Get-Date -Date '2025-07-04'),  #Independence Day
+        (Get-Date -Date '2025-09-01'),  #Labor Day
+        (Get-Date -Date '2025-10-13'),  #Columbus Day
+        (Get-Date -Date '2025-11-11'),  #Veterans Day
+        (Get-Date -Date '2025-11-27'),  #Thanksgiving Day
+        (Get-Date -Date '2025-12-25'),  #Christmas Day
+
+        #2026
+        (Get-Date -Date '2026-01-01'),  #New Years
+        (Get-Date -Date '2026-01-19'),  #MLK Day
+        (Get-Date -Date '2026-02-16'),  #Washingtons Bday
+        (Get-Date -Date '2026-05-25'),  #Memorial Day
+        (Get-Date -Date '2026-07-03'),  #Independence Day
+        (Get-Date -Date '2026-09-07'),  #Labor Day
+        (Get-Date -Date '2026-10-12'),  #Columbus Day
+        (Get-Date -Date '2026-11-11'),  #Veterans Day
+        (Get-Date -Date '2026-11-26'),  #Thanksgiving Day
+        (Get-Date -Date '2026-12-25'),  #Christmas Day
+
+        #2027
+        (Get-Date -Date '2027-01-01'),  #New Years
+        (Get-Date -Date '2027-01-18'),  #MLK Day
+        (Get-Date -Date '2027-02-15'),  #Washingtons Bday
+        (Get-Date -Date '2027-05-31'),  #Memorial Day
+        (Get-Date -Date '2027-07-05'),  #Independence Day
+        (Get-Date -Date '2027-09-06'),  #Labor Day
+        (Get-Date -Date '2027-10-11'),  #Columbus Day
+        (Get-Date -Date '2027-11-11'),  #Veterans Day
+        (Get-Date -Date '2027-11-25'),  #Thanksgiving Day
+        (Get-Date -Date '2027-12-24'),  #Christmas Day
+
+        #2028
+        (Get-Date -Date '2027-12-31'),  #New Years
+        (Get-Date -Date '2028-01-17'),  #MLK Day
+        (Get-Date -Date '2028-02-21'),  #Washingtons Bday
+        (Get-Date -Date '2028-05-29'),  #Memorial Day
+        (Get-Date -Date '2028-07-04'),  #Independence Day
+        (Get-Date -Date '2028-09-04'),  #Labor Day
+        (Get-Date -Date '2028-10-09'),  #Columbus Day
+        (Get-Date -Date '2028-11-10'),  #Veterans Day
+        (Get-Date -Date '2028-11-23'),  #Thanksgiving Day
+        (Get-Date -Date '2028-12-25'),  #Christmas Day
+
+        #2029
+        (Get-Date -Date '2029-01-01'),  #New Years
+        (Get-Date -Date '2029-01-15'),  #MLK Day
+        (Get-Date -Date '2029-02-19'),  #Washingtons Bday
+        (Get-Date -Date '2029-05-28'),  #Memorial Day
+        (Get-Date -Date '2029-07-04'),  #Independence Day
+        (Get-Date -Date '2029-09-03'),  #Labor Day
+        (Get-Date -Date '2029-10-08'),  #Columbus Day
+        (Get-Date -Date '2029-11-12'),  #Veterans Day
+        (Get-Date -Date '2029-11-22'),  #Thanksgiving Day
+        (Get-Date -Date '2029-12-25'),  #Christmas Day
+
+        #2030
+        (Get-Date -Date '2030-01-01'),  #New Years
+        (Get-Date -Date '2030-01-21'),  #MLK Day
+        (Get-Date -Date '2030-02-18'),  #Washingtons Bday
+        (Get-Date -Date '2030-05-27'),  #Memorial Day
+        (Get-Date -Date '2030-07-04'),  #Independence Day
+        (Get-Date -Date '2030-09-02'),  #Labor Day
+        (Get-Date -Date '2030-10-14'),  #Columbus Day
+        (Get-Date -Date '2030-11-11'),  #Veterans Day
+        (Get-Date -Date '2030-11-28'),  #Thanksgiving Day
+        (Get-Date -Date '2030-12-25')  #Christmas Day
+    )
+
+    if ($sub -eq "sub") {
+        $i = -1
+        do {
+            $StartDay = $StartDay.AddDays(-1)
+
+            if ($holidays -contains $StartDay) {
+                $StartDay = $StartDay.AddDays(-1)
+            }
+
+            if ($StartDay.DayOfWeek -match "Sunday") {
+                $StartDay = $StartDay.AddDays(-1)
+            }
+
+            if ($StartDay.DayOfWeek -match "Saturday") {
+                $StartDay = $StartDay.AddDays(-1)
+            }
+
+            if ($holidays -contains $StartDay) {
+                $StartDay = $StartDay.AddDays(-1)
+            }
+
+            $i--
+        } until ($i -lt $Days)
+
+        if ($holidays -contains $StartDay) {
+            $StartDay = $StartDay.AddDays(-1)
+        }
+
+        if ($StartDay.DayOfWeek -match "Sunday") {
+            $StartDay = $StartDay.AddDays(-1)
+        }
+
+        if ($StartDay.DayOfWeek -match "Saturday") {
+            $StartDay = $StartDay.AddDays(-1)
+        }
+
+        if ($holidays -contains $StartDay) {
+            $StartDay = $StartDay.AddDays(-1)
+        }
+        $StartDay
+    }
+    elseif ($sub -eq "add") {
+        $i = 1
+        do {
+            $StartDay = $StartDay.AddDays(1)
+
+            if ($holidays -contains $StartDay) {
+                $StartDay = $StartDay.AddDays(1)
+            }
+
+            if ($StartDay.DayOfWeek -match "Saturday") {
+                $StartDay = $StartDay.AddDays(1)
+            }
+
+            if ($StartDay.DayOfWeek -match "Sunday") {
+                $StartDay = $StartDay.AddDays(1)
+            }
+
+            if ($holidays -contains $StartDay) {
+                $StartDay = $StartDay.AddDays(1)
+            }
+
+            $i++
+        } until ($i -gt $Days)
+
+        if ($holidays -contains $StartDay) {
+            $StartDay = $StartDay.AddDays(1)
+        }
+
+        if ($StartDay.DayOfWeek -match "Saturday") {
+            $StartDay = $StartDay.AddDays(1)
+        }
+
+        if ($StartDay.DayOfWeek -match "Sunday") {
+            $StartDay = $StartDay.AddDays(1)
+        }
+
+        if ($holidays -contains $StartDay) {
+            $StartDay = $StartDay.AddDays(1)
+        }
+        $StartDay
+    }
+    else {$StartDay}
+}
+
+
 function Convert-ImageToBase64 {
 <#
 .NOTES

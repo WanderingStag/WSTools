@@ -1,5 +1,16 @@
 ######################
 #                    #
+#      v1.3.0.3      #
+#    February 2021   #
+######################
+Known issues:
+1. Get-NICInfo doesn't always run.
+
+New features and other changes:
+1. Added Convert-DaysToWorkDay. Takes into account weekends and US Federal Holidays ranging from 2018 to 2030. Can specify date to start from.
+
+######################
+#                    #
 #      v1.3.0.2      #
 #    February 2021   #
 ######################
