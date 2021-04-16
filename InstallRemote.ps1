@@ -198,25 +198,32 @@ $patch2 = $PatchFolderPath + "\Patch2\Setup.exe"
 $patch4 = $PatchFolderPath + "\Patch4\Setup.exe"
 $patch11 = $PatchFolderPath + "\Patch11\Setup.exe"
 $patch15 = $PatchFolderPath + "\Patch15\Setup.exe"
+$patch16 = $PatchFolderPath + "\Patch16\Setup.exe"
 
 #$7zip = $PatchFolderPath + "\7zip"
 $90meter = $PatchFolderPath + "\90Meter"
 $activclient = $PatchFolderPath + "\ActivClient"
 $acrobat = $PatchFolderPath + "\Acrobat"
+$aem = $PatchFolderPath + "\AEM"
+$anyconnect = $PatchFolderPath + "\JRSS"
 $axway = $PatchFolderPath + "\Axway"
+$BigIP = $PatchFolderPath + "\VPN"
 $chrome = $PatchFolderPath + "\Chrome"
 $dset = $PatchFolderPath + "\DSET"
+$encase = $PatchFolderPath + "\Encase"
 $firefox = $PatchFolderPath + "\firefox"
-#$flash = $PatchFolderPath + "\Flash"
+$infopath = $PatchFolderPath + "\InfoPath"
 $java = $PatchFolderPath + "\Java"
-#$shockwave = $PatchFolderPath + "\Shockwave"
+$onedrive = $PatchFolderPath + "\OneDriveSetup.exe"
+$project = $PatchFolderPath + "\Project"
 $silverlight = $PatchFolderPath + "\Silverlight"
 $tanium = $PatchFolderPath + "\Tanium"
 $teams = $PatchFolderPath + "\Teams"
 $titus = $PatchFolderPath + "\Titus"
+$transverse = $PatchFolderPath + "\Transverse"
+$vESD = $PatchFolderPath + "\vESD"
+$visio = $PatchFolderPath + "\visio"
 $vlc = $PatchFolderPath + "\vlc"
-
-$onedrive = $PatchFolderPath + "\OneDriveSetup.exe"
 
 $datu = Get-ChildItem -Path $PatchFolderPath | Where-Object {$_.Name -like "CM-*xdat.exe"}
 $datun = $datu.Count
@@ -309,12 +316,12 @@ if ((Test-Path $90meter) -and $env:USERDNSDOMAIN -like "*.smil.mil") {
     else {
         Write-Output "$cn`: Uninstalling old 90Meter"
         Get-WmiObject -Class Win32_Product -Filter "Name LIKE '90Meter%'" | Remove-WmiObject
-        Start-Sleep 30
+        Start-Sleep 60
         Start-Process C:\windows\System32\msiexec.exe -ArgumentList "/uninstall {54C965FF-E457-4993-A083-61B9A6AEFEC1} /quiet /norestart" -NoNewWindow -Wait
-        Start-Sleep 30
+        Start-Sleep 60
         Write-Output "$cn`: Installing 90meter."
         Start-Process c:\Patches\90Meter\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
-        Start-Sleep 150
+        Start-Sleep 180
     }
 }
 
@@ -328,7 +335,7 @@ if ((Test-Path $activclient) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
     }
     Write-Output "$cn`: Installing ActivClient."
     Start-Process c:\Patches\ActivClient\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
-    Start-Sleep 150
+    Start-Sleep 180
 }
 
 if (Test-Path $acrobat) {
@@ -339,37 +346,44 @@ if (Test-Path $acrobat) {
     $sv = Get-Content $acrobat\SoftwareVersion.txt
     $ipv = ($ip | Where-Object {$_.ProgramName -like "Adobe Acrobat*"} | Select-Object Version)[0].Version
 
-    $ipv = $ipv.Split('.')
-    $ipv = $ipv.Split(' ')
+    if ($null -ne $ipv -or $ipv -ne "") {
+        $ipv = $ipv.Split('.')
+        $ipv = $ipv.Split(' ')
+    }
     $sv = $sv.Split('.')
     $sv = $sv.Split(' ')
 
     #Determine if need to install
-    if ($sv[0] -gt $ipv[0]) {
-        $install = $true
-    }
-    elseif ($sv[0] -eq $ipv[0]) {
-        if ($sv[1] -gt $ipv[1]) {
+    if ($null -ne $ipv -or $ipv -ne "") {
+        if ($sv[0] -gt $ipv[0]) {
             $install = $true
         }
-        elseif ($sv[1] -eq $ipv[1]) {
-            #$install = $false #uncomment and remove below lines if stopping at Major.Minor
-            if ($sv[2] -gt $ipv[2]) {
+        elseif ($sv[0] -eq $ipv[0]) {
+            if ($sv[1] -gt $ipv[1]) {
                 $install = $true
             }
-            elseif ($sv[2] -eq $ipv[2]) {
-                $install = $false
+            elseif ($sv[1] -eq $ipv[1]) {
+                #$install = $false #uncomment and remove below lines if stopping at Major.Minor
+                if ($sv[2] -gt $ipv[2]) {
+                    $install = $true
+                }
+                elseif ($sv[2] -eq $ipv[2]) {
+                    $install = $false
+                }
+                elseif ($sv[2] -lt $ipv[2]) {
+                    $install = $false
+                }
             }
-            elseif ($sv[2] -lt $ipv[2]) {
+            elseif ($sv[1] -lt $ipv[1]) {
                 $install = $false
             }
         }
-        elseif ($sv[1] -lt $ipv[1]) {
+        elseif ($sv[0] -lt $ipv[0]) {
             $install = $false
         }
-    }
-    elseif ($sv[0] -lt $ipv[0]) {
-        $install = $false
+    }#if adobe is installed already
+    else {
+        $install = $true
     }
 
     #Install or not
@@ -377,6 +391,115 @@ if (Test-Path $acrobat) {
         Write-Output "$cn`: Installing $pn."
         Start-Process $acrobat\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 600
+    }
+    else {
+        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
+    }
+}
+
+if (Test-Path $aem) {
+    $sv = $null
+    $ipv = $null
+    $install = $false
+    $pn = "AEM"
+    $sv = Get-Content $aem\SoftwareVersion.txt
+    $ipv = ($ip | Where-Object {$_.ProgramName -like "Designe*"} | Select-Object Version)[0].Version
+
+    if ($null -ne $ipv -or $ipv -ne "") {
+        $ipv = $ipv.Split('.')
+        $ipv = $ipv.Split(' ')
+    }
+    $sv = $sv.Split('.')
+    $sv = $sv.Split(' ')
+
+    #Determine if need to install
+    if ($null -ne $ipv -or $ipv -ne "") {
+        if ($sv[0] -gt $ipv[0]) {
+            $install = $true
+        }
+        elseif ($sv[0] -eq $ipv[0]) {
+            if ($sv[1] -gt $ipv[1]) {
+                $install = $true
+            }
+            elseif ($sv[1] -eq $ipv[1]) {
+                $install = $false
+            }
+            elseif ($sv[1] -lt $ipv[1]) {
+                $install = $false
+            }
+        }
+        elseif ($sv[0] -lt $ipv[0]) {
+            $install = $false
+        }
+    }#if already installed
+    else {
+        $install = $true
+    }
+
+    #Install or not
+    if ($install -eq $true) {
+        Write-Output "$cn`: Installing $pn."
+        Start-Process $aem\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
+        Start-Sleep 360
+    }
+    else {
+        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
+    }
+}
+
+if ((Test-Path $anyconnect) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
+    $sv = $null
+    $ipv = $null
+    $install = $false
+    $pn = "JRSS"
+    $sv = Get-Content $anyconnect\SoftwareVersion.txt
+    $ipv = ($ip | Where-Object {$_.ProgramName -like "Cisco AnyConnect*"} | Select-Object Version)[0].Version
+
+    if ($null -ne $ipv -or $ipv -ne "") {
+        $ipv = $ipv.Split('.')
+        $ipv = $ipv.Split(' ')
+    }
+    $sv = $sv.Split('.')
+    $sv = $sv.Split(' ')
+
+    #Determine if need to install
+    if ($null -ne $ipv -or $ipv -ne "") {
+        if ($sv[0] -gt $ipv[0]) {
+            $install = $true
+        }
+        elseif ($sv[0] -eq $ipv[0]) {
+            if ($sv[1] -gt $ipv[1]) {
+                $install = $true
+            }
+            elseif ($sv[1] -eq $ipv[1]) {
+                #$install = $false #uncomment and remove below lines if stopping at Major.Minor
+                if ($sv[2] -gt $ipv[2]) {
+                    $install = $true
+                }
+                elseif ($sv[2] -eq $ipv[2]) {
+                    $install = $false
+                }
+                elseif ($sv[2] -lt $ipv[2]) {
+                    $install = $false
+                }
+            }
+            elseif ($sv[1] -lt $ipv[1]) {
+                $install = $false
+            }
+        }
+        elseif ($sv[0] -lt $ipv[0]) {
+            $install = $false
+        }
+    }#if already installed
+    else {
+        $install = $true
+    }
+
+    #Install or not
+    if ($install -eq $true) {
+        Write-Output "$cn`: Installing $pn."
+        Start-Process $anyconnect\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
+        Start-Sleep 300
     }
     else {
         Write-Output "$cn`: $pn same as installed version or older. Skipping..."
@@ -391,35 +514,108 @@ if (Test-Path $axway) {
     $sv = Get-Content $axway\SoftwareVersion.txt
     $ipv = ($ip | Where-Object {$_.ProgramName -like "Axway*"} | Select-Object Version)[0].Version
 
-    $ipv = $ipv.Split('.')
-    $ipv = $ipv.Split(' ')
+    if ($null -ne $ipv -or $ipv -ne "") {
+        $ipv = $ipv.Split('.')
+        $ipv = $ipv.Split(' ')
+    }
     $sv = $sv.Split('.')
     $sv = $sv.Split(' ')
 
     #Determine if need to install
-    if ($sv[0] -gt $ipv[0]) {
-        $install = $true
-    }
-    elseif ($sv[0] -eq $ipv[0]) {
-        if ($sv[1] -gt $ipv[1]) {
+    if ($null -ne $ipv -or $ipv -ne "") {
+        if ($sv[0] -gt $ipv[0]) {
             $install = $true
         }
-        elseif ($sv[1] -eq $ipv[1]) {
+        elseif ($sv[0] -eq $ipv[0]) {
+            if ($sv[1] -gt $ipv[1]) {
+                $install = $true
+            }
+            elseif ($sv[1] -eq $ipv[1]) {
+                $install = $false
+            }
+            elseif ($sv[1] -lt $ipv[1]) {
+                $install = $false
+            }
+        }
+        elseif ($sv[0] -lt $ipv[0]) {
             $install = $false
         }
-        elseif ($sv[1] -lt $ipv[1]) {
-            $install = $false
-        }
-    }
-    elseif ($sv[0] -lt $ipv[0]) {
-        $install = $false
+    }#if already installed
+    else {
+        $install = $true
     }
 
     #Install or not
     if ($install -eq $true) {
         Write-Output "$cn`: Installing $pn."
         Start-Process $axway\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
-        Start-Sleep 150
+        Start-Sleep 300
+    }
+    else {
+        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
+    }
+}
+
+if (Test-Path $BigIP) {
+    $sv = $null
+    $ipv = $null
+    $install = $false
+    $pn = "VPN"
+    $sv = Get-Content $BigIP\SoftwareVersion.txt
+    $ipv = ($ip | Where-Object {$_.ProgramName -like "BIG-IP Edge*"} | Select-Object Version)[0].Version
+
+    if ($null -ne $ipv -or $ipv -ne "") {
+        $ipv = $ipv.Split('.')
+        $ipv = $ipv.Split(' ')
+    }
+    $sv = $sv.Split('.')
+    $sv = $sv.Split(' ')
+
+    #Determine if need to install
+    if ($null -ne $ipv -or $ipv -ne "") {
+        if ($sv[0] -gt $ipv[0]) {
+            $install = $true
+        }
+        elseif ($sv[0] -eq $ipv[0]) {
+            if ($sv[1] -gt $ipv[1]) {
+                $install = $true
+            }
+            elseif ($sv[1] -eq $ipv[1]) {
+                if ($sv[2] -gt $ipv[2]) {
+                    $install = $true
+                }
+                elseif ($sv[2] -eq $ipv[2]) {
+                    if ($sv[3] -gt $ipv[3]) {
+                        $install = $true
+                    }
+                    elseif ($sv[3] -eq $ipv[3]) {
+                        $install = $false
+                    }
+                    elseif ($sv[3] -lt $ipv[3]) {
+                        $install = $false
+                    }
+                }
+                elseif ($sv[2] -lt $ipv[2]) {
+                    $install = $false
+                }
+            }
+            elseif ($sv[1] -lt $ipv[1]) {
+                $install = $false
+            }
+        }
+        elseif ($sv[0] -lt $ipv[0]) {
+            $install = $false
+        }
+    }#if already installed
+    else {
+        $install = $true
+    }
+
+    #Install or not
+    if ($install -eq $true) {
+        Write-Output "$cn`: Installing $pn."
+        Start-Process $BigIP\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
+        Start-Sleep 300
     }
     else {
         Write-Output "$cn`: $pn same as installed version or older. Skipping..."
@@ -428,22 +624,67 @@ if (Test-Path $axway) {
 
 if (Test-Path $chrome) {
     $sv = $null
+    $ipv = $null
+    $install = $false
+    $pn = "Chrome"
     $sv = Get-Content $chrome\SoftwareVersion.txt
-    $ipc = ($ip | Where-Object {$_.ProgramName -like "Google Chrom*"} | Select-Object Version)[0].Version
-    if ($sv -match $ipc) {
-        Write-Output "$cn`: Google Chrome in patches folder same as installed version. Skipping install..."
+    $ipv = ($ip | Where-Object {$_.ProgramName -like "Google Chrome*"} | Select-Object Version)[0].Version
+
+    if ($null -ne $ipv -or $ipv -ne "") {
+        $ipv = $ipv.Split('.')
+        $ipv = $ipv.Split(' ')
+    }
+    $sv = $sv.Split('.')
+    $sv = $sv.Split(' ')
+
+    #Determine if need to install
+    if ($null -ne $ipv -or $ipv -ne "") {
+        if ($sv[0] -gt $ipv[0]) {
+            $install = $true
+        }
+        elseif ($sv[0] -eq $ipv[0]) {
+            if ($sv[1] -gt $ipv[1]) {
+                $install = $true
+            }
+            elseif ($sv[1] -eq $ipv[1]) {
+                if ($sv[2] -gt $ipv[2]) {
+                    $install = $true
+                }
+                elseif ($sv[2] -eq $ipv[2]) {
+                    if ($sv[3] -gt $ipv[3]) {
+                        $install = $true
+                    }
+                    elseif ($sv[3] -eq $ipv[3]) {
+                        $install = $false
+                    }
+                    elseif ($sv[3] -lt $ipv[3]) {
+                        $install = $false
+                    }
+                }
+                elseif ($sv[2] -lt $ipv[2]) {
+                    $install = $false
+                }
+            }
+            elseif ($sv[1] -lt $ipv[1]) {
+                $install = $false
+            }
+        }
+        elseif ($sv[0] -lt $ipv[0]) {
+            $install = $false
+        }
+    }#if already installed
+    else {
+        $install = $true
+    }
+
+    #Install or not
+    if ($install -eq $true) {
+        Write-Output "$cn`: Installing $pn."
+        Start-Process $chrome\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
+        Start-Sleep 360
     }
     else {
-        $inchrome = $null
-        $inchrome = Get-WmiObject -Class Win32_Product -Filter "Name LIKE '%Chrome%'"
-        if ($null -ne $inchrome -and $inchrome -ne "") {
-            Write-Output "$cn`: Uninstalling old version of Chrome."
-            Get-WmiObject -Class Win32_Product -Filter "Name LIKE '%Chrome%'" | Remove-WmiObject
-            Start-Sleep 150
-        }
-        Write-Output "$cn`: Installing Chrome."
-        Start-Process c:\Patches\Chrome\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
-        Start-Sleep 150
+        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
     }
 }
 
@@ -455,37 +696,44 @@ if ((Test-Path $dset) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
     $sv = Get-Content $dset\SoftwareVersion.txt
     $ipv = ($ip | Where-Object {$_.ProgramName -like "DSET*"} | Select-Object Version)[0].Version
 
-    $ipv = $ipv.Split('.')
-    $ipv = $ipv.Split(' ')
+    if ($null -ne $ipv -or $ipv -ne "") {
+        $ipv = $ipv.Split('.')
+        $ipv = $ipv.Split(' ')
+    }
     $sv = $sv.Split('.')
     $sv = $sv.Split(' ')
 
     #Determine if need to install
-    if ($sv[0] -gt $ipv[0]) {
-        $install = $true
-    }
-    elseif ($sv[0] -eq $ipv[0]) {
-        if ($sv[1] -gt $ipv[1]) {
+    if ($null -ne $ipv -or $ipv -ne "") {
+        if ($sv[0] -gt $ipv[0]) {
             $install = $true
         }
-        elseif ($sv[1] -eq $ipv[1]) {
-            #$install = $false #uncomment and remove below lines if stopping at Major.Minor
-            if ($sv[2] -gt $ipv[2]) {
+        elseif ($sv[0] -eq $ipv[0]) {
+            if ($sv[1] -gt $ipv[1]) {
                 $install = $true
             }
-            elseif ($sv[2] -eq $ipv[2]) {
-                $install = $false
+            elseif ($sv[1] -eq $ipv[1]) {
+                #$install = $false #uncomment and remove below lines if stopping at Major.Minor
+                if ($sv[2] -gt $ipv[2]) {
+                    $install = $true
+                }
+                elseif ($sv[2] -eq $ipv[2]) {
+                    $install = $false
+                }
+                elseif ($sv[2] -lt $ipv[2]) {
+                    $install = $false
+                }
             }
-            elseif ($sv[2] -lt $ipv[2]) {
+            elseif ($sv[1] -lt $ipv[1]) {
                 $install = $false
             }
         }
-        elseif ($sv[1] -lt $ipv[1]) {
+        elseif ($sv[0] -lt $ipv[0]) {
             $install = $false
         }
-    }
-    elseif ($sv[0] -lt $ipv[0]) {
-        $install = $false
+    }#if already installed
+    else {
+        $install = $true
     }
 
     #Install or not
@@ -500,67 +748,200 @@ if ((Test-Path $dset) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
 }
 
 if (Test-Path $firefox) {
-    $inff = $null
+    $sv = $null
+    $ipv = $null
+    $install = $false
+    $pn = "Firefox"
     $sv = Get-Content $firefox\SoftwareVersion.txt
-    $inff = Get-WmiObject -Class Win32_Product -Filter "Name LIKE '%Firefox%'"
-    if ($inff -eq "") {$inff = "0.0.0.0.0.0"}
-    $ipff = ($inff | Select-Object Version)[0].Version
+    $ipv = ($ip | Where-Object {$_.ProgramName -like "Mozilla Firefox*"} | Select-Object Version)[0].Version
 
-    if ($sv -match $ipff) {
-        Write-Output "$cn`: Firefox in patches folder same as installed version. Skipping install..."
+    if ($null -ne $ipv -or $ipv -ne "") {
+        $ipv = $ipv.Split('.')
+        $ipv = $ipv.Split(' ')
+    }
+    $sv = $sv.Split('.')
+    $sv = $sv.Split(' ')
+
+    #Determine if need to install
+    if ($null -ne $ipv -or $ipv -ne "") {
+        if ($sv[0] -gt $ipv[0]) {
+            $install = $true
+        }
+        elseif ($sv[0] -eq $ipv[0]) {
+            if ($sv[1] -gt $ipv[1]) {
+                $install = $true
+            }
+            elseif ($sv[1] -eq $ipv[1]) {
+                #$install = $false #uncomment and remove below lines if stopping at Major.Minor
+                if ($sv[2] -gt $ipv[2]) {
+                    $install = $true
+                }
+                elseif ($sv[2] -eq $ipv[2]) {
+                    $install = $false
+                }
+                elseif ($sv[2] -lt $ipv[2]) {
+                    $install = $false
+                }
+            }
+            elseif ($sv[1] -lt $ipv[1]) {
+                $install = $false
+            }
+        }
+        elseif ($sv[0] -lt $ipv[0]) {
+            $install = $false
+        }
+    }#if installed already
+    else {
+        $install = $true
+    }
+
+    #Install or not
+    if ($install -eq $true) {
+        Write-Output "$cn`: Installing $pn."
+        Start-Process $firefox\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
+        Start-Sleep 350
     }
     else {
-        if ($null -ne $inff -and $inff -ne "") {
-            Write-Output "$cn`: Uninstalling old versions of Firefox."
-            Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList 'cmd /c "C:\Program Files\Mozilla Firefox\uninstall\helper.exe" -ms' -ErrorAction SilentlyContinue | Out-Null
-            Start-Sleep -Seconds 10
-            Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList 'cmd /c "C:\Program Files (x86)\Mozilla Firefox\uninstall\helper.exe" -ms' -ErrorAction SilentlyContinue | Out-Null
-            Start-Sleep -Seconds 30
-            Get-WmiObject -Class Win32_Product -Filter "Name LIKE '%Firefox%'" | Remove-WmiObject
-            Start-Sleep 200
-        }
-        Write-Output "$cn`: Installing Firefox."
-        Start-Process c:\Patches\Flash\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
-        Start-Sleep 350
-        #$ffi = Get-ChildItem $firefox | Where-Object {$_.Name -like "firef*.exe"}
-        #if ($ffi.count -eq 1) {
-        #    $ffp = $ffi.FullName
-        #}
-        #else {
-        #    $ffp = $ffi.FullName[0]
-        #}
-        #Start-Process $ffp -ArgumentList "-ms" -NoNewWindow -Wait
-        #Start-Sleep 150
-        #Write-Output "$cn`: Uninstalling Firefox Maintenance Service."
-        #Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList 'cmd /c "C:\Program Files (x86)\Mozilla Maintenance Service\uninstall.exe" /S' -ErrorAction SilentlyContinue | Out-Null
-        #Get-WmiObject -Class Win32_Product -Filter "Name LIKE 'Mozilla Maintenance%'"| Remove-WmiObject
-        #Start-Sleep 30
-    }#else firefox same as installed
+        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
+    }
 }
 
 if (Test-Path $java) {
     $sv = $null
+    $ipv = $null
+    $install = $false
+    $pn = "Java"
     $sv = Get-Content $java\SoftwareVersion.txt
-    $ipj = ($ip | Where-Object {$_.ProgramName -like "Java*"} | Select-Object Version)[0].Version
-    if ($sv -match $ipj) {
-        Write-Output "$cn`: Java in patches folder same as installed version. Skipping install..."
+    $ipv = ($ip | Where-Object {$_.ProgramName -like "Java*"} | Select-Object Version)[0].Version
+
+    if ($null -ne $ipv -or $ipv -ne "") {
+        $ipv = $ipv.Split('.')
+        $ipv = $ipv.Split(' ')
+    }
+    $sv = $sv.Split('.')
+    $sv = $sv.Split(' ')
+
+    #Determine if need to install
+    if ($null -ne $ipv -or $ipv -ne "") {
+        if ($sv[0] -gt $ipv[0]) {
+            $install = $true
+        }
+        elseif ($sv[0] -eq $ipv[0]) {
+            if ($sv[1] -gt $ipv[1]) {
+                $install = $true
+            }
+            elseif ($sv[1] -eq $ipv[1]) {
+                if ($sv[2] -gt $ipv[2]) {
+                    $install = $true
+                }
+                elseif ($sv[2] -eq $ipv[2]) {
+                    if ($sv[3] -gt $ipv[3]) {
+                        $install = $true
+                    }
+                    elseif ($sv[3] -eq $ipv[3]) {
+                        $install = $false
+                    }
+                    elseif ($sv[3] -lt $ipv[3]) {
+                        $install = $false
+                    }
+                }
+                elseif ($sv[2] -lt $ipv[2]) {
+                    $install = $false
+                }
+            }
+            elseif ($sv[1] -lt $ipv[1]) {
+                $install = $false
+            }
+        }
+        elseif ($sv[0] -lt $ipv[0]) {
+            $install = $false
+        }
+    }#if already installed
+    else {
+        $install = $true
+    }
+
+    #Install or not
+    if ($install -eq $true) {
+        Write-Output "$cn`: Installing $pn."
+        Start-Process $java\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
+        Start-Sleep 360
     }
     else {
-        $inja = $null
-        $inja = Get-WmiObject -Class Win32_Product -Filter "Name LIKE '%Java%'"
-        if ($null -ne $inja -and $inja -ne "") {
-            Write-Output "$cn`: Uninstalling old version of Java."
-            Get-WmiObject -Class Win32_Product -Filter "Name LIKE '%Java%'" | Remove-WmiObject
-            Start-Sleep 450
-        }
-        Write-Output "$cn`: Installing Java."
-        Start-Process c:\Patches\Java\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
-        Start-Sleep 400
+        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
     }
 }
 
 if (Test-Path $onedrive) {
+    Write-Output "$cn`: Installing OneDrive."
     Start-Process $onedrive -ArgumentList "/AllUsers /Silent" -NoNewWindow -Wait
+    Start-Sleep -Seconds 300
+}
+
+if (Test-Path $project) {
+    $sv = $null
+    $ipv = $null
+    $install = $false
+    $pn = "Project"
+    $sv = Get-Content $project\SoftwareVersion.txt
+    $ipv = ($ip | Where-Object {$_.ProgramName -like "Microsoft Project*"} | Select-Object Version)[0].Version
+
+    if ($null -ne $ipv -or $ipv -ne "") {
+        $ipv = $ipv.Split('.')
+        $ipv = $ipv.Split(' ')
+    }
+    $sv = $sv.Split('.')
+    $sv = $sv.Split(' ')
+
+    #Determine if need to install
+    if ($null -ne $ipv -or $ipv -ne "") {
+        if ($sv[0] -gt $ipv[0]) {
+            $install = $true
+        }
+        elseif ($sv[0] -eq $ipv[0]) {
+            if ($sv[1] -gt $ipv[1]) {
+                $install = $true
+            }
+            elseif ($sv[1] -eq $ipv[1]) {
+                if ($sv[2] -gt $ipv[2]) {
+                    $install = $true
+                }
+                elseif ($sv[2] -eq $ipv[2]) {
+                    if ($sv[3] -gt $ipv[3]) {
+                        $install = $true
+                    }
+                    elseif ($sv[3] -eq $ipv[3]) {
+                        $install = $false
+                    }
+                    elseif ($sv[3] -lt $ipv[3]) {
+                        $install = $false
+                    }
+                }
+                elseif ($sv[2] -lt $ipv[2]) {
+                    $install = $false
+                }
+            }
+            elseif ($sv[1] -lt $ipv[1]) {
+                $install = $false
+            }
+        }
+        elseif ($sv[0] -lt $ipv[0]) {
+            $install = $false
+        }
+    }#if already installed
+    else {
+        $install = $true
+    }
+
+    #Install or not
+    if ($install -eq $true) {
+        Write-Output "$cn`: Installing $pn."
+        Start-Process $project\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
+        Start-Sleep 400
+    }
+    else {
+        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
+    }
 }
 
 if (Test-Path $silverlight) {
@@ -585,51 +966,58 @@ if (Test-Path $tanium) {
     $sv = Get-Content $tanium\SoftwareVersion.txt
     $ipv = ($ip | Where-Object {$_.ProgramName -like "Tanium*"} | Select-Object Version)[0].Version
 
-    $ipv = $ipv.Split('.')
-    $ipv = $ipv.Split(' ')
+    if ($null -ne $ipv -or $ipv -ne "") {
+        $ipv = $ipv.Split('.')
+        $ipv = $ipv.Split(' ')
+    }
     $sv = $sv.Split('.')
     $sv = $sv.Split(' ')
 
     #Determine if need to install
-    if ($sv[0] -gt $ipv[0]) {
-        $install = $true
-    }
-    elseif ($sv[0] -eq $ipv[0]) {
-        if ($sv[1] -gt $ipv[1]) {
+    if ($null -ne $ipv -or $ipv -ne "") {
+        if ($sv[0] -gt $ipv[0]) {
             $install = $true
         }
-        elseif ($sv[1] -eq $ipv[1]) {
-            if ($sv[2] -gt $ipv[2]) {
+        elseif ($sv[0] -eq $ipv[0]) {
+            if ($sv[1] -gt $ipv[1]) {
                 $install = $true
             }
-            elseif ($sv[2] -eq $ipv[2]) {
-                if ($sv[3] -gt $ipv[3]) {
+            elseif ($sv[1] -eq $ipv[1]) {
+                if ($sv[2] -gt $ipv[2]) {
                     $install = $true
                 }
-                elseif ($sv[3] -eq $ipv[3]) {
-                    $install = $false
+                elseif ($sv[2] -eq $ipv[2]) {
+                    if ($sv[3] -gt $ipv[3]) {
+                        $install = $true
+                    }
+                    elseif ($sv[3] -eq $ipv[3]) {
+                        $install = $false
+                    }
+                    elseif ($sv[3] -lt $ipv[3]) {
+                        $install = $false
+                    }
                 }
-                elseif ($sv[3] -lt $ipv[3]) {
+                elseif ($sv[2] -lt $ipv[2]) {
                     $install = $false
                 }
             }
-            elseif ($sv[2] -lt $ipv[2]) {
+            elseif ($sv[1] -lt $ipv[1]) {
                 $install = $false
             }
         }
-        elseif ($sv[1] -lt $ipv[1]) {
+        elseif ($sv[0] -lt $ipv[0]) {
             $install = $false
         }
-    }
-    elseif ($sv[0] -lt $ipv[0]) {
-        $install = $false
+    }#if already installed
+    else {
+        $install = $true
     }
 
     #Install or not
     if ($install -eq $true) {
         Write-Output "$cn`: Installing $pn."
         Start-Process $tanium\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
-        Start-Sleep 150
+        Start-Sleep 300
     }
     else {
         Write-Output "$cn`: $pn same as installed version or older. Skipping..."
@@ -644,46 +1032,53 @@ if (Test-Path $teams) {
     $sv = Get-Content $teams\SoftwareVersion.txt
     $ipv = ($ip | Where-Object {$_.ProgramName -like "Teams Mach*"} | Select-Object Version)[0].Version
 
-    $ipv = $ipv.Split('.')
-    $ipv = $ipv.Split(' ')
+    if ($null -ne $ipv -or $ipv -ne "") {
+        $ipv = $ipv.Split('.')
+        $ipv = $ipv.Split(' ')
+    }
     $sv = $sv.Split('.')
     $sv = $sv.Split(' ')
 
     #Determine if need to install
-    if ($sv[0] -gt $ipv[0]) {
-        $install = $true
-    }
-    elseif ($sv[0] -eq $ipv[0]) {
-        if ($sv[1] -gt $ipv[1]) {
+    if ($null -ne $ipv -or $ipv -ne "") {
+        if ($sv[0] -gt $ipv[0]) {
             $install = $true
         }
-        elseif ($sv[1] -eq $ipv[1]) {
-            #$install = $false #uncomment and remove below lines if stopping at Major.Minor
-            if ($sv[2] -gt $ipv[2]) {
+        elseif ($sv[0] -eq $ipv[0]) {
+            if ($sv[1] -gt $ipv[1]) {
                 $install = $true
             }
-            elseif ($sv[2] -eq $ipv[2]) {
-                #$install = $false #uncomment and remove below lines if stopping at Major.Minor.Patch/Revision
-                if ($sv[3] -gt $ipv[3]) {
+            elseif ($sv[1] -eq $ipv[1]) {
+                #$install = $false #uncomment and remove below lines if stopping at Major.Minor
+                if ($sv[2] -gt $ipv[2]) {
                     $install = $true
                 }
-                elseif ($sv[3] -eq $ipv[3]) {
-                    $install = $false #stopping at Major.Minor.Build.Revision
+                elseif ($sv[2] -eq $ipv[2]) {
+                    #$install = $false #uncomment and remove below lines if stopping at Major.Minor.Patch/Revision
+                    if ($sv[3] -gt $ipv[3]) {
+                        $install = $true
+                    }
+                    elseif ($sv[3] -eq $ipv[3]) {
+                        $install = $false #stopping at Major.Minor.Build.Revision
+                    }
+                    elseif ($sv[3] -lt $ipv[3]) {
+                        $install = $false
+                    }
                 }
-                elseif ($sv[3] -lt $ipv[3]) {
+                elseif ($sv[2] -lt $ipv[2]) {
                     $install = $false
                 }
             }
-            elseif ($sv[2] -lt $ipv[2]) {
+            elseif ($sv[1] -lt $ipv[1]) {
                 $install = $false
             }
         }
-        elseif ($sv[1] -lt $ipv[1]) {
+        elseif ($sv[0] -lt $ipv[0]) {
             $install = $false
         }
-    }
-    elseif ($sv[0] -lt $ipv[0]) {
-        $install = $false
+    }#if already installed
+    else {
+        $install = $true
     }
 
     #Install or not
@@ -705,51 +1100,138 @@ if ((Test-Path $titus) -and $env:USERDNSDOMAIN -like "*.smil.mil") {
     $sv = Get-Content $titus\SoftwareVersion.txt
     $ipv = ($ip | Where-Object {$_.ProgramName -like "Titus*"} | Select-Object Version)[0].Version
 
-    $ipv = $ipv.Split('.')
-    $ipv = $ipv.Split(' ')
+    if ($null -ne $ipv -or $ipv -ne "") {
+        $ipv = $ipv.Split('.')
+        $ipv = $ipv.Split(' ')
+    }
     $sv = $sv.Split('.')
     $sv = $sv.Split(' ')
 
     #Determine if need to install
-    if ($sv[0] -gt $ipv[0]) {
-        $install = $true
-    }
-    elseif ($sv[0] -eq $ipv[0]) {
-        if ($sv[1] -gt $ipv[1]) {
+    if ($null -ne $ipv -or $ipv -ne "") {
+        if ($sv[0] -gt $ipv[0]) {
             $install = $true
         }
-        elseif ($sv[1] -eq $ipv[1]) {
-            if ($sv[2] -gt $ipv[2]) {
+        elseif ($sv[0] -eq $ipv[0]) {
+            if ($sv[1] -gt $ipv[1]) {
                 $install = $true
             }
-            elseif ($sv[2] -eq $ipv[2]) {
-                if ($sv[3] -gt $ipv[3]) {
+            elseif ($sv[1] -eq $ipv[1]) {
+                if ($sv[2] -gt $ipv[2]) {
                     $install = $true
                 }
-                elseif ($sv[3] -eq $ipv[3]) {
-                    $install = $false
+                elseif ($sv[2] -eq $ipv[2]) {
+                    if ($sv[3] -gt $ipv[3]) {
+                        $install = $true
+                    }
+                    elseif ($sv[3] -eq $ipv[3]) {
+                        $install = $false
+                    }
+                    elseif ($sv[3] -lt $ipv[3]) {
+                        $install = $false
+                    }
                 }
-                elseif ($sv[3] -lt $ipv[3]) {
+                elseif ($sv[2] -lt $ipv[2]) {
                     $install = $false
                 }
             }
-            elseif ($sv[2] -lt $ipv[2]) {
+            elseif ($sv[1] -lt $ipv[1]) {
                 $install = $false
             }
         }
-        elseif ($sv[1] -lt $ipv[1]) {
+        elseif ($sv[0] -lt $ipv[0]) {
             $install = $false
         }
-    }
-    elseif ($sv[0] -lt $ipv[0]) {
-        $install = $false
+    }#if already installed
+    else {
+        $install = $true
     }
 
     #Install or not
     if ($install -eq $true) {
         Write-Output "$cn`: Installing $pn."
         Start-Process $titus\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
-        Start-Sleep 150
+        Start-Sleep 300
+    }
+    else {
+        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
+    }
+}
+
+if (Test-Path $vESD) {
+    $vv = $null
+    $vv = Get-Content $vESD\SoftwareVersion.txt
+    $ipvv = ($ip | Where-Object {$_.ProgramName -like "USAF vES*"} | Select-Object Version)[0].Version
+    if ($vv -match $ipvv) {
+        Write-Output "$cn`: vESD in patches folder same as installed version. Skipping install..."
+    }
+    else {
+        Write-Output "$cn`: Installing vESD."
+        Start-Process c:\Windows\System32\msiexec.exe -ArgumentList "c:\Patches\vESD\vESD.3.x.Installer_v4.8.7734_RELEASE.msi /quiet /norestart" -NoNewWindow -Wait
+        Start-Sleep 300
+    }
+}
+
+if (Test-Path $visio) {
+    $sv = $null
+    $ipv = $null
+    $install = $false
+    $pn = "Visio"
+    $sv = Get-Content $visio\SoftwareVersion.txt
+    $ipv = ($ip | Where-Object {$_.ProgramName -like "Microsoft Visio*"} | Select-Object Version)[0].Version
+
+    if ($null -ne $ipv -or $ipv -ne "") {
+        $ipv = $ipv.Split('.')
+        $ipv = $ipv.Split(' ')
+    }
+    $sv = $sv.Split('.')
+    $sv = $sv.Split(' ')
+
+    #Determine if need to install
+    if ($null -ne $ipv -or $ipv -ne "") {
+        if ($sv[0] -gt $ipv[0]) {
+            $install = $true
+        }
+        elseif ($sv[0] -eq $ipv[0]) {
+            if ($sv[1] -gt $ipv[1]) {
+                $install = $true
+            }
+            elseif ($sv[1] -eq $ipv[1]) {
+                if ($sv[2] -gt $ipv[2]) {
+                    $install = $true
+                }
+                elseif ($sv[2] -eq $ipv[2]) {
+                    if ($sv[3] -gt $ipv[3]) {
+                        $install = $true
+                    }
+                    elseif ($sv[3] -eq $ipv[3]) {
+                        $install = $false
+                    }
+                    elseif ($sv[3] -lt $ipv[3]) {
+                        $install = $false
+                    }
+                }
+                elseif ($sv[2] -lt $ipv[2]) {
+                    $install = $false
+                }
+            }
+            elseif ($sv[1] -lt $ipv[1]) {
+                $install = $false
+            }
+        }
+        elseif ($sv[0] -lt $ipv[0]) {
+            $install = $false
+        }
+    }#if already installed
+    else {
+        $install = $true
+    }
+
+    #Install or not
+    if ($install -eq $true) {
+        Write-Output "$cn`: Installing $pn."
+        Start-Process $visio\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
+        Start-Sleep 400
     }
     else {
         Write-Output "$cn`: $pn same as installed version or older. Skipping..."
@@ -767,25 +1249,31 @@ if (Test-Path $vlc) {
 if (Test-Path $patch2) {
     Write-Output "$cn`: Installing McAfee Patch 2."
     Start-Process $patch2 -ArgumentList "/quiet /norestart" -NoNewWindow -Wait
-    Start-Sleep -Seconds 30
+    Start-Sleep -Seconds 300
 }
 
 if (Test-Path $patch4) {
     Write-Output "$cn`: Installing McAfee Patch 4."
     Start-Process $patch4 -ArgumentList "/quiet /norestart" -NoNewWindow -Wait
-    Start-Sleep -Seconds 30
+    Start-Sleep -Seconds 300
 }
 
 if (Test-Path $patch11) {
     Write-Output "$cn`: Installing McAfee Patch 11."
     Start-Process $patch11 -ArgumentList "/quiet /norestart" -NoNewWindow -Wait
-    Start-Sleep -Seconds 30
+    Start-Sleep -Seconds 300
 }
 
 if (Test-Path $patch15) {
     Write-Output "$cn`: Installing McAfee Patch 15."
     Start-Process $patch15 -ArgumentList "/quiet /norestart" -NoNewWindow -Wait
-    Start-Sleep -Seconds 30
+    Start-Sleep -Seconds 300
+}
+
+if (Test-Path $patch16) {
+    Write-Output "$cn`: Installing McAfee Patch 16."
+    Start-Process $patch16 -ArgumentList "/quiet /norestart" -NoNewWindow -Wait
+    Start-Sleep -Seconds 300
 }
 
 if ($datun -ge 1) {

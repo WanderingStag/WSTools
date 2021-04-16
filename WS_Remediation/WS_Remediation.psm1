@@ -8610,6 +8610,8 @@ Function Get-ENSStatus {
 }#get ensstatus
 New-Alias -Name "ENS" -Value Get-ENSStatus
 New-Alias -Name "Get-ENSInfo" -Value Get-ENSStatus
+New-Alias -Name "ESS" -Value Get-ENSStatus
+New-Alias -Name "Get-ESSInfo" -Value Get-ENSStatus
 
 
 # Working. To Do:

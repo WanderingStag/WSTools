@@ -5,7 +5,7 @@
 )]
 
 $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
-    # WSTools config v1.1.2
+    # WSTools config v1.1.3
     # Remove the # symbol infront of a line to enable it
     ###########################################################################################################################################
     #Path to where module files are stored on a central server. Used in Install-WSTools (aka Copy-WSTools) and Update-WSTools
@@ -118,6 +118,7 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     Firefox = "J:\Patches\SDC-APPS\Firefox"
     InfoPath = "J:\Patches\SDC-APPS\InfoPath"
     Java = "J:\Patches\SDC-APPS\Java\NIPR"
+    JRSS = "J:\Patches\SDC-APPS\JRSS"
     NetBanner = "J:\Patches\SDC-APPS\NetBanner"
     Office2016 = "J:\Patches\SDC-APPS\Office2016"
     Silverlight = "J:\Patches\SDC-APPS\Silverlight"

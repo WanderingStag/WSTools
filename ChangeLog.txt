@@ -1,13 +1,20 @@
 ######################
 #                    #
 #      v1.3.0.3      #
-#    February 2021   #
+#     April 2021     #
 ######################
 Known issues:
 1. Get-NICInfo doesn't always run.
 
 New features and other changes:
 1. Added Convert-DaysToWorkDay. Takes into account weekends and US Federal Holidays ranging from 2018 to 2030. Can specify date to start from.
+2. Fixed errors when a program is not already installed in InstallRemote.ps1.
+3. Converted Chrome, Firefox, and Java in InstallRemote.ps1 to the newer version checking code and removed the uninstall portion of the code that caused Chrome to not always install after.
+4. Adjusted some times in InstallRemote.ps1 based on observations. It will take longer to run but there should be fewer problems.
+5. Removed several hardcoded paths in InstallRemote.ps1 and made them more dynamic.
+6. Added Adobe Experience Manager, JRSS, McAfee Patch 16, Project, vESD, Visio, and VPN (Big-IP) to InstallRemote.ps1.
+7. Added JRSS (Cisco AnyConnect) to config file.
+8. Added ESS and Get-ESSInfo aliases to Get-ENSStatus.
 
 ######################
 #                    #
