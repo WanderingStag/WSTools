@@ -1,5 +1,22 @@
 ######################
 #                    #
+#      v1.3.0.4      #
+#     April 2021     #
+######################
+Known issues:
+1. Get-NICInfo doesn't always run.
+2. There is a Microsoft bug that prevents setting some SCHANNEL values to 0xFFFFFFFF (enabled). This causes some functions to throw errors and those values have to be manually set through the user interface. Bug has existed since at least 2006.
+
+New features and other changes:
+1. Added Disable-TLS1.0, Enable-TLS1.0, Disable-TLS1.1, Enable-TLS1.1, Disable-TLS1.2, and Enable-TLS1.2 functions. #DevSkim: ignore DS169125,DS440000
+2. Corrected some issues in Set-RemediationValues.
+3. Fixed an issue in Set-FeatureSettingsOverride.
+
+Removed items:
+1. Set-SCHANNELsettings. Use Set-RemediationValues instead. Until config file values are used it's to cumbersome to maintain all the settings in two locations.
+
+######################
+#                    #
 #      v1.3.0.3      #
 #     April 2021     #
 ######################

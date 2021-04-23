@@ -128,8 +128,11 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     TransVerse = "J:\Patches\SDC-APPS\TransVerse"
     VPN = "J:\Patches\SDC-APPS\VPN"
 
+    ###########
+    # The remediation settings below aren't being used yet
+    ###########
     #Ciphers - changes take effect immediately after change
-    ##Set to 4294967295 to enable. Set to 0 to disable.
+    ##Set to "ffffffff" to enable. Set to 0 to disable.
     RC2_56_56Enabled = 0
     RC2_40_128Enabled = 0
     RC2_56_128Enabled = 0
@@ -146,13 +149,13 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     NullEnabled = 0
 
     #Hashes - changes take effect immediately after change
-    ##Set to 4294967295 to enable. Set to 0 to disable.
+    ##Set to "ffffffff" to enable. Set to 0 to disable.
     MD5Enabled = 0 #DevSkim: ignore DS126858
-    SHAEnabled = 4294967295
+    SHAEnabled = "ffffffff"
 
     #KeyExchangeAlgorithms - changes take effect after reboot
-    ##Set to 4294967295 to enable. Set to 0 to disable.
-    PKCSEnabled = 4294967295
+    ##Set to "ffffffff" (aka 4294967295) to enable. Set to 0 to disable.
+    PKCSEnabled = "ffffffff"
     DiffieHellmanEnabled = 0
 
     #Protocols - changes take effect after reboot
