@@ -1433,7 +1433,17 @@ function Get-HWInfo {
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
     if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
         $info = @()
+        $j = 0
+        $number = $ComputerName.length
         foreach ($Comp in $ComputerName) {
+            #Progress Bar
+            if ($number -gt "1") {
+                $j++
+                $amount = ($j / $number)
+                $perc1 = $amount.ToString("P")
+                Write-Progress -activity "Getting hardware information" -status "Computer $j of $number. Percent complete:  $perc1" -PercentComplete (($j / $ComputerName.length)  * 100)
+            }#if length
+
             if ((Test-Connection -BufferSize 32 -Count 1 -ComputerName $Comp -Quiet) -eq $true) {
                 $status = "Online"
 
