@@ -3993,6 +3993,32 @@ Function Open-SystemProperties {
 }
 
 
+function Open-VisualStudioCodeSettings {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2021-05-18 21:18:59
+    Last Edit: 2021-05-18 21:27:47
+    Keywords:
+.LINK
+    https://wstools.dev
+#>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSUseSingularNouns",
+        "",
+        Justification = "Expresses exactly what the function does."
+    )]
+    $vssettings = "$env:APPDATA\Code\User\settings.json"
+    if ($host.Name -match "Visual Studio Code") {
+        code $vssettings
+    }
+    else {
+        powershell_ise $vssettings
+    }
+}
+New-Alias -Name "Open-VSCodeSettings" -Value Open-VisualStudioCodeSettings
+
+
 function Register-NotificationApp {
 <#
 .NOTES
@@ -5319,6 +5345,44 @@ Foreach ($obj in $users) {
     }
     }
 }
+
+
+function Update-VisioStencils {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2021-05-18 20:56:13
+    Last Edit: 2021-05-18 21:15:21
+    Keywords: Visio, Stencils
+.LINK
+    https://wstools.dev
+#>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSUseSingularNouns",
+        "",
+        Justification = "Expresses exactly what the function does."
+    )]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
+
+    $vspath = ($Global:WSToolsConfig).Stencils
+    $rpath = "$env:USERPROFILE\Documents\My Shapes"
+
+    if (Test-Path $rpath) {
+        $confirmation = Read-Host "Are you sure you want to overwrite the files in $rpath with files in $vspath`?"
+        if ($confirmation -eq 'y') {
+            robocopy $vspath $rpath /mir /mt:4 /r:3 /w:15 /njh /njs
+        }
+    }
+    else {
+        robocopy $vspath $rpath /mir /mt:4 /r:3 /w:15 /njh /njs
+    }
+}
+New-Alias -Name "Copy-VisioStencils" -Value Update-VisioStencils
+
 
 #####################################
 #                                   #

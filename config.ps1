@@ -5,7 +5,7 @@
 )]
 
 $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
-    # WSTools config v1.1.3
+    # WSTools config v1.1.4
     # Remove the # symbol infront of a line to enable it
     ###########################################################################################################################################
     #Path to where module files are stored on a central server. Used in Install-WSTools (aka Copy-WSTools) and Update-WSTools
@@ -36,6 +36,9 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
 
     #Save-UpdateHistory path also changes Save-MaintenanceReport path
     UHPath = "J:\ComputerInfo\Updates"
+
+    #Visio Stencil Path
+    Stencils = "J:\Microsoft\VisioStencils"
 
     ################################
     ##            DRA             ##

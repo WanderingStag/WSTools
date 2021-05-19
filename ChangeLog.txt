@@ -1,5 +1,18 @@
 ######################
 #                    #
+#      v1.3.0.5      #
+#      May 2021      #
+######################
+Known issues:
+1. Get-NICInfo doesn't always run.
+2. There is a Microsoft bug that prevents setting some SCHANNEL values to 0xFFFFFFFF (enabled). This causes some functions to throw errors and those values have to be manually set through the user interface. Bug has existed since at least 2006.
+
+New features and other changes:
+1. Added Update-VisioStencils function. Added Stencils config item.
+2. Added Open-VisualStudioCodeSettings (aka Open-VSCodeSettings) function.
+
+######################
+#                    #
 #      v1.3.0.4      #
 #      May 2021      #
 ######################
