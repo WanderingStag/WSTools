@@ -210,6 +210,7 @@ $axway = $PatchFolderPath + "\Axway"
 $BigIP = $PatchFolderPath + "\VPN"
 $chrome = $PatchFolderPath + "\Chrome"
 $dset = $PatchFolderPath + "\DSET"
+$edge = $PatchFolderPath + "\Edge"
 $encase = $PatchFolderPath + "\Encase"
 $firefox = $PatchFolderPath + "\firefox"
 $infopath = $PatchFolderPath + "\InfoPath"
@@ -741,6 +742,72 @@ if ((Test-Path $dset) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
         Write-Output "$cn`: Installing $pn."
         Start-Process $dset\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 150
+    }
+    else {
+        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
+    }
+}
+
+if (Test-Path $edge) {
+    $sv = $null
+    $ipv = $null
+    $install = $false
+    $pn = "Edge"
+    $sv = Get-Content $edge\SoftwareVersion.txt
+    $ipv = ($ip | Where-Object {$_.ProgramName -like "Microsoft Edg*"} | Select-Object Version)[0].Version
+
+    if ($null -ne $ipv -or $ipv -ne "") {
+        $ipv = $ipv.Split('.')
+        $ipv = $ipv.Split(' ')
+    }
+    $sv = $sv.Split('.')
+    $sv = $sv.Split(' ')
+
+    #Determine if need to install
+    if ($null -ne $ipv -or $ipv -ne "") {
+        if ($sv[0] -gt $ipv[0]) {
+            $install = $true
+        }
+        elseif ($sv[0] -eq $ipv[0]) {
+            if ($sv[1] -gt $ipv[1]) {
+                $install = $true
+            }
+            elseif ($sv[1] -eq $ipv[1]) {
+                if ($sv[2] -gt $ipv[2]) {
+                    $install = $true
+                }
+                elseif ($sv[2] -eq $ipv[2]) {
+                    if ($sv[3] -gt $ipv[3]) {
+                        $install = $true
+                    }
+                    elseif ($sv[3] -eq $ipv[3]) {
+                        $install = $false
+                    }
+                    elseif ($sv[3] -lt $ipv[3]) {
+                        $install = $false
+                    }
+                }
+                elseif ($sv[2] -lt $ipv[2]) {
+                    $install = $false
+                }
+            }
+            elseif ($sv[1] -lt $ipv[1]) {
+                $install = $false
+            }
+        }
+        elseif ($sv[0] -lt $ipv[0]) {
+            $install = $false
+        }
+    }#if already installed
+    else {
+        $install = $true
+    }
+
+    #Install or not
+    if ($install -eq $true) {
+        Write-Output "$cn`: Installing $pn."
+        Start-Process msiexec.exe -ArgumentList "/i $edge\MicrosoftEdgeEnterpriseX64.msi /qn /norestart" -NoNewWindow -Wait
+        Start-Sleep 360
     }
     else {
         Write-Output "$cn`: $pn same as installed version or older. Skipping..."

@@ -10,6 +10,9 @@ Known issues:
 New features and other changes:
 1. Added Update-VisioStencils function. Added Stencils config item.
 2. Added Open-VisualStudioCodeSettings (aka Open-VSCodeSettings) function.
+3. Added Windows 10 21H1 support to Get-HWInfo and Get-OperatingSystem.
+4. Added Get-DayOfYear (aka Get-JulianDay) which works with either a day number (EX: 142) or date (EX: 20210522.)
+5. Added Microsoft Edge install to InstallRemote.ps1.
 
 ######################
 #                    #
