@@ -5,7 +5,7 @@
 )]
 
 $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
-    # WSTools config v1.1.4
+    # WSTools config v1.1.5
     # Remove the # symbol infront of a line to enable it
     ###########################################################################################################################################
     #Path to where module files are stored on a central server. Used in Install-WSTools (aka Copy-WSTools) and Update-WSTools
@@ -117,6 +117,7 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     AxwayClient = "J:\Patches\SDC-APPS\Axway\NIPR"
     Chrome = "J:\Patches\SDC-APPS\Chrome"
     DSET = "J:\Patches\SDC-APPS\DSET"
+    Edge = "J:\Patches\Edge"
     Encase = "J:\Patches\SDC-APPS\Encase"
     Firefox = "J:\Patches\SDC-APPS\Firefox"
     InfoPath = "J:\Patches\SDC-APPS\InfoPath"

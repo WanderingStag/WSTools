@@ -13,6 +13,8 @@ New features and other changes:
 3. Added Windows 10 21H1 support to Get-HWInfo and Get-OperatingSystem.
 4. Added Get-DayOfYear (aka Get-JulianDay) which works with either a day number (EX: 142) or date (EX: 20210522.)
 5. Added Microsoft Edge install to InstallRemote.ps1.
+6. Changed ActivClient install to use newer version checking code.
+7. Added Edge config file item and bumped version. Then added Copy-Edge function.
 
 ######################
 #                    #
