@@ -1,5 +1,17 @@
 ######################
 #                    #
+#      v1.3.0.6      #
+#     June 2021      #
+######################
+Known issues:
+1. Get-NICInfo doesn't always run.
+2. There is a Microsoft bug that prevents setting some SCHANNEL values to 0xFFFFFFFF (enabled). This causes some functions to throw errors and those values have to be manually set through the user interface. Bug has existed since at least 2006.
+
+New features and other changes:
+1. Add function Convert-DatesToDays. Ex: Convert-DatesToDays 20210603 20210605 will return a value of 2.
+
+######################
+#                    #
 #      v1.3.0.5      #
 #      May 2021      #
 ######################
