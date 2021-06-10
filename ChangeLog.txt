@@ -9,6 +9,11 @@ Known issues:
 
 New features and other changes:
 1. Add function Convert-DatesToDays. Ex: Convert-DatesToDays 20210603 20210605 will return a value of 2.
+2. Re-arranged some settings in config and updated wording on some things.
+3. Changed default value of SCOffload to $true in config.
+4. Added RebootTime to config.
+5. Bumped config to version 1.2.0.
+
 
 ######################
 #                    #

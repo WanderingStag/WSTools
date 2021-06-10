@@ -5,22 +5,33 @@
 )]
 
 $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
-    # WSTools config v1.1.5
+    # WSTools config v1.2.0
     # Remove the # symbol infront of a line to enable it
     ###########################################################################################################################################
+    #Ignore list. Used in several functions. Computers, users, and groups to ignore that cause issues. Objects such as clustered object computer names, non-windows systems, and other such things. Uses -match in some places and -eq in others so be as precise as possible.
+    #Ignore = @('comp1','comp2','user1','user2','group1','group2')
+
+    #Privileged groups list - used for some monitoring and reporting features. You should populate this with groups that grant admin permissions.
+    #PrivGroups = @('group1','group2')
+
+    #Default time of reboot when no time is specified in Set-Reboot. Must be entered in HHmm (24 hour/military time) format. Ex: For 7 PM enter 1900.
+    RebootTime = 0030
+
+    #Script Repository. Can be local or network. If network it needs to be the UNC.
+    ScriptRepo = "D:\OneDrive\Scripts"
+
+    #Script Working Directory. Some functions use this directory to pull/save files from/to by default.
+    ScriptWD = "C:\Scripts"
+
+    #Update computer. Used when you have a computer you modify the module on then push it out to the update path from that computers local repository (hardcoded to $env:ProgramFiles\WindowsPowerShell\Modules\WSTools).
+    UpdateComp = "snib1" #do not use the fqdn, only the shortname
+
     #Path to where module files are stored on a central server. Used in Install-WSTools (aka Copy-WSTools) and Update-WSTools
     UpdatePath = "J:\PowerShell\Modules\WSTools"
 
-    #Update computer. Used when you have a computer you modify the module on then push it out to the update path from that computers local repository (hardcoded to $env:ProgramFiles\WindowsPowerShell\Modules\WSTools).
     #Additional paths is used for pushing out to folders in addtion to UpdatePath.
-    UpdateComp = "snib1" #do not use the fqdn, only the shortname
     AdditionalUpdatePaths = @('D:\OneDrive\Scripts\Modules\WSTools')
 
-    ################################
-    ##        Ignore List         ##
-    ################################
-    #Computers, users, and groups to ignore that cause issues. Objects such as clustered object computer names, non-windows systems, and other such things. Uses -match in some places and -eq in others so be as precise as possible.
-    #Ignore = @('comp1','comp2','user1','user2','group1','group2')
 
     ################################
     ##    App/Patching settings   ##
@@ -34,11 +45,11 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     #Network Patch Repository
     PatchRepo = "J:\Patches"
 
-    #Save-UpdateHistory path also changes Save-MaintenanceReport path
-    UHPath = "J:\ComputerInfo\Updates"
-
     #Visio Stencil Path
     Stencils = "J:\Microsoft\VisioStencils"
+
+    #Save-UpdateHistory path also changes Save-MaintenanceReport path
+    UHPath = "J:\ComputerInfo\Updates"
 
     ################################
     ##            DRA             ##
@@ -80,18 +91,18 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     #Set whether you want explorer to open to Quick Access or This PC. Windows defaults to QuickAccess ($false). We recommend setting this to This PC ($true) if you are an admin.
     Explorer = $true
 
-    #When opening documents of unknown file types, recommend to lookup an App that can open them in the Windows Store ($true - Windows default) or not recommend an App in the Store ($false.)
-    #Doesn't always work
-    StoreLookup = $false
+    #Show file extensions ($true) or do not show file extensions ($false - Windows default.)
+    FileExtensions = $true
 
     #Show hidden files ($true) or do not show hidden files ($false - Windows default.)
     HiddenFiles = $true
 
-    #Show file extensions ($true) or do not show file extensions ($false - Windows default.)
-    FileExtensions = $true
-
     #Add "Shortcut - " text to any new shortcut. Requires you to log off then log back on before changes take effect.
     ShortcutText = $false
+
+    #When opening documents of unknown file types, recommend to lookup an App that can open them in the Windows Store ($true - Windows default) or not recommend an App in the Store ($false.)
+    #Doesn't always work
+    StoreLookup = $false
 
     ################################
     ##         Remediation        ##
@@ -99,7 +110,6 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
 
     #Install file locations - for normal installation files.
     a7Zip = "J:\Tools\7zip" #64-bit only unless you change Copy-7Zip to use 32-bit
-    #Firefox = "J:\Tools\Firefox" #32-bit only unless you change Copy-Firefox to use 64-bit
     IE11 = "J:\Patches\IE\IE11"
     SysInternals = "J:\Tools\SysinternalsSuite"
     VLC = "J:\Tools\VLC"
@@ -132,9 +142,10 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     TransVerse = "J:\Patches\SDC-APPS\TransVerse"
     VPN = "J:\Patches\SDC-APPS\VPN"
 
-    ###########
-    # The remediation settings below aren't being used yet
-    ###########
+    ########################################
+    ##         Remediation Settings       ##
+    ##            not in use yet          ##
+    ########################################
     #Ciphers - changes take effect immediately after change
     ##Set to "ffffffff" to enable. Set to 0 to disable.
     RC2_56_56Enabled = 0
@@ -155,11 +166,11 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     #Hashes - changes take effect immediately after change
     ##Set to "ffffffff" to enable. Set to 0 to disable.
     MD5Enabled = 0 #DevSkim: ignore DS126858
-    SHAEnabled = "ffffffff"
+    SHAEnabled = "ffffffff" #THIS DOES NOT WORK. There is a Microsoft bug that prevents it.
 
     #KeyExchangeAlgorithms - changes take effect after reboot
     ##Set to "ffffffff" (aka 4294967295) to enable. Set to 0 to disable.
-    PKCSEnabled = "ffffffff"
+    PKCSEnabled = "ffffffff" #THIS DOES NOT WORK. There is a Microsoft bug that prevents it.
     DiffieHellmanEnabled = 0
 
     #Protocols - changes take effect after reboot
@@ -176,13 +187,14 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     SSL3_0ClientDisabledByDefault = 1 #DevSkim: ignore DS440000
     SSL3_0ServerEnabled = 0 #DevSkim: ignore DS440000
 
-    TLS1_0ClientEnabled = 0 #DevSkim: ignore DS440000
-    TLS1_0ClientDisabledByDefault = 1 #DevSkim: ignore DS440000
+    TLS1_0ClientEnabled = 1 #DevSkim: ignore DS440000
+    TLS1_0ClientDisabledByDefault = 0 #DevSkim: ignore DS440000
     TLS1_0ServerEnabled = 0 #DevSkim: ignore DS440000
+    TLS1_0ServerDisabledByDefault = 1 #DevSkim: ignore DS440000
 
     TLS1_1ClientEnabled = 0 #DevSkim: ignore DS440000
     TLS1_1ClientDisabledByDefault = 1 #DevSkim: ignore DS440000
-    TLS1_1ServerEnabled = 0 #DevSkim: ignore DS440000
+    TLS1_1ServerEnabled = 1 #DevSkim: ignore DS440000
 
     TLS1_2ClientEnabled = 1 #DevSkim: ignore DS440000
     TLS1_2ClientDisabledByDefault = 0 #DevSkim: ignore DS440000
@@ -198,20 +210,10 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     SMB2 = 1
 
     ################################
-    ##       Script settings      ##
-    ################################
-    #Script Repository
-    ScriptRepo = "D:\OneDrive\Scripts"
-
-    #Script Working Directory. Some functions use this directory to pull/save files from/to by default.
-    ScriptWD = "C:\Scripts"
-
-    #Privileged groups list - used for some monitoring and reporting features.
-    #PrivGroups = @('group1','group2')
-
-    ################################
     ##        Server Config       ##
     ################################
+    #Used in Set-ServerConfig
+
     #DHCP Enabled or Disabled. $true=Enable $false=Disable
     SCDHCP = $false
 
@@ -231,15 +233,16 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     SCNetBios = 1
 
     #Offloading of Checksums and Large Files to the NIC see more info at https://docs.microsoft.com/en-us/windows-server/networking/technologies/hpn/hpn-hardware-only-features
-    <#Skyler speaking here, I personally and professionally recommend disabling these. I've ran into WAY to many issues over my 20 years in IT that have been caused by these being enabled. I've
-    had several Premier Field Engineers from Microsoft also tell me to disable them and 10/10 times it will improve network performance. If you have a small site at a single location you might
-    be able to get away with enabling these. But even on my small personal network at home I've noticed significant network improvements by disabling these offload settings.
+    <#Skyler speaking here, I personally and professionally recommend disabling these on older (2008 R2 and older) Operating Systems. I've ran into WAY to many issues over my 20 years in
+    IT that have been caused by these being enabled. I've had several Premier Field Engineers from Microsoft also tell me to disable them and 10/10 times it will improve network performance.
+    If you have a small site at a single location you might be able to get away with enabling these. But even on my small personal network at home I've noticed significant network
+    improvements by disabling these offload settings.
 
     However, please note on newer operating systems and hardware disabling this (setting to $false) may actually hinder performance. Such as on Windows 10, Windows Server 2016/2019, and
     newer operating systems or those running on VMWare 6.7+.
     #>
     # $true=Enable $false=Disable
-    SCOffload = $false
+    SCOffload = $true
 
     #RDP 0=Enable 1=Disable
     SCRDP = 0
