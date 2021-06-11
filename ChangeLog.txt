@@ -8,7 +8,7 @@ Known issues:
 2. There is a Microsoft bug that prevents setting some SCHANNEL values to 0xFFFFFFFF (enabled). This causes some functions to throw errors and those values have to be manually set through the user interface. Bug has existed since at least 2006.
 
 New features and other changes:
-1. Add function Convert-DatesToDays. Ex: Convert-DatesToDays 20210603 20210605 will return a value of 2.
+1. Added function Convert-DatesToDays. Ex: Convert-DatesToDays 20210603 20210605 will return a value of 2.
 2. Re-arranged some settings in config and updated wording on some things.
 3. Changed default value of SCOffload to $true in config.
 4. Added RebootTime to config.
@@ -17,6 +17,7 @@ New features and other changes:
 7. Changed function Set-Reboot0100 to Set-Reboot. Also added ability to specify time down to the minute within a 24 hour window using the Time switch. If no time is specified the RebootTime config item is used.
 8. Added function Set-Shutdown. If no time is specified the ShutdownTime config item is used.
 9. Changed InstallRemote.ps1 so that if Microsoft updates are installed or a few select programs are installed the computer will reboot at the specified time (near the end of the file in the reboot check.)
+10. Added function Get-ZuluTime.
 
 ######################
 #                    #

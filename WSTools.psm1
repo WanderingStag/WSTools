@@ -3504,6 +3504,19 @@ New-Alias -Name "Get-UpdateStatus" -Value Get-WindowsSetupLog
 New-Alias -Name "Get-UpdateLog" -Value Get-WindowsSetupLog
 
 
+function Get-ZuluTime {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2021-06-10 22:28:39
+    Last Edit: 2021-06-10 22:28:39
+.LINK
+    https://wstools.dev
+#>
+    (Get-Date).ToUniversalTime()
+}
+
+
 Function Import-DRAModule {
 <#
 .Notes
