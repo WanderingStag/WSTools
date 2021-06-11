@@ -190,6 +190,7 @@ $PatchFolderPath = "C:\Patches"
 $cab = $PatchFolderPath + "\cab"
 $ip = Get-InstalledProgram | Select-Object ProgramName,Version,Comment
 $hf = (Get-HotFix | Select-Object HotFixID).HotFixID
+$Reboot = $false
 
 #$scripts = Get-ChildItem -Path $PatchFolderPath | Where-Object {$_.Name -match ".ps1" -and $_.Name -notmatch "Install.ps1" -and $_.Name -notmatch "InstallRemote.ps1"}
 
@@ -294,10 +295,14 @@ foreach ($obj in $cabs) {
     dism.exe /online /add-package /PackagePath:$oname /NoRestart | Out-Null
     Start-Sleep 5
 }
+if ($n -gt 0) {
+    $Reboot = $true
+}
 
 if (Test-Path $dn48path) {
     Write-Output "$cn`: Installing .NET Framework 4.8."
     Start-Process $dn48path -ArgumentList "/q /norestart" -NoNewWindow -Wait
+    $Reboot = $true
 }
 
 #if (Test-Path $7zip) {
@@ -445,6 +450,7 @@ if (Test-Path $acrobat) {
         Write-Output "$cn`: Installing $pn."
         Start-Process $acrobat\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 600
+        $Reboot = $true
     }
     else {
         Write-Output "$cn`: $pn same as installed version or older. Skipping..."
@@ -603,7 +609,8 @@ if (Test-Path $axway) {
     if ($install -eq $true) {
         Write-Output "$cn`: Installing $pn."
         Start-Process $axway\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
-        Start-Sleep 300
+        Start-Sleep 400
+        $Reboot = $true
     }
     else {
         Write-Output "$cn`: $pn same as installed version or older. Skipping..."
@@ -861,6 +868,7 @@ if (Test-Path $edge) {
         Write-Output "$cn`: Installing $pn."
         Start-Process msiexec.exe -ArgumentList "/i $edge\MicrosoftEdgeEnterpriseX64.msi /qn /norestart" -NoNewWindow -Wait
         Start-Sleep 360
+        $Reboot = $true
     }
     else {
         Write-Output "$cn`: $pn same as installed version or older. Skipping..."
@@ -996,6 +1004,7 @@ if (Test-Path $onedrive) {
     Write-Output "$cn`: Installing OneDrive."
     Start-Process $onedrive -ArgumentList "/AllUsers /Silent" -NoNewWindow -Wait
     Start-Sleep -Seconds 300
+    $Reboot = $true
 }
 
 if (Test-Path $project) {
@@ -1138,6 +1147,7 @@ if (Test-Path $tanium) {
         Write-Output "$cn`: Installing $pn."
         Start-Process $tanium\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 300
+        $Reboot = $true
     }
     else {
         Write-Output "$cn`: $pn same as installed version or older. Skipping..."
@@ -1401,4 +1411,26 @@ if ($datun -ge 1) {
     foreach ($dat in $datu) {
         Start-Process $dat -ArgumentList "/silent" -NoNewWindow -Wait
     }
+}
+
+#####################################
+#                                   #
+#           Reboot Check            #
+#                                   #
+#####################################
+if ($Reboot -eq $true) {
+    [string]$Time = "0100"
+    $hr = $Time.Substring(0,2)
+    $mm = $Time.Substring(2)
+    $d = 0
+    $info = Get-Date
+    if ($hr -lt ($info.Hour)) {
+        $d = 1
+    }
+    else {
+        if ($mm -le ($info.Minute)) {
+            $d = 1
+        }
+    }
+    shutdown -r -t ([decimal]::round(((Get-Date).AddDays($d).Date.AddHours($hr).AddMinutes($mm) - (Get-Date)).TotalSeconds))
 }

@@ -16,6 +16,7 @@ New features and other changes:
 6. Bumped config to version 1.2.0.
 7. Changed function Set-Reboot0100 to Set-Reboot. Also added ability to specify time down to the minute within a 24 hour window using the Time switch. If no time is specified the RebootTime config item is used.
 8. Added function Set-Shutdown. If no time is specified the ShutdownTime config item is used.
+9. Changed InstallRemote.ps1 so that if Microsoft updates are installed or a few select programs are installed the computer will reboot at the specified time (near the end of the file in the reboot check.)
 
 ######################
 #                    #
