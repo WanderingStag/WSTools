@@ -13,6 +13,7 @@ New features and other changes:
 3. Changed default value of SCOffload to $true in config.
 4. Added RebootTime to config.
 5. Bumped config to version 1.2.0.
+6. Changed function Set-Reboot0100 to Set-Reboot. Also added ability to specify time down to the minute within a 24 hour window using the Time switch. If no time is specified the RebootTime config item is used.
 
 
 ######################

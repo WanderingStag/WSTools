@@ -4550,33 +4550,60 @@ function Set-Preferences {
 
 
 #need to look into using Restart-Computer
-function Set-Reboot0100 {
+function Set-Reboot {
 <#
-   .Notes
-    AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 20:49:35
-    KEYWORDS:
-    REQUIRES:
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
+.NOTES
+    Author: Skyler Hart
+    Created: Sometime before 2017-08-18
+    Last Edit: 2021-06-10 21:13:11
+    Keywords:
+    Requires:
+        -RunAsAdministrator for remote computers
 .LINK
     https://wstools.dev
 #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0)]
+        [Parameter(Mandatory=$false)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME",
 
+        [Parameter(Mandatory=$false)]
+        [ValidateLength(4,4)]
+        [string]$Time = (($Global:WSToolsConfig).RebootTime),
+
         [Parameter()]
         [switch]$Abort
-     )
-    $tt1 = ([decimal]::round(((Get-Date).AddDays(1).Date.AddHours(1) - (Get-Date)).TotalSeconds))
+    )
+
+    $hr = $Time.Substring(0,2)
+    $mm = $Time.Substring(2)
+    $d = 0
+
+    #Having the time calculation here will provide a rolling reboot. The more computers you have the longer the reboot period will be.
+    #Ex: If you have 200 computers and you specify a 0100 start time, it could last until 0130. It all depends on how long the script takes to run.
+    #Move the code below to the specified place if you don't want a rolling reboot.
+    $info = Get-Date
+    if ($hr -lt ($info.Hour)) {
+        $d = 1
+    }
+    else {
+        if ($mm -le ($info.Minute)) {
+            $d = 1
+        }
+    }
+    $tt1 = ([decimal]::round(((Get-Date).AddDays($d).Date.AddHours($hr).AddMinutes($mm) - (Get-Date)).TotalSeconds))
+    #Move the code above to the specified place if you don't want a rolling reboot.
+
     foreach ($Comp in $ComputerName) {
         if ($Abort) {shutdown -a -m \\$Comp}
         else {
+            #Move the code above to here if you don't want a rolling reboot
             try {
                 shutdown -r -m \\$Comp -t $tt1
             }
