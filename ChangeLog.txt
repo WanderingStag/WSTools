@@ -18,6 +18,8 @@ New features and other changes:
 8. Added function Set-Shutdown. If no time is specified the ShutdownTime config item is used.
 9. Changed InstallRemote.ps1 so that if Microsoft updates are installed or a few select programs are installed the computer will reboot at the specified time (near the end of the file in the reboot check.)
 10. Added function Get-ZuluTime.
+11. Changed ActivClient install in InstallRemote.ps1 to only check 3 levels (vx.x.x) instead of 4 levels (vx.x.x.x.)
+12. Changed 90meter install in InstallRemote.ps1 to newer version checking code.
 
 ######################
 #                    #

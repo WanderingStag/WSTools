@@ -314,20 +314,61 @@ if (Test-Path $dn48path) {
 #}
 
 if ((Test-Path $90meter) -and $env:USERDNSDOMAIN -like "*.smil.mil") {
-    $ip9 = ($ip | Where-Object {$_.ProgramName -like "90meter*"} | Select-Object Version,Comment)[0]
-    $ip9c = ($ip9 | Select-Object Comment).Comment
-    if ($ip9c -eq " -- SDC SIPR - 90Meter Smart Card Manager - 190712") {
-        Write-Output "$cn`: 90Meter in patches folder same as installed version. Skipping install..."
+    $sv = $null
+    $ipv = $null
+    $install = $false
+    $pn = "90meter"
+    $sv = Get-Content $90meter\SoftwareVersion.txt
+    $ipv = ($ip | Where-Object {$_.ProgramName -like "90meter*"} | Select-Object Version)[0].Version
+
+    if ($null -ne $ipv -or $ipv -ne "") {
+        $ipv = $ipv.Split('.')
+        $ipv = $ipv.Split(' ')
+    }
+    $sv = $sv.Split('.')
+    $sv = $sv.Split(' ')
+
+    #Determine if need to install
+    if ($null -ne $ipv -or $ipv -ne "") {
+        if ($sv[0] -gt $ipv[0]) {
+            $install = $true
+        }
+        elseif ($sv[0] -eq $ipv[0]) {
+            if ($sv[1] -gt $ipv[1]) {
+                $install = $true
+            }
+            elseif ($sv[1] -eq $ipv[1]) {
+                #$install = $false #uncomment and remove below lines if stopping at Major.Minor
+                if ($sv[2] -gt $ipv[2]) {
+                    $install = $true
+                }
+                elseif ($sv[2] -eq $ipv[2]) {
+                    $install = $false
+                }
+                elseif ($sv[2] -lt $ipv[2]) {
+                    $install = $false
+                }
+            }
+            elseif ($sv[1] -lt $ipv[1]) {
+                $install = $false
+            }
+        }
+        elseif ($sv[0] -lt $ipv[0]) {
+            $install = $false
+        }
+    }#if already installed
+    else {
+        $install = $true
+    }
+
+    #Install or not
+    if ($install -eq $true) {
+        Write-Output "$cn`: Installing $pn."
+        Start-Process $90meter\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
+        Start-Sleep 330
     }
     else {
-        Write-Output "$cn`: Uninstalling old 90Meter"
-        Get-WmiObject -Class Win32_Product -Filter "Name LIKE '90Meter%'" | Remove-WmiObject
-        Start-Sleep 60
-        Start-Process C:\windows\System32\msiexec.exe -ArgumentList "/uninstall {54C965FF-E457-4993-A083-61B9A6AEFEC1} /quiet /norestart" -NoNewWindow -Wait
-        Start-Sleep 60
-        Write-Output "$cn`: Installing 90meter."
-        Start-Process c:\Patches\90Meter\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
-        Start-Sleep 180
+        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
     }
 }
 
@@ -356,19 +397,12 @@ if ((Test-Path $activclient) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
                 $install = $true
             }
             elseif ($sv[1] -eq $ipv[1]) {
+                #$install = $false #uncomment and remove below lines if stopping at Major.Minor
                 if ($sv[2] -gt $ipv[2]) {
                     $install = $true
                 }
                 elseif ($sv[2] -eq $ipv[2]) {
-                    if ($sv[3] -gt $ipv[3]) {
-                        $install = $true
-                    }
-                    elseif ($sv[3] -eq $ipv[3]) {
-                        $install = $false
-                    }
-                    elseif ($sv[3] -lt $ipv[3]) {
-                        $install = $false
-                    }
+                    $install = $false
                 }
                 elseif ($sv[2] -lt $ipv[2]) {
                     $install = $false
