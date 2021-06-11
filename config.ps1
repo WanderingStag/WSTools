@@ -15,13 +15,16 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     #PrivGroups = @('group1','group2')
 
     #Default time of reboot when no time is specified in Set-Reboot. Must be entered in HHmm (24 hour/military time) format. Ex: For 7 PM enter 1900.
-    RebootTime = 0030
+    RebootTime = "0030"
 
     #Script Repository. Can be local or network. If network it needs to be the UNC.
     ScriptRepo = "D:\OneDrive\Scripts"
 
     #Script Working Directory. Some functions use this directory to pull/save files from/to by default.
     ScriptWD = "C:\Scripts"
+
+    #Default time of shutdown when no time is specified in Set-Shutdown. Must be entered in HHmm (24 hour/military time) format. Ex: For 7 PM enter 1900.
+    ShutdownTime = "0040"
 
     #Update computer. Used when you have a computer you modify the module on then push it out to the update path from that computers local repository (hardcoded to $env:ProgramFiles\WindowsPowerShell\Modules\WSTools).
     UpdateComp = "snib1" #do not use the fqdn, only the shortname
