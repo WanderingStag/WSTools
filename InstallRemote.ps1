@@ -216,6 +216,7 @@ $encase = $PatchFolderPath + "\Encase"
 $firefox = $PatchFolderPath + "\firefox"
 $infopath = $PatchFolderPath + "\InfoPath"
 $java = $PatchFolderPath + "\Java"
+$netbanner = $PatchFolderPath + "\NetBanner"
 $onedrive = $PatchFolderPath + "\OneDriveSetup.exe"
 $project = $PatchFolderPath + "\Project"
 $silverlight = $PatchFolderPath + "\Silverlight"
@@ -238,66 +239,79 @@ else {
 }
 
 #If there are part files, join them together
+$parts = $null
 $parts = (Get-ChildItem $PatchFolderPath | Where-Object {$_.Attributes -eq "Directory" -and $_.Name -match "Part_"} | Select-Object FullName).FullName
-foreach ($part in $parts) {
-    Join-File $part $PatchFolderPath
+if ($null -ne $parts) {
+    Write-Output "$cn`: Joining part files."
+    foreach ($part in $parts) {
+        Join-File $part $PatchFolderPath
+    }
 }
 
 Start-Sleep 2
 
 #Extract CAB files from .MSU files
 $msus = Get-ChildItem -Path $PatchFolderPath | Where-Object {$_.Name -match ".msu"}
-foreach ($msu in $msus) {
-    $name = $msu.Name
-    $fname = $msu.FullName
-    $nn = $name -replace "1_SSU_windows10.0-","" -replace "2_windows10.0-","" -replace "3_net_windows10.0-","" -replace "windows10.0-","" -replace "windows8.1-","" -replace "windows6.1-","" -replace "windows6.0-",""
-    $nn = $nn.Substring(0,9)
-    if ($hf -match $nn) {
-        Write-Output "$cn`: Patch $nn already installed. Skipping..."
+if ($msus.Length -ge 1) {
+    Write-Output "$cn`: Unpacking Microsoft Update files."
+    foreach ($msu in $msus) {
+        $name = $msu.Name
+        $fname = $msu.FullName
+        $nn = $name -replace "1_SSU_windows10.0-","" -replace "2_windows10.0-","" -replace "3_net_windows10.0-","" -replace "windows10.0-","" -replace "windows8.1-","" -replace "windows6.1-","" -replace "windows6.0-",""
+        $nn = $nn.Substring(0,9)
+        if ($hf -match $nn) {
+            Write-Output "$cn`: Patch $nn already installed. Skipping..."
+        }
+        else {
+            expand.exe -F:* "$fname" $cab | Out-Null
+        }
     }
-    else {
-        expand.exe -F:* "$fname" $cab | Out-Null
-    }
-}
 
-Start-Sleep 5
+    Start-Sleep 5
+}
 
 #Copy Office updates from individual Office folders to cab folder
 $ofcs = $null
 $ofcs = @()
 $ofi = (Get-ChildItem $PatchFolderPath | Where-Object {$_.Attributes -eq "Directory" -and $_.Name -match "Office"} | Select-Object FullName).FullName
-foreach ($of in $ofi) {
-    $ofcs += (Get-ChildItem $of | Where-Object {$_.Name -like "*.cab"} | Select-Object FullName).FullName
-}
-foreach ($ofc in $ofcs) {
-    if ($null -ne $ofc -and $ofc -ne "") {
-        Copy-Item $ofc $cab -Force
+if ($ofi.Length -ge 1) {
+    Write-Output "$cn`: Putting Office updates in cab folder."
+    foreach ($of in $ofi) {
+        $ofcs += (Get-ChildItem $of | Where-Object {$_.Name -like "*.cab"} | Select-Object FullName).FullName
+    }
+    foreach ($ofc in $ofcs) {
+        if ($null -ne $ofc -and $ofc -ne "") {
+            Copy-Item $ofc $cab -Force
+        }
     }
 }
 
 #Copy .cab files in PatchFolder to cab folder
 $ofi2 = (Get-ChildItem $PatchFolderPath | Where-Object {$_.Name -like "*.cab"} | Select-Object FullName).FullName
-foreach ($ofc2 in $ofi2) {
-    Copy-Item $ofc2 $cab -Force
+if ($ofi2.Length -ge 1) {
+    Write-Output "$cn`: Putting cab updates in cab folder."
+    foreach ($ofc2 in $ofi2) {
+        Copy-Item $ofc2 $cab -Force
+    }
 }
 
-#Ingore the extra files that come with Windows updates
+#Select only certain updates from the cab folder (ignore the extra files that come with Windows updates)
 $cabs = Get-ChildItem -Path $cab | Where-Object {$_.Name -like "Windows*.cab" -or $_.Name -like "ace*.cab" -or $_.Name -like "excel*.cab" -or $_.Name -like "mso*.cab" -or $_.Name -like "graph*.cab" -or $_.Name -like "kb*.cab" -or $_.Name -like "outlook*.cab" -or $_.Name -like "powerpoint*.cab" -or $_.Name -like "word*.cab" -or $_.Name -like "access*.cab" -or $_.Name -like "vbe*.cab"}
 
-
 $n = $cabs.Length
-$i = 0
-foreach ($obj in $cabs) {
-    $i++
-    $oname = $obj.FullName
-    $obname = $obj.Name
-    Write-Output "$cn`: Installing $obname. Patch $i of $n."
-    dism.exe /online /add-package /PackagePath:$oname /NoRestart | Out-Null
-    Start-Sleep 5
-}
 if ($n -gt 0) {
+    $i = 0
+    foreach ($obj in $cabs) {
+        $i++
+        $oname = $obj.FullName
+        $obname = $obj.Name
+        Write-Output "$cn`: Installing $obname. Patch $i of $n."
+        dism.exe /online /add-package /PackagePath:$oname /NoRestart | Out-Null
+        Start-Sleep 5
+    }
     $Reboot = $true
 }
+
 
 if (Test-Path $dn48path) {
     Write-Output "$cn`: Installing .NET Framework 4.8."

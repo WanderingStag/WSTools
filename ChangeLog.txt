@@ -1,12 +1,20 @@
+Known issues:
+1. Get-NICInfo doesn't always run.
+2. There is a Microsoft bug that prevents setting some SCHANNEL values to 0xFFFFFFFF (enabled). The known items at this time are SHA and PKCS. This causes some functions to throw errors and those values have to be manually set through the user interface. Bug has existed since at least 2006.
+
+######################
+#                    #
+#      v1.3.0.7      #
+#     June 2021      #
+######################
+New features and other changes:
+1. Added some checks in InstallRemote.ps1 so if there are no Windows/Office updates, it skips those actions.
+
 ######################
 #                    #
 #      v1.3.0.6      #
 #     June 2021      #
 ######################
-Known issues:
-1. Get-NICInfo doesn't always run.
-2. There is a Microsoft bug that prevents setting some SCHANNEL values to 0xFFFFFFFF (enabled). This causes some functions to throw errors and those values have to be manually set through the user interface. Bug has existed since at least 2006.
-
 New features and other changes:
 1. Added function Convert-DatesToDays. Ex: Convert-DatesToDays 20210603 20210605 will return a value of 2.
 2. Re-arranged some settings in config and updated wording on some things.
@@ -26,10 +34,6 @@ New features and other changes:
 #      v1.3.0.5      #
 #      May 2021      #
 ######################
-Known issues:
-1. Get-NICInfo doesn't always run.
-2. There is a Microsoft bug that prevents setting some SCHANNEL values to 0xFFFFFFFF (enabled). This causes some functions to throw errors and those values have to be manually set through the user interface. Bug has existed since at least 2006.
-
 New features and other changes:
 1. Added Update-VisioStencils function. Added Stencils config item.
 2. Added Open-VisualStudioCodeSettings (aka Open-VSCodeSettings) function.
@@ -44,10 +48,6 @@ New features and other changes:
 #      v1.3.0.4      #
 #      May 2021      #
 ######################
-Known issues:
-1. Get-NICInfo doesn't always run.
-2. There is a Microsoft bug that prevents setting some SCHANNEL values to 0xFFFFFFFF (enabled). This causes some functions to throw errors and those values have to be manually set through the user interface. Bug has existed since at least 2006.
-
 New features and other changes:
 1. Added Disable-TLS1.0, Enable-TLS1.0, Disable-TLS1.1, Enable-TLS1.1, Disable-TLS1.2, and Enable-TLS1.2 functions. #DevSkim: ignore DS169125,DS440000
 2. Corrected some issues in Set-RemediationValues.
@@ -62,9 +62,6 @@ Removed items:
 #      v1.3.0.3      #
 #     April 2021     #
 ######################
-Known issues:
-1. Get-NICInfo doesn't always run.
-
 New features and other changes:
 1. Added Convert-DaysToWorkDay. Takes into account weekends and US Federal Holidays ranging from 2018 to 2030. Can specify date to start from.
 2. Fixed errors when a program is not already installed in InstallRemote.ps1.
@@ -80,9 +77,6 @@ New features and other changes:
 #      v1.3.0.2      #
 #    February 2021   #
 ######################
-Known issues:
-1. Get-NICInfo doesn't always run.
-
 New features and other changes:
 1. Reordered several functions to be more alphabetical.
 2. Added Disable-RDP.
@@ -100,9 +94,6 @@ Removed items:
 #      v1.3.0.1      #
 #    January 2021    #
 ######################
-Known issues:
-1. Get-NICInfo doesn't always run.
-
 New features and other changes:
 1. Changed Connect-RDP so that if it is blank, it just opens a new Remote Desktop window.
 2. Added Uninstall-WinRAR and Uninstall-WinZip.
@@ -115,9 +106,6 @@ New features and other changes:
 #       v1.3.0       #
 #    January 2021    #
 ######################
-Known issues:
-1. Get-NICInfo doesn't always run.
-
 Bug fixes:
 1. Fixed issues with variables in Test-EmailRelay conflicting with built-in variables in newer versions of PowerShell.
 
@@ -191,9 +179,6 @@ Removed items:
 #      v1.2.2        #
 #    June 2020       #
 ######################
-Known issues:
-1. Get-OperatingSystem displays computers as 32-bit when running the command against a computer the logged in user does not have admin rights on.
-
 Bug fixes:
 1. Fixed issue with Install-Patches using an incorrect file path.
 2. Changed the InstallRemote.ps1 Windows and Office cab file install so that it doesn't automatically restart computers.
@@ -212,9 +197,6 @@ New features and other changes:
 #      v1.2.1        #
 #     May 2020       #
 ######################
-Known issues:
-1. Get-OperatingSystem displays computers as 32-bit when running the command against a computer the logged in user does not have admin rights on.
-
 Bug fixes:
 1. Cleared a lot of issues relating to syntax of commands, $null syntax, as well as the way variables are cleared in some functions.
 2. Fixed issues with Get-OperatingSystem displaying the OS twice for remote computers. Also fixed issue with
