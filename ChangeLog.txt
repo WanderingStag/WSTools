@@ -13,6 +13,7 @@ New features and other changes:
 3. Added NetBanner install using newer version checking code to InstallRemote.ps1.
 4. Added Encase install using newer version checking code to InstallRemote.ps1.
 5. Added Transverse install using newer version checking code to InstallRemote.ps1.
+6. Added ActiveDirectory as an ExternalModuleDependencies in manifest. While not needed for most things, it is required for some stuff.
 
 ######################
 #                    #
