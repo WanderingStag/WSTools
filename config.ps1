@@ -169,11 +169,11 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     #Hashes - changes take effect immediately after change
     ##Set to "ffffffff" to enable. Set to 0 to disable.
     MD5Enabled = 0 #DevSkim: ignore DS126858
-    SHAEnabled = "ffffffff" #THIS DOES NOT WORK. There is a Microsoft bug that prevents it.
+    SHAEnabled = "ffffffff" #THIS DOES NOT WORK. There is a Microsoft bug that prevents it. Must be set manually or by importing a .reg file.
 
     #KeyExchangeAlgorithms - changes take effect after reboot
     ##Set to "ffffffff" (aka 4294967295) to enable. Set to 0 to disable.
-    PKCSEnabled = "ffffffff" #THIS DOES NOT WORK. There is a Microsoft bug that prevents it.
+    PKCSEnabled = "ffffffff" #THIS DOES NOT WORK. There is a Microsoft bug that prevents it. Must be set manually or by importing a .reg file.
     DiffieHellmanEnabled = 0
 
     #Protocols - changes take effect after reboot
