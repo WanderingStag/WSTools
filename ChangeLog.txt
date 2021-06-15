@@ -1,6 +1,6 @@
 Known issues:
 1. Get-NICInfo doesn't always run.
-2. There is a Microsoft bug that prevents setting some SCHANNEL values to 0xFFFFFFFF (enabled). The known items at this time are SHA and PKCS. This causes some functions to throw errors and those values have to be manually set through the user interface. Bug has existed since at least 2006.
+2. There is a Microsoft bug that prevents setting some SCHANNEL values to 0xFFFFFFFF (enabled). The known items that are used at this time are SHA and PKCS. This causes some functions to throw errors and those values have to be manually set through the user interface. Bug has existed since at least 2006.
 
 ######################
 #                    #
@@ -10,6 +10,7 @@ Known issues:
 New features and other changes:
 1. Added some checks in InstallRemote.ps1 so if there are no Windows/Office updates, it skips those actions.
 2. Changed versioning scheme. Will be using YYYY.MM.vv from now on. Where YYYY is year, MM is month, and vv is version for that month.
+3. Added NetBanner install using newer version checking code to InstallRemote.ps1.
 
 ######################
 #                    #
