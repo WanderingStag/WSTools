@@ -12,6 +12,7 @@ New features and other changes:
 2. Changed versioning scheme. Will be using YYYY.MM.vv from now on. Where YYYY is year, MM is month, and vv is version for that month.
 3. Added NetBanner install using newer version checking code to InstallRemote.ps1.
 4. Added Encase install using newer version checking code to InstallRemote.ps1.
+5. Added Transverse install using newer version checking code to InstallRemote.ps1.
 
 ######################
 #                    #
