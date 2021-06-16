@@ -1959,6 +1959,159 @@ Begin {
 }
 
 
+Function Copy-Git {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 2021-06-15 22:39:40
+    LASTEDIT: 2021-06-15 22:43:20
+    KEYWORDS:
+    REQUIRES:
+        -RunAsAdministrator
+.Link
+    https://wstools.dev
+#>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
+[CmdletBinding()]
+Param (
+    [Parameter(
+        Mandatory = $false,
+        ValueFromPipeline = $true,
+        ValueFromPipelineByPropertyName = $true
+    )]
+    [Alias('Host','Name','Computer','CN')]
+    [string[]]$ComputerName = $env:COMPUTERNAME,
+
+    [Parameter()]
+    [int32]$MaxThreads = 5,
+
+    [Parameter()]
+    $SleepTimer = 200,
+
+    [Parameter()]
+    $MaxResultTime = 1200
+)
+
+Begin {
+    $config = $Global:WSToolsConfig
+    $app = $config.Git
+    $appname = "GitSCM"
+    $ScriptWD = $config.ScriptWD
+
+        $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
+        $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
+        $RunspacePool.Open()
+        $Code = {
+            [CmdletBinding()]
+            Param (
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
+                )]
+                [string]$comp,
+
+                [Parameter(
+                    Mandatory=$true,
+                    Position=1
+                )]
+                [string]$app,
+
+                [Parameter(
+                    Mandatory=$true,
+                    Position=2
+                )]
+                [string]$appname,
+
+                [Parameter(
+                    Mandatory=$true,
+                    Position=3
+                )]
+                [string]$ScriptWD
+            )
+            try {
+                robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs
+                $end = Get-Date
+                $info = New-Object -TypeName PSObject -Property @{
+                    ComputerName = $comp
+                    Program = $appname
+                    Status = "Copied"
+                    Time = $end
+                }#new object
+            }
+            catch {
+                $end = Get-Date
+                $info = New-Object -TypeName PSObject -Property @{
+                    ComputerName = $comp
+                    Program = $appname
+                    Status = "Failed"
+                    Time = $end
+                }#new object
+            }
+            $info | Select-Object ComputerName,Program,Status,Time | Export-Csv $ScriptWD\CopyStatus.csv -NoTypeInformation -Append
+        }#end code block
+        $Jobs = @()
+    }
+    Process {
+        if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
+        if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
+            $info = New-Object -TypeName PSObject -Property @{
+                ComputerName = "NA"
+                Program = "NA"
+                Status = "NA"
+                Time = "NA"
+            }#new object
+            $info | Select-Object ComputerName,Program,Status,Time | export-csv $ScriptWD\CopyStatus.csv -NoTypeInformation
+        }
+        Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
+        ForEach ($Object in $ComputerName){
+            $PowershellThread = [powershell]::Create().AddScript($Code)
+            $PowershellThread.AddArgument($Object.ToString()) | out-null
+            $PowershellThread.AddArgument($app.ToString()) | out-null
+            $PowershellThread.AddArgument($appname.ToString()) | out-null
+            $PowershellThread.AddArgument($ScriptWD.ToString()) | out-null
+            $PowershellThread.RunspacePool = $RunspacePool
+            $Handle = $PowershellThread.BeginInvoke()
+            $Job = "" | Select-Object Handle, Thread, object
+            $Job.Handle = $Handle
+            $Job.Thread = $PowershellThread
+            $Job.Object = $Object.ToString()
+            $Jobs += $Job
+        }
+    }
+    End {
+        $ResultTimer = Get-Date
+        While (@($Jobs | Where-Object {$Null -ne $_.Handle}).count -gt 0)  {
+            $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
+            If ($Remaining.Length -gt 60){
+                $Remaining = $Remaining.Substring(0,60) + "..."
+            }
+            Write-Progress `
+                -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
+                -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
+            ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
+                $Job.Thread.EndInvoke($Job.Handle)
+                $Job.Thread.Dispose()
+                $Job.Thread = $Null
+                $Job.Handle = $Null
+                $ResultTimer = Get-Date
+            }
+            If (($(Get-Date) - $ResultTimer).totalseconds -gt $MaxResultTime){
+                Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
+                Exit
+            }
+            Start-Sleep -Milliseconds $SleepTimer
+        }
+        $RunspacePool.Close() | Out-Null
+        $RunspacePool.Dispose() | Out-Null
+    }
+}
+
+
 Function Copy-IE11 {
 <#
 .Notes
@@ -3499,6 +3652,160 @@ Function Copy-TransVerse {
 }
 
 
+Function Copy-VisualStudioCode {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 2021-06-15 21:43:12
+    LASTEDIT: 2021-06-15 21:56:20
+    KEYWORDS:
+    REQUIRES:
+        -RunAsAdministrator
+.Link
+    https://wstools.dev
+#>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
+[CmdletBinding()]
+Param (
+    [Parameter(
+        Mandatory = $false,
+        ValueFromPipeline = $true,
+        ValueFromPipelineByPropertyName = $true
+    )]
+    [Alias('Host','Name','Computer','CN')]
+    [string[]]$ComputerName = $env:COMPUTERNAME,
+
+    [Parameter()]
+    [int32]$MaxThreads = 5,
+
+    [Parameter()]
+    $SleepTimer = 200,
+
+    [Parameter()]
+    $MaxResultTime = 1200
+)
+
+Begin {
+    $config = $Global:WSToolsConfig
+    $app = $config.VSCode
+    $appname = "VSCode"
+    $ScriptWD = $config.ScriptWD
+
+        $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
+        $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
+        $RunspacePool.Open()
+        $Code = {
+            [CmdletBinding()]
+            Param (
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
+                )]
+                [string]$comp,
+
+                [Parameter(
+                    Mandatory=$true,
+                    Position=1
+                )]
+                [string]$app,
+
+                [Parameter(
+                    Mandatory=$true,
+                    Position=2
+                )]
+                [string]$appname,
+
+                [Parameter(
+                    Mandatory=$true,
+                    Position=3
+                )]
+                [string]$ScriptWD
+            )
+            try {
+                robocopy $app "\\$comp\c$\Patches\$appname" VSCodeSetup*.exe /r:3 /w:15 /njh /njs
+                $end = Get-Date
+                $info = New-Object -TypeName PSObject -Property @{
+                    ComputerName = $comp
+                    Program = $appname
+                    Status = "Copied"
+                    Time = $end
+                }#new object
+            }
+            catch {
+                $end = Get-Date
+                $info = New-Object -TypeName PSObject -Property @{
+                    ComputerName = $comp
+                    Program = $appname
+                    Status = "Failed"
+                    Time = $end
+                }#new object
+            }
+            $info | Select-Object ComputerName,Program,Status,Time | Export-Csv $ScriptWD\CopyStatus.csv -NoTypeInformation -Append
+        }#end code block
+        $Jobs = @()
+    }
+    Process {
+        if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
+        if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
+            $info = New-Object -TypeName PSObject -Property @{
+                ComputerName = "NA"
+                Program = "NA"
+                Status = "NA"
+                Time = "NA"
+            }#new object
+            $info | Select-Object ComputerName,Program,Status,Time | export-csv $ScriptWD\CopyStatus.csv -NoTypeInformation
+        }
+        Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
+        ForEach ($Object in $ComputerName){
+            $PowershellThread = [powershell]::Create().AddScript($Code)
+            $PowershellThread.AddArgument($Object.ToString()) | out-null
+            $PowershellThread.AddArgument($app.ToString()) | out-null
+            $PowershellThread.AddArgument($appname.ToString()) | out-null
+            $PowershellThread.AddArgument($ScriptWD.ToString()) | out-null
+            $PowershellThread.RunspacePool = $RunspacePool
+            $Handle = $PowershellThread.BeginInvoke()
+            $Job = "" | Select-Object Handle, Thread, object
+            $Job.Handle = $Handle
+            $Job.Thread = $PowershellThread
+            $Job.Object = $Object.ToString()
+            $Jobs += $Job
+        }
+    }
+    End {
+        $ResultTimer = Get-Date
+        While (@($Jobs | Where-Object {$Null -ne $_.Handle}).count -gt 0)  {
+            $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
+            If ($Remaining.Length -gt 60){
+                $Remaining = $Remaining.Substring(0,60) + "..."
+            }
+            Write-Progress `
+                -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
+                -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
+            ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
+                $Job.Thread.EndInvoke($Job.Handle)
+                $Job.Thread.Dispose()
+                $Job.Thread = $Null
+                $Job.Handle = $Null
+                $ResultTimer = Get-Date
+            }
+            If (($(Get-Date) - $ResultTimer).totalseconds -gt $MaxResultTime){
+                Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
+                Exit
+            }
+            Start-Sleep -Milliseconds $SleepTimer
+        }
+        $RunspacePool.Close() | Out-Null
+        $RunspacePool.Dispose() | Out-Null
+    }
+}
+New-Alias -Name "Copy-VSCode" -Value Copy-VisualStudioCode
+
+
 Function Copy-VPN {
 <#
 .Notes
@@ -4475,6 +4782,64 @@ Function Install-Patches {
     }
 }#install patches
 New-Alias -Name "Install-Updates" -Value Install-Patches
+
+
+Function Install-VisualStudioCode {
+<#
+   .Parameter ComputerName
+    Specifies the computer or computers
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 2021-06-15 21:56:38
+    LASTEDIT: 2021-06-15 21:59:54
+    KEYWORDS:
+    REQUIRES:
+        -RunAsAdministrator
+.Link
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Alias('Host','Name','Computer','CN')]
+        [string[]]$ComputerName = "$env:COMPUTERNAME"
+    )
+
+    $config = $Global:WSToolsConfig
+    $app = $config.VSCode
+
+    $b = 0
+    $n = $ComputerName.Count
+    foreach ($comp in $ComputerName) {
+        if ($n -gt 1) {
+            $b++
+            $p = ($b / $n)
+            $p1 = $p.ToString("P")
+            Write-Progress -Id 1 -activity "Copying Visual Studio Code to computer and then initiating install" -status "Computer $b of $n. Percent complete:  $p1" -PercentComplete (($b / $n)  * 100)
+        }
+
+        try {
+            robocopy $app \\$comp\c$\Patches\VSCode VSCodeSetup*.exe /r:3 /w:15 /njh /njs
+            $install = Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList "cmd /c c:\Patches\VSCode\VSCodeSetup-x64.exe /SP- /VERYSILENT /NORESTART /FORCECLOSEAPPLICATIONS" -ErrorAction Stop #DevSkim: ignore DS104456
+            $end = Get-Date
+            $info = New-Object -TypeName PSObject -Property @{
+                ComputerName = $comp
+                Status = "Install Initialized"
+                Time = $end
+            }#new object
+        }
+        catch {
+            $end = Get-Date
+            $info = New-Object -TypeName PSObject -Property @{
+                ComputerName = $comp
+                Status = "Unable to install"
+                Time = $end
+            }#new object
+        }
+        $info
+    }
+}
+New-Alias -Name "Install-VSCode" -Value Install-VisualStudioCode
 
 
 #regionUninstall

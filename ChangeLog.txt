@@ -14,6 +14,11 @@ New features and other changes:
 4. Added Encase install using newer version checking code to InstallRemote.ps1.
 5. Added Transverse install using newer version checking code to InstallRemote.ps1.
 6. Added ActiveDirectory as an ExternalModuleDependencies in manifest. While not needed for most things, it is required for some stuff.
+7. Added VSCode config file items (bumped config item version.)
+8. Added function Copy-VisualStudioCode (aka Copy-VSCode.)
+9. Added function Install-VisualStudioCode (aka Install-VSCode.)
+10. Added Visual Studio Code install to InstallRemote.ps1.
+11. Added Git config file item. Also added function Copy-Git.
 
 ######################
 #                    #

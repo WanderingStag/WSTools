@@ -5,7 +5,7 @@
 )]
 
 $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
-    # WSTools config v1.2.0
+    # WSTools config v1.2.1
     # Remove the # symbol infront of a line to enable it
     ###########################################################################################################################################
     #Ignore list. Used in several functions. Computers, users, and groups to ignore that cause issues. Objects such as clustered object computer names, non-windows systems, and other such things. Uses -match in some places and -eq in others so be as precise as possible.
@@ -113,8 +113,11 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
 
     #Install file locations - for normal installation files.
     a7Zip = "J:\Tools\7zip" #64-bit only unless you change Copy-7Zip to use 32-bit
+    Edge = "J:\Patches\Edge"
+    Git = "J:\Patches\GitSCM"
     IE11 = "J:\Patches\IE\IE11"
     SysInternals = "J:\Tools\SysinternalsSuite"
+    VSCode = "J:\Patches\VisualStudioCode"
     VLC = "J:\Tools\VLC"
     Wireshark = "J:\Tools\Wireshark"
     WMF3 = "J:\Microsoft\Windows Management Framework 3.0"
@@ -130,7 +133,6 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     AxwayClient = "J:\Patches\SDC-APPS\Axway\NIPR"
     Chrome = "J:\Patches\SDC-APPS\Chrome"
     DSET = "J:\Patches\SDC-APPS\DSET"
-    Edge = "J:\Patches\Edge"
     Encase = "J:\Patches\SDC-APPS\Encase\NIPR"
     Firefox = "J:\Patches\SDC-APPS\Firefox"
     InfoPath = "J:\Patches\SDC-APPS\InfoPath"

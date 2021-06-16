@@ -227,6 +227,7 @@ $transverse = $PatchFolderPath + "\Transverse"
 $vESD = $PatchFolderPath + "\vESD"
 $visio = $PatchFolderPath + "\visio"
 $vlc = $PatchFolderPath + "\vlc"
+$vscode = $PatchFolderPath + "\VSCode"
 
 $datu = Get-ChildItem -Path $PatchFolderPath | Where-Object {$_.Name -like "CM-*xdat.exe"}
 $datun = $datu.Count
@@ -1612,6 +1613,13 @@ if (Test-Path $vlc) {
     $vi = Get-ChildItem $vlc
     $vp = $vi.FullName[0]
     Start-Process $vp -ArgumentList "/L=1033 /S" -NoNewWindow -Wait
+    Start-Sleep 120
+}
+
+if (Test-Path $vscode) {
+    Write-Output "$cn`: Installing Visual Studio Code."
+    $vsp = "$vscode\VSCodeSetup-x64.exe"
+    Start-Process $vsp -ArgumentList "/SP- /VERYSILENT /NORESTART /FORCECLOSEAPPLICATIONS" -NoNewWindow -Wait
     Start-Sleep 120
 }
 
