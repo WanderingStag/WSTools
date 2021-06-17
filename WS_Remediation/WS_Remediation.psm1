@@ -8149,13 +8149,7 @@ function Initialize-GPUpdate {
 #>
     [CmdletBinding()]
     param(
-        [Parameter(
-            #HelpMessage = "Enter one or more computer names separated by commas.",
-            Mandatory=$false,
-            #Position=0,
-            #ValueFromPipelineByPropertyName = $true,
-            ValueFromPipeline = $true
-        )]
+        [Parameter(Mandatory=$false)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName
     )
@@ -8185,7 +8179,6 @@ function Initialize-GPUpdate {
                     }#new object
                 }
                 catch {
-                    $end = Get-Date
                     $info = New-Object -TypeName PSObject -Property @{
                         ComputerName = $Comp
                         Status = "Unable to initialize GPUpdate"
@@ -8195,7 +8188,6 @@ function Initialize-GPUpdate {
             }#foreach computer
         }#if admin
         else {Write-Error "Must be ran as admin when running against remote computers"}#not admin
-
     }#else not local
 }
 

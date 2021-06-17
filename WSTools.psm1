@@ -4231,6 +4231,42 @@ function Register-NotificationApp {
 }
 
 
+function Restart-AxwayTrayApp {
+<#
+.SYNOPSIS
+    Short description
+.DESCRIPTION
+    Long description
+.PARAMETER ComputerName
+    Specifies the name of one or more computers.
+.PARAMETER Path
+    Specifies a path to one or more locations.
+.EXAMPLE
+    C:\PS>Restart-AxwayTrayApp
+    Example of how to use this cmdlet
+.EXAMPLE
+    C:\PS>Restart-AxwayTrayApp -PARAMETER
+    Another example of how to use this cmdlet but with a parameter or switch.
+.NOTES
+    Author: Skyler Hart
+    Created: 2021-06-16 23:25:56
+    Last Edit: 2021-06-16 23:25:56
+    Keywords:
+    Other:
+    Requires:
+        -Module ActiveDirectory
+        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        -RunAsAdministrator
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
+#>
+    Get-Process | Where-Object {$_.Name -match "dvtray"} | Stop-Process -Force | Out-Null
+    & 'C:\Program Files\Tumbleweed\Desktop Validator\DVTrayApp.exe'
+}
+
+
 function Save-MaintenanceReport {
 <#
 .NOTES
@@ -4296,6 +4332,84 @@ function Save-UpdateHistory {
     $info = Get-UpdateHistory -Days $Days
     $info | Export-Csv $UHPath -Force
 }
+
+
+function Set-AxwayConfig {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2021-06-16 22:10:29
+    Last Edit: 2021-06-16 23:22:15
+    Keywords:
+    Other:
+    Requires:
+        -RunAsAdministrator
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
+#>
+    [CmdletBinding()]
+    param(
+        [Parameter(
+            #HelpMessage = "Enter one or more computer names separated by commas.",
+            Mandatory=$false,
+            Position=0
+        )]
+        [Alias('Host','Name','Computer','CN')]
+        [string[]]$ComputerName,
+
+        [Parameter(
+            HelpMessage = "Enter the path for the configuration file to import.",
+            Mandatory=$true,
+            Position=1
+        )]
+        [ValidateNotNullOrEmpty()]
+        [string]$ConfigFile
+    )
+
+    if ($null -eq $ComputerName -or $ComputerName -eq "") {
+        $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+        if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+            Start-Process "$env:ProgramFiles\Tumbleweed\Desktop Validator\dvconfig.exe" -ArgumentList "-command write -file $ConfigFile"
+        }
+        else {Write-Error "Must be ran as administrator."}
+    }
+    else {
+        $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+        if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+            $i = 0
+            $number = $ComputerName.length
+            foreach ($Comp in $ComputerName) {
+                #Progress Bar
+                if ($number -gt "1") {
+                    $i++
+                    $amount = ($i / $number)
+                    $perc1 = $amount.ToString("P")
+                    Write-Progress -activity "Setting Axway config" -status "Computer $i of $number. Percent complete:  $perc1" -PercentComplete (($i / $ComputerName.length)  * 100)
+                }#if length
+
+                try {
+                    Invoke-Command -ComputerName $Comp -ScriptBlock {Start-Process "$env:ProgramFiles\Tumbleweed\Desktop Validator\dvconfig.exe" -ArgumentList "-command write -file $ConfigFile"} -ErrorAction Stop #DevSkim: ignore DS104456
+                    #$install = Invoke-WMIMethod -Class Win32_Process -ComputerName $Comp -Name Create -ArgumentList 'cmd /c "c:\Program Files\Tumbleweed\Desktop Validator\dvconfig.exe" -command write -file $ConfigFile' -ErrorAction Stop #DevSkim: ignore DS104456
+                    $info = New-Object -TypeName PSObject -Property @{
+                        ComputerName = $Comp
+                        Status = "Axway config imported"
+                    }#new object
+                }
+                catch {
+                    $info = New-Object -TypeName PSObject -Property @{
+                        ComputerName = $Comp
+                        Status = "Unable to import Axway config"
+                    }#new object
+                }
+                $info
+            }#foreach computer
+        }#if admin
+        else {Write-Error "Must be ran as admin when running against remote computers"}#not admin
+    }#else not local
+}
+New-Alias -Name "Import-AxwayConfig" -Value Set-AxwayConfig
 
 
 Function Set-Explorer {
@@ -5132,6 +5246,41 @@ Function Split-File {
 }
 
 
+function Start-AxwayTrayApp {
+<#
+.SYNOPSIS
+    Short description
+.DESCRIPTION
+    Long description
+.PARAMETER ComputerName
+    Specifies the name of one or more computers.
+.PARAMETER Path
+    Specifies a path to one or more locations.
+.EXAMPLE
+    C:\PS>Start-AxwayTrayApp
+    Example of how to use this cmdlet
+.EXAMPLE
+    C:\PS>Start-AxwayTrayApp -PARAMETER
+    Another example of how to use this cmdlet but with a parameter or switch.
+.NOTES
+    Author: Skyler Hart
+    Created: 2021-06-16 23:27:38
+    Last Edit: 2021-06-16 23:27:38
+    Keywords:
+    Other:
+    Requires:
+        -Module ActiveDirectory
+        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        -RunAsAdministrator
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
+#>
+    & 'C:\Program Files\Tumbleweed\Desktop Validator\DVTrayApp.exe'
+}
+
+
 function Start-CommandMultiThreaded {
 <#.Synopsis
 #    This is a quick and open-ended script multi-threader searcher
@@ -5278,6 +5427,41 @@ End{
     $RunspacePool.Close() | Out-Null
     $RunspacePool.Dispose() | Out-Null
 }
+}
+
+
+function Stop-AxwayTrayApp {
+<#
+.SYNOPSIS
+    Short description
+.DESCRIPTION
+    Long description
+.PARAMETER ComputerName
+    Specifies the name of one or more computers.
+.PARAMETER Path
+    Specifies a path to one or more locations.
+.EXAMPLE
+    C:\PS>Stop-AxwayTrayApp
+    Example of how to use this cmdlet
+.EXAMPLE
+    C:\PS>Stop-AxwayTrayApp -PARAMETER
+    Another example of how to use this cmdlet but with a parameter or switch.
+.NOTES
+    Author: Skyler Hart
+    Created: 2021-06-16 23:28:20
+    Last Edit: 2021-06-16 23:28:20
+    Keywords:
+    Other:
+    Requires:
+        -Module ActiveDirectory
+        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        -RunAsAdministrator
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
+#>
+    Get-Process | Where-Object {$_.Name -match "dvtray"} | Stop-Process -Force
 }
 
 

@@ -9,6 +9,8 @@ Known issues:
 ######################
 New features and other changes:
 1. Added function Initialize-GPUpdate. Mostly for doing a gpupdate /force on remote computers. Must be ran as admin when doing a remote computer.
+2. Added function Set-AxwayConfig.
+3. Added functions Restart-AxwayTrayApp, Start-AxwayTrayApp, and Stop-AxwayTrayApp.
 
 ######################
 #                    #
