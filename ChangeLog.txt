@@ -4,6 +4,14 @@ Known issues:
 
 ######################
 #                    #
+#      2021.6.2      #
+#                    #
+######################
+New features and other changes:
+1. Added function Initialize-GPUpdate. Mostly for doing a gpupdate /force on remote computers. Must be ran as admin when doing a remote computer.
+
+######################
+#                    #
 #      2021.6.1      #
 #                    #
 ######################
