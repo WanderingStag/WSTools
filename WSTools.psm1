@@ -4912,7 +4912,7 @@ function Show-FederalHoliday {
 .NOTES
     Author: Skyler Hart
     Created: 2021-06-20 17:20:14
-    Last Edit: 2021-06-20 19:12:05
+    Last Edit: 2021-06-20 19:45:38
     Keywords:
 .LINK
     https://wstools.dev
@@ -4948,7 +4948,7 @@ function Show-FederalHoliday {
         }
         else {
             $obj = "Year $Year is not between $fyear and $lyear."
-            Write-Error "Year entered is not valid. See below for valid years." -TargetObject $obj -ErrorAction Stop
+            Write-Error "Year entered is not valid. See details below for valid years." -TargetObject $obj -ErrorAction Stop
         }
     }
 
@@ -4963,14 +4963,15 @@ function Show-FederalHoliday {
     else {
         foreach ($hol in $Name) {
             if ($AllYears) {
-                $holidays | Where-Object ($_.Name -match $hol) | Select-Object Name,Year,Date,DayOfWeek
+                $holidays | Where-Object {$_.Name -match $hol} | Select-Object Name,Year,Date,DayOfWeek
             }#if all years
             else {
-                $holidays | Where-Object ($_.Year -eq $Year -and $_.Name -match $hol) | Select-Object Name,Date,DayOfWeek
+                $holidays | Where-Object {$_.Year -eq $Year -and $_.Name -match $hol} | Select-Object Name,Date,DayOfWeek
             }#if specific year
         }#for each name entered
     }#if a name is specified
 }
+New-Alias -Name "Get-FederalHoliday" -Value Show-FederalHoliday
 
 
 Function Show-FileExtensions {
