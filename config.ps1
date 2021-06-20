@@ -8,6 +8,9 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     # WSTools config v1.2.1
     # Remove the # symbol infront of a line to enable it
     ###########################################################################################################################################
+    #Application Service Names - used in Stop-AppService. Uses match to match the name of a service that is running and stops it.
+    AppNames = @('Cognos','Commvault','Exchange','IBM','IDenticard','LiveLink','Moodle','Oracle','SharePoint','SolarWinds','SQL')
+
     #Ignore list. Used in several functions. Computers, users, and groups to ignore that cause issues. Objects such as clustered object computer names, non-windows systems, and other such things. Uses -match in some places and -eq in others so be as precise as possible.
     #Ignore = @('comp1','comp2','user1','user2','group1','group2')
 
