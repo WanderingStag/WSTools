@@ -1223,6 +1223,7 @@ function Get-DayOfYear {
     }
 }
 New-Alias -Name "Get-JulianDay" -Value Get-DayOfYear
+New-Alias -Name "Get-JulianDate" -Value Get-DayOfYear
 
 
 Function Get-DefaultBrowserPath {
