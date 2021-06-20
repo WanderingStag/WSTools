@@ -4,6 +4,14 @@ Known issues:
 
 ######################
 #                    #
+#      2021.6.3      #
+#                    #
+######################
+New features and other changes:
+1. Added AppNames config item and added function Stop-AppService.
+
+######################
+#                    #
 #      2021.6.2      #
 #                    #
 ######################
