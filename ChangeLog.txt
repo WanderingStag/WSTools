@@ -9,6 +9,7 @@ Known issues:
 ######################
 New features and other changes:
 1. Added AppNames config item and added function Stop-AppService.
+2. Added function Set-FirefoxAutoUpdate. Defaults to disable. Add -Enable to enable.
 
 ######################
 #                    #
