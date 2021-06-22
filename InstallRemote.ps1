@@ -666,7 +666,7 @@ if (Test-Path $axway) {
     }
 }
 
-if (Test-Path $BigIP -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
+if ((Test-Path $BigIP) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
     $sv = $null
     $ipv = $null
     $install = $false

@@ -12,6 +12,7 @@ New features and other changes:
 2. Added function Set-FirefoxAutoUpdate. Defaults to disable. Add -Enable to enable.
 3. Changed Convert-DaysToWorkDay to use new config item Holidays.
 4. Added function Show-FederalHoliday.
+5. Fixed issue with BigIP install in InstallRemote.ps1.
 
 ######################
 #                    #
