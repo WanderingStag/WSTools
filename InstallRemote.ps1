@@ -340,11 +340,12 @@ if ((Test-Path $90meter) -and $env:USERDNSDOMAIN -like "*.smil.mil") {
         $ipv = $ipv.Split('.')
         $ipv = $ipv.Split(' ')
     }
+    else {$install -eq $true}
     $sv = $sv.Split('.')
     $sv = $sv.Split(' ')
 
     #Determine if need to install
-    if ($null -ne $ipv -or $ipv -ne "") {
+    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
         if ($sv[0] -gt $ipv[0]) {
             $install = $true
         }
@@ -399,11 +400,12 @@ if ((Test-Path $activclient) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
         $ipv = $ipv.Split('.')
         $ipv = $ipv.Split(' ')
     }
+    else {$install -eq $true}
     $sv = $sv.Split('.')
     $sv = $sv.Split(' ')
 
     #Determine if need to install
-    if ($null -ne $ipv -or $ipv -ne "") {
+    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
         if ($sv[0] -gt $ipv[0]) {
             $install = $true
         }
@@ -458,11 +460,12 @@ if (Test-Path $acrobat) {
         $ipv = $ipv.Split('.')
         $ipv = $ipv.Split(' ')
     }
+    else {$install -eq $true}
     $sv = $sv.Split('.')
     $sv = $sv.Split(' ')
 
     #Determine if need to install
-    if ($null -ne $ipv -or $ipv -ne "") {
+    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
         if ($sv[0] -gt $ipv[0]) {
             $install = $true
         }
@@ -518,11 +521,12 @@ if (Test-Path $aem) {
         $ipv = $ipv.Split('.')
         $ipv = $ipv.Split(' ')
     }
+    else {$install -eq $true}
     $sv = $sv.Split('.')
     $sv = $sv.Split(' ')
 
     #Determine if need to install
-    if ($null -ne $ipv -or $ipv -ne "") {
+    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
         if ($sv[0] -gt $ipv[0]) {
             $install = $true
         }
@@ -568,11 +572,12 @@ if ((Test-Path $anyconnect) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
         $ipv = $ipv.Split('.')
         $ipv = $ipv.Split(' ')
     }
+    else {$install -eq $true}
     $sv = $sv.Split('.')
     $sv = $sv.Split(' ')
 
     #Determine if need to install
-    if ($null -ne $ipv -or $ipv -ne "") {
+    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
         if ($sv[0] -gt $ipv[0]) {
             $install = $true
         }
@@ -627,11 +632,12 @@ if (Test-Path $axway) {
         $ipv = $ipv.Split('.')
         $ipv = $ipv.Split(' ')
     }
+    else {$install -eq $true}
     $sv = $sv.Split('.')
     $sv = $sv.Split(' ')
 
     #Determine if need to install
-    if ($null -ne $ipv -or $ipv -ne "") {
+    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
         if ($sv[0] -gt $ipv[0]) {
             $install = $true
         }
@@ -678,11 +684,12 @@ if ((Test-Path $BigIP) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
         $ipv = $ipv.Split('.')
         $ipv = $ipv.Split(' ')
     }
+    else {$install -eq $true}
     $sv = $sv.Split('.')
     $sv = $sv.Split(' ')
 
     #Determine if need to install
-    if ($null -ne $ipv -or $ipv -ne "") {
+    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
         if ($sv[0] -gt $ipv[0]) {
             $install = $true
         }
@@ -744,11 +751,12 @@ if (Test-Path $chrome) {
         $ipv = $ipv.Split('.')
         $ipv = $ipv.Split(' ')
     }
+    else {$install -eq $true}
     $sv = $sv.Split('.')
     $sv = $sv.Split(' ')
 
     #Determine if need to install
-    if ($null -ne $ipv -or $ipv -ne "") {
+    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
         if ($sv[0] -gt $ipv[0]) {
             $install = $true
         }
@@ -810,11 +818,12 @@ if ((Test-Path $dset) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
         $ipv = $ipv.Split('.')
         $ipv = $ipv.Split(' ')
     }
+    else {$install -eq $true}
     $sv = $sv.Split('.')
     $sv = $sv.Split(' ')
 
     #Determine if need to install
-    if ($null -ne $ipv -or $ipv -ne "") {
+    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
         if ($sv[0] -gt $ipv[0]) {
             $install = $true
         }
@@ -869,11 +878,12 @@ if (Test-Path $edge) {
         $ipv = $ipv.Split('.')
         $ipv = $ipv.Split(' ')
     }
+    else {$install -eq $true}
     $sv = $sv.Split('.')
     $sv = $sv.Split(' ')
 
     #Determine if need to install
-    if ($null -ne $ipv -or $ipv -ne "") {
+    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
         if ($sv[0] -gt $ipv[0]) {
             $install = $true
         }
@@ -936,11 +946,12 @@ if (Test-Path $encase) {
         $ipv = $ipv.Split('.')
         $ipv = $ipv.Split(' ')
     }
+    else {$install -eq $true}
     $sv = $sv.Split('.')
     $sv = $sv.Split(' ')
 
     #Determine if need to install
-    if ($null -ne $ipv -or $ipv -ne "") {
+    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
         if ($sv[0] -gt $ipv[0]) {
             $install = $true
         }
@@ -1002,11 +1013,12 @@ if (Test-Path $firefox) {
         $ipv = $ipv.Split('.')
         $ipv = $ipv.Split(' ')
     }
+    else {$install -eq $true}
     $sv = $sv.Split('.')
     $sv = $sv.Split(' ')
 
     #Determine if need to install
-    if ($null -ne $ipv -or $ipv -ne "") {
+    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
         if ($sv[0] -gt $ipv[0]) {
             $install = $true
         }
@@ -1061,11 +1073,12 @@ if (Test-Path $java) {
         $ipv = $ipv.Split('.')
         $ipv = $ipv.Split(' ')
     }
+    else {$install -eq $true}
     $sv = $sv.Split('.')
     $sv = $sv.Split(' ')
 
     #Determine if need to install
-    if ($null -ne $ipv -or $ipv -ne "") {
+    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
         if ($sv[0] -gt $ipv[0]) {
             $install = $true
         }
@@ -1127,11 +1140,12 @@ if (Test-Path $netbanner) {
         $ipv = $ipv.Split('.')
         $ipv = $ipv.Split(' ')
     }
+    else {$install -eq $true}
     $sv = $sv.Split('.')
     $sv = $sv.Split(' ')
 
     #Determine if need to install
-    if ($null -ne $ipv -or $ipv -ne "") {
+    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
         if ($sv[0] -gt $ipv[0]) {
             $install = $true
         }
@@ -1193,11 +1207,12 @@ if (Test-Path $project) {
         $ipv = $ipv.Split('.')
         $ipv = $ipv.Split(' ')
     }
+    else {$install -eq $true}
     $sv = $sv.Split('.')
     $sv = $sv.Split(' ')
 
     #Determine if need to install
-    if ($null -ne $ipv -or $ipv -ne "") {
+    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
         if ($sv[0] -gt $ipv[0]) {
             $install = $true
         }
@@ -1273,11 +1288,12 @@ if (Test-Path $tanium) {
         $ipv = $ipv.Split('.')
         $ipv = $ipv.Split(' ')
     }
+    else {$install -eq $true}
     $sv = $sv.Split('.')
     $sv = $sv.Split(' ')
 
     #Determine if need to install
-    if ($null -ne $ipv -or $ipv -ne "") {
+    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
         if ($sv[0] -gt $ipv[0]) {
             $install = $true
         }
@@ -1340,11 +1356,12 @@ if (Test-Path $teams) {
         $ipv = $ipv.Split('.')
         $ipv = $ipv.Split(' ')
     }
+    else {$install -eq $true}
     $sv = $sv.Split('.')
     $sv = $sv.Split(' ')
 
     #Determine if need to install
-    if ($null -ne $ipv -or $ipv -ne "") {
+    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
         if ($sv[0] -gt $ipv[0]) {
             $install = $true
         }
@@ -1408,11 +1425,12 @@ if ((Test-Path $titus) -and $env:USERDNSDOMAIN -like "*.smil.mil") {
         $ipv = $ipv.Split('.')
         $ipv = $ipv.Split(' ')
     }
+    else {$install -eq $true}
     $sv = $sv.Split('.')
     $sv = $sv.Split(' ')
 
     #Determine if need to install
-    if ($null -ne $ipv -or $ipv -ne "") {
+    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
         if ($sv[0] -gt $ipv[0]) {
             $install = $true
         }
@@ -1474,11 +1492,12 @@ if (Test-Path $transverse) {
         $ipv = $ipv.Split('.')
         $ipv = $ipv.Split(' ')
     }
+    else {$install -eq $true}
     $sv = $sv.Split('.')
     $sv = $sv.Split(' ')
 
     #Determine if need to install
-    if ($null -ne $ipv -or $ipv -ne "") {
+    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
         if ($sv[0] -gt $ipv[0]) {
             $install = $true
         }
@@ -1537,7 +1556,7 @@ if (Test-Path $vESD) {
     }
     else {
         Write-Output "$cn`: Installing vESD."
-        Start-Process c:\Windows\System32\msiexec.exe -ArgumentList "c:\Patches\vESD\vESD.3.x.Installer_v4.8.7734_RELEASE.msi /quiet /norestart" -NoNewWindow -Wait
+        Start-Process "c:\Windows\System32\msiexec.exe" -ArgumentList "c:\Patches\vESD\vESD.3.x.Installer_v4.8.7734_RELEASE.msi /quiet /norestart" -NoNewWindow -Wait
         Start-Sleep 300
     }
 }
@@ -1554,11 +1573,12 @@ if (Test-Path $visio) {
         $ipv = $ipv.Split('.')
         $ipv = $ipv.Split(' ')
     }
+    else {$install -eq $true}
     $sv = $sv.Split('.')
     $sv = $sv.Split(' ')
 
     #Determine if need to install
-    if ($null -ne $ipv -or $ipv -ne "") {
+    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
         if ($sv[0] -gt $ipv[0]) {
             $install = $true
         }
