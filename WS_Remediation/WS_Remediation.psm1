@@ -8996,6 +8996,7 @@ function Open-FileWithCMTrace {
         }
     }
 }
+New-Alias -Name "Open-Log" -Value Open-FileWithCMTrace
 
 
 function Open-RunAdvertisedPrograms {
