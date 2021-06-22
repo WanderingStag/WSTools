@@ -14,6 +14,7 @@ New features and other changes:
 4. Added function Show-FederalHoliday.
 5. Fixed issue with BigIP install in InstallRemote.ps1.
 6. Fixed issues in InstallRemote.ps1 where if programs were not already installed the installs would not run.
+7. Added functions Open-CMTrace and Open-FileWithCMTrace.
 
 ######################
 #                    #

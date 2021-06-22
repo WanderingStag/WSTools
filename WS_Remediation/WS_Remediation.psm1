@@ -8905,7 +8905,31 @@ New-Alias -Name "Set-NLA" -Value Set-NetworkLevelAuthentication
 ##                                                                       ##
 ###########################################################################
 ###########################################################################
-
+function Open-CMTrace {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2021-06-22 17:29:32
+    Last Edit: 2021-06-22 17:29:32
+    Keywords:
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
+#>
+    if (Test-Path "c:\Windows\ccm\CMTrace.exe") {
+        Start-Process "c:\Windows\ccm\CMTrace.exe"
+    }
+    elseif (Test-Path "C:\ProgramData\OSI\CMTrace.exe") {
+        Start-Process "C:\ProgramData\OSI\CMTrace.exe"
+    }
+    elseif (Test-Path "J:\Patches\CMTrace.exe") {
+        Start-Process "J:\Patches\CMTrace.exe"
+    }
+    else {
+        Write-Error "Cannot find CMTrace.exe"
+    }
+}
 
 function Open-ConfigurationManager {
 <#
@@ -8925,6 +8949,53 @@ function Open-ConfigurationManager {
     else {Throw "Configuration Manager not found"}
 }
 New-Alias -Name "configmgr" -Value Open-ConfigurationManager
+
+
+function Open-FileWithCMTrace {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2021-06-22 17:35:23
+    Last Edit: 2021-06-22 17:35:23
+    Keywords:
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
+#>
+    [CmdletBinding()]
+    param(
+        [Parameter(
+            Mandatory=$true
+        )]
+        [ValidateNotNullOrEmpty()]
+        [Alias('File','Path')]
+        [string[]]$FileName
+    )
+    $Continue = $false
+    if (Test-Path "c:\Windows\ccm\CMTrace.exe") {
+        $app = "c:\Windows\ccm\CMTrace.exe"
+        $Continue = $true
+    }
+    elseif (Test-Path "C:\ProgramData\OSI\CMTrace.exe") {
+        $app = "C:\ProgramData\OSI\CMTrace.exe"
+        $Continue = $true
+    }
+    elseif (Test-Path "J:\Patches\CMTrace.exe") {
+        $app = "J:\Patches\CMTrace.exe"
+        $Continue = $true
+    }
+    else {
+        Write-Error "Cannot find CMTrace.exe"
+        $Continue = $false
+    }
+
+    if ($Continue) {
+        foreach ($file in $FileName) {
+            Start-Process $app -ArgumentList $file
+        }
+    }
+}
 
 
 function Open-RunAdvertisedPrograms {
