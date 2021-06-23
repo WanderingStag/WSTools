@@ -9834,5 +9834,6 @@ function Sync-HBSSWithServer {
 }
 New-Alias -Name "Sync-HBSS" -Value Sync-HBSSWithServer
 New-Alias -Name "Sync-ENS" -Value Sync-HBSSWithServer
+New-Alias -Name "Sync-ESS" -Value Sync-HBSSWithServer
 
 Export-ModuleMember -Alias * -Function *
