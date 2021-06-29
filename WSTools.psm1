@@ -4566,15 +4566,21 @@ function Set-Reboot {
     #Ex: If you have 200 computers and you specify a 0100 start time, it could last until 0130. It all depends on how long the script takes to run.
     #Move the code below to the specified place if you don't want a rolling reboot.
     $info = Get-Date
-    if ($hr -lt ($info.Hour)) {
+    if (($info.Hour) -gt $hr) {
         $d = 1
     }
-    else {
-        if ($mm -le ($info.Minute)) {
+    elseif (($info.Hour) -eq $hr) {
+        if (($info.Minute) -ge $mm) {
             $d = 1
         }
     }
-    $tt1 = ([decimal]::round(((Get-Date).AddDays($d).Date.AddHours($hr).AddMinutes($mm) - (Get-Date)).TotalSeconds))
+
+    if ($d -eq 0) {
+        $tt1 = ([decimal]::round(((Get-Date).Date.AddHours($hr).AddMinutes($mm) - (Get-Date)).TotalSeconds))
+    }
+    else {
+        $tt1 = ([decimal]::round(((Get-Date).AddDays($d).Date.AddHours($hr).AddMinutes($mm) - (Get-Date)).TotalSeconds))
+    }
     #Move the code above to the specified place if you don't want a rolling reboot.
 
     foreach ($Comp in $ComputerName) {
