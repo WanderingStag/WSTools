@@ -4,6 +4,17 @@ Known issues:
 
 ######################
 #                    #
+#      2021.6.4      #
+#                    #
+######################
+New features and other changes:
+1. Fixed time calculation issues in Set-Reboot and Set-Shutdown.
+2. Added Test-SMTPRelay and Test-MailRelay aliases to Test-EmailRelay.
+3. Fixed issue where Get-USBStorageDevices was outputing int32 data which was causing export-csv to fail exporting correctly.
+4. Fixed issue in Get-USBStorageDevices was not always correctly showing the MAC address. Limited to showing MACs on domain connected networks now in order to show up correctly on those networks.
+
+######################
+#                    #
 #      2021.6.3      #
 #                    #
 ######################
