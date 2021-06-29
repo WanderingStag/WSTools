@@ -334,15 +334,21 @@ if ((Test-Path $90meter) -and $env:USERDNSDOMAIN -like "*.smil.mil") {
     $install = $false
     $pn = "90meter"
     $sv = Get-Content $90meter\SoftwareVersion.txt
-    $ipv = ($ip | Where-Object {$_.ProgramName -like "90meter*"} | Select-Object Version)[0].Version
 
-    if ($null -ne $ipv -or $ipv -ne "") {
-        $ipv = $ipv.Split('.')
-        $ipv = $ipv.Split(' ')
+    try {
+        $ipv = ($ip | Where-Object {$_.ProgramName -like "90meter*"} -ErrorAction Stop | Select-Object Version)[0].Version
+
+        if ($null -ne $ipv -or $ipv -ne "") {
+            $ipv = $ipv.Split('.')
+            $ipv = $ipv.Split(' ')
+        }
+        else {$install -eq $true}
+        $sv = $sv.Split('.')
+        $sv = $sv.Split(' ')
+    }#try
+    catch {
+        $install = $true
     }
-    else {$install -eq $true}
-    $sv = $sv.Split('.')
-    $sv = $sv.Split(' ')
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
@@ -394,15 +400,20 @@ if ((Test-Path $activclient) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
     $install = $false
     $pn = "ActivClient"
     $sv = Get-Content $activclient\SoftwareVersion.txt
-    $ipv = ($ip | Where-Object {$_.ProgramName -like "*ActivClient*"} | Select-Object Version)[0].Version
+    try {
+        $ipv = ($ip | Where-Object {$_.ProgramName -like "ActivClien*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-    if ($null -ne $ipv -or $ipv -ne "") {
-        $ipv = $ipv.Split('.')
-        $ipv = $ipv.Split(' ')
+        if ($null -ne $ipv -or $ipv -ne "") {
+            $ipv = $ipv.Split('.')
+            $ipv = $ipv.Split(' ')
+        }
+        else {$install -eq $true}
+        $sv = $sv.Split('.')
+        $sv = $sv.Split(' ')
+    }#try
+    catch {
+        $install = $true
     }
-    else {$install -eq $true}
-    $sv = $sv.Split('.')
-    $sv = $sv.Split(' ')
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
@@ -454,15 +465,20 @@ if (Test-Path $acrobat) {
     $install = $false
     $pn = "Acrobat"
     $sv = Get-Content $acrobat\SoftwareVersion.txt
-    $ipv = ($ip | Where-Object {$_.ProgramName -like "Adobe Acrobat*"} | Select-Object Version)[0].Version
+    try {
+        $ipv = ($ip | Where-Object {$_.ProgramName -like "Adobe Acrobat*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-    if ($null -ne $ipv -or $ipv -ne "") {
-        $ipv = $ipv.Split('.')
-        $ipv = $ipv.Split(' ')
+        if ($null -ne $ipv -or $ipv -ne "") {
+            $ipv = $ipv.Split('.')
+            $ipv = $ipv.Split(' ')
+        }
+        else {$install -eq $true}
+        $sv = $sv.Split('.')
+        $sv = $sv.Split(' ')
+    }#try
+    catch {
+        $install = $true
     }
-    else {$install -eq $true}
-    $sv = $sv.Split('.')
-    $sv = $sv.Split(' ')
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
@@ -515,15 +531,20 @@ if (Test-Path $aem) {
     $install = $false
     $pn = "AEM"
     $sv = Get-Content $aem\SoftwareVersion.txt
-    $ipv = ($ip | Where-Object {$_.ProgramName -like "Designe*"} | Select-Object Version)[0].Version
+    try {
+        $ipv = ($ip | Where-Object {$_.ProgramName -like "Designe*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-    if ($null -ne $ipv -or $ipv -ne "") {
-        $ipv = $ipv.Split('.')
-        $ipv = $ipv.Split(' ')
+        if ($null -ne $ipv -or $ipv -ne "") {
+            $ipv = $ipv.Split('.')
+            $ipv = $ipv.Split(' ')
+        }
+        else {$install -eq $true}
+        $sv = $sv.Split('.')
+        $sv = $sv.Split(' ')
+    }#try
+    catch {
+        $install = $true
     }
-    else {$install -eq $true}
-    $sv = $sv.Split('.')
-    $sv = $sv.Split(' ')
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
@@ -566,15 +587,20 @@ if ((Test-Path $anyconnect) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
     $install = $false
     $pn = "JRSS"
     $sv = Get-Content $anyconnect\SoftwareVersion.txt
-    $ipv = ($ip | Where-Object {$_.ProgramName -like "Cisco AnyConnect*"} | Select-Object Version)[0].Version
+    try {
+        $ipv = ($ip | Where-Object {$_.ProgramName -like "Cisco AnyConnec*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-    if ($null -ne $ipv -or $ipv -ne "") {
-        $ipv = $ipv.Split('.')
-        $ipv = $ipv.Split(' ')
+        if ($null -ne $ipv -or $ipv -ne "") {
+            $ipv = $ipv.Split('.')
+            $ipv = $ipv.Split(' ')
+        }
+        else {$install -eq $true}
+        $sv = $sv.Split('.')
+        $sv = $sv.Split(' ')
+    }#try
+    catch {
+        $install = $true
     }
-    else {$install -eq $true}
-    $sv = $sv.Split('.')
-    $sv = $sv.Split(' ')
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
@@ -626,15 +652,20 @@ if (Test-Path $axway) {
     $install = $false
     $pn = "Axway"
     $sv = Get-Content $axway\SoftwareVersion.txt
-    $ipv = ($ip | Where-Object {$_.ProgramName -like "Axway*"} | Select-Object Version)[0].Version
+    try {
+        $ipv = ($ip | Where-Object {$_.ProgramName -like "Axway*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-    if ($null -ne $ipv -or $ipv -ne "") {
-        $ipv = $ipv.Split('.')
-        $ipv = $ipv.Split(' ')
+        if ($null -ne $ipv -or $ipv -ne "") {
+            $ipv = $ipv.Split('.')
+            $ipv = $ipv.Split(' ')
+        }
+        else {$install -eq $true}
+        $sv = $sv.Split('.')
+        $sv = $sv.Split(' ')
+    }#try
+    catch {
+        $install = $true
     }
-    else {$install -eq $true}
-    $sv = $sv.Split('.')
-    $sv = $sv.Split(' ')
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
@@ -678,15 +709,20 @@ if ((Test-Path $BigIP) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
     $install = $false
     $pn = "VPN"
     $sv = Get-Content $BigIP\SoftwareVersion.txt
-    $ipv = ($ip | Where-Object {$_.ProgramName -like "BIG-IP Edge*"} | Select-Object Version)[0].Version
+    try {
+        $ipv = ($ip | Where-Object {$_.ProgramName -like "BIG-IP Edg*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-    if ($null -ne $ipv -or $ipv -ne "") {
-        $ipv = $ipv.Split('.')
-        $ipv = $ipv.Split(' ')
+        if ($null -ne $ipv -or $ipv -ne "") {
+            $ipv = $ipv.Split('.')
+            $ipv = $ipv.Split(' ')
+        }
+        else {$install -eq $true}
+        $sv = $sv.Split('.')
+        $sv = $sv.Split(' ')
+    }#try
+    catch {
+        $install = $true
     }
-    else {$install -eq $true}
-    $sv = $sv.Split('.')
-    $sv = $sv.Split(' ')
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
@@ -745,15 +781,20 @@ if (Test-Path $chrome) {
     $install = $false
     $pn = "Chrome"
     $sv = Get-Content $chrome\SoftwareVersion.txt
-    $ipv = ($ip | Where-Object {$_.ProgramName -like "Google Chrome*"} | Select-Object Version)[0].Version
+    try {
+        $ipv = ($ip | Where-Object {$_.ProgramName -like "Google Chrom*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-    if ($null -ne $ipv -or $ipv -ne "") {
-        $ipv = $ipv.Split('.')
-        $ipv = $ipv.Split(' ')
+        if ($null -ne $ipv -or $ipv -ne "") {
+            $ipv = $ipv.Split('.')
+            $ipv = $ipv.Split(' ')
+        }
+        else {$install -eq $true}
+        $sv = $sv.Split('.')
+        $sv = $sv.Split(' ')
+    }#try
+    catch {
+        $install = $true
     }
-    else {$install -eq $true}
-    $sv = $sv.Split('.')
-    $sv = $sv.Split(' ')
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
@@ -812,15 +853,20 @@ if ((Test-Path $dset) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
     $install = $false
     $pn = "DSET"
     $sv = Get-Content $dset\SoftwareVersion.txt
-    $ipv = ($ip | Where-Object {$_.ProgramName -like "DSET*"} | Select-Object Version)[0].Version
+    try {
+        $ipv = ($ip | Where-Object {$_.ProgramName -like "DSET*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-    if ($null -ne $ipv -or $ipv -ne "") {
-        $ipv = $ipv.Split('.')
-        $ipv = $ipv.Split(' ')
+        if ($null -ne $ipv -or $ipv -ne "") {
+            $ipv = $ipv.Split('.')
+            $ipv = $ipv.Split(' ')
+        }
+        else {$install -eq $true}
+        $sv = $sv.Split('.')
+        $sv = $sv.Split(' ')
+    }#try
+    catch {
+        $install = $true
     }
-    else {$install -eq $true}
-    $sv = $sv.Split('.')
-    $sv = $sv.Split(' ')
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
@@ -872,15 +918,20 @@ if (Test-Path $edge) {
     $install = $false
     $pn = "Edge"
     $sv = Get-Content $edge\SoftwareVersion.txt
-    $ipv = ($ip | Where-Object {$_.ProgramName -like "Microsoft Edg*"} | Select-Object Version)[0].Version
+    try {
+        $ipv = ($ip | Where-Object {$_.ProgramName -like "Microsoft Edg*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-    if ($null -ne $ipv -or $ipv -ne "") {
-        $ipv = $ipv.Split('.')
-        $ipv = $ipv.Split(' ')
+        if ($null -ne $ipv -or $ipv -ne "") {
+            $ipv = $ipv.Split('.')
+            $ipv = $ipv.Split(' ')
+        }
+        else {$install -eq $true}
+        $sv = $sv.Split('.')
+        $sv = $sv.Split(' ')
+    }#try
+    catch {
+        $install = $true
     }
-    else {$install -eq $true}
-    $sv = $sv.Split('.')
-    $sv = $sv.Split(' ')
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
@@ -940,15 +991,20 @@ if (Test-Path $encase) {
     $install = $false
     $pn = "Encase"
     $sv = Get-Content $encase\SoftwareVersion.txt
-    $ipv = ($ip | Where-Object {$_.ProgramName -like "Encas*"} | Select-Object Version)[0].Version
+    try {
+        $ipv = ($ip | Where-Object {$_.ProgramName -like "Encas*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-    if ($null -ne $ipv -or $ipv -ne "") {
-        $ipv = $ipv.Split('.')
-        $ipv = $ipv.Split(' ')
+        if ($null -ne $ipv -or $ipv -ne "") {
+            $ipv = $ipv.Split('.')
+            $ipv = $ipv.Split(' ')
+        }
+        else {$install -eq $true}
+        $sv = $sv.Split('.')
+        $sv = $sv.Split(' ')
+    }#try
+    catch {
+        $install = $true
     }
-    else {$install -eq $true}
-    $sv = $sv.Split('.')
-    $sv = $sv.Split(' ')
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
@@ -1007,15 +1063,20 @@ if (Test-Path $firefox) {
     $install = $false
     $pn = "Firefox"
     $sv = Get-Content $firefox\SoftwareVersion.txt
-    $ipv = ($ip | Where-Object {$_.ProgramName -like "Mozilla Firefox*"} | Select-Object Version)[0].Version
+    try {
+        $ipv = ($ip | Where-Object {$_.ProgramName -like "Mozilla Firefo*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-    if ($null -ne $ipv -or $ipv -ne "") {
-        $ipv = $ipv.Split('.')
-        $ipv = $ipv.Split(' ')
+        if ($null -ne $ipv -or $ipv -ne "") {
+            $ipv = $ipv.Split('.')
+            $ipv = $ipv.Split(' ')
+        }
+        else {$install -eq $true}
+        $sv = $sv.Split('.')
+        $sv = $sv.Split(' ')
+    }#try
+    catch {
+        $install = $true
     }
-    else {$install -eq $true}
-    $sv = $sv.Split('.')
-    $sv = $sv.Split(' ')
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
@@ -1067,15 +1128,20 @@ if (Test-Path $java) {
     $install = $false
     $pn = "Java"
     $sv = Get-Content $java\SoftwareVersion.txt
-    $ipv = ($ip | Where-Object {$_.ProgramName -like "Java*"} | Select-Object Version)[0].Version
+    try {
+        $ipv = ($ip | Where-Object {$_.ProgramName -like "Java*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-    if ($null -ne $ipv -or $ipv -ne "") {
-        $ipv = $ipv.Split('.')
-        $ipv = $ipv.Split(' ')
+        if ($null -ne $ipv -or $ipv -ne "") {
+            $ipv = $ipv.Split('.')
+            $ipv = $ipv.Split(' ')
+        }
+        else {$install -eq $true}
+        $sv = $sv.Split('.')
+        $sv = $sv.Split(' ')
+    }#try
+    catch {
+        $install = $true
     }
-    else {$install -eq $true}
-    $sv = $sv.Split('.')
-    $sv = $sv.Split(' ')
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
@@ -1134,15 +1200,20 @@ if (Test-Path $netbanner) {
     $install = $false
     $pn = "NetBanner"
     $sv = Get-Content $netbanner\SoftwareVersion.txt
-    $ipv = ($ip | Where-Object {$_.ProgramName -like "Microsoft NetBann*"} | Select-Object Version)[0].Version
+    try {
+        $ipv = ($ip | Where-Object {$_.ProgramName -like "Microsoft NetBanne*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-    if ($null -ne $ipv -or $ipv -ne "") {
-        $ipv = $ipv.Split('.')
-        $ipv = $ipv.Split(' ')
+        if ($null -ne $ipv -or $ipv -ne "") {
+            $ipv = $ipv.Split('.')
+            $ipv = $ipv.Split(' ')
+        }
+        else {$install -eq $true}
+        $sv = $sv.Split('.')
+        $sv = $sv.Split(' ')
+    }#try
+    catch {
+        $install = $true
     }
-    else {$install -eq $true}
-    $sv = $sv.Split('.')
-    $sv = $sv.Split(' ')
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
@@ -1201,15 +1272,20 @@ if (Test-Path $project) {
     $install = $false
     $pn = "Project"
     $sv = Get-Content $project\SoftwareVersion.txt
-    $ipv = ($ip | Where-Object {$_.ProgramName -like "Microsoft Project*"} | Select-Object Version)[0].Version
+    try {
+        $ipv = ($ip | Where-Object {$_.ProgramName -like "Microsoft Project*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-    if ($null -ne $ipv -or $ipv -ne "") {
-        $ipv = $ipv.Split('.')
-        $ipv = $ipv.Split(' ')
+        if ($null -ne $ipv -or $ipv -ne "") {
+            $ipv = $ipv.Split('.')
+            $ipv = $ipv.Split(' ')
+        }
+        else {$install -eq $true}
+        $sv = $sv.Split('.')
+        $sv = $sv.Split(' ')
+    }#try
+    catch {
+        $install = $true
     }
-    else {$install -eq $true}
-    $sv = $sv.Split('.')
-    $sv = $sv.Split(' ')
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
@@ -1282,15 +1358,20 @@ if (Test-Path $tanium) {
     $install = $false
     $pn = "Tanium"
     $sv = Get-Content $tanium\SoftwareVersion.txt
-    $ipv = ($ip | Where-Object {$_.ProgramName -like "Tanium*"} | Select-Object Version)[0].Version
+    try {
+        $ipv = ($ip | Where-Object {$_.ProgramName -like "Tanium*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-    if ($null -ne $ipv -or $ipv -ne "") {
-        $ipv = $ipv.Split('.')
-        $ipv = $ipv.Split(' ')
+        if ($null -ne $ipv -or $ipv -ne "") {
+            $ipv = $ipv.Split('.')
+            $ipv = $ipv.Split(' ')
+        }
+        else {$install -eq $true}
+        $sv = $sv.Split('.')
+        $sv = $sv.Split(' ')
+    }#try
+    catch {
+        $install = $true
     }
-    else {$install -eq $true}
-    $sv = $sv.Split('.')
-    $sv = $sv.Split(' ')
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
@@ -1350,15 +1431,20 @@ if (Test-Path $teams) {
     $install = $false
     $pn = "Teams"
     $sv = Get-Content $teams\SoftwareVersion.txt
-    $ipv = ($ip | Where-Object {$_.ProgramName -like "Teams Mach*"} | Select-Object Version)[0].Version
+    try {
+        $ipv = ($ip | Where-Object {$_.ProgramName -like "Teams Mac*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-    if ($null -ne $ipv -or $ipv -ne "") {
-        $ipv = $ipv.Split('.')
-        $ipv = $ipv.Split(' ')
+        if ($null -ne $ipv -or $ipv -ne "") {
+            $ipv = $ipv.Split('.')
+            $ipv = $ipv.Split(' ')
+        }
+        else {$install -eq $true}
+        $sv = $sv.Split('.')
+        $sv = $sv.Split(' ')
+    }#try
+    catch {
+        $install = $true
     }
-    else {$install -eq $true}
-    $sv = $sv.Split('.')
-    $sv = $sv.Split(' ')
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
@@ -1419,15 +1505,20 @@ if ((Test-Path $titus) -and $env:USERDNSDOMAIN -like "*.smil.mil") {
     $install = $false
     $pn = "Titus"
     $sv = Get-Content $titus\SoftwareVersion.txt
-    $ipv = ($ip | Where-Object {$_.ProgramName -like "Titus*"} | Select-Object Version)[0].Version
+    try {
+        $ipv = ($ip | Where-Object {$_.ProgramName -like "Titus*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-    if ($null -ne $ipv -or $ipv -ne "") {
-        $ipv = $ipv.Split('.')
-        $ipv = $ipv.Split(' ')
+        if ($null -ne $ipv -or $ipv -ne "") {
+            $ipv = $ipv.Split('.')
+            $ipv = $ipv.Split(' ')
+        }
+        else {$install -eq $true}
+        $sv = $sv.Split('.')
+        $sv = $sv.Split(' ')
+    }#try
+    catch {
+        $install = $true
     }
-    else {$install -eq $true}
-    $sv = $sv.Split('.')
-    $sv = $sv.Split(' ')
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
@@ -1486,15 +1577,20 @@ if (Test-Path $transverse) {
     $install = $false
     $pn = "Transverse"
     $sv = Get-Content $transverse\SoftwareVersion.txt
-    $ipv = ($ip | Where-Object {$_.ProgramName -like "*Transverse*"} | Select-Object Version)[0].Version
+    try {
+        $ipv = ($ip | Where-Object {$_.ProgramName -like "*Transverse*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-    if ($null -ne $ipv -or $ipv -ne "") {
-        $ipv = $ipv.Split('.')
-        $ipv = $ipv.Split(' ')
+        if ($null -ne $ipv -or $ipv -ne "") {
+            $ipv = $ipv.Split('.')
+            $ipv = $ipv.Split(' ')
+        }
+        else {$install -eq $true}
+        $sv = $sv.Split('.')
+        $sv = $sv.Split(' ')
+    }#try
+    catch {
+        $install = $true
     }
-    else {$install -eq $true}
-    $sv = $sv.Split('.')
-    $sv = $sv.Split(' ')
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
@@ -1567,15 +1663,20 @@ if (Test-Path $visio) {
     $install = $false
     $pn = "Visio"
     $sv = Get-Content $visio\SoftwareVersion.txt
-    $ipv = ($ip | Where-Object {$_.ProgramName -like "Microsoft Visio*"} | Select-Object Version)[0].Version
+    try {
+        $ipv = ($ip | Where-Object {$_.ProgramName -like "Microsoft Visi*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-    if ($null -ne $ipv -or $ipv -ne "") {
-        $ipv = $ipv.Split('.')
-        $ipv = $ipv.Split(' ')
+        if ($null -ne $ipv -or $ipv -ne "") {
+            $ipv = $ipv.Split('.')
+            $ipv = $ipv.Split(' ')
+        }
+        else {$install -eq $true}
+        $sv = $sv.Split('.')
+        $sv = $sv.Split(' ')
+    }#try
+    catch {
+        $install = $true
     }
-    else {$install -eq $true}
-    $sv = $sv.Split('.')
-    $sv = $sv.Split(' ')
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
