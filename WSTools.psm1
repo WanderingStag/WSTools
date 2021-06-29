@@ -5504,6 +5504,8 @@ Function Test-EmailRelay {
 
     send-mailmessage -To $Recipient -From $from -Subject $subject -Body "Testing relay of SMTP messages.`nFrom: $from `nTo: $recip `n`nPlease delete this message." -smtpserver $smtpserver -Port $port
 }
+New-Alias -Name "Test-SMTPRelay" -Value Test-EmailRelay
+New-Alias -Name "Test-MailRelay" -Value Test-EmailRelay
 
 
 #Working. Add functionality to convert ip to computername and vice versa. Enter ip range 192.168.0.0/26
