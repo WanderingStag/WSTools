@@ -687,7 +687,7 @@ function Get-USBStorageDevice {
 .NOTES
     Author: Skyler Hart
     Created: Sometime before 8/7/2017
-    Last Edit: 2020-08-12 19:44:46
+    Last Edit: 2021-06-28 22:46:02
     Keywords:
 .LINK
     https://wstools.dev
@@ -758,7 +758,7 @@ function Get-USBStorageDevice {
                 else {
                     $ChildSubKeys1 += $Child
                 }
-                $ChildSubKeys1.count
+                #$ChildSubKeys1.count
             }#foreach sub-child subkey
 
             foreach ($ChildSubKey1 in $ChildSubKeys1) {
@@ -787,7 +787,11 @@ function Get-USBStorageDevice {
                 $usbinfo = $null
                 $mac = $null
                 $usbinfo = (Get-WmiObject -Class Win32_PnPEntity -Namespace "root\CIMV2" -ComputerName $Comp -ErrorAction Stop | Where-Object {$_.DeviceID -like "USBSTOR*" -and $_.DeviceID -notlike "*USBSTOR\CDROM&*"} | Select-Object Description,DeviceID,Manufacturer,Name)
-                $mac = (Get-WmiObject Win32_NetworkAdapterConfiguration -ComputerName $Comp -ErrorAction SilentlyContinue | Where-Object {$_.DNSDomainSuffixSearchOrder -match $dns}).MACAddress | Where-Object {$_ -ne $null}
+                $mac = (Get-WmiObject Win32_NetworkAdapterConfiguration -ComputerName $Comp -ErrorAction SilentlyContinue | Where-Object {$null -ne $_.DNSDomain} | Where-Object {$_.DNSDomainSuffixSearchOrder -match $dns}).MACAddress | Where-Object {$_ -ne $null}
+
+                if ($mac.count -gt 1) {
+                    $mac = $mac.ToString()
+                }
 
                 foreach ($usbinfo2 in $usbinfo) {
                     Clear-Variable Description,DeviceId,Manu,Name,sn -ErrorAction SilentlyContinue | Out-Null
