@@ -4,43 +4,16 @@ Known issues:
 
 ######################
 #                    #
-#      2021.6.4      #
+#      2021.7.0      #
 #                    #
 ######################
 New features and other changes:
-1. Fixed time calculation issues in Set-Reboot and Set-Shutdown.
-2. Added Test-SMTPRelay and Test-MailRelay aliases to Test-EmailRelay.
-3. Fixed issue where Get-USBStorageDevices was outputing int32 data which was causing export-csv to fail exporting correctly.
-4. Fixed issue in Get-USBStorageDevices was not always correctly showing the MAC address. Limited to showing MACs on domain connected networks now in order to show up correctly on those networks.
-5. Added try/catch text to several installs in InstallRemote.ps1 to hopefully resolve install issues when a program isn't already installed.
+1. Fixed software version update file comparison to installed program version failing due to number from software version file being seen as a string instead of an integer.
+2. Removed some excess notifications from InstallRemote.ps1 and also disabled "skipping" notifications so now you should only see when things are installing.
 
 ######################
 #                    #
-#      2021.6.3      #
-#                    #
-######################
-New features and other changes:
-1. Added AppNames config item and added function Stop-AppService.
-2. Added function Set-FirefoxAutoUpdate. Defaults to disable. Add -Enable to enable.
-3. Changed Convert-DaysToWorkDay to use new config item Holidays.
-4. Added function Show-FederalHoliday.
-5. Fixed issue with BigIP install in InstallRemote.ps1.
-6. Added functions Open-CMTrace and Open-FileWithCMTrace.
-7. Added function Open-NetLogonLog.
-
-######################
-#                    #
-#      2021.6.2      #
-#                    #
-######################
-New features and other changes:
-1. Added function Initialize-GPUpdate. Mostly for doing a gpupdate /force on remote computers. Must be ran as admin when doing a remote computer.
-2. Added function Set-AxwayConfig.
-3. Added functions Restart-AxwayTrayApp, Start-AxwayTrayApp, and Stop-AxwayTrayApp.
-
-######################
-#                    #
-#      2021.6.1      #
+#       2021.6       #
 #                    #
 ######################
 New features and other changes:
@@ -55,6 +28,21 @@ New features and other changes:
 9. Added function Install-VisualStudioCode (aka Install-VSCode.)
 10. Added Visual Studio Code install to InstallRemote.ps1.
 11. Added Git config file item. Also added function Copy-Git.
+12. Added function Initialize-GPUpdate. Mostly for doing a gpupdate /force on remote computers. Must be ran as admin when doing a remote computer.
+13. Added function Set-AxwayConfig.
+14. Added functions Restart-AxwayTrayApp, Start-AxwayTrayApp, and Stop-AxwayTrayApp.
+15. Added AppNames config item and added function Stop-AppService.
+16. Added function Set-FirefoxAutoUpdate. Defaults to disable. Add -Enable to enable.
+17. Changed Convert-DaysToWorkDay to use new config item Holidays.
+18. Added function Show-FederalHoliday.
+19. Fixed issue with BigIP install in InstallRemote.ps1.
+20. Added functions Open-CMTrace and Open-FileWithCMTrace.
+21. Added function Open-NetLogonLog.
+22. Fixed time calculation issues in Set-Reboot and Set-Shutdown.
+23. Added Test-SMTPRelay and Test-MailRelay aliases to Test-EmailRelay.
+24. Fixed issue where Get-USBStorageDevices was outputing int32 data which was causing export-csv to fail exporting correctly.
+25. Fixed issue in Get-USBStorageDevices was not always correctly showing the MAC address. Limited to showing MACs on domain connected networks now in order to show up correctly on those networks.
+26. Added try/catch text to several installs in InstallRemote.ps1 to resolve install issues when a program isn't already installed.
 
 ######################
 #                    #

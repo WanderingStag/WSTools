@@ -254,20 +254,18 @@ Start-Sleep 2
 #Extract CAB files from .MSU files
 $msus = Get-ChildItem -Path $PatchFolderPath | Where-Object {$_.Name -match ".msu"}
 if ($msus.Length -ge 1) {
-    Write-Output "$cn`: Unpacking Microsoft Update files."
     foreach ($msu in $msus) {
         $name = $msu.Name
         $fname = $msu.FullName
         $nn = $name -replace "1_SSU_windows10.0-","" -replace "2_windows10.0-","" -replace "3_net_windows10.0-","" -replace "windows10.0-","" -replace "windows8.1-","" -replace "windows6.1-","" -replace "windows6.0-",""
         $nn = $nn.Substring(0,9)
         if ($hf -match $nn) {
-            Write-Output "$cn`: Patch $nn already installed. Skipping..."
+            #do nothing
         }
         else {
             expand.exe -F:* "$fname" $cab | Out-Null
         }
     }
-
     Start-Sleep 5
 }
 
@@ -276,7 +274,6 @@ $ofcs = $null
 $ofcs = @()
 $ofi = (Get-ChildItem $PatchFolderPath | Where-Object {$_.Attributes -eq "Directory" -and $_.Name -match "Office"} | Select-Object FullName).FullName
 if ($ofi.Length -ge 1) {
-    Write-Output "$cn`: Putting Office updates in cab folder."
     foreach ($of in $ofi) {
         $ofcs += (Get-ChildItem $of | Where-Object {$_.Name -like "*.cab"} | Select-Object FullName).FullName
     }
@@ -290,7 +287,6 @@ if ($ofi.Length -ge 1) {
 #Copy .cab files in PatchFolder to cab folder
 $ofi2 = (Get-ChildItem $PatchFolderPath | Where-Object {$_.Name -like "*.cab"} | Select-Object FullName).FullName
 if ($ofi2.Length -ge 1) {
-    Write-Output "$cn`: Putting cab updates in cab folder."
     foreach ($ofc2 in $ofi2) {
         Copy-Item $ofc2 $cab -Force
     }
@@ -352,30 +348,30 @@ if ((Test-Path $90meter) -and $env:USERDNSDOMAIN -like "*.smil.mil") {
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
-        if ($sv[0] -gt $ipv[0]) {
+        if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
-        elseif ($sv[0] -eq $ipv[0]) {
-            if ($sv[1] -gt $ipv[1]) {
+        elseif ([int32]$sv[0] -eq [int32]$ipv[0]) {
+            if ([int32]$sv[1] -gt [int32]$ipv[1]) {
                 $install = $true
             }
-            elseif ($sv[1] -eq $ipv[1]) {
+            elseif ([int32]$sv[1] -eq [int32]$ipv[1]) {
                 #$install = $false #uncomment and remove below lines if stopping at Major.Minor
-                if ($sv[2] -gt $ipv[2]) {
+                if ([int32]$sv[2] -gt [int32]$ipv[2]) {
                     $install = $true
                 }
-                elseif ($sv[2] -eq $ipv[2]) {
+                elseif ([int32]$sv[2] -eq [int32]$ipv[2]) {
                     $install = $false
                 }
-                elseif ($sv[2] -lt $ipv[2]) {
+                elseif ([int32]$sv[2] -lt [int32]$ipv[2]) {
                     $install = $false
                 }
             }
-            elseif ($sv[1] -lt $ipv[1]) {
+            elseif ([int32]$sv[1] -lt [int32]$ipv[1]) {
                 $install = $false
             }
         }
-        elseif ($sv[0] -lt $ipv[0]) {
+        elseif ([int32]$sv[0] -lt [int32]$ipv[0]) {
             $install = $false
         }
     }#if already installed
@@ -390,7 +386,7 @@ if ((Test-Path $90meter) -and $env:USERDNSDOMAIN -like "*.smil.mil") {
         Start-Sleep 330
     }
     else {
-        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
+        #do nothing Write-Output "$cn`: $pn same as installed version or older. Skipping..."
     }
 }
 
@@ -420,27 +416,27 @@ if ((Test-Path $activclient) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
         if ($sv[0] -gt $ipv[0]) {
             $install = $true
         }
-        elseif ($sv[0] -eq $ipv[0]) {
-            if ($sv[1] -gt $ipv[1]) {
+        elseif ([int32]$sv[0] -eq [int32]$ipv[0]) {
+            if ([int32]$sv[1] -gt [int32]$ipv[1]) {
                 $install = $true
             }
-            elseif ($sv[1] -eq $ipv[1]) {
+            elseif ([int32]$sv[1] -eq [int32]$ipv[1]) {
                 #$install = $false #uncomment and remove below lines if stopping at Major.Minor
-                if ($sv[2] -gt $ipv[2]) {
+                if ([int32]$sv[2] -gt [int32]$ipv[2]) {
                     $install = $true
                 }
-                elseif ($sv[2] -eq $ipv[2]) {
+                elseif ([int32]$sv[2] -eq [int32]$ipv[2]) {
                     $install = $false
                 }
-                elseif ($sv[2] -lt $ipv[2]) {
+                elseif ([int32]$sv[2] -lt [int32]$ipv[2]) {
                     $install = $false
                 }
             }
-            elseif ($sv[1] -lt $ipv[1]) {
+            elseif ([int32]$sv[1] -lt [int32]$ipv[1]) {
                 $install = $false
             }
         }
-        elseif ($sv[0] -lt $ipv[0]) {
+        elseif ([int32]$sv[0] -lt [int32]$ipv[0]) {
             $install = $false
         }
     }#if already installed
@@ -455,7 +451,7 @@ if ((Test-Path $activclient) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
         Start-Sleep 330
     }
     else {
-        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
+        #do nothing Write-Output "$cn`: $pn same as installed version or older. Skipping..."
     }
 }
 
@@ -485,27 +481,27 @@ if (Test-Path $acrobat) {
         if ($sv[0] -gt $ipv[0]) {
             $install = $true
         }
-        elseif ($sv[0] -eq $ipv[0]) {
-            if ($sv[1] -gt $ipv[1]) {
+        elseif ([int32]$sv[0] -eq [int32]$ipv[0]) {
+            if ([int32]$sv[1] -gt [int32]$ipv[1]) {
                 $install = $true
             }
-            elseif ($sv[1] -eq $ipv[1]) {
+            elseif ([int32]$sv[1] -eq [int32]$ipv[1]) {
                 #$install = $false #uncomment and remove below lines if stopping at Major.Minor
-                if ($sv[2] -gt $ipv[2]) {
+                if ([int32]$sv[2] -gt [int32]$ipv[2]) {
                     $install = $true
                 }
-                elseif ($sv[2] -eq $ipv[2]) {
+                elseif ([int32]$sv[2] -eq [int32]$ipv[2]) {
                     $install = $false
                 }
-                elseif ($sv[2] -lt $ipv[2]) {
+                elseif ([int32]$sv[2] -lt [int32]$ipv[2]) {
                     $install = $false
                 }
             }
-            elseif ($sv[1] -lt $ipv[1]) {
+            elseif ([int32]$sv[1] -lt [int32]$ipv[1]) {
                 $install = $false
             }
         }
-        elseif ($sv[0] -lt $ipv[0]) {
+        elseif ([int32]$sv[0] -lt [int32]$ipv[0]) {
             $install = $false
         }
     }#if adobe is installed already
@@ -517,11 +513,11 @@ if (Test-Path $acrobat) {
     if ($install -eq $true) {
         Write-Output "$cn`: Installing $pn."
         Start-Process $acrobat\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
-        Start-Sleep 600
+        Start-Sleep 900
         $Reboot = $true
     }
     else {
-        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
+        #do nothing Write-Output "$cn`: $pn same as installed version or older. Skipping..."
     }
 }
 
@@ -548,21 +544,21 @@ if (Test-Path $aem) {
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
-        if ($sv[0] -gt $ipv[0]) {
+        if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
-        elseif ($sv[0] -eq $ipv[0]) {
-            if ($sv[1] -gt $ipv[1]) {
+        elseif ([int32]$sv[0] -eq [int32]$ipv[0]) {
+            if ([int32]$sv[1] -gt [int32]$ipv[1]) {
                 $install = $true
             }
-            elseif ($sv[1] -eq $ipv[1]) {
+            elseif ([int32]$sv[1] -eq [int32]$ipv[1]) {
                 $install = $false
             }
-            elseif ($sv[1] -lt $ipv[1]) {
+            elseif ([int32]$sv[1] -lt [int32]$ipv[1]) {
                 $install = $false
             }
         }
-        elseif ($sv[0] -lt $ipv[0]) {
+        elseif ([int32]$sv[0] -lt [int32]$ipv[0]) {
             $install = $false
         }
     }#if already installed
@@ -577,7 +573,7 @@ if (Test-Path $aem) {
         Start-Sleep 360
     }
     else {
-        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
+        #do nothing Write-Output "$cn`: $pn same as installed version or older. Skipping..."
     }
 }
 
@@ -604,30 +600,30 @@ if ((Test-Path $anyconnect) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
-        if ($sv[0] -gt $ipv[0]) {
+        if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
-        elseif ($sv[0] -eq $ipv[0]) {
-            if ($sv[1] -gt $ipv[1]) {
+        elseif ([int32]$sv[0] -eq [int32]$ipv[0]) {
+            if ([int32]$sv[1] -gt [int32]$ipv[1]) {
                 $install = $true
             }
-            elseif ($sv[1] -eq $ipv[1]) {
+            elseif ([int32]$sv[1] -eq [int32]$ipv[1]) {
                 #$install = $false #uncomment and remove below lines if stopping at Major.Minor
-                if ($sv[2] -gt $ipv[2]) {
+                if ([int32]$sv[2] -gt [int32]$ipv[2]) {
                     $install = $true
                 }
-                elseif ($sv[2] -eq $ipv[2]) {
+                elseif ([int32]$sv[2] -eq [int32]$ipv[2]) {
                     $install = $false
                 }
-                elseif ($sv[2] -lt $ipv[2]) {
+                elseif ([int32]$sv[2] -lt [int32]$ipv[2]) {
                     $install = $false
                 }
             }
-            elseif ($sv[1] -lt $ipv[1]) {
+            elseif ([int32]$sv[1] -lt [int32]$ipv[1]) {
                 $install = $false
             }
         }
-        elseif ($sv[0] -lt $ipv[0]) {
+        elseif ([int32]$sv[0] -lt [int32]$ipv[0]) {
             $install = $false
         }
     }#if already installed
@@ -642,7 +638,7 @@ if ((Test-Path $anyconnect) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
         Start-Sleep 300
     }
     else {
-        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
+        #do nothing Write-Output "$cn`: $pn same as installed version or older. Skipping..."
     }
 }
 
@@ -669,21 +665,21 @@ if (Test-Path $axway) {
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
-        if ($sv[0] -gt $ipv[0]) {
+        if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
-        elseif ($sv[0] -eq $ipv[0]) {
-            if ($sv[1] -gt $ipv[1]) {
+        elseif ([int32]$sv[0] -eq [int32]$ipv[0]) {
+            if ([int32]$sv[1] -gt [int32]$ipv[1]) {
                 $install = $true
             }
-            elseif ($sv[1] -eq $ipv[1]) {
+            elseif ([int32]$sv[1] -eq [int32]$ipv[1]) {
                 $install = $false
             }
-            elseif ($sv[1] -lt $ipv[1]) {
+            elseif ([int32]$sv[1] -lt [int32]$ipv[1]) {
                 $install = $false
             }
         }
-        elseif ($sv[0] -lt $ipv[0]) {
+        elseif ([int32]$sv[0] -lt [int32]$ipv[0]) {
             $install = $false
         }
     }#if already installed
@@ -699,7 +695,7 @@ if (Test-Path $axway) {
         $Reboot = $true
     }
     else {
-        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
+        #do nothing Write-Output "$cn`: $pn same as installed version or older. Skipping..."
     }
 }
 
@@ -726,37 +722,37 @@ if ((Test-Path $BigIP) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
-        if ($sv[0] -gt $ipv[0]) {
+        if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
-        elseif ($sv[0] -eq $ipv[0]) {
-            if ($sv[1] -gt $ipv[1]) {
+        elseif ([int32]$sv[0] -eq [int32]$ipv[0]) {
+            if ([int32]$sv[1] -gt [int32]$ipv[1]) {
                 $install = $true
             }
-            elseif ($sv[1] -eq $ipv[1]) {
-                if ($sv[2] -gt $ipv[2]) {
+            elseif ([int32]$sv[1] -eq [int32]$ipv[1]) {
+                if ([int32]$sv[2] -gt [int32]$ipv[2]) {
                     $install = $true
                 }
-                elseif ($sv[2] -eq $ipv[2]) {
-                    if ($sv[3] -gt $ipv[3]) {
+                elseif ([int32]$sv[2] -eq [int32]$ipv[2]) {
+                    if ([int32]$sv[3] -gt [int32]$ipv[3]) {
                         $install = $true
                     }
-                    elseif ($sv[3] -eq $ipv[3]) {
+                    elseif ([int32]$sv[3] -eq [int32]$ipv[3]) {
                         $install = $false
                     }
-                    elseif ($sv[3] -lt $ipv[3]) {
+                    elseif ([int32]$sv[3] -lt [int32]$ipv[3]) {
                         $install = $false
                     }
                 }
-                elseif ($sv[2] -lt $ipv[2]) {
+                elseif ([int32]$sv[2] -lt [int32]$ipv[2]) {
                     $install = $false
                 }
             }
-            elseif ($sv[1] -lt $ipv[1]) {
+            elseif ([int32]$sv[1] -lt [int32]$ipv[1]) {
                 $install = $false
             }
         }
-        elseif ($sv[0] -lt $ipv[0]) {
+        elseif ([int32]$sv[0] -lt [int32]$ipv[0]) {
             $install = $false
         }
     }#if already installed
@@ -771,7 +767,7 @@ if ((Test-Path $BigIP) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
         Start-Sleep 300
     }
     else {
-        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
+        #do nothing Write-Output "$cn`: $pn same as installed version or older. Skipping..."
     }
 }
 
@@ -798,37 +794,37 @@ if (Test-Path $chrome) {
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
-        if ($sv[0] -gt $ipv[0]) {
+        if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
-        elseif ($sv[0] -eq $ipv[0]) {
-            if ($sv[1] -gt $ipv[1]) {
+        elseif ([int32]$sv[0] -eq [int32]$ipv[0]) {
+            if ([int32]$sv[1] -gt [int32]$ipv[1]) {
                 $install = $true
             }
-            elseif ($sv[1] -eq $ipv[1]) {
-                if ($sv[2] -gt $ipv[2]) {
+            elseif ([int32]$sv[1] -eq [int32]$ipv[1]) {
+                if ([int32]$sv[2] -gt [int32]$ipv[2]) {
                     $install = $true
                 }
-                elseif ($sv[2] -eq $ipv[2]) {
-                    if ($sv[3] -gt $ipv[3]) {
+                elseif ([int32]$sv[2] -eq [int32]$ipv[2]) {
+                    if ([int32]$sv[3] -gt [int32]$ipv[3]) {
                         $install = $true
                     }
-                    elseif ($sv[3] -eq $ipv[3]) {
+                    elseif ([int32]$sv[3] -eq [int32]$ipv[3]) {
                         $install = $false
                     }
-                    elseif ($sv[3] -lt $ipv[3]) {
+                    elseif ([int32]$sv[3] -lt [int32]$ipv[3]) {
                         $install = $false
                     }
                 }
-                elseif ($sv[2] -lt $ipv[2]) {
+                elseif ([int32]$sv[2] -lt [int32]$ipv[2]) {
                     $install = $false
                 }
             }
-            elseif ($sv[1] -lt $ipv[1]) {
+            elseif ([int32]$sv[1] -lt [int32]$ipv[1]) {
                 $install = $false
             }
         }
-        elseif ($sv[0] -lt $ipv[0]) {
+        elseif ([int32]$sv[0] -lt [int32]$ipv[0]) {
             $install = $false
         }
     }#if already installed
@@ -843,7 +839,7 @@ if (Test-Path $chrome) {
         Start-Sleep 360
     }
     else {
-        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
+        #do nothing Write-Output "$cn`: $pn same as installed version or older. Skipping..."
     }
 }
 
@@ -870,30 +866,30 @@ if ((Test-Path $dset) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
-        if ($sv[0] -gt $ipv[0]) {
+        if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
-        elseif ($sv[0] -eq $ipv[0]) {
-            if ($sv[1] -gt $ipv[1]) {
+        elseif ([int32]$sv[0] -eq [int32]$ipv[0]) {
+            if ([int32]$sv[1] -gt [int32]$ipv[1]) {
                 $install = $true
             }
-            elseif ($sv[1] -eq $ipv[1]) {
+            elseif ([int32]$sv[1] -eq [int32]$ipv[1]) {
                 #$install = $false #uncomment and remove below lines if stopping at Major.Minor
-                if ($sv[2] -gt $ipv[2]) {
+                if ([int32]$sv[2] -gt [int32]$ipv[2]) {
                     $install = $true
                 }
-                elseif ($sv[2] -eq $ipv[2]) {
+                elseif ([int32]$sv[2] -eq [int32]$ipv[2]) {
                     $install = $false
                 }
-                elseif ($sv[2] -lt $ipv[2]) {
+                elseif ([int32]$sv[2] -lt [int32]$ipv[2]) {
                     $install = $false
                 }
             }
-            elseif ($sv[1] -lt $ipv[1]) {
+            elseif ([int32]$sv[1] -lt [int32]$ipv[1]) {
                 $install = $false
             }
         }
-        elseif ($sv[0] -lt $ipv[0]) {
+        elseif ([int32]$sv[0] -lt [int32]$ipv[0]) {
             $install = $false
         }
     }#if already installed
@@ -908,7 +904,7 @@ if ((Test-Path $dset) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
         Start-Sleep 150
     }
     else {
-        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
+        #do nothing Write-Output "$cn`: $pn same as installed version or older. Skipping..."
     }
 }
 
@@ -935,37 +931,37 @@ if (Test-Path $edge) {
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
-        if ($sv[0] -gt $ipv[0]) {
+        if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
-        elseif ($sv[0] -eq $ipv[0]) {
-            if ($sv[1] -gt $ipv[1]) {
+        elseif ([int32]$sv[0] -eq [int32]$ipv[0]) {
+            if ([int32]$sv[1] -gt [int32]$ipv[1]) {
                 $install = $true
             }
-            elseif ($sv[1] -eq $ipv[1]) {
-                if ($sv[2] -gt $ipv[2]) {
+            elseif ([int32]$sv[1] -eq [int32]$ipv[1]) {
+                if ([int32]$sv[2] -gt [int32]$ipv[2]) {
                     $install = $true
                 }
-                elseif ($sv[2] -eq $ipv[2]) {
-                    if ($sv[3] -gt $ipv[3]) {
+                elseif ([int32]$sv[2] -eq [int32]$ipv[2]) {
+                    if ([int32]$sv[3] -gt [int32]$ipv[3]) {
                         $install = $true
                     }
-                    elseif ($sv[3] -eq $ipv[3]) {
+                    elseif ([int32]$sv[3] -eq [int32]$ipv[3]) {
                         $install = $false
                     }
-                    elseif ($sv[3] -lt $ipv[3]) {
+                    elseif ([int32]$sv[3] -lt [int32]$ipv[3]) {
                         $install = $false
                     }
                 }
-                elseif ($sv[2] -lt $ipv[2]) {
+                elseif ([int32]$sv[2] -lt [int32]$ipv[2]) {
                     $install = $false
                 }
             }
-            elseif ($sv[1] -lt $ipv[1]) {
+            elseif ([int32]$sv[1] -lt [int32]$ipv[1]) {
                 $install = $false
             }
         }
-        elseif ($sv[0] -lt $ipv[0]) {
+        elseif ([int32]$sv[0] -lt [int32]$ipv[0]) {
             $install = $false
         }
     }#if already installed
@@ -981,7 +977,7 @@ if (Test-Path $edge) {
         $Reboot = $true
     }
     else {
-        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
+        #do nothing Write-Output "$cn`: $pn same as installed version or older. Skipping..."
     }
 }
 
@@ -1008,37 +1004,37 @@ if (Test-Path $encase) {
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
-        if ($sv[0] -gt $ipv[0]) {
+        if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
-        elseif ($sv[0] -eq $ipv[0]) {
-            if ($sv[1] -gt $ipv[1]) {
+        elseif ([int32]$sv[0] -eq [int32]$ipv[0]) {
+            if ([int32]$sv[1] -gt [int32]$ipv[1]) {
                 $install = $true
             }
-            elseif ($sv[1] -eq $ipv[1]) {
-                if ($sv[2] -gt $ipv[2]) {
+            elseif ([int32]$sv[1] -eq [int32]$ipv[1]) {
+                if ([int32]$sv[2] -gt [int32]$ipv[2]) {
                     $install = $true
                 }
-                elseif ($sv[2] -eq $ipv[2]) {
-                    if ($sv[3] -gt $ipv[3]) {
+                elseif ([int32]$sv[2] -eq [int32]$ipv[2]) {
+                    if ([int32]$sv[3] -gt [int32]$ipv[3]) {
                         $install = $true
                     }
-                    elseif ($sv[3] -eq $ipv[3]) {
+                    elseif ([int32]$sv[3] -eq [int32]$ipv[3]) {
                         $install = $false
                     }
-                    elseif ($sv[3] -lt $ipv[3]) {
+                    elseif ([int32]$sv[3] -lt [int32]$ipv[3]) {
                         $install = $false
                     }
                 }
-                elseif ($sv[2] -lt $ipv[2]) {
+                elseif ([int32]$sv[2] -lt [int32]$ipv[2]) {
                     $install = $false
                 }
             }
-            elseif ($sv[1] -lt $ipv[1]) {
+            elseif ([int32]$sv[1] -lt [int32]$ipv[1]) {
                 $install = $false
             }
         }
-        elseif ($sv[0] -lt $ipv[0]) {
+        elseif ([int32]$sv[0] -lt [int32]$ipv[0]) {
             $install = $false
         }
     }#if already installed
@@ -1053,7 +1049,7 @@ if (Test-Path $encase) {
         Start-Sleep 300
     }
     else {
-        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
+        #do nothing Write-Output "$cn`: $pn same as installed version or older. Skipping..."
     }
 }
 
@@ -1080,30 +1076,30 @@ if (Test-Path $firefox) {
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
-        if ($sv[0] -gt $ipv[0]) {
+        if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
-        elseif ($sv[0] -eq $ipv[0]) {
-            if ($sv[1] -gt $ipv[1]) {
+        elseif ([int32]$sv[0] -eq [int32]$ipv[0]) {
+            if ([int32]$sv[1] -gt [int32]$ipv[1]) {
                 $install = $true
             }
-            elseif ($sv[1] -eq $ipv[1]) {
+            elseif ([int32]$sv[1] -eq [int32]$ipv[1]) {
                 #$install = $false #uncomment and remove below lines if stopping at Major.Minor
-                if ($sv[2] -gt $ipv[2]) {
+                if ([int32]$sv[2] -gt [int32]$ipv[2]) {
                     $install = $true
                 }
-                elseif ($sv[2] -eq $ipv[2]) {
+                elseif ([int32]$sv[2] -eq [int32]$ipv[2]) {
                     $install = $false
                 }
-                elseif ($sv[2] -lt $ipv[2]) {
+                elseif ([int32]$sv[2] -lt [int32]$ipv[2]) {
                     $install = $false
                 }
             }
-            elseif ($sv[1] -lt $ipv[1]) {
+            elseif ([int32]$sv[1] -lt [int32]$ipv[1]) {
                 $install = $false
             }
         }
-        elseif ($sv[0] -lt $ipv[0]) {
+        elseif ([int32]$sv[0] -lt [int32]$ipv[0]) {
             $install = $false
         }
     }#if installed already
@@ -1118,7 +1114,7 @@ if (Test-Path $firefox) {
         Start-Sleep 350
     }
     else {
-        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
+        #do nothing Write-Output "$cn`: $pn same as installed version or older. Skipping..."
     }
 }
 
@@ -1145,37 +1141,37 @@ if (Test-Path $java) {
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
-        if ($sv[0] -gt $ipv[0]) {
+        if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
-        elseif ($sv[0] -eq $ipv[0]) {
-            if ($sv[1] -gt $ipv[1]) {
+        elseif ([int32]$sv[0] -eq [int32]$ipv[0]) {
+            if ([int32]$sv[1] -gt [int32]$ipv[1]) {
                 $install = $true
             }
-            elseif ($sv[1] -eq $ipv[1]) {
-                if ($sv[2] -gt $ipv[2]) {
+            elseif ([int32]$sv[1] -eq [int32]$ipv[1]) {
+                if ([int32]$sv[2] -gt [int32]$ipv[2]) {
                     $install = $true
                 }
-                elseif ($sv[2] -eq $ipv[2]) {
-                    if ($sv[3] -gt $ipv[3]) {
+                elseif ([int32]$sv[2] -eq [int32]$ipv[2]) {
+                    if ([int32]$sv[3] -gt [int32]$ipv[3]) {
                         $install = $true
                     }
-                    elseif ($sv[3] -eq $ipv[3]) {
+                    elseif ([int32]$sv[3] -eq [int32]$ipv[3]) {
                         $install = $false
                     }
-                    elseif ($sv[3] -lt $ipv[3]) {
+                    elseif ([int32]$sv[3] -lt [int32]$ipv[3]) {
                         $install = $false
                     }
                 }
-                elseif ($sv[2] -lt $ipv[2]) {
+                elseif ([int32]$sv[2] -lt [int32]$ipv[2]) {
                     $install = $false
                 }
             }
-            elseif ($sv[1] -lt $ipv[1]) {
+            elseif ([int32]$sv[1] -lt [int32]$ipv[1]) {
                 $install = $false
             }
         }
-        elseif ($sv[0] -lt $ipv[0]) {
+        elseif ([int32]$sv[0] -lt [int32]$ipv[0]) {
             $install = $false
         }
     }#if already installed
@@ -1190,7 +1186,7 @@ if (Test-Path $java) {
         Start-Sleep 360
     }
     else {
-        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
+        #do nothing Write-Output "$cn`: $pn same as installed version or older. Skipping..."
     }
 }
 
@@ -1217,30 +1213,30 @@ if (Test-Path $netbanner) {
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
-        if ($sv[0] -gt $ipv[0]) {
+        if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
-        elseif ($sv[0] -eq $ipv[0]) {
-            if ($sv[1] -gt $ipv[1]) {
+        elseif ([int32]$sv[0] -eq [int32]$ipv[0]) {
+            if ([int32]$sv[1] -gt [int32]$ipv[1]) {
                 $install = $true
             }
-            elseif ($sv[1] -eq $ipv[1]) {
+            elseif ([int32]$sv[1] -eq [int32]$ipv[1]) {
                 #$install = $false #uncomment and remove below lines if stopping at Major.Minor
-                if ($sv[2] -gt $ipv[2]) {
+                if ([int32]$sv[2] -gt [int32]$ipv[2]) {
                     $install = $true
                 }
-                elseif ($sv[2] -eq $ipv[2]) {
+                elseif ([int32]$sv[2] -eq [int32]$ipv[2]) {
                     $install = $false
                 }
-                elseif ($sv[2] -lt $ipv[2]) {
+                elseif ([int32]$sv[2] -lt [int32]$ipv[2]) {
                     $install = $false
                 }
             }
-            elseif ($sv[1] -lt $ipv[1]) {
+            elseif ([int32]$sv[1] -lt [int32]$ipv[1]) {
                 $install = $false
             }
         }
-        elseif ($sv[0] -lt $ipv[0]) {
+        elseif ([int32]$sv[0] -lt [int32]$ipv[0]) {
             $install = $false
         }
     }#if already installed
@@ -1255,7 +1251,7 @@ if (Test-Path $netbanner) {
         Start-Sleep 200
     }
     else {
-        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
+        #do nothing Write-Output "$cn`: $pn same as installed version or older. Skipping..."
     }
 }
 
@@ -1289,37 +1285,37 @@ if (Test-Path $project) {
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
-        if ($sv[0] -gt $ipv[0]) {
+        if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
-        elseif ($sv[0] -eq $ipv[0]) {
-            if ($sv[1] -gt $ipv[1]) {
+        elseif ([int32]$sv[0] -eq [int32]$ipv[0]) {
+            if ([int32]$sv[1] -gt [int32]$ipv[1]) {
                 $install = $true
             }
-            elseif ($sv[1] -eq $ipv[1]) {
-                if ($sv[2] -gt $ipv[2]) {
+            elseif ([int32]$sv[1] -eq [int32]$ipv[1]) {
+                if ([int32]$sv[2] -gt [int32]$ipv[2]) {
                     $install = $true
                 }
-                elseif ($sv[2] -eq $ipv[2]) {
-                    if ($sv[3] -gt $ipv[3]) {
+                elseif ([int32]$sv[2] -eq [int32]$ipv[2]) {
+                    if ([int32]$sv[3] -gt [int32]$ipv[3]) {
                         $install = $true
                     }
-                    elseif ($sv[3] -eq $ipv[3]) {
+                    elseif ([int32]$sv[3] -eq [int32]$ipv[3]) {
                         $install = $false
                     }
-                    elseif ($sv[3] -lt $ipv[3]) {
+                    elseif ([int32]$sv[3] -lt [int32]$ipv[3]) {
                         $install = $false
                     }
                 }
-                elseif ($sv[2] -lt $ipv[2]) {
+                elseif ([int32]$sv[2] -lt [int32]$ipv[2]) {
                     $install = $false
                 }
             }
-            elseif ($sv[1] -lt $ipv[1]) {
+            elseif ([int32]$sv[1] -lt [int32]$ipv[1]) {
                 $install = $false
             }
         }
-        elseif ($sv[0] -lt $ipv[0]) {
+        elseif ([int32]$sv[0] -lt [int32]$ipv[0]) {
             $install = $false
         }
     }#if already installed
@@ -1334,7 +1330,7 @@ if (Test-Path $project) {
         Start-Sleep 400
     }
     else {
-        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
+        #do nothing Write-Output "$cn`: $pn same as installed version or older. Skipping..."
     }
 }
 
@@ -1343,7 +1339,7 @@ if (Test-Path $silverlight) {
     $slv = Get-Content $silverlight\SoftwareVersion.txt
     $ips = ($ip | Where-Object {$_.ProgramName -like "Microsoft Silverligh*"} | Select-Object Version)[0].Version
     if ($slv -match $ips) {
-        Write-Output "$cn`: Silverlight in patches folder same as installed version. Skipping install..."
+        #do nothing Write-Output "$cn`: Silverlight in patches folder same as installed version. Skipping install..."
     }
     else {
         Write-Output "$cn`: Installing Silverlight."
@@ -1375,37 +1371,37 @@ if (Test-Path $tanium) {
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
-        if ($sv[0] -gt $ipv[0]) {
+        if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
-        elseif ($sv[0] -eq $ipv[0]) {
-            if ($sv[1] -gt $ipv[1]) {
+        elseif ([int32]$sv[0] -eq [int32]$ipv[0]) {
+            if ([int32]$sv[1] -gt [int32]$ipv[1]) {
                 $install = $true
             }
-            elseif ($sv[1] -eq $ipv[1]) {
-                if ($sv[2] -gt $ipv[2]) {
+            elseif ([int32]$sv[1] -eq [int32]$ipv[1]) {
+                if ([int32]$sv[2] -gt [int32]$ipv[2]) {
                     $install = $true
                 }
-                elseif ($sv[2] -eq $ipv[2]) {
-                    if ($sv[3] -gt $ipv[3]) {
+                elseif ([int32]$sv[2] -eq [int32]$ipv[2]) {
+                    if ([int32]$sv[3] -gt [int32]$ipv[3]) {
                         $install = $true
                     }
-                    elseif ($sv[3] -eq $ipv[3]) {
+                    elseif ([int32]$sv[3] -eq [int32]$ipv[3]) {
                         $install = $false
                     }
-                    elseif ($sv[3] -lt $ipv[3]) {
+                    elseif ([int32]$sv[3] -lt [int32]$ipv[3]) {
                         $install = $false
                     }
                 }
-                elseif ($sv[2] -lt $ipv[2]) {
+                elseif ([int32]$sv[2] -lt [int32]$ipv[2]) {
                     $install = $false
                 }
             }
-            elseif ($sv[1] -lt $ipv[1]) {
+            elseif ([int32]$sv[1] -lt [int32]$ipv[1]) {
                 $install = $false
             }
         }
-        elseif ($sv[0] -lt $ipv[0]) {
+        elseif ([int32]$sv[0] -lt [int32]$ipv[0]) {
             $install = $false
         }
     }#if already installed
@@ -1421,7 +1417,7 @@ if (Test-Path $tanium) {
         $Reboot = $true
     }
     else {
-        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
+        #do nothing Write-Output "$cn`: $pn same as installed version or older. Skipping..."
     }
 }
 
@@ -1448,39 +1444,39 @@ if (Test-Path $teams) {
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
-        if ($sv[0] -gt $ipv[0]) {
+        if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
-        elseif ($sv[0] -eq $ipv[0]) {
-            if ($sv[1] -gt $ipv[1]) {
+        elseif ([int32]$sv[0] -eq [int32]$ipv[0]) {
+            if ([int32]$sv[1] -gt [int32]$ipv[1]) {
                 $install = $true
             }
-            elseif ($sv[1] -eq $ipv[1]) {
+            elseif ([int32]$sv[1] -eq [int32]$ipv[1]) {
                 #$install = $false #uncomment and remove below lines if stopping at Major.Minor
-                if ($sv[2] -gt $ipv[2]) {
+                if ([int32]$sv[2] -gt [int32]$ipv[2]) {
                     $install = $true
                 }
-                elseif ($sv[2] -eq $ipv[2]) {
+                elseif ([int32]$sv[2] -eq [int32]$ipv[2]) {
                     #$install = $false #uncomment and remove below lines if stopping at Major.Minor.Patch/Revision
-                    if ($sv[3] -gt $ipv[3]) {
+                    if ([int32]$sv[3] -gt [int32]$ipv[3]) {
                         $install = $true
                     }
-                    elseif ($sv[3] -eq $ipv[3]) {
+                    elseif ([int32]$sv[3] -eq [int32]$ipv[3]) {
                         $install = $false #stopping at Major.Minor.Build.Revision
                     }
-                    elseif ($sv[3] -lt $ipv[3]) {
+                    elseif ([int32]$sv[3] -lt [int32]$ipv[3]) {
                         $install = $false
                     }
                 }
-                elseif ($sv[2] -lt $ipv[2]) {
+                elseif ([int32]$sv[2] -lt [int32]$ipv[2]) {
                     $install = $false
                 }
             }
-            elseif ($sv[1] -lt $ipv[1]) {
+            elseif ([int32]$sv[1] -lt [int32]$ipv[1]) {
                 $install = $false
             }
         }
-        elseif ($sv[0] -lt $ipv[0]) {
+        elseif ([int32]$sv[0] -lt [int32]$ipv[0]) {
             $install = $false
         }
     }#if already installed
@@ -1495,7 +1491,7 @@ if (Test-Path $teams) {
         Start-Sleep 150
     }
     else {
-        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
+        #do nothing Write-Output "$cn`: $pn same as installed version or older. Skipping..."
     }
 }
 
@@ -1522,37 +1518,37 @@ if ((Test-Path $titus) -and $env:USERDNSDOMAIN -like "*.smil.mil") {
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
-        if ($sv[0] -gt $ipv[0]) {
+        if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
-        elseif ($sv[0] -eq $ipv[0]) {
-            if ($sv[1] -gt $ipv[1]) {
+        elseif ([int32]$sv[0] -eq [int32]$ipv[0]) {
+            if ([int32]$sv[1] -gt [int32]$ipv[1]) {
                 $install = $true
             }
-            elseif ($sv[1] -eq $ipv[1]) {
-                if ($sv[2] -gt $ipv[2]) {
+            elseif ([int32]$sv[1] -eq [int32]$ipv[1]) {
+                if ([int32]$sv[2] -gt [int32]$ipv[2]) {
                     $install = $true
                 }
-                elseif ($sv[2] -eq $ipv[2]) {
-                    if ($sv[3] -gt $ipv[3]) {
+                elseif ([int32]$sv[2] -eq [int32]$ipv[2]) {
+                    if ([int32]$sv[3] -gt [int32]$ipv[3]) {
                         $install = $true
                     }
-                    elseif ($sv[3] -eq $ipv[3]) {
+                    elseif ([int32]$sv[3] -eq [int32]$ipv[3]) {
                         $install = $false
                     }
-                    elseif ($sv[3] -lt $ipv[3]) {
+                    elseif ([int32]$sv[3] -lt [int32]$ipv[3]) {
                         $install = $false
                     }
                 }
-                elseif ($sv[2] -lt $ipv[2]) {
+                elseif ([int32]$sv[2] -lt [int32]$ipv[2]) {
                     $install = $false
                 }
             }
-            elseif ($sv[1] -lt $ipv[1]) {
+            elseif ([int32]$sv[1] -lt [int32]$ipv[1]) {
                 $install = $false
             }
         }
-        elseif ($sv[0] -lt $ipv[0]) {
+        elseif ([int32]$sv[0] -lt [int32]$ipv[0]) {
             $install = $false
         }
     }#if already installed
@@ -1567,7 +1563,7 @@ if ((Test-Path $titus) -and $env:USERDNSDOMAIN -like "*.smil.mil") {
         Start-Sleep 300
     }
     else {
-        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
+        #do nothing Write-Output "$cn`: $pn same as installed version or older. Skipping..."
     }
 }
 
@@ -1594,37 +1590,37 @@ if (Test-Path $transverse) {
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
-        if ($sv[0] -gt $ipv[0]) {
+        if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
-        elseif ($sv[0] -eq $ipv[0]) {
-            if ($sv[1] -gt $ipv[1]) {
+        elseif ([int32]$sv[0] -eq [int32]$ipv[0]) {
+            if ([int32]$sv[1] -gt [int32]$ipv[1]) {
                 $install = $true
             }
-            elseif ($sv[1] -eq $ipv[1]) {
-                if ($sv[2] -gt $ipv[2]) {
+            elseif ([int32]$sv[1] -eq [int32]$ipv[1]) {
+                if ([int32]$sv[2] -gt [int32]$ipv[2]) {
                     $install = $true
                 }
-                elseif ($sv[2] -eq $ipv[2]) {
-                    if ($sv[3] -gt $ipv[3]) {
+                elseif ([int32]$sv[2] -eq [int32]$ipv[2]) {
+                    if ([int32]$sv[3] -gt [int32]$ipv[3]) {
                         $install = $true
                     }
-                    elseif ($sv[3] -eq $ipv[3]) {
+                    elseif ([int32]$sv[3] -eq [int32]$ipv[3]) {
                         $install = $false
                     }
-                    elseif ($sv[3] -lt $ipv[3]) {
+                    elseif ([int32]$sv[3] -lt [int32]$ipv[3]) {
                         $install = $false
                     }
                 }
-                elseif ($sv[2] -lt $ipv[2]) {
+                elseif ([int32]$sv[2] -lt [int32]$ipv[2]) {
                     $install = $false
                 }
             }
-            elseif ($sv[1] -lt $ipv[1]) {
+            elseif ([int32]$sv[1] -lt [int32]$ipv[1]) {
                 $install = $false
             }
         }
-        elseif ($sv[0] -lt $ipv[0]) {
+        elseif ([int32]$sv[0] -lt [int32]$ipv[0]) {
             $install = $false
         }
     }#if already installed
@@ -1639,7 +1635,7 @@ if (Test-Path $transverse) {
         Start-Sleep 360
     }
     else {
-        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
+        #do nothing Write-Output "$cn`: $pn same as installed version or older. Skipping..."
     }
 }
 
@@ -1648,11 +1644,14 @@ if (Test-Path $vESD) {
     $vv = Get-Content $vESD\SoftwareVersion.txt
     $ipvv = ($ip | Where-Object {$_.ProgramName -like "USAF vES*"} | Select-Object Version)[0].Version
     if ($vv -match $ipvv) {
-        Write-Output "$cn`: vESD in patches folder same as installed version. Skipping install..."
+        #do nothing Write-Output "$cn`: vESD in patches folder same as installed version. Skipping install..."
     }
     else {
         Write-Output "$cn`: Installing vESD."
-        Start-Process "c:\Windows\System32\msiexec.exe" -ArgumentList "c:\Patches\vESD\vESD.3.x.Installer_v4.8.7734_RELEASE.msi /quiet /norestart" -NoNewWindow -Wait
+        $installer = Get-ChildItem $vESD | Where-Object {$_.Name -like "*.msi"} | Select-Object Name -ExpandProperty Name -Last 1
+        $inp = $vESD + "\" + $installer
+        $iargs = $inp + " /quiet /norestart"
+        Start-Process "c:\Windows\System32\msiexec.exe" -ArgumentList $iargs -NoNewWindow -Wait
         Start-Sleep 300
     }
 }
@@ -1680,37 +1679,37 @@ if (Test-Path $visio) {
 
     #Determine if need to install
     if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
-        if ($sv[0] -gt $ipv[0]) {
+        if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
-        elseif ($sv[0] -eq $ipv[0]) {
-            if ($sv[1] -gt $ipv[1]) {
+        elseif ([int32]$sv[0] -eq [int32]$ipv[0]) {
+            if ([int32]$sv[1] -gt [int32]$ipv[1]) {
                 $install = $true
             }
-            elseif ($sv[1] -eq $ipv[1]) {
-                if ($sv[2] -gt $ipv[2]) {
+            elseif ([int32]$sv[1] -eq [int32]$ipv[1]) {
+                if ([int32]$sv[2] -gt [int32]$ipv[2]) {
                     $install = $true
                 }
-                elseif ($sv[2] -eq $ipv[2]) {
-                    if ($sv[3] -gt $ipv[3]) {
+                elseif ([int32]$sv[2] -eq [int32]$ipv[2]) {
+                    if ([int32]$sv[3] -gt [int32]$ipv[3]) {
                         $install = $true
                     }
-                    elseif ($sv[3] -eq $ipv[3]) {
+                    elseif ([int32]$sv[3] -eq [int32]$ipv[3]) {
                         $install = $false
                     }
-                    elseif ($sv[3] -lt $ipv[3]) {
+                    elseif ([int32]$sv[3] -lt [int32]$ipv[3]) {
                         $install = $false
                     }
                 }
-                elseif ($sv[2] -lt $ipv[2]) {
+                elseif ([int32]$sv[2] -lt [int32]$ipv[2]) {
                     $install = $false
                 }
             }
-            elseif ($sv[1] -lt $ipv[1]) {
+            elseif ([int32]$sv[1] -lt [int32]$ipv[1]) {
                 $install = $false
             }
         }
-        elseif ($sv[0] -lt $ipv[0]) {
+        elseif ([int32]$sv[0] -lt [int32]$ipv[0]) {
             $install = $false
         }
     }#if already installed
@@ -1725,7 +1724,7 @@ if (Test-Path $visio) {
         Start-Sleep 400
     }
     else {
-        Write-Output "$cn`: $pn same as installed version or older. Skipping..."
+        #do nothing Write-Output "$cn`: $pn same as installed version or older. Skipping..."
     }
 }
 
