@@ -184,6 +184,103 @@ Function Join-File {
     Set-Location $og
 }
 
+function Send-ToastNotification {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2020-11-08 14:57:29
+    Last Edit: 2021-07-14 17:23:22
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    param(
+        [Parameter(
+            HelpMessage = "Enter the message to send.",
+            Mandatory=$true,
+            Position=0
+        )]
+        [ValidateNotNullOrEmpty()]
+        [string]$Message,
+
+        [Parameter(
+            HelpMessage = "Enter the name of the sender.",
+            Mandatory=$false,
+            Position=1
+        )]
+        [string]$Sender = " ",
+
+        [Parameter(
+            Mandatory=$false,
+            Position=2
+        )]
+        [Alias('Host','Name','Computer','CN')]
+        [string[]]$ComputerName,
+
+        [Parameter(
+            Mandatory=$false
+        )]
+        [string]$Notifier = "Windows.SystemToast.SecurityAndMaintenance", #IT HAS TO BE A REGISTERED NOTIFIER. Look here for the registered notifiers: HKEY_CLASSES_ROOT\AppUserModelId.
+        #Can also use the WSTools Register-NotificationApp to register a new one.
+
+        [Parameter(
+            Mandatory=$false
+        )]
+        [string]$Title
+    )
+    Begin {
+        $AudioSource = "ms-winsoundevent:Notification.Looping.Alarm5"
+        if ($null -eq $Title -or $Title -eq '') {
+            $ttext = $null
+        }
+        else {
+            $ttext = "<text>$Title</text>"
+        }
+        [xml]$ToastTemplate = @"
+            <toast duration="long">
+                <visual>
+                <binding template="ToastGeneric">
+                    <text>$Sender</text>
+                    $ttext
+                    <group>
+                        <subgroup>
+                            <text hint-style="subtitle" hint-wrap="true">$Message</text>
+                        </subgroup>
+                    </group>
+                </binding>
+                </visual>
+                <audio src="$AudioSource"/>
+            </toast>
+"@
+
+        [scriptblock]$ToastScript = {
+            Param($ToastTemplate)
+            #Load required assemblies
+            [void][Windows.UI.Notifications.ToastNotification,Windows.UI.Notifications,ContentType=WindowsRuntime]
+            [void][Windows.Data.Xml.Dom.XmlDocument,Windows.Data.Xml.Dom,ContentType=WindowsRuntime]
+
+            #Format XML
+            $FinalXML = [Windows.Data.Xml.Dom.XmlDocument]::new()
+            $FinalXML.LoadXml($ToastTemplate.OuterXml)
+
+            #Create the Toast
+            $Toast = [Windows.UI.Notifications.ToastNotification]::new($FinalXML)
+
+            #Show the Toast message
+            [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier($Notifier).show($Toast)
+        }
+    }
+    Process {
+        if (![string]::IsNullOrEmpty($ComputerName)) {
+            Invoke-Command -ComputerName $ComputerName -ScriptBlock $ToastScript -ArgumentList $ToastTemplate #DevSkim: ignore DS104456
+        }
+        else {Invoke-Command -ScriptBlock $ToastScript -ArgumentList $ToastTemplate} #DevSkim: ignore DS104456
+    }
+    End {
+        #done
+    }
+}
+
 $comp = $env:COMPUTERNAME
 $cn = $env:COMPUTERNAME
 $PatchFolderPath = "C:\Patches"
@@ -421,16 +518,7 @@ if ((Test-Path $activclient) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
                 $install = $true
             }
             elseif ([int32]$sv[1] -eq [int32]$ipv[1]) {
-                #$install = $false #uncomment and remove below lines if stopping at Major.Minor
-                if ([int32]$sv[2] -gt [int32]$ipv[2]) {
-                    $install = $true
-                }
-                elseif ([int32]$sv[2] -eq [int32]$ipv[2]) {
-                    $install = $false
-                }
-                elseif ([int32]$sv[2] -lt [int32]$ipv[2]) {
-                    $install = $false
-                }
+                $install = $false #uncomment and remove below lines if stopping at Major.Minor
             }
             elseif ([int32]$sv[1] -lt [int32]$ipv[1]) {
                 $install = $false
@@ -511,6 +599,9 @@ if (Test-Path $acrobat) {
 
     #Install or not
     if ($install -eq $true) {
+        $rn = ((Get-Date).AddSeconds(300))
+        Send-ToastNotification "Adobe Acrobat installation/update will begin in 5 minutes ($rn.) During this process it may close. Please save all open files." -Title "Adobe Acrobat Install"
+        Start-Sleep -Seconds 300
         Write-Output "$cn`: Installing $pn."
         Start-Process $acrobat\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 900
@@ -633,6 +724,9 @@ if ((Test-Path $anyconnect) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
 
     #Install or not
     if ($install -eq $true) {
+        $rn = ((Get-Date).AddSeconds(300))
+        Send-ToastNotification "Cisco AnyConnect installation/update will begin in 5 minutes ($rn.) During this process it may close. If you are using it to connect to VPN, your VPN connection will be disconnected. Please wait at least 5 minutes after it starts to reconnect. Please do not log off or shutdown your computer during this process." -Title "Cisco AnyConnect Install"
+        Start-Sleep -Seconds 300
         Write-Output "$cn`: Installing $pn."
         Start-Process $anyconnect\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 300
@@ -689,6 +783,9 @@ if (Test-Path $axway) {
 
     #Install or not
     if ($install -eq $true) {
+        $rn = ((Get-Date).AddSeconds(300))
+        Send-ToastNotification "Axway installation/update will begin in 5 minutes ($rn.) During this process it may close. You may need to reboot your computer after it finishes installing" -Title "Axway Install"
+        Start-Sleep -Seconds 300
         Write-Output "$cn`: Installing $pn."
         Start-Process $axway\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 400
@@ -834,6 +931,9 @@ if (Test-Path $chrome) {
 
     #Install or not
     if ($install -eq $true) {
+        $rn = ((Get-Date).AddSeconds(300))
+        Send-ToastNotification "Google Chrome installation/update will begin in 5 minutes ($rn.) During this process it may close. Please save all open files. It may take up to 10 minutes for Google Chrome to be reinstalled." -Title "Google Chrome Install"
+        Start-Sleep -Seconds 300
         Write-Output "$cn`: Installing $pn."
         Start-Process $chrome\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 360
@@ -971,6 +1071,9 @@ if (Test-Path $edge) {
 
     #Install or not
     if ($install -eq $true) {
+        $rn = ((Get-Date).AddSeconds(300))
+        Send-ToastNotification "Microsoft Edge installation/update will begin in 5 minutes ($rn.) During this process it may close. Please save all open files. It may take up to 10 minutes to be reinstalled." -Title "Microsoft Edge Install"
+        Start-Sleep -Seconds 300
         Write-Output "$cn`: Installing $pn."
         Start-Process msiexec.exe -ArgumentList "/i $edge\MicrosoftEdgeEnterpriseX64.msi /qn /norestart" -NoNewWindow -Wait
         Start-Sleep 360
@@ -1109,6 +1212,9 @@ if (Test-Path $firefox) {
 
     #Install or not
     if ($install -eq $true) {
+        $rn = ((Get-Date).AddSeconds(300))
+        Send-ToastNotification "Mozilla Firefox installation/update will begin in 5 minutes ($rn.) During this process it may close. Please save all open files. It may take up to 10 minutes to be reinstalled" -Title "Firefox Install"
+        Start-Sleep -Seconds 300
         Write-Output "$cn`: Installing $pn."
         Start-Process $firefox\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 350
@@ -1486,6 +1592,9 @@ if (Test-Path $teams) {
 
     #Install or not
     if ($install -eq $true) {
+        $rn = ((Get-Date).AddSeconds(300))
+        Send-ToastNotification "Microsoft Teams installation/update will begin in 5 minutes ($rn.) During this process it may close. Please save all open files. If after 10 minutes it appears to be uninstalled, please log off then log back in" -Title "Microsoft Teams Install"
+        Start-Sleep -Seconds 300
         Write-Output "$cn`: Installing $pn."
         Start-Process $teams\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 150
@@ -1799,5 +1908,7 @@ if ($Reboot -eq $true) {
             $d = 1
         }
     }
+    Send-ToastNotification "Your computer had Windows updates and/or programs installed that require a reboot. Your computer will reboot at 0100." -Title "Reboot Required"
+    Start-Sleep -Seconds 30
     shutdown -r -t ([decimal]::round(((Get-Date).AddDays($d).Date.AddHours($hr).AddMinutes($mm) - (Get-Date)).TotalSeconds))
 }

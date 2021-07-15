@@ -2297,6 +2297,43 @@ Function Get-NICInfo {
 }
 
 
+function Get-NotificationApp {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2021-07-14 23:42:57
+    Last Edit: 2021-07-14 23:42:57
+    Keywords:
+    Requires:
+.LINK
+    https://wstools.dev
+#>
+    $info = @()
+    $HKCR = Get-PSDrive -Name HKCR -ErrorAction SilentlyContinue
+    if (!($HKCR)) {
+        New-PSDrive -Name HKCR -PSProvider Registry -Root Hkey_Classes_Root -Scope Script
+    }
+
+    $AppRegPath = "HKCR:\AppUserModelId"
+    $apps = Get-ChildItem $AppRegPath
+
+    foreach ($app in $apps) {
+        $name = $app.Name -replace "HKEY_CLASSES_ROOT\\AppUserModelId\\",""
+        $apppath = $AppRegPath + "\" + $name
+        $dn = Get-ItemProperty -Path $apppath -Name DisplayName -ErrorAction SilentlyContinue | Select-Object -ExpandProperty DisplayName -ErrorAction SilentlyContinue
+        $info += New-Object -TypeName PSObject -Property @{
+            Name = $name
+            DisplayName = $dn
+        }#new object
+    }
+
+    $info | Select-Object Name,DisplayName
+    #Remove-PSDrive -Name HKCR -Force
+}
+New-Alias -Name "Get-ToastNotifierApp" -Value Get-NotificationApp
+New-Alias -Name "Get-ToastNotificationApp" -Value Get-NotificationApp
+
+
 Function Get-OperatingSystem {
 <#
    .Synopsis

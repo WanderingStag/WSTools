@@ -7886,7 +7886,7 @@ function Disable-TLS1.0 { #DevSkim: ignore DS169125,DS440000
 .NOTES
     Author: Skyler Hart
     Created: 2021-04-22 11:49:33
-    Last Edit: 2021-04-22 11:49:33
+    Last Edit: 2021-07-14 23:13:18
     Keywords:
     Requires:
         -RunAsAdministrator
@@ -7915,10 +7915,11 @@ function Disable-TLS1.0 { #DevSkim: ignore DS169125,DS440000
         $BaseKey = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine, $comp)
         $SubKey = $BaseKey.OpenSubKey('SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Client',$true)
         $SubKey.SetValue($ValueName, $ValueData, [Microsoft.Win32.RegistryValueKind]::DWORD)
-        $SubKey.SetValue($ValueName2, $ValueData2, [Microsoft.Win32.RegistryValueKind]::DWORD)
+        $SubKey.SetValue($ValueName2, $ValueData, [Microsoft.Win32.RegistryValueKind]::DWORD)
 
         $SubKey2 = $BaseKey.OpenSubKey('SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Server',$true)
         $SubKey2.SetValue($ValueName, $ValueData, [Microsoft.Win32.RegistryValueKind]::DWORD)
+        $SubKey2.SetValue($ValueName2, $ValueData2, [Microsoft.Win32.RegistryValueKind]::DWORD)
     }
 }
 
@@ -7928,7 +7929,7 @@ function Enable-TLS1.0 { #DevSkim: ignore DS169125,DS440000
 .NOTES
     Author: Skyler Hart
     Created: 2021-04-22 12:03:16
-    Last Edit: 2021-04-22 12:03:16
+    Last Edit: 2021-07-14 23:14:51
     Keywords:
     Requires:
         -RunAsAdministrator
@@ -7961,6 +7962,7 @@ function Enable-TLS1.0 { #DevSkim: ignore DS169125,DS440000
 
         $SubKey2 = $BaseKey.OpenSubKey('SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Server',$true)
         $SubKey2.SetValue($ValueName, $ValueData2, [Microsoft.Win32.RegistryValueKind]::DWORD)
+        $SubKey2.SetValue($ValueName2, $ValueData, [Microsoft.Win32.RegistryValueKind]::DWORD)
     }
 }
 
@@ -8348,6 +8350,60 @@ function Set-MS15124 {
 }#function set-ms15-124
 
 
+function Set-PrintNightmareFix {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2021-07-14 20:47:02
+    Last Edit: 2021-07-14 20:47:02
+    Requires:
+        -RunAsAdministrator
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
+#>
+    [CmdletBinding()]
+    param(
+        [Parameter(
+            Mandatory=$false,
+            Position=0
+        )]
+        [ValidateNotNullOrEmpty()]
+        [Alias('Host','Name','Computer','CN')]
+        [string[]]$ComputerName = "$env:COMPUTERNAME",
+
+        [switch]$DisableSpooler
+    )
+
+    $v1 = 'NoWarningNoElevationOnInstall'
+    $v2 = 'UpdatePromptSettings'
+    $d0 = 0
+
+    $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+    if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+        foreach ($Comp in $ComputerName) {
+            ([Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine, $comp)).CreateSubKey('SOFTWARE\Policies\Microsoft\Windows NT\Printers\PointAndPrint')
+            $BaseKey = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine, $comp)
+            $SubKey = $BaseKey.OpenSubKey('SOFTWARE\Policies\Microsoft\Windows NT\Printers\PointAndPrint',$true)
+            $SubKey.SetValue($v1, $d0, [Microsoft.Win32.RegistryValueKind]::DWORD)
+
+            $BaseKey = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine, $comp)
+            $SubKey = $BaseKey.OpenSubKey('SOFTWARE\Policies\Microsoft\Windows NT\Printers\PointAndPrint',$true)
+            $SubKey.SetValue($v2, $d0, [Microsoft.Win32.RegistryValueKind]::DWORD)
+
+            if ($Comp -eq $env:COMPUTERNAME) {
+                if ($DisableSpooler) {
+                    Stop-Service -Name Spooler -Force | Out-Null
+                    Set-Service -Name Spooler -StartupType Disabled
+                }
+            }
+        }#foreach computer
+    }
+    else {Write-Error "Must be ran as administrator"}
+}
+
+
 Function Set-RemediationValues {
 <#
 .Notes
@@ -8380,6 +8436,10 @@ Function Set-RemediationValues {
     $v5 = 'FeatureSettingsOverride'
     $v6 = 'FeatureSettingsOverrideMask'
     $v7 = 'SMB1'
+
+    #PrintNightmare
+    $v8 = 'NoWarningNoElevationOnInstall'
+    $v9 = 'UpdatePromptSettings'
 
     $d0 = 0
     $d1 = 1
@@ -8496,6 +8556,7 @@ Function Set-RemediationValues {
         $BaseKey = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine, $comp)
         $SubKey = $BaseKey.OpenSubKey('SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Server',$true)
         $SubKey.SetValue($v3, $d0, [Microsoft.Win32.RegistryValueKind]::DWORD)
+        $SubKey.SetValue($v4, $d1, [Microsoft.Win32.RegistryValueKind]::DWORD)
 
         ([Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine, $comp)).CreateSubKey('SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Client')
         $BaseKey = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine, $comp)
@@ -8664,6 +8725,16 @@ Function Set-RemediationValues {
             }
         }
         #endregion
+
+        #PrintNightmare
+        ([Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine, $comp)).CreateSubKey('SOFTWARE\Policies\Microsoft\Windows NT\Printers\PointAndPrint')
+        $BaseKey = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine, $comp)
+        $SubKey = $BaseKey.OpenSubKey('SOFTWARE\Policies\Microsoft\Windows NT\Printers\PointAndPrint',$true)
+        $SubKey.SetValue($v8, $d0, [Microsoft.Win32.RegistryValueKind]::DWORD)
+
+        $BaseKey = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine, $comp)
+        $SubKey = $BaseKey.OpenSubKey('SOFTWARE\Policies\Microsoft\Windows NT\Printers\PointAndPrint',$true)
+        $SubKey.SetValue($v9, $d0, [Microsoft.Win32.RegistryValueKind]::DWORD)
 
         Set-NLA -ComputerName $comp
     }#foreach computer
