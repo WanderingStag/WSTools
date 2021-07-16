@@ -4,6 +4,16 @@ Known issues:
 
 ######################
 #                    #
+#      2021.7.2      #
+#                    #
+######################
+New features and other changes:
+1. Made notifier parameter in Send-ToastNotification dynamic.
+2. Modified Get-NotificationApp so that it shows the actual Display Name that is displayed on Toast notifications.
+3. Added a field to the output of Get-NotificationApp that combines the DisplayName and Name outputs.
+
+######################
+#                    #
 #      2021.7.1      #
 #                    #
 ######################

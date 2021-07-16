@@ -701,6 +701,7 @@ Function Start-PowerShell {
 New-Alias -Name "Open-PowerShell" -Value Start-PowerShell
 
 
+#needs Get-NotificationApp
 function Send-ToastNotification {
 <#
 .SYNOPSIS
@@ -733,20 +734,19 @@ function Send-ToastNotification {
     [CmdletBinding()]
     param(
         [Parameter(
-            HelpMessage = "Enter the name of the sender.",
+            HelpMessage = "Enter the message to send.",
             Mandatory=$true,
             Position=0
         )]
         [ValidateNotNullOrEmpty()]
-        [string]$Sender,
+        [string]$Message,
 
         [Parameter(
-            HelpMessage = "Enter the message to send.",
-            Mandatory=$true,
+            HelpMessage = "Enter the name of the sender.",
+            Mandatory=$false,
             Position=1
         )]
-        [ValidateNotNullOrEmpty()]
-        [string]$Message,
+        [string]$Sender = " ",
 
         [Parameter(
             Mandatory=$false,
@@ -758,16 +758,42 @@ function Send-ToastNotification {
         [Parameter(
             Mandatory=$false
         )]
-        [string]$Notifier = "Windows.SystemToast.SecurityAndMaintenance", #IT HAS TO BE A REGISTERED NOTIFIER. Look here for the registered notifiers: HKEY_CLASSES_ROOT\AppUserModelId.
-        #Can also use the WSTools Register-NotificationApp to register a new one.
-
-        [Parameter(
-            Mandatory=$false
-        )]
         [string]$Title
     )
+    DynamicParam {
+        # Set the dynamic parameters' name. You probably want to change this.
+        $ParameterName = 'Notifier'
+
+        # Create the dictionary
+        $RuntimeParameterDictionary = New-Object System.Management.Automation.RuntimeDefinedParameterDictionary
+
+        # Create the collection of attributes
+        $AttributeCollection = New-Object System.Collections.ObjectModel.Collection[System.Attribute]
+
+        # Create and set the parameters' attributes. You may also want to change these.
+        $ParameterAttribute = New-Object System.Management.Automation.ParameterAttribute
+        $ParameterAttribute.Mandatory = $false
+        $ParameterAttribute.Position = 3
+
+        # Add the attributes to the attributes collection
+        $AttributeCollection.Add($ParameterAttribute)
+
+        # Generate and set the ValidateSet. You definitely want to change this. This part populates your set.
+        $arrSet = ((Get-NotificationApp).Name)
+        $ValidateSetAttribute = New-Object System.Management.Automation.ValidateSetAttribute($arrSet)
+
+        # Add the ValidateSet to the attributes collection
+        $AttributeCollection.Add($ValidateSetAttribute)
+
+        # Create and return the dynamic parameter
+        $RuntimeParameter = New-Object System.Management.Automation.RuntimeDefinedParameter($ParameterName, [string], $AttributeCollection)
+        $RuntimeParameterDictionary.Add($ParameterName, $RuntimeParameter)
+        return $RuntimeParameterDictionary
+    }
     Begin {
         $AudioSource = "ms-winsoundevent:Notification.Looping.Alarm5"
+        $Notifier = $PsBoundParameters[$ParameterName]
+        if ($null -eq $Notifier -or $Notifier -eq "") {$Notifier = "Windows.SystemToast.DeviceManagement"}
         if ($null -eq $Title -or $Title -eq '') {
             $ttext = $null
         }
