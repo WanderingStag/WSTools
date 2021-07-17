@@ -721,7 +721,7 @@ function Send-ToastNotification {
 .NOTES
     Author: Skyler Hart
     Created: 2020-11-08 14:57:29
-    Last Edit: 2020-11-08 14:57:29
+    Last Edit: 2021-07-16 23:08:42
     Requires:
         -Module ActiveDirectory
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
@@ -758,7 +758,42 @@ function Send-ToastNotification {
         [Parameter(
             Mandatory=$false
         )]
-        [string]$Title
+        [string]$Title,
+
+        [Parameter(Mandatory=$false)]
+        [ValidateSet('ms-winsoundevent:Notification.Default',
+        'ms-winsoundevent:Notification.IM',
+        'ms-winsoundevent:Notification.Mail',
+        'ms-winsoundevent:Notification.Reminder',
+        'ms-winsoundevent:Notification.SMS',
+        'ms-winsoundevent:Notification.Looping.Alarm',
+        'ms-winsoundevent:Notification.Looping.Alarm2',
+        'ms-winsoundevent:Notification.Looping.Alarm3',
+        'ms-winsoundevent:Notification.Looping.Alarm4',
+        'ms-winsoundevent:Notification.Looping.Alarm5',
+        'ms-winsoundevent:Notification.Looping.Alarm6',
+        'ms-winsoundevent:Notification.Looping.Alarm7',
+        'ms-winsoundevent:Notification.Looping.Alarm8',
+        'ms-winsoundevent:Notification.Looping.Alarm9',
+        'ms-winsoundevent:Notification.Looping.Alarm10',
+        'ms-winsoundevent:Notification.Looping.Call',
+        'ms-winsoundevent:Notification.Looping.Call2',
+        'ms-winsoundevent:Notification.Looping.Call3',
+        'ms-winsoundevent:Notification.Looping.Call4',
+        'ms-winsoundevent:Notification.Looping.Call5',
+        'ms-winsoundevent:Notification.Looping.Call6',
+        'ms-winsoundevent:Notification.Looping.Call7',
+        'ms-winsoundevent:Notification.Looping.Call8',
+        'ms-winsoundevent:Notification.Looping.Call9',
+        'ms-winsoundevent:Notification.Looping.Call10',
+        'Silent')]
+        [string]$AudioSource = 'ms-winsoundevent:Notification.Looping.Alarm3',
+
+        [Parameter()]
+        [switch]$ShortDuration,
+
+        [Parameter()]
+        [switch]$RequireDismiss #overrides ShortDuration
     )
     DynamicParam {
         # Set the dynamic parameters' name. You probably want to change this.
@@ -791,17 +826,38 @@ function Send-ToastNotification {
         return $RuntimeParameterDictionary
     }
     Begin {
-        $AudioSource = "ms-winsoundevent:Notification.Looping.Alarm5"
         $Notifier = $PsBoundParameters[$ParameterName]
-        if ($null -eq $Notifier -or $Notifier -eq "") {$Notifier = "Windows.SystemToast.DeviceManagement"}
+        if ($null -eq $Notifier -or $Notifier -eq "") {$Notifier = "Windows.SystemToast.NfpAppAcquire"}
         if ($null -eq $Title -or $Title -eq '') {
             $ttext = $null
         }
         else {
             $ttext = "<text>$Title</text>"
         }
+
+        if ($AudioSource -eq 'Silent') {
+            $atext = '<audio silent="true"/>'
+        }
+        else {
+            $atext = '<audio src="' + $AudioSource + '"/>'
+        }
+        if ($RequireDismiss) {
+            $scenario = '<toast scenario="reminder">'
+            $actions = @"
+        <actions>
+            <action arguments="dismiss" content="Dismiss" activationType="system"/>
+        </actions>
+"@
+        }
+        else {
+            if ($ShortDuration) {$dur = "short"}
+            else {$dur = "long"}
+            $scenario = '<toast duration="' + $dur + '">'
+            $actions = $null
+        }
+
         [xml]$ToastTemplate = @"
-            <toast duration="long">
+            $scenario
                 <visual>
                 <binding template="ToastGeneric">
                     <text>$Sender</text>
@@ -813,7 +869,8 @@ function Send-ToastNotification {
                     </group>
                 </binding>
                 </visual>
-                <audio src="$AudioSource"/>
+                $actions
+                $atext
             </toast>
 "@
 

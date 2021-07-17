@@ -184,14 +184,137 @@ Function Join-File {
     Set-Location $og
 }
 
-function Send-ToastNotification {
+function Get-NotificationApp {
 <#
 .NOTES
     Author: Skyler Hart
-    Created: 2020-11-08 14:57:29
-    Last Edit: 2021-07-14 17:23:22
+    Created: 2021-07-14 23:42:57
+    Last Edit: 2021-07-16 01:57:31
+    Keywords:
+    Requires:
 .LINK
     https://wstools.dev
+#>
+    $info = @()
+    $HKCR = Get-PSDrive -Name HKCR -ErrorAction SilentlyContinue
+    if (!($HKCR)) {
+        New-PSDrive -Name HKCR -PSProvider Registry -Root Hkey_Classes_Root -Scope Script | Out-Null
+    }
+
+    $AppRegPath = "HKCR:\AppUserModelId"
+    $apps = Get-ChildItem $AppRegPath | Where-Object {$_.Name -notmatch "Andromeda_cw5n1h2txyewy!App" -and $_.Name -notmatch "Microsoft.Windows.Defender" -and `
+        $_.Name -notlike "*Windows.Defender" -and $_.Name -notmatch "DeviceManagementTokenRenewalRequired" -and $_.Name -notmatch "Messaging.SystemAlertNotification" -and `
+        $_.Name -notmatch "Windows.SystemToast.Suggested" -and $_.Name -notmatch "Windows.SystemToast.WindowsTip"
+    }
+
+    foreach ($app in $apps) {
+        $name = $app.Name -replace "HKEY_CLASSES_ROOT\\AppUserModelId\\",""
+        $apppath = $AppRegPath + "\" + $name
+        $dn = Get-ItemProperty -Path $apppath -Name DisplayName -ErrorAction SilentlyContinue | Select-Object -ExpandProperty DisplayName -ErrorAction SilentlyContinue
+
+        if ($name -eq 'Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge') {$dn = "Microsoft Edge"}
+        elseif ($name -eq 'Microsoft.Office.OUTLOOK.EXE.15') {$dn = "Outlook"}
+        #elseif ($name -eq "Microsoft.Office.OUTLOOK.EXE.16") {$dn = "Microsoft.Office.OUTLOOK.EXE.16"}
+        elseif ($name -eq "Microsoft.Windows.ControlPanel") {$dn = "Control Panel"}
+        elseif ($name -eq "Microsoft.Windows.Explorer") {$dn = "File Explorer"}
+        elseif ($name -eq "Microsoft.Windows.InputSwitchToastHandler") {$dn = "Input Switch Notification"}
+        elseif ($name -eq "Microsoft.Windows.LanguageComponentsInstaller") {$dn = "Language settings"}
+        elseif ($name -eq "Microsoft.Windows.ParentalControls") {$dn = "Microsoft family features"}
+        elseif ($name -eq "Windows.ActionCenter.QuietHours") {$dn = "Focus assist"}
+        elseif ($name -eq "Windows.Defender.MpUxDlp") {$dn = "Data Loss Prevention"}
+        elseif ($name -eq "Windows.Defender.SecurityCenter") {$dn = "Windows Security"}
+        elseif ($name -eq "Windows.System.AppInitiatedDownload") {$dn = "Automatic file downloads"}
+        elseif ($name -eq "Windows.System.Audio") {$dn = "Volume Warning"}
+        elseif ($name -eq "Windows.System.Continuum") {$dn = "Tablet mode"}
+        elseif ($name -eq "Windows.System.MiracastReceiver") {$dn = "Connect"}
+        elseif ($name -eq "Windows.System.NearShareExperienceReceive") {$dn = "Nearby sharing"}
+        elseif ($name -eq "Windows.System.ShareExperience") {$dn = "Nearby sharing"}
+        elseif ($name -eq "Windows.SystemToast.AudioTroubleshooter") {$dn = "Audio"}
+        elseif ($name -eq "Windows.SystemToast.AutoPlay") {$dn = "AutoPlay"}
+        elseif ($name -eq "Windows.SystemToast.BackgroundAccess") {$dn = "Battery saver"}
+        elseif ($name -eq "Windows.SystemToast.BackupReminder") {$dn = "Backup settings"}
+        elseif ($name -eq "Windows.SystemToast.BdeUnlock") {$dn = "BitLocker Drive Encryption"}
+        elseif ($name -eq "Windows.SystemToast.BitLockerPolicyRefresh") {$dn = "Device Encryption"}
+        elseif ($name -eq "Windows.SystemToast.Bthprops") {$dn = "Add a device"}
+        elseif ($name -eq "Windows.SystemToast.BthQuickPair") {$dn = "Bluetooth"}
+        elseif ($name -eq "Windows.SystemToast.Calling") {$dn = "Incoming call"}
+        elseif ($name -eq "Windows.SystemToast.Calling.SystemAlertNotification") {$dn = "Alert"}
+        elseif ($name -eq "Windows.SystemToast.CloudExperienceHostLauncher") {$dn = "Device Setup"}
+        elseif ($name -eq "Windows.SystemToast.CloudExperienceHostLauncherCustom") {$dn = "Device Setup"}
+        elseif ($name -eq "Windows.SystemToast.Compat") {$dn = "Compatibility Assistant"}
+        #elseif ($name -eq "Windows.SystemToast.DeviceConsent") {$dn = ""}
+        elseif ($name -eq "Windows.SystemToast.DeviceEnrollmentActivity") {$dn = "Device Management Enrollment Service"}
+        elseif ($name -eq "Windows.SystemToast.DeviceManagement") {$dn = "Work or School Account"}
+        elseif ($name -eq "Windows.SystemToast.Devices") {$dn = "Devices"}
+        elseif ($name -eq "Windows.SystemToast.DisplaySettings") {$dn = "Display Settings"}
+        elseif ($name -eq "Windows.SystemToast.EnterpriseDataProtection") {$dn = "Windows Information Protection"}
+        elseif ($name -eq "Windows.SystemToast.Explorer") {$dn = "File Explorer"}
+        elseif ($name -eq "Windows.SystemToast.FodHelper") {$dn = "Optional Features"}
+        elseif ($name -eq "Windows.SystemToast.HelloFace") {$dn = "Windows Hello"}
+        elseif ($name -eq "Windows.SystemToast.LocationManager") {$dn = "Location"}
+        elseif ($name -eq "Windows.SystemToast.LowDisk") {$dn = "Storage settings"}
+        elseif ($name -eq "Windows.SystemToast.MobilityExperience") {$dn = "Continue from your phone"}
+        elseif ($name -eq "Windows.SystemToast.NfpAppAcquire") {$dn = "System Notification"}
+        elseif ($name -eq "Windows.SystemToast.NfpAppLaunch") {$dn = "Tap and start"}
+        elseif ($name -eq "Windows.SystemToast.NfpDevicePairing") {$dn = "Tap and setup"}
+        elseif ($name -eq "Windows.SystemToast.NfpReceiveContent") {$dn = "Tap and send"}
+        elseif ($name -eq "Windows.SystemToast.Print.Notification") {$dn = "Print Notification"}
+        elseif ($name -eq "Windows.SystemToast.RasToastNotifier") {$dn = "VPN"}
+        elseif ($name -eq "Windows.SystemToast.SecurityAndMaintenance") {$dn = "Security and Maintenance"}
+        elseif ($name -eq "Windows.SystemToast.SecurityCenter") {$dn = "Security and Maintenance"}
+        elseif ($name -eq "Windows.SystemToast.SEManagement") {$dn = "Payment"}
+        elseif ($name -eq "Windows.SystemToast.ServiceInitiatedHealing.Notification" ) {$dn = "Service Initiated Healing"}
+        elseif ($name -eq "Windows.SystemToast.Share") {$dn = "Share"}
+        elseif ($name -eq "Windows.SystemToast.SoftLanding") {$dn = "Tips"}
+        elseif ($name -eq "Windows.SystemToast.SpeechServices") {$dn = "Microsoft Speech Recognition"}
+        elseif ($name -eq "Windows.SystemToast.StorSvc") {$dn = "Storage settings"}
+        elseif ($name -eq "Windows.SystemToast.Usb.Notification") {$dn = "USB"}
+        elseif ($name -eq "Windows.SystemToast.WiFiNetworkManager") {$dn = "Wireless"}
+        elseif ($name -eq "Windows.SystemToast.WindowsUpdate.Notification") {$dn = "Windows Update"}
+        elseif ($name -eq "Windows.SystemToast.Winlogon") {$dn = "Windows logon reminder"}
+        elseif ($name -eq "Windows.SystemToast.Wwansvc") {$dn = "Cellular"}
+        elseif ($null -eq $dn -or $dn -eq "") {$dn = "unknown"}
+
+        $zname = $dn + " (" + $name + ")"
+        $info += New-Object -TypeName PSObject -Property @{
+            Name = $name
+            DisplayName = $dn
+            zName = $zname
+        }#new object
+    }
+
+    $info | Select-Object Name,DisplayName,zName
+    #Remove-PSDrive -Name HKCR -Force
+}
+
+function Send-ToastNotification {
+<#
+.SYNOPSIS
+    Short description
+.DESCRIPTION
+    Long description
+.PARAMETER ComputerName
+    Specifies the name of one or more computers.
+.PARAMETER Path
+    Specifies a path to one or more locations.
+.EXAMPLE
+    C:\PS>Send-ToastNotification
+    Example of how to use this cmdlet
+.EXAMPLE
+    C:\PS>Send-ToastNotification -PARAMETER
+    Another example of how to use this cmdlet but with a parameter or switch.
+.NOTES
+    Author: Skyler Hart
+    Created: 2020-11-08 14:57:29
+    Last Edit: 2021-07-16 23:08:42
+    Requires:
+        -Module ActiveDirectory
+        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        -RunAsAdministrator
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     param(
@@ -208,7 +331,7 @@ function Send-ToastNotification {
             Mandatory=$false,
             Position=1
         )]
-        [string]$Sender = " ",
+        [string]$Sender = "     ",
 
         [Parameter(
             Mandatory=$false,
@@ -220,24 +343,106 @@ function Send-ToastNotification {
         [Parameter(
             Mandatory=$false
         )]
-        [string]$Notifier = "Windows.SystemToast.SecurityAndMaintenance", #IT HAS TO BE A REGISTERED NOTIFIER. Look here for the registered notifiers: HKEY_CLASSES_ROOT\AppUserModelId.
-        #Can also use the WSTools Register-NotificationApp to register a new one.
+        [string]$Title,
 
-        [Parameter(
-            Mandatory=$false
-        )]
-        [string]$Title
+        [Parameter(Mandatory=$false)]
+        [ValidateSet('ms-winsoundevent:Notification.Default',
+        'ms-winsoundevent:Notification.IM',
+        'ms-winsoundevent:Notification.Mail',
+        'ms-winsoundevent:Notification.Reminder',
+        'ms-winsoundevent:Notification.SMS',
+        'ms-winsoundevent:Notification.Looping.Alarm',
+        'ms-winsoundevent:Notification.Looping.Alarm2',
+        'ms-winsoundevent:Notification.Looping.Alarm3',
+        'ms-winsoundevent:Notification.Looping.Alarm4',
+        'ms-winsoundevent:Notification.Looping.Alarm5',
+        'ms-winsoundevent:Notification.Looping.Alarm6',
+        'ms-winsoundevent:Notification.Looping.Alarm7',
+        'ms-winsoundevent:Notification.Looping.Alarm8',
+        'ms-winsoundevent:Notification.Looping.Alarm9',
+        'ms-winsoundevent:Notification.Looping.Alarm10',
+        'ms-winsoundevent:Notification.Looping.Call',
+        'ms-winsoundevent:Notification.Looping.Call2',
+        'ms-winsoundevent:Notification.Looping.Call3',
+        'ms-winsoundevent:Notification.Looping.Call4',
+        'ms-winsoundevent:Notification.Looping.Call5',
+        'ms-winsoundevent:Notification.Looping.Call6',
+        'ms-winsoundevent:Notification.Looping.Call7',
+        'ms-winsoundevent:Notification.Looping.Call8',
+        'ms-winsoundevent:Notification.Looping.Call9',
+        'ms-winsoundevent:Notification.Looping.Call10',
+        'Silent')]
+        [string]$AudioSource = 'ms-winsoundevent:Notification.Looping.Alarm3',
+
+        [Parameter()]
+        [switch]$ShortDuration,
+
+        [Parameter()]
+        [switch]$RequireDismiss #overrides ShortDuration
     )
+    DynamicParam {
+        # Set the dynamic parameters' name. You probably want to change this.
+        $ParameterName = 'Notifier'
+
+        # Create the dictionary
+        $RuntimeParameterDictionary = New-Object System.Management.Automation.RuntimeDefinedParameterDictionary
+
+        # Create the collection of attributes
+        $AttributeCollection = New-Object System.Collections.ObjectModel.Collection[System.Attribute]
+
+        # Create and set the parameters' attributes. You may also want to change these.
+        $ParameterAttribute = New-Object System.Management.Automation.ParameterAttribute
+        $ParameterAttribute.Mandatory = $false
+        $ParameterAttribute.Position = 3
+
+        # Add the attributes to the attributes collection
+        $AttributeCollection.Add($ParameterAttribute)
+
+        # Generate and set the ValidateSet. You definitely want to change this. This part populates your set.
+        $arrSet = ((Get-NotificationApp).Name)
+        $ValidateSetAttribute = New-Object System.Management.Automation.ValidateSetAttribute($arrSet)
+
+        # Add the ValidateSet to the attributes collection
+        $AttributeCollection.Add($ValidateSetAttribute)
+
+        # Create and return the dynamic parameter
+        $RuntimeParameter = New-Object System.Management.Automation.RuntimeDefinedParameter($ParameterName, [string], $AttributeCollection)
+        $RuntimeParameterDictionary.Add($ParameterName, $RuntimeParameter)
+        return $RuntimeParameterDictionary
+    }
     Begin {
-        $AudioSource = "ms-winsoundevent:Notification.Looping.Alarm5"
+        $Notifier = $PsBoundParameters[$ParameterName]
+        if ($null -eq $Notifier -or $Notifier -eq "") {$Notifier = "Windows.SystemToast.SecurityAndMaintenance"}
         if ($null -eq $Title -or $Title -eq '') {
             $ttext = $null
         }
         else {
             $ttext = "<text>$Title</text>"
         }
+
+        if ($AudioSource -eq 'Silent') {
+            $atext = '<audio silent="true"/>'
+        }
+        else {
+            $atext = '<audio src="' + $AudioSource + '"/>'
+        }
+        if ($RequireDismiss) {
+            $scenario = '<toast scenario="reminder">'
+            $actions = @"
+        <actions>
+            <action arguments="dismiss" content="Dismiss" activationType="system"/>
+        </actions>
+"@
+        }
+        else {
+            if ($ShortDuration) {$dur = "short"}
+            else {$dur = "long"}
+            $scenario = '<toast duration="' + $dur + '">'
+            $actions = $null
+        }
+
         [xml]$ToastTemplate = @"
-            <toast duration="long">
+            $scenario
                 <visual>
                 <binding template="ToastGeneric">
                     <text>$Sender</text>
@@ -249,7 +454,8 @@ function Send-ToastNotification {
                     </group>
                 </binding>
                 </visual>
-                <audio src="$AudioSource"/>
+                $actions
+                $atext
             </toast>
 "@
 
@@ -288,8 +494,8 @@ $cab = $PatchFolderPath + "\cab"
 $ip = Get-InstalledProgram | Select-Object ProgramName,Version,Comment
 $hf = (Get-HotFix | Select-Object HotFixID).HotFixID
 $Reboot = $false
-
-#$scripts = Get-ChildItem -Path $PatchFolderPath | Where-Object {$_.Name -match ".ps1" -and $_.Name -notmatch "Install.ps1" -and $_.Name -notmatch "InstallRemote.ps1"}
+$cimq = Get-CimInstance Win32_OperatingSystem -ErrorAction SilentlyContinue
+$wmiq = Get-WmiObject Win32_OperatingSystem -ErrorAction SilentlyContinue
 
 $dn48path = $PatchFolderPath + "\ndp48-x86-x64-allos-enu.exe"
 $patch2 = $PatchFolderPath + "\Patch2\Setup.exe"
@@ -1894,6 +2100,10 @@ if ($datun -ge 1) {
 #           Reboot Check            #
 #                                   #
 #####################################
+if ($cimq -like "*Server*" -or $wmiq -like "*Server*") {
+    $Reboot = $false
+    Send-ToastNotification "Your server had Windows updates and/or programs installed that require a reboot. Please reboot your server as soon as possible." -Title "Reboot Required" -RequireDismiss
+}
 if ($Reboot -eq $true) {
     [string]$Time = "0100"
     $hr = $Time.Substring(0,2)

@@ -11,6 +11,10 @@ New features and other changes:
 1. Made notifier parameter in Send-ToastNotification dynamic.
 2. Modified Get-NotificationApp so that it shows the actual Display Name that is displayed on Toast notifications.
 3. Added a field to the output of Get-NotificationApp that combines the DisplayName and Name outputs.
+4. Added AudioSource, RequireDismiss, and ShortDuration parameters to Send-ToastNotification.
+5. Changed default AudioSource in Send-ToastNotification to 'ms-winsoundevent:Notification.Looping.Alarm3'.
+6. Changed default Notifier in Send-ToastNotification to Windows.SystemToast.NfpAppAcquire which has a display name of System Notification.
+7. Added OperatingSystem check to InstallRemote.ps1. If the computer is a server than it will not schedule a reboot.
 
 ######################
 #                    #
