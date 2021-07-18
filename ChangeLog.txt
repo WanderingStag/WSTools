@@ -28,8 +28,8 @@ New features and other changes:
 3. Added Toast notifications to several installs in InstallRemote.ps1. It defaults to the "Security and Maintenance" notifier.
 4. Added PrintNightmare registry value fixes to Set-RemediationValues.
 5. Added function Set-PrintNightmareFix which can be ran against remote computers/servers. Includes a -DisableSpooler switch that can be used when running on the local machine.
-6. Added DisabledByDefault value to the server key for Disable-TLS1.0 and Enable-TLS1.0.
-7. Added DisabledByDefault value with data of "1" to the server key for TLS1.0 in Set-RemediationValues.
+6. Added DisabledByDefault value to the server key for Disable-TLS1.0 and Enable-TLS1.0. DevSkim: ignore DS169125,DS440000
+7. Added DisabledByDefault value with data of "1" to the server key for TLS1.0 in Set-RemediationValues. DevSkim: ignore DS440000,DS169125
 8. Added function Get-NotificationApp (aka Get-ToastNotifierApp and Get-ToastNotificationApp) which can be used to show registered Toast Notification Apps.
 
 ######################
