@@ -2068,33 +2068,33 @@ if (Test-Path $vlc) {
 if (Test-Path $vscode) {
     Write-Output "$cn`: Installing Visual Studio Code."
     $vsp = "$vscode\VSCodeSetup-x64.exe"
-    Start-Process $vsp -ArgumentList "/SP- /VERYSILENT /NORESTART /FORCECLOSEAPPLICATIONS" -NoNewWindow -Wait
-    Start-Sleep 120
+    Start-Process $vsp -ArgumentList "/SP- /VERYSILENT /SUPPRESSMSGBOXES /NOCANCEL /NORESTART /CLOSEAPPLICATIONS /NORESTARTAPPLICATIONS /TYPE=full" -NoNewWindow -Wait
+    Start-Sleep 300
 }
 
-if (Test-Path $patch2) {
-    Write-Output "$cn`: Installing McAfee Patch 2."
-    Start-Process $patch2 -ArgumentList "/quiet /norestart" -NoNewWindow -Wait
-    Start-Sleep -Seconds 300
-}
+#if (Test-Path $patch2) {
+#    Write-Output "$cn`: Installing McAfee Patch 2."
+#    Start-Process $patch2 -ArgumentList "/quiet /norestart" -NoNewWindow -Wait
+#    Start-Sleep -Seconds 300
+#}
 
-if (Test-Path $patch4) {
-    Write-Output "$cn`: Installing McAfee Patch 4."
-    Start-Process $patch4 -ArgumentList "/quiet /norestart" -NoNewWindow -Wait
-    Start-Sleep -Seconds 300
-}
+#if (Test-Path $patch4) {
+#    Write-Output "$cn`: Installing McAfee Patch 4."
+#    Start-Process $patch4 -ArgumentList "/quiet /norestart" -NoNewWindow -Wait
+#    Start-Sleep -Seconds 300
+#}
 
-if (Test-Path $patch11) {
-    Write-Output "$cn`: Installing McAfee Patch 11."
-    Start-Process $patch11 -ArgumentList "/quiet /norestart" -NoNewWindow -Wait
-    Start-Sleep -Seconds 300
-}
+#if (Test-Path $patch11) {
+#    Write-Output "$cn`: Installing McAfee Patch 11."
+#    Start-Process $patch11 -ArgumentList "/quiet /norestart" -NoNewWindow -Wait
+#    Start-Sleep -Seconds 300
+#}
 
-if (Test-Path $patch15) {
-    Write-Output "$cn`: Installing McAfee Patch 15."
-    Start-Process $patch15 -ArgumentList "/quiet /norestart" -NoNewWindow -Wait
-    Start-Sleep -Seconds 300
-}
+#if (Test-Path $patch15) {
+#    Write-Output "$cn`: Installing McAfee Patch 15."
+#    Start-Process $patch15 -ArgumentList "/quiet /norestart" -NoNewWindow -Wait
+#    Start-Sleep -Seconds 300
+#}
 
 if (Test-Path $patch16) {
     Write-Output "$cn`: Installing McAfee Patch 16."
