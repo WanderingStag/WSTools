@@ -9,6 +9,8 @@ Known issues:
 ######################
 New features and other changes:
 1. Changed InstallRemote.ps1 so toast notifications don't show on servers.
+2. Added SplunkUF and VMwareTools config file items and bumped config version.
+3. Added functions Copy-SplunkForwarder and Copy-VMwareTools.
 
 ######################
 #                    #
