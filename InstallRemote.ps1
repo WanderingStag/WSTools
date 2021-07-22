@@ -806,8 +806,10 @@ if (Test-Path $acrobat) {
     #Install or not
     if ($install -eq $true) {
         $rn = ((Get-Date).AddSeconds(300))
-        Send-ToastNotification "Adobe Acrobat installation/update will begin in 5 minutes ($rn.) During this process it may close. Please save all open files." -Title "Adobe Acrobat Install"
-        Start-Sleep -Seconds 300
+        if (!($cimq -like "*Server*" -or $wmiq -like "*Server*")) {
+            Send-ToastNotification "Adobe Acrobat installation/update will begin in 5 minutes ($rn.) During this process it may close. Please save all open files." -Title "Adobe Acrobat Install"
+            Start-Sleep -Seconds 300
+        }
         Write-Output "$cn`: Installing $pn."
         Start-Process $acrobat\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 900
@@ -930,9 +932,11 @@ if ((Test-Path $anyconnect) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
 
     #Install or not
     if ($install -eq $true) {
-        $rn = ((Get-Date).AddSeconds(300))
-        Send-ToastNotification "Cisco AnyConnect installation/update will begin in 5 minutes ($rn.) During this process it may close. If you are using it to connect to VPN, your VPN connection will be disconnected. Please wait at least 5 minutes after it starts to reconnect. Please do not log off or shutdown your computer during this process." -Title "Cisco AnyConnect Install"
-        Start-Sleep -Seconds 300
+        if ($cimq -like "*Server*" -or $wmiq -like "*Server*") {
+            $rn = ((Get-Date).AddSeconds(300))
+            Send-ToastNotification "Cisco AnyConnect installation/update will begin in 5 minutes ($rn.) During this process it may close. If you are using it to connect to VPN, your VPN connection will be disconnected. Please wait at least 5 minutes after it starts to reconnect. Please do not log off or shutdown your computer during this process." -Title "Cisco AnyConnect Install"
+            Start-Sleep -Seconds 300
+        }
         Write-Output "$cn`: Installing $pn."
         Start-Process $anyconnect\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 300
@@ -989,9 +993,11 @@ if (Test-Path $axway) {
 
     #Install or not
     if ($install -eq $true) {
-        $rn = ((Get-Date).AddSeconds(300))
-        Send-ToastNotification "Axway installation/update will begin in 5 minutes ($rn.) During this process it may close. You may need to reboot your computer after it finishes installing" -Title "Axway Install"
-        Start-Sleep -Seconds 300
+        if ($cimq -like "*Server*" -or $wmiq -like "*Server*") {
+            $rn = ((Get-Date).AddSeconds(300))
+            Send-ToastNotification "Axway installation/update will begin in 5 minutes ($rn.) During this process it may close. You may need to reboot your computer after it finishes installing" -Title "Axway Install"
+            Start-Sleep -Seconds 300
+        }
         Write-Output "$cn`: Installing $pn."
         Start-Process $axway\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 400
@@ -1137,9 +1143,11 @@ if (Test-Path $chrome) {
 
     #Install or not
     if ($install -eq $true) {
-        $rn = ((Get-Date).AddSeconds(300))
-        Send-ToastNotification "Google Chrome installation/update will begin in 5 minutes ($rn.) During this process it may close. Please save all open files. It may take up to 10 minutes for Google Chrome to be reinstalled." -Title "Google Chrome Install"
-        Start-Sleep -Seconds 300
+        if ($cimq -like "*Server*" -or $wmiq -like "*Server*") {
+            $rn = ((Get-Date).AddSeconds(300))
+            Send-ToastNotification "Google Chrome installation/update will begin in 5 minutes ($rn.) During this process it may close. Please save all open files. It may take up to 10 minutes for Google Chrome to be reinstalled." -Title "Google Chrome Install"
+            Start-Sleep -Seconds 300
+        }
         Write-Output "$cn`: Installing $pn."
         Start-Process $chrome\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 360
@@ -1277,9 +1285,11 @@ if (Test-Path $edge) {
 
     #Install or not
     if ($install -eq $true) {
-        $rn = ((Get-Date).AddSeconds(300))
-        Send-ToastNotification "Microsoft Edge installation/update will begin in 5 minutes ($rn.) During this process it may close. Please save all open files. It may take up to 10 minutes to be reinstalled." -Title "Microsoft Edge Install"
-        Start-Sleep -Seconds 300
+        if ($cimq -like "*Server*" -or $wmiq -like "*Server*") {
+            $rn = ((Get-Date).AddSeconds(300))
+            Send-ToastNotification "Microsoft Edge installation/update will begin in 5 minutes ($rn.) During this process it may close. Please save all open files. It may take up to 10 minutes to be reinstalled." -Title "Microsoft Edge Install"
+            Start-Sleep -Seconds 300
+        }
         Write-Output "$cn`: Installing $pn."
         Start-Process msiexec.exe -ArgumentList "/i $edge\MicrosoftEdgeEnterpriseX64.msi /qn /norestart" -NoNewWindow -Wait
         Start-Sleep 360
@@ -1418,9 +1428,11 @@ if (Test-Path $firefox) {
 
     #Install or not
     if ($install -eq $true) {
-        $rn = ((Get-Date).AddSeconds(300))
-        Send-ToastNotification "Mozilla Firefox installation/update will begin in 5 minutes ($rn.) During this process it may close. Please save all open files. It may take up to 10 minutes to be reinstalled" -Title "Firefox Install"
-        Start-Sleep -Seconds 300
+        if ($cimq -like "*Server*" -or $wmiq -like "*Server*") {
+            $rn = ((Get-Date).AddSeconds(300))
+            Send-ToastNotification "Mozilla Firefox installation/update will begin in 5 minutes ($rn.) During this process it may close. Please save all open files. It may take up to 10 minutes to be reinstalled" -Title "Firefox Install"
+            Start-Sleep -Seconds 300
+        }
         Write-Output "$cn`: Installing $pn."
         Start-Process $firefox\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 350
@@ -1798,9 +1810,11 @@ if (Test-Path $teams) {
 
     #Install or not
     if ($install -eq $true) {
-        $rn = ((Get-Date).AddSeconds(300))
-        Send-ToastNotification "Microsoft Teams installation/update will begin in 5 minutes ($rn.) During this process it may close. Please save all open files. If after 10 minutes it appears to be uninstalled, please log off then log back in" -Title "Microsoft Teams Install"
-        Start-Sleep -Seconds 300
+        if ($cimq -like "*Server*" -or $wmiq -like "*Server*") {
+            $rn = ((Get-Date).AddSeconds(300))
+            Send-ToastNotification "Microsoft Teams installation/update will begin in 5 minutes ($rn.) During this process it may close. Please save all open files. If after 10 minutes it appears to be uninstalled, please log off then log back in" -Title "Microsoft Teams Install"
+            Start-Sleep -Seconds 300
+        }
         Write-Output "$cn`: Installing $pn."
         Start-Process $teams\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 150
@@ -2102,7 +2116,6 @@ if ($datun -ge 1) {
 #####################################
 if ($cimq -like "*Server*" -or $wmiq -like "*Server*") {
     $Reboot = $false
-    Send-ToastNotification "Your server had Windows updates and/or programs installed that require a reboot. Please reboot your server as soon as possible." -Title "Reboot Required" -RequireDismiss
 }
 if ($Reboot -eq $true) {
     [string]$Time = "0100"

@@ -4,6 +4,14 @@ Known issues:
 
 ######################
 #                    #
+#      2021.7.3      #
+#                    #
+######################
+New features and other changes:
+1. Changed InstallRemote.ps1 so toast notifications don't show on servers.
+
+######################
+#                    #
 #      2021.7.2      #
 #                    #
 ######################
