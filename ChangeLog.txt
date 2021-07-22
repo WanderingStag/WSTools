@@ -12,7 +12,8 @@ New features and other changes:
 2. Added SplunkUF and VMwareTools config file items and bumped config version.
 3. Added functions Copy-SplunkForwarder and Copy-VMwareTools.
 4. Changed switches on Visual Studio Code install in InstallRemote.ps1.
-5. Commented out McAfee patch installs in InstallRemote.ps1.
+5. Changed switches on install command in Install-VisualStudioCode.
+6. Commented out McAfee patch installs in InstallRemote.ps1.
 
 ######################
 #                    #
