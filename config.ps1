@@ -120,6 +120,7 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     Git = "J:\Patches\GitSCM"
     IE11 = "J:\Patches\IE\IE11"
     SplunkUF = "J:\Patches\Splunk_Forwarder"
+    SSMS = "J:\Patches\SQL\SSMS" #sql server management studio
     SysInternals = "J:\Tools\SysinternalsSuite"
     VSCode = "J:\Patches\VisualStudioCode"
     VLC = "J:\Tools\VLC"

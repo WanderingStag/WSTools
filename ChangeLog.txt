@@ -4,6 +4,14 @@ Known issues:
 
 ######################
 #                    #
+#      2021.7.4      #
+#                    #
+######################
+New features and other changes:
+1. Added SQL Server Management Studio (SSMS) config item.
+
+######################
+#                    #
 #      2021.7.3      #
 #                    #
 ######################
