@@ -9,6 +9,7 @@ Known issues:
 ######################
 New features and other changes:
 1. Added SQL Server Management Studio (SSMS) config item.
+2. Added function Copy-SQLServerManagementStudio (aka Copy-SSMS.)
 
 ######################
 #                    #
