@@ -10,6 +10,8 @@ Known issues:
 New features and other changes:
 1. Added SQL Server Management Studio (SSMS) config item and bumped config version.
 2. Added function Copy-SQLServerManagementStudio (aka Copy-SSMS.)
+3. Added function Install-SQLServerManagementStudio (aka Install-SSMS.)
+4. Added a simplistic install for SQL Server Management Studio to InstallRemote.ps1.
 
 ######################
 #                    #

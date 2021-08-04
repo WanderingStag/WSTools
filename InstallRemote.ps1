@@ -523,6 +523,7 @@ $netbanner = $PatchFolderPath + "\NetBanner"
 $onedrive = $PatchFolderPath + "\OneDriveSetup.exe"
 $project = $PatchFolderPath + "\Project"
 $silverlight = $PatchFolderPath + "\Silverlight"
+$ssms = $PatchFolderPath + "\SSMS"
 $tanium = $PatchFolderPath + "\Tanium"
 $teams = $PatchFolderPath + "\Teams"
 $titus = $PatchFolderPath + "\Titus"
@@ -1670,6 +1671,12 @@ if (Test-Path $silverlight) {
         Start-Process c:\Patches\Silverlight\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 150
     }
+}
+
+if (Test-Path $ssms) {
+    Write-Output "$cn`: Installing SQL Server Management Studio."
+    $ssmsexec = $ssms + "\SSMS-Setup-ENU.exe"
+    Start-Process $ssmsexec -ArgumentList '/Quiet SSMSInstallRoot="C:\Program Files (x86)\Microsoft SQL Server Management Studio 18" DoNotInstallAzureDataStudio=1' -NoNewWindow -Wait
 }
 
 if (Test-Path $tanium) {
