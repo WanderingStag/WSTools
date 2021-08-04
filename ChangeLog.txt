@@ -4,65 +4,37 @@ Known issues:
 
 ######################
 #                    #
-#      2021.7.4      #
-#                    #
-######################
-New features and other changes:
-1. Added SQL Server Management Studio (SSMS) config item and bumped config version.
-2. Added function Copy-SQLServerManagementStudio (aka Copy-SSMS.)
-3. Added function Install-SQLServerManagementStudio (aka Install-SSMS.)
-4. Added a simplistic install for SQL Server Management Studio to InstallRemote.ps1.
-
-######################
-#                    #
-#      2021.7.3      #
-#                    #
-######################
-New features and other changes:
-1. Changed InstallRemote.ps1 so toast notifications don't show on servers.
-2. Added SplunkUF and VMwareTools config file items and bumped config version.
-3. Added functions Copy-SplunkForwarder and Copy-VMwareTools.
-4. Changed switches on Visual Studio Code install in InstallRemote.ps1.
-5. Changed switches on install command in Install-VisualStudioCode.
-6. Commented out McAfee patch installs in InstallRemote.ps1.
-
-######################
-#                    #
-#      2021.7.2      #
-#                    #
-######################
-New features and other changes:
-1. Made notifier parameter in Send-ToastNotification dynamic.
-2. Modified Get-NotificationApp so that it shows the actual Display Name that is displayed on Toast notifications.
-3. Added a field to the output of Get-NotificationApp that combines the DisplayName and Name outputs.
-4. Added AudioSource, RequireDismiss, and ShortDuration parameters to Send-ToastNotification.
-5. Changed default AudioSource in Send-ToastNotification to 'ms-winsoundevent:Notification.Looping.Alarm3'.
-6. Changed default Notifier in Send-ToastNotification to Windows.SystemToast.NfpAppAcquire which has a display name of System Notification.
-7. Added OperatingSystem check to InstallRemote.ps1. If the computer is a server than it will not schedule a reboot.
-
-######################
-#                    #
-#      2021.7.1      #
-#                    #
-######################
-New features and other changes:
-1. Added Send-ToastNotification to InstallRemote.ps1.
-2. Changed ActivClient install in InstallRemote.ps1 to only check Major.Minor version instead of Major.Minor.Revision.
-3. Added Toast notifications to several installs in InstallRemote.ps1. It defaults to the "Security and Maintenance" notifier.
-4. Added PrintNightmare registry value fixes to Set-RemediationValues.
-5. Added function Set-PrintNightmareFix which can be ran against remote computers/servers. Includes a -DisableSpooler switch that can be used when running on the local machine.
-6. Added DisabledByDefault value to the server key for Disable-TLS1.0 and Enable-TLS1.0.
-7. Added DisabledByDefault value with data of "1" to the server key for TLS1.0 in Set-RemediationValues.
-8. Added function Get-NotificationApp (aka Get-ToastNotifierApp and Get-ToastNotificationApp) which can be used to show registered Toast Notification Apps.
-
-######################
-#                    #
-#      2021.7.0      #
+#       2021.7       #
 #                    #
 ######################
 New features and other changes:
 1. Fixed software version update file comparison to installed program version failing due to number from software version file being seen as a string instead of an integer.
 2. Removed some excess notifications from InstallRemote.ps1 and also disabled "skipping" notifications so now you should only see when things are installing.
+3. Added Send-ToastNotification to InstallRemote.ps1.
+4. Changed ActivClient install in InstallRemote.ps1 to only check Major.Minor version instead of Major.Minor.Revision.
+5. Added Toast notifications to several installs in InstallRemote.ps1. It defaults to the "Security and Maintenance" notifier.
+6. Added PrintNightmare registry value fixes to Set-RemediationValues.
+7. Added function Set-PrintNightmareFix which can be ran against remote computers/servers. Includes a -DisableSpooler switch that can be used when running on the local machine.
+8. Added DisabledByDefault value to the server key for Disable-TLS1.0 and Enable-TLS1.0.
+9. Added DisabledByDefault value with data of "1" to the server key for TLS1.0 in Set-RemediationValues.
+10. Added function Get-NotificationApp (aka Get-ToastNotifierApp and Get-ToastNotificationApp) which can be used to show registered Toast Notification Apps.
+11. Made notifier parameter in Send-ToastNotification dynamic.
+12. Modified Get-NotificationApp so that it shows the actual Display Name that is displayed on Toast notifications.
+13. Added a field to the output of Get-NotificationApp that combines the DisplayName and Name outputs.
+14. Added AudioSource, RequireDismiss, and ShortDuration parameters to Send-ToastNotification.
+15. Changed default AudioSource in Send-ToastNotification to 'ms-winsoundevent:Notification.Looping.Alarm3'.
+16. Changed default Notifier in Send-ToastNotification to Windows.SystemToast.NfpAppAcquire which has a display name of System Notification.
+17. Added OperatingSystem check to InstallRemote.ps1. If the computer is a server than it will not schedule a reboot.
+18. Changed InstallRemote.ps1 so toast notifications don't show on servers.
+19. Added SplunkUF and VMwareTools config file items and bumped config version.
+20. Added functions Copy-SplunkForwarder and Copy-VMwareTools.
+21. Changed switches on Visual Studio Code install in InstallRemote.ps1.
+22. Changed switches on install command in Install-VisualStudioCode.
+23. Commented out McAfee patch installs in InstallRemote.ps1.
+24. Added SQL Server Management Studio (SSMS) config item and bumped config version.
+25. Added function Copy-SQLServerManagementStudio (aka Copy-SSMS.)
+26. Added function Install-SQLServerManagementStudio (aka Install-SSMS.)
+27. Added a simplistic install for SQL Server Management Studio to InstallRemote.ps1.
 
 ######################
 #                    #
