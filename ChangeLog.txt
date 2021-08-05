@@ -4,6 +4,15 @@ Known issues:
 
 ######################
 #                    #
+#       2021.8       #
+#                    #
+######################
+New features and other changes:
+1. Added OneDrive config item and bumped config version.
+2. Added function Copy-OneDrive.
+
+######################
+#                    #
 #       2021.7       #
 #                    #
 ######################
