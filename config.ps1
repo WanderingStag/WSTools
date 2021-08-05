@@ -5,7 +5,7 @@
 )]
 
 $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
-    # WSTools config v1.2.4
+    # WSTools config v1.2.5
     # Remove the # symbol infront of a line to enable it
     ###########################################################################################################################################
     #Application Service Names - used in Stop-AppService. Uses match to match the name of a service that is running and stops it.
@@ -119,6 +119,7 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     Edge = "J:\Patches\Edge"
     Git = "J:\Patches\GitSCM"
     IE11 = "J:\Patches\IE\IE11"
+    OneDrive = "J:\Patches\OneDrive"
     SplunkUF = "J:\Patches\Splunk_Forwarder"
     SSMS = "J:\Patches\SQL\SSMS" #sql server management studio
     SysInternals = "J:\Tools\SysinternalsSuite"
