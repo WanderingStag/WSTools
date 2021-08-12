@@ -5354,7 +5354,7 @@ Function Install-Patches {
 .NOTES
     Author: Skyler Hart
     Created: 2017-03-25 08:30:23
-    Last Edit: 2020-08-20 12:17:46
+    Last Edit: 2021-08-12 00:36:14
     Keywords:
     Requires:
         -RunAsAdministrator
@@ -5384,7 +5384,7 @@ Function Install-Patches {
     $config = $Global:WSToolsConfig
     $Patches = $config.LocalPatches
 
-    $fp = $PSScriptRoot.Substring(0,($PSScriptRoot.Length-15)) + "\InstallRemote.ps1"
+    $fp = $PSScriptRoot.Substring(0,($PSScriptRoot.Length-15)) + "\Resources\InstallRemote.ps1"
 
     if ($ComputerName -eq $env:COMPUTERNAME) {
         Copy-Item -Path $fp -Destination $Patches

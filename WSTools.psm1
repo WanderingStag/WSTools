@@ -867,6 +867,106 @@ function Get-BitLockerStatus {
 }
 
 
+function Get-CommandList {
+<#
+.SYNOPSIS
+    Short description
+.DESCRIPTION
+    Long description
+.PARAMETER ComputerName
+    Specifies the name of one or more computers.
+.PARAMETER Path
+    Specifies a path to one or more locations.
+.EXAMPLE
+    C:\PS>Get-CommandList
+    Example of how to use this cmdlet
+.EXAMPLE
+    C:\PS>Get-CommandList -PARAMETER
+    Another example of how to use this cmdlet but with a parameter or switch.
+.NOTES
+    Author: Skyler Hart
+    Created: 2021-08-06 23:09:24
+    Last Edit: 2021-08-11 22:44:13
+    Keywords:
+    Other:
+    Requires:
+        -Module ActiveDirectory
+        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        -RunAsAdministrator
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
+#>
+    [CmdletBinding()]
+    Param (
+        [Parameter(
+            Mandatory=$false,
+            Position=0
+        )]
+        [Alias('Path','Output','OutputPath','Destination')]
+        [string]$ExportPath,
+
+        [switch]$All
+    )
+
+    if ($All) {
+        $commands = Get-Command * | Where-Object {$_.CommandType -ne "Alias"} | Select-Object HelpUri,Name,CommandType,ModuleName,RemotingCapability
+    }
+    else {$commands = Get-Command -All | Where-Object {$_.CommandType -ne "Alias"} | Select-Object HelpUri,Name,CommandType,ModuleName,RemotingCapability}
+    $commands = $commands | Select-Object HelpUri,Name,CommandType,ModuleName,RemotingCapability -Unique
+    $slist = Import-Csv $PSScriptRoot\Resources\CommandListModules.csv
+
+    $i = 0
+    $number = $commands.length
+    $info = @()
+    foreach ($c in $commands) {
+        #Progress Bar
+        if ($number -gt "1") {
+            $i++
+            $amount = ($i / $number)
+            $perc1 = $amount.ToString("P")
+            Write-Progress -activity "Generating information for each command." -status "Command $i of $number. Percent complete:  $perc1" -PercentComplete (($i / $commands.length)  * 100)
+        }#if length
+        $mn = $c.ModuleName
+        $sli = $slist | Where-Object {$_.Module -eq $mn}
+        if ([string]::IsNullOrWhiteSpace($sli)) {
+            $info += New-Object -TypeName PSObject -Property @{
+                CommandType = ($c.CommandType)
+                Name = ($c.Name)
+                ModuleName = ($c.ModuleName)
+                UsedByOrganization = $null
+                RemotingCapability = ($c.RemotingCapability)
+                UsedRemotely = $null
+                Purpose = $null
+                Reference = $null
+                HelpUri = ($c.HelpUri)
+            }#new object
+        }
+        else {
+            $info += New-Object -TypeName PSObject -Property @{
+                CommandType = ($c.CommandType)
+                Name = ($c.Name)
+                ModuleName = ($c.ModuleName)
+                UsedByOrganization = ($sli.UsedByOrganization)
+                RemotingCapability = ($c.RemotingCapability)
+                UsedRemotely = ($sli.Remote)
+                Purpose = ($sli.Purpose)
+                Reference = ($sli.Reference)
+                HelpUri = ($c.HelpUri)
+            }#new object
+        }
+    }
+
+    if ([string]::IsNullOrWhiteSpace($ExportPath)) {
+        $info | Select-Object CommandType,Name,ModuleName,UsedByOrganization,RemotingCapability,UsedRemotely,Purpose,Reference,HelpUri
+    }
+    else {
+        $info | Select-Object CommandType,Name,ModuleName,UsedByOrganization,RemotingCapability,UsedRemotely,Purpose,Reference,HelpUri | Export-Csv $ExportPath -NoTypeInformation -Force
+    }
+}
+
+
 Function Get-ComputerHWInfo {
 <#
    .Synopsis
@@ -2027,6 +2127,65 @@ Function Get-LockedOutLocation {
         }#end foreach lockedout event
     }#end process
 }#end function
+
+
+function Get-ModuleList {
+<#
+.SYNOPSIS
+    Short description
+.DESCRIPTION
+    Long description
+.PARAMETER ComputerName
+    Specifies the name of one or more computers.
+.PARAMETER Path
+    Specifies a path to one or more locations.
+.EXAMPLE
+    C:\PS>Get-ModuleList
+    Example of how to use this cmdlet
+.EXAMPLE
+    C:\PS>Get-ModuleList -PARAMETER
+    Another example of how to use this cmdlet but with a parameter or switch.
+.NOTES
+    Author: Skyler Hart
+    Created: 2021-08-11 23:22:30
+    Last Edit: 2021-08-11 23:41:15
+    Keywords:
+    Other:
+    Requires:
+        -Module ActiveDirectory
+        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        -RunAsAdministrator
+.LINK
+    https://wstools.dev
+.LINK
+    https://www.skylerhart.com
+#>
+    [CmdletBinding()]
+    param(
+        [switch]$NotInCommandListModules
+    )
+
+    $modules = Get-Module -ListAvailable | Select-Object -Unique
+    if ($NotInCommandListModules) {
+        $nil = @()
+        $clm = Import-Csv $PSScriptRoot\Resources\CommandListModules.csv
+        $cm = $clm.Module
+        foreach ($m in $modules) {
+            $mn = $m.Name
+            if ($cm -match $mn) {
+                #do nothing
+            }
+            else {
+                $nil += $mn
+            }
+        }
+
+        $nil
+    }
+    else {
+        $modules | Select-Object * | Sort-Object Name
+    }
+}
 
 
 Function Get-MTU {

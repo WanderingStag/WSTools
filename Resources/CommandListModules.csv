@@ -1,0 +1,158 @@
+Module,UsedByOrganization,Remote,Purpose,Reference
+AccessControlDSC,Yes,Yes,"DSC Module to manage registry, NTFS access entries, and Active Directory SACL",https://github.com/mcollera/AccessControlDsc
+ActiveDirectory,Yes,Yes,"Management of Active Directory Directory Services (ADDS) and Active Directory objects such as computers, groups, and users. When used remotely, commands are only used on Domain Controllers.",https://docs.microsoft.com/en-us/powershell/module/activedirectory
+AppBackgroundTask,Yes,No,"Management of background tasks. Allows starting, stopping, and checking the status of them.",https://docs.microsoft.com/en-us/powershell/module/appbackgroundtask
+AppLocker,Yes,Yes,"Used to help author, test, maintain, and troubleshoot application control policies.",https://docs.microsoft.com/en-us/powershell/module/applocker
+AppvClient,No,No,Management of Application Virtualization (App-V) client.,https://docs.microsoft.com/en-us/powershell/module/appvclient
+Appx,Yes,Yes,Management of MSIX (Windows app packages) and AppX packages (Microsoft Store apps.),https://docs.microsoft.com/en-us/powershell/module/appx
+AssignedAccess,No,No,Administration of restricted app access to specific user accounts. ,https://docs.microsoft.com/en-us/powershell/module/assignedaccess
+AuditPolicyDsc,Yes,Yes,Configure and manage the advanced audit policy,https://github.com/dsccommunity/AuditPolicyDsc
+AuditSystemDsc,Yes,Yes,Audit system settings and verify compliance,https://github.com/jcwalker/AuditSystemDsc
+AzureAD,No,No,Management of Azure Active Directory,https://docs.microsoft.com/en-us/powershell/module/azuread
+BestPractices,No,Yes,"Display, run, or set Best Practice Analyzer (BPA) modules.",https://docs.microsoft.com/en-us/powershell/module/bestpractices
+BitLocker,Yes,Yes,Management of BitLocker.,https://docs.microsoft.com/en-us/powershell/module/bitlocker
+BitsTransfer,Yes,No,Management of Background Intelligent Transfer (BITS) tasks.,https://docs.microsoft.com/en-us/powershell/module/bitstransfer
+BranchCache,Yes,Yes,Management of BranchCache,https://docs.microsoft.com/en-us/powershell/module/branchcache
+Carbon,Yes,Yes,Automation of configuration of computers.,http://get-carbon.org
+CertificateDsc,Yes,Yes,Simplify administration of certificates on a Windows system,https://github.com/dsccommunity/CertificateDsc
+CimCmdlets,Yes,Yes,Used for interacting with the Common Information Module (CIM) on workstations and servers.,https://docs.microsoft.com/en-us/powershell/module/cimcmdlets
+ComputerManagementDsc,Yes,Yes,Perform computer management tasks,https://github.com/dsccommunity/ComputerManagementDsc
+ConfigCI,No,No,"Get, modify, create, and merge Configurable Code Integrity policies",https://docs.microsoft.com/en-us/powershell/module/configci
+ConfigDefender,Yes,Yes,"Get threat information, get Windows Defender configuration, modify configuration, manage scans, and manage threats.",https://docs.microsoft.com/en-us/powershell/module/defender
+Defender,Yes,Yes,"Get threat information, get Windows Defender configuration, modify configuration, manage scans, and manage threats.",https://docs.microsoft.com/en-us/powershell/module/defender
+DeliveryOptimization,No,No,Manage Delivery Optimization (Windows Update and BranchCache) settings,
+DFSN,Yes,No,Management of DFS namespaces,https://docs.microsoft.com/en-us/powershell/module/dfsn
+DFSR,Yes,Yes,Management of DFS replication. Only used remotely on Domain Controllers.,https://docs.microsoft.com/en-us/powershell/module/dfsr
+DhcpServer,Yes,Yes,Management of DHCP,https://docs.microsoft.com/en-us/powershell/module/dhcpserver
+DirectAccessClientComponents,No,No,Management of Direct Access settings,https://docs.microsoft.com/en-us/powershell/module/directaccessclientcomponents
+Dism,Yes,Yes,"Management of Windows images to include installing, uninstalling, configuring, and updating Windows features, packages, and drivers.",https://docs.microsoft.com/en-us/powershell/module/dism
+DnsClient,Yes,Yes,Get DNS client settings and manage DNS client settings,https://docs.microsoft.com/en-us/powershell/module/dnsclient
+DnsServer,Yes,Yes,Management of DNS server settings. Only used remotely on DNS servers.,https://docs.microsoft.com/en-us/powershell/module/dnsserver
+EventTracingManagement,Yes,Yes,Management of Event Tracing for Windows,https://docs.microsoft.com/en-us/powershell/module/eventtracingmanagement
+ExchangeOnlineManagement,No,No,Management of Microsoft 365 Exchange Online,https://docs.microsoft.com/en-us/powershell/exchange/exchange-online-powershell-v2
+FailoverClusters,No,No,Management of Failover Clusters,https://docs.microsoft.com/en-us/powershell/module/failoverclusters
+FileContentDsc,Yes,Yes,Manipulation of content in text files (such as config files),https://github.com/dsccommunity/FileContentDsc
+FileServerResourceManager,No,No,Management of File Server Resource Manager (FSRM),https://docs.microsoft.com/en-us/powershell/module/fileserverresourcemanager
+GPRegistryPolicyDsc,Yes,Yes,Apply and manage local group policies through manipulation of .pol files,https://github.com/dsccommunity/GPRegistryPolicyDsc
+GroupPolicy,Yes,Yes,Administration of Group Policy,https://docs.microsoft.com/en-us/powershell/module/grouppolicy
+HgsClient,No,No,Management of Host Guardian Service,https://docs.microsoft.com/en-us/powershell/module/hgsclient
+HgsDiagnostics,No,No,Perform diagnostics on Host Guardian Service,https://docs.microsoft.com/en-us/powershell/module/hgsdiagnostics
+HostNetworkingService,No,No,Management of Host Networking Service,
+Hyper-V,Yes,Yes,Management of Hyper-V and Hyper-V virtual machines,https://docs.microsoft.com/en-us/powershell/module/hyper-v
+IISAdministration,Yes,Yes,Management of Internet Information Service (IIS) settings and websites,https://docs.microsoft.com/en-us/powershell/module/iisadministration
+International,No,No,Control the language that is used for various elements of the user interface,https://docs.microsoft.com/en-us/powershell/module/international
+IpamServer,No,No,Management of IP Address Management (IPAM) server,https://docs.microsoft.com/en-us/powershell/module/ipamserver
+iSCSI,Yes,No,Management of iSCSI initiators,https://docs.microsoft.com/en-us/powershell/module/iscsi
+IscsiTarget,No,No,Management of iSCSI targets,https://docs.microsoft.com/en-us/powershell/module/iscsitarget
+ISE,Yes,No,Management of Integrated Scripting Environment (ISE) snippets,https://docs.microsoft.com/en-us/powershell/module/ise
+Kds,Yes,No,Management of Key Distribution Services (KDS) that are required for group managed service accounts,https://docs.microsoft.com/en-us/powershell/module/kds
+Microsoft.PowerShell.Archive,Yes,Yes,For compressing files into a zipped file or expanding a zipped file,https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.archive
+Microsoft.PowerShell.Core,Yes,Yes,Numerous built-in core cmdlets and providers that manage the basic features of PowerShell,https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core
+Microsoft.PowerShell.Diagnostics,Yes,Yes,Manage data from event logs,https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.diagnostics
+Microsoft.PowerShell.Host,Yes,Yes,PowerShell logging functions,https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.host
+Microsoft.PowerShell.LocalAccounts,Yes,Yes,Management of local users and groups on workstations and servers,https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.localaccounts
+Microsoft.PowerShell.Management,Yes,Yes,Cmdlets that let you manage Windows through PowerShell,https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management
+Microsoft.PowerShell.ODataUtils,No,No,Create a module with cmdlets that you can use to manage OData endpoints with,https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.odatautils
+Microsoft.PowerShell.Operation.Validation,No,No,Get or perform Operation Validation Framework tests,https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.operation.validation
+Microsoft.PowerShell.Security,Yes,Yes,Management of the basic security features of Windows,https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.security
+Microsoft.PowerShell.Utility,Yes,Yes,Provides core cmdlets for management of basic features in PowerShell,https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility
+Microsoft.SME.CredSspPolicy,No,No,Management of CredSSP policy,
+Microsoft.WSMan.Management,Yes,Yes,Provides core cmdlets and providers for management of WS-Management protocol in PowerShell,https://docs.microsoft.com/en-us/powershell/module/microsoft.wsman.management
+MicrosoftTeams,Yes,No,Management of Teams directly from PowerShell,https://docs.microsoft.com/en-us/MicrosoftTeams/teams-powershell-overview
+MMAgent,No,No,Management of Memory Management Agent (MMAgent),https://docs.microsoft.com/en-us/powershell/module/mmagent
+MsDtc,No,No,Management of Microsoft Distributed Transaction Coordinator (MSDTC),https://docs.microsoft.com/en-us/powershell/module/msdtc
+MSOnline,No,No,Management of Azure Active Directory,https://docs.microsoft.com/en-us/powershell/module/msonline
+NetAdapter,Yes,Yes,Management of Network Adapters (interfaces),https://docs.microsoft.com/en-us/powershell/module/netadapter
+NetConnection,No,No,Management of Network Connection Profiles,https://docs.microsoft.com/en-us/powershell/module/netconnection
+NetEventPacketCapture,No,No,Management of Network Packet Captures in conjunction with Event Tracing for Windows,https://docs.microsoft.com/en-us/powershell/module/neteventpacketcapture
+NetIQ.DRA.DRAPowerShellExtensions,Yes,No,Interface with NetIQ's DRA through PowerShell to manage Active Directory objects,
+NetLbfo,Yes,No,Management of NIC Teaming,https://docs.microsoft.com/en-us/powershell/module/netlbfo
+NetNat,No,No,Management of Network Address Translation settings,https://docs.microsoft.com/en-us/powershell/module/netnat
+NetQos,No,No,Management of Network Quality of Service (QoS) settings,https://docs.microsoft.com/en-us/powershell/module/netqos
+NetSecurity,Yes,Yes,Management of network security (such as IPSec and firewall) settings,https://docs.microsoft.com/en-us/powershell/module/netsecurity
+NetSwitchTeam,No,No,Management of Network Switch Team settings in Hyper-V switches,https://docs.microsoft.com/en-us/powershell/module/netswitchteam
+NetTCPIP,Yes,Yes,Management of TCP/IP and general network interface settings,https://docs.microsoft.com/en-us/powershell/module/nettcpip
+NetworkConnectivityStatus,No,No,Management of Network Connectivity Status settings,https://docs.microsoft.com/en-us/powershell/module/networkconnectivitystatus
+NetworkSwitchManager,No,No,For interacting with the Network Switch Manager on supported switches,https://docs.microsoft.com/en-us/powershell/module/networkswitchmanager
+NetworkTransition,Yes,Yes,"For management of network transition-specific settings on network interfaces (6to4, ISATAP, NAT64, Teredo, etc.)",https://docs.microsoft.com/en-us/powershell/module/networktransition
+NFS,Yes,Yes,Management of Network File System (NFS) client and server,https://docs.microsoft.com/en-us/powershell/module/nfs
+NPS,No,No,Management of Network Policy Server (NPS) settings,https://docs.microsoft.com/en-us/powershell/module/nps
+NSA,Yes,Yes,Pass-The-Hash mitigation and other NSA directives,https://github.com/nsacyber
+NuGet,Yes,No,"Create Nuget repos, Register Repos, Manage Modules, and Packages",https://github.com/PowerShellOrg/NuGet
+nx,Yes,Yes,Mechanism to manage packages on a Linux node,https://docs.microsoft.com/en-us/powershell/scripting/dsc/reference/resources/linux/lnxpackageresource
+OSITools,Yes,Yes,"Automation of tasks, workstation/server management, domain management, reporting, and vulnerability remediation.",
+PackageManagement,Yes,No,Manage PowerShell packages,https://github.com/oneget/oneget
+PcsvDevice,No,No,Management of Physical Computer System View (PCSV) devices,https://docs.microsoft.com/en-us/powershell/module/pcsvdevice
+PersistentMemory,No,No,Management of Persistent Memory devices,
+Pester,Yes,No,Tests to execute and validate PowerShell commands inside of PowerShell and offers a powerful set of Mocking Functions that allow tests to mimic and mock the functionality of any command inside of a piece of PowerShell code being tested.,https://github.com/Pester/Pester
+PKI,Yes,Yes,Provides core cmdlets for interacting with public key infrastructure (PKI),https://docs.microsoft.com/en-us/powershell/module/pki
+platyPS,Yes,No,Generates PowerShell External Help files from markdown,https://github.com/PowerShell/platyPS
+PnpDevice,Yes,Yes,"Disable, Enable, and get information on Plug-n-Play (PnP) devices",https://docs.microsoft.com/en-us/powershell/module/pnpdevice
+PowerShellGet,Yes,No,"PowerShell module with commands for discovering, installing, updating and publishing the PowerShell artifacts like Modules, Scripts, and DSC Resources.",https://github.com/PowerShell/PowerShellGet
+PowerSTIG,Yes,No,Access DISA STIG settings extracted from xccdf files and parse the information.,https://github.com/Microsoft/PowerStig
+PrintManagement,Yes,Yes,Management of printers on workstations and print servers,https://docs.microsoft.com/en-us/powershell/module/printmanagement
+ProcessMitigations,No,No,Management of process mitigations,https://docs.microsoft.com/en-us/powershell/module/processmitigations
+Provisioning,No,No,Manage provisioning packages,https://docs.microsoft.com/en-us/powershell/module/provisioning
+PSDesiredStateConfiguration,Yes,No,For interacting with Desired State Configuration (DSC) resources,https://docs.microsoft.com/en-us/powershell/module/psdesiredstateconfiguration
+PSDiagnostics,Yes,Yes,Enables the use of Event Tracing for Windows (ETW) and management of ETW tracing,https://docs.microsoft.com/en-us/powershell/module/psdiagnostics
+PSDscResources,Yes,Yes,Updates to the built-in PSDesiredStateConfiguration resources,https://github.com/PowerShell/PSDscResources
+PSReadline,Yes,No,Customize the command-line editing environment,https://docs.microsoft.com/en-us/powershell/module/psreadline
+PSScheduledJob,Yes,Yes,Management of Scheduled Jobs,https://docs.microsoft.com/en-us/powershell/module/psscheduledjob
+PSScriptAnalyzer,Yes,No,Static code checker for PowerShell modules and scripts. It generates DiagnosticResults (errors and warnings) to inform users about potential code defects and suggests possible solutions for improvements.,https://github.com/PowerShell/PSScriptAnalyzer
+PSWorkflow,Yes,No,Management of PowerShell Workflow's,https://docs.microsoft.com/en-us/powershell/module/psworkflow
+PSWorkflowUtility,Yes,No,Run a command or expression as a Windows PowerShell Workflow,https://docs.microsoft.com/en-us/powershell/module/psworkflowutility
+RemoteDesktop,No,No,Management of Remote Desktop Services (RDS),https://docs.microsoft.com/en-us/powershell/module/remotedesktop
+ScheduledTasks,Yes,Yes,Management of Scheduled Tasks,https://docs.microsoft.com/en-us/powershell/module/scheduledtasks
+SecureBoot,Yes,Yes,Management of SecureBoot and UEFI,https://docs.microsoft.com/en-us/powershell/module/secureboot
+SecurityPolicyDsc,Yes,Yes,Configure user rights assignments,https://github.com/dsccommunity/SecurityPolicyDsc
+ServerManager,Yes,Yes,Management of Server Manager settings and Windows Features on servers,https://docs.microsoft.com/en-us/powershell/module/servermanager
+ServerManagerTasks,Yes,Yes,"Management of servers, events, and performance collectors",https://docs.microsoft.com/en-us/powershell/module/servermanagertasks
+SmbShare,Yes,Yes,Management of Server Message Block (SMB) file shares,https://docs.microsoft.com/en-us/powershell/module/smbshare
+SmbWitness,No,No,Management of SMB clients on clustered servers,https://docs.microsoft.com/en-us/powershell/module/smbwitness
+SpeculationControl,Yes,Yes,Used to query speculation control settings for the system.,https://www.powershellgallery.com/packages/SpeculationControl
+SqlServer,Yes,Yes,Management of SQL server,https://docs.microsoft.com/en-us/powershell/module/sqlserver
+SqlServerDsc,Yes,Yes,Deployment and configuration of Microsoft SQL Server,https://github.com/dsccommunity/SqlServerDsc
+StartLayout,No,No,Management of start screen layout,https://docs.microsoft.com/en-us/powershell/module/startlayout
+Storage,Yes,Yes,For interacting with Windows Storage Management,https://docs.microsoft.com/en-us/powershell/module/storage
+StorageBusCache,No,No,Management of Storage Bus Cache settings on a Windows Server 2022 or newer file server,https://docs.microsoft.com/en-us/windows-server/storage/storage-spaces/storage-spaces-storage-bus-cache
+SwisPowerShell,Yes,No,Working with the SolarWinds Information Service.,https://github.com/solarwinds/OrionSDK/wiki/PowerShell
+TLS,Yes,Yes,Management of Transport Layer Security (TLS) settings,https://docs.microsoft.com/en-us/powershell/module/tls
+TroubleshootingPack,No,No,Get or start a troubleshooting pack,https://docs.microsoft.com/en-us/powershell/module/troubleshootingpack
+TrustedPlatformModule,Yes,Yes,Management of Trusted Platform Module,https://docs.microsoft.com/en-us/powershell/module/trustedplatformmodule
+UEV,No,No,Manage Microsoft User Experience Virtualization (UE-V),https://docs.microsoft.com/en-us/powershell/module/uev
+VMware.CloudServices,No,No,"Management of VMware products to include ESXi, vCenter Server Appliance (VCSA), VMware Remote Console (VMRC), and others.",https://blogs.vmware.com/PowerCLI/
+VMware.DeployAutomation,Yes,No,"Management of VMware products to include ESXi, vCenter Server Appliance (VCSA), VMware Remote Console (VMRC), and others.",https://blogs.vmware.com/PowerCLI/
+VMware.ImageBuilder,Yes,No,"Management of VMware products to include ESXi, vCenter Server Appliance (VCSA), VMware Remote Console (VMRC), and others.",https://blogs.vmware.com/PowerCLI/
+VMWare.PowerCLI,Yes,No,"Management of VMware products to include ESXi, vCenter Server Appliance (VCSA), VMware Remote Console (VMRC), and others.",https://blogs.vmware.com/PowerCLI/
+VMware.VimAutomation.Cis.Core,Yes,No,"Management of VMware products to include ESXi, vCenter Server Appliance (VCSA), VMware Remote Console (VMRC), and others.",https://blogs.vmware.com/PowerCLI/
+VMware.VimAutomation.Cloud,No,No,"Management of VMware products to include ESXi, vCenter Server Appliance (VCSA), VMware Remote Console (VMRC), and others.",https://blogs.vmware.com/PowerCLI/
+VMware.VimAutomation.Common,Yes,No,"Management of VMware products to include ESXi, vCenter Server Appliance (VCSA), VMware Remote Console (VMRC), and others.",https://blogs.vmware.com/PowerCLI/
+VMware.VimAutomation.Core,Yes,No,"Management of VMware products to include ESXi, vCenter Server Appliance (VCSA), VMware Remote Console (VMRC), and others.",https://blogs.vmware.com/PowerCLI/
+VMware.VimAutomation.Hcx,Yes,No,"Management of VMware products to include ESXi, vCenter Server Appliance (VCSA), VMware Remote Console (VMRC), and others.",https://blogs.vmware.com/PowerCLI/
+VMware.VimAutomation.HorizonView,No,No,"Management of VMware products to include ESXi, vCenter Server Appliance (VCSA), VMware Remote Console (VMRC), and others.",https://blogs.vmware.com/PowerCLI/
+VMware.VimAutomation.License,Yes,No,"Management of VMware products to include ESXi, vCenter Server Appliance (VCSA), VMware Remote Console (VMRC), and others.",https://blogs.vmware.com/PowerCLI/
+VMware.VimAutomation.Nsxt,Yes,No,"Management of VMware products to include ESXi, vCenter Server Appliance (VCSA), VMware Remote Console (VMRC), and others.",https://blogs.vmware.com/PowerCLI/
+VMware.VimAutomation.Sdk,Yes,No,"Management of VMware products to include ESXi, vCenter Server Appliance (VCSA), VMware Remote Console (VMRC), and others.",https://blogs.vmware.com/PowerCLI/
+VMware.VimAutomation.Security,Yes,No,"Management of VMware products to include ESXi, vCenter Server Appliance (VCSA), VMware Remote Console (VMRC), and others.",https://blogs.vmware.com/PowerCLI/
+VMware.VimAutomation.Srm,Yes,No,"Management of VMware products to include ESXi, vCenter Server Appliance (VCSA), VMware Remote Console (VMRC), and others.",https://blogs.vmware.com/PowerCLI/
+VMware.VimAutomation.Storage,Yes,No,"Management of VMware products to include ESXi, vCenter Server Appliance (VCSA), VMware Remote Console (VMRC), and others.",https://blogs.vmware.com/PowerCLI/
+VMware.VimAutomation.StorageUtility,Yes,No,"Management of VMware products to include ESXi, vCenter Server Appliance (VCSA), VMware Remote Console (VMRC), and others.",https://blogs.vmware.com/PowerCLI/
+VMware.VimAutomation.Vds,Yes,No,"Management of VMware products to include ESXi, vCenter Server Appliance (VCSA), VMware Remote Console (VMRC), and others.",https://blogs.vmware.com/PowerCLI/
+VMware.VimAutomation.Vmc,Yes,No,"Management of VMware products to include ESXi, vCenter Server Appliance (VCSA), VMware Remote Console (VMRC), and others.",https://blogs.vmware.com/PowerCLI/
+VMware.VimAutomation.vROps,No,No,"Management of VMware products to include ESXi, vCenter Server Appliance (VCSA), VMware Remote Console (VMRC), and others.",https://blogs.vmware.com/PowerCLI/
+VMware.VimAutomation.WorkloadManagement,Yes,No,"Management of VMware products to include ESXi, vCenter Server Appliance (VCSA), VMware Remote Console (VMRC), and others.",https://blogs.vmware.com/PowerCLI/
+VMware.VumAutomation,Yes,No,"Management of VMware products to include ESXi, vCenter Server Appliance (VCSA), VMware Remote Console (VMRC), and others.",https://blogs.vmware.com/PowerCLI/
+Vmware.vSphereDSC,Yes,No,"Management of VMware products to include ESXi, vCenter Server Appliance (VCSA), VMware Remote Console (VMRC), and others.",https://blogs.vmware.com/PowerCLI/
+VpnClient,No,No,Manage the built-in Windows VPN client,https://docs.microsoft.com/en-us/powershell/module/vpnclient
+Wdac,Yes,Yes,Manage Windows Data Access Components (Windows DAC) such as Open Database Connectivity (ODBC) properties,https://docs.microsoft.com/en-us/powershell/module/wdac
+WDS,Yes,Yes,Manage Windows Deployment Services (WDS),https://docs.microsoft.com/en-us/powershell/module/wds
+Whea,No,No,Get or set Windows Hardware Error Architecture (WHEA) policies,https://docs.microsoft.com/en-us/powershell/module/whea
+WindowsDefenderDsc,Yes,Yes,Management of security mitigations in Windows Defenfer Security Center,https://github.com/erjenkin/WindowsDefenderDsc
+WindowsDeveloperLicense,No,No,Management of Windows Developer License,https://docs.microsoft.com/en-us/powershell/module/windowsdeveloperlicense
+WindowsErrorReporting,No,No,"Edisable, enable, or retrieve Windows Error Reporting status",https://docs.microsoft.com/en-us/powershell/module/windowserrorreporting
+WindowsSearch,No,No,Get or set Windows Search settings,https://docs.microsoft.com/en-us/powershell/module/windowssearch
+WindowsUpdate,No,No,Merges Windows Update .etl files into a single log,https://docs.microsoft.com/en-us/powershell/module/windowsupdate
+WindowsUpdateProvider,No,No,Manage Windows Update,
+WSTools,Yes,Yes,"Automation of tasks, workstation/server management, Insider Threat information gathering, domain management, reporting, and vulnerability remediation.",https://wstools.dev
+xDnsServer,Yes,Yes,Management and configuration of Windows DNS servers,https://github.com/dsccommunity/DnsServerDsc
+xWebAdministration,Yes,Yes,Management and configuration of Windows Web Servers,https://github.com/dsccommunity/xWebAdministration

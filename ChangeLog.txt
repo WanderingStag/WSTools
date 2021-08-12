@@ -10,6 +10,11 @@ Known issues:
 New features and other changes:
 1. Added OneDrive config item and bumped config version.
 2. Added function Copy-OneDrive.
+3. Added Resources folder in module folder.
+4. Added list of Modules and some information about them in CommandListModules.csv. Added the .csv to the Resources folder. This is used in Get-CommandList and Get-ModuleList.
+5. Added function Get-CommandList.
+6. Added function Get-ModuleList.
+7. Moved InstallRemote.ps1 to Resources folder. Updated Install-Patches with the new path.
 
 ######################
 #                    #
