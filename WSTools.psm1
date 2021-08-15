@@ -869,30 +869,12 @@ function Get-BitLockerStatus {
 
 function Get-CommandList {
 <#
-.SYNOPSIS
-    Short description
-.DESCRIPTION
-    Long description
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.PARAMETER Path
-    Specifies a path to one or more locations.
-.EXAMPLE
-    C:\PS>Get-CommandList
-    Example of how to use this cmdlet
-.EXAMPLE
-    C:\PS>Get-CommandList -PARAMETER
-    Another example of how to use this cmdlet but with a parameter or switch.
 .NOTES
     Author: Skyler Hart
     Created: 2021-08-06 23:09:24
-    Last Edit: 2021-08-11 22:44:13
+    Last Edit: 2021-08-15 15:09:21
     Keywords:
     Other:
-    Requires:
-        -Module ActiveDirectory
-        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        -RunAsAdministrator
 .LINK
     https://wstools.dev
 .LINK
@@ -911,10 +893,10 @@ function Get-CommandList {
     )
 
     if ($All) {
-        $commands = Get-Command * | Where-Object {$_.CommandType -ne "Alias"} | Select-Object HelpUri,Name,CommandType,ModuleName,RemotingCapability
+        $commands = Get-Command * | Select-Object HelpUri,ResolvedCommandName,Name,CommandType,ModuleName,RemotingCapability,Path,FileVersionInfo
     }
-    else {$commands = Get-Command -All | Where-Object {$_.CommandType -ne "Alias"} | Select-Object HelpUri,Name,CommandType,ModuleName,RemotingCapability}
-    $commands = $commands | Select-Object HelpUri,Name,CommandType,ModuleName,RemotingCapability -Unique
+    else {$commands = Get-Command -All | Select-Object HelpUri,ResolvedCommandName,Name,CommandType,ModuleName,RemotingCapability,Path,FileVersionInfo}
+    $commands = $commands | Select-Object HelpUri,ResolvedCommandName,Name,CommandType,ModuleName,RemotingCapability,Path,FileVersionInfo -Unique
     $slist = Import-Csv $PSScriptRoot\Resources\CommandListModules.csv
 
     $i = 0
@@ -934,6 +916,9 @@ function Get-CommandList {
             $info += New-Object -TypeName PSObject -Property @{
                 CommandType = ($c.CommandType)
                 Name = ($c.Name)
+                ResolvedName = ($c.ResolvedCommandName)
+                Path = ($c.Path)
+                Description = ($c.FileVersionInfo.FileDescription)
                 ModuleName = ($c.ModuleName)
                 UsedByOrganization = $null
                 RemotingCapability = ($c.RemotingCapability)
@@ -947,6 +932,9 @@ function Get-CommandList {
             $info += New-Object -TypeName PSObject -Property @{
                 CommandType = ($c.CommandType)
                 Name = ($c.Name)
+                ResolvedName = ($c.ResolvedCommandName)
+                Path = ($c.Path)
+                Description = ($c.FileVersionInfo.FileDescription)
                 ModuleName = ($c.ModuleName)
                 UsedByOrganization = ($sli.UsedByOrganization)
                 RemotingCapability = ($c.RemotingCapability)
@@ -959,10 +947,10 @@ function Get-CommandList {
     }
 
     if ([string]::IsNullOrWhiteSpace($ExportPath)) {
-        $info | Select-Object CommandType,Name,ModuleName,UsedByOrganization,RemotingCapability,UsedRemotely,Purpose,Reference,HelpUri
+        $info | Select-Object CommandType,Name,ResolvedName,Path,Description,ModuleName,UsedByOrganization,RemotingCapability,UsedRemotely,Purpose,Reference,HelpUri
     }
     else {
-        $info | Select-Object CommandType,Name,ModuleName,UsedByOrganization,RemotingCapability,UsedRemotely,Purpose,Reference,HelpUri | Export-Csv $ExportPath -NoTypeInformation -Force
+        $info | Select-Object CommandType,Name,ResolvedName,Path,Description,ModuleName,UsedByOrganization,RemotingCapability,UsedRemotely,Purpose,Reference,HelpUri | Export-Csv $ExportPath -NoTypeInformation -Force
     }
 }
 

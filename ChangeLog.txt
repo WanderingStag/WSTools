@@ -10,6 +10,7 @@ Known issues:
 New features and other changes:
 1. Added function Get-SplunkStatus.
 2. Changed some text in remediation sub-module.
+3. Made some small changes to add additional information to applications in Get-CommandList.
 
 ######################
 #                    #
