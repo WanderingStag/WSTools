@@ -893,10 +893,10 @@ function Get-CommandList {
     )
 
     if ($All) {
-        $commands = Get-Command * | Select-Object HelpUri,ResolvedCommandName,Name,CommandType,ModuleName,RemotingCapability,Path,FileVersionInfo
+        $commands = Get-Command * | Select-Object HelpUri,ResolvedCommandName,Definition,Name,CommandType,ModuleName,RemotingCapability,Path,FileVersionInfo
     }
-    else {$commands = Get-Command -All | Select-Object HelpUri,ResolvedCommandName,Name,CommandType,ModuleName,RemotingCapability,Path,FileVersionInfo}
-    $commands = $commands | Select-Object HelpUri,ResolvedCommandName,Name,CommandType,ModuleName,RemotingCapability,Path,FileVersionInfo -Unique
+    else {$commands = Get-Command -All | Select-Object HelpUri,ResolvedCommandName,Definition,Name,CommandType,ModuleName,RemotingCapability,Path,FileVersionInfo}
+    $commands = $commands | Select-Object HelpUri,ResolvedCommandName,Definition,Name,CommandType,ModuleName,RemotingCapability,Path,FileVersionInfo -Unique
     $slist = Import-Csv $PSScriptRoot\Resources\CommandListModules.csv
 
     $i = 0
@@ -910,13 +910,23 @@ function Get-CommandList {
             $perc1 = $amount.ToString("P")
             Write-Progress -activity "Generating information for each command." -status "Command $i of $number. Percent complete:  $perc1" -PercentComplete (($i / $commands.length)  * 100)
         }#if length
+
+        $rn = $c.ResolvedCommandName
+        if ($c.CommandType -eq "Alias") {
+            if ([string]::IsNullOrWhiteSpace($c.ResolvedCommandName)) {
+                $rn = $c.Definition
+            }
+            else {
+                $rn = $c.ResolvedCommandName
+            }
+        }
         $mn = $c.ModuleName
         $sli = $slist | Where-Object {$_.Module -eq $mn}
         if ([string]::IsNullOrWhiteSpace($sli)) {
             $info += New-Object -TypeName PSObject -Property @{
                 CommandType = ($c.CommandType)
                 Name = ($c.Name)
-                ResolvedName = ($c.ResolvedCommandName)
+                ResolvedName = $rn
                 Path = ($c.Path)
                 Description = ($c.FileVersionInfo.FileDescription)
                 ModuleName = ($c.ModuleName)
@@ -932,7 +942,7 @@ function Get-CommandList {
             $info += New-Object -TypeName PSObject -Property @{
                 CommandType = ($c.CommandType)
                 Name = ($c.Name)
-                ResolvedName = ($c.ResolvedCommandName)
+                ResolvedName = $rn
                 Path = ($c.Path)
                 Description = ($c.FileVersionInfo.FileDescription)
                 ModuleName = ($c.ModuleName)
