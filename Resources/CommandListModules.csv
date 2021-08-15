@@ -1,6 +1,7 @@
 Module,UsedByOrganization,Remote,Purpose,Reference
 AccessControlDSC,Yes,Yes,"DSC Module to manage registry, NTFS access entries, and Active Directory SACL",https://github.com/mcollera/AccessControlDsc
 ActiveDirectory,Yes,Yes,"Management of Active Directory Directory Services (ADDS) and Active Directory objects such as computers, groups, and users. When used remotely, commands are only used on Domain Controllers.",https://docs.microsoft.com/en-us/powershell/module/activedirectory
+ADSync,No,No,Management of Azure AD Connect,https://docs.microsoft.com/en-us/azure/active-directory/hybrid/reference-connect-adsynctools
 AppBackgroundTask,Yes,No,"Management of background tasks. Allows starting, stopping, and checking the status of them.",https://docs.microsoft.com/en-us/powershell/module/appbackgroundtask
 AppLocker,Yes,Yes,"Used to help author, test, maintain, and troubleshoot application control policies.",https://docs.microsoft.com/en-us/powershell/module/applocker
 AppvClient,No,No,Management of Application Virtualization (App-V) client.,https://docs.microsoft.com/en-us/powershell/module/appvclient
@@ -192,11 +193,13 @@ VMware.VumAutomation,Yes,No,"Management of VMware products to include ESXi, vCen
 VpnClient,No,No,Manage the built-in Windows VPN client,https://docs.microsoft.com/en-us/powershell/module/vpnclient
 Wdac,Yes,Yes,Manage Windows Data Access Components (Windows DAC) such as Open Database Connectivity (ODBC) properties,https://docs.microsoft.com/en-us/powershell/module/wdac
 WDS,Yes,Yes,Manage Windows Deployment Services (WDS),https://docs.microsoft.com/en-us/powershell/module/wds
+WebAdministration,Yes,Yes,Management of Windows Web Servers (IIS),https://docs.microsoft.com/en-us/powershell/module/webadministration
 Whea,No,No,Get or set Windows Hardware Error Architecture (WHEA) policies,https://docs.microsoft.com/en-us/powershell/module/whea
 WindowsDefenderDsc,Yes,Yes,Management of security mitigations in Windows Defenfer Security Center,https://github.com/erjenkin/WindowsDefenderDsc
 WindowsDeveloperLicense,No,No,Management of Windows Developer License,https://docs.microsoft.com/en-us/powershell/module/windowsdeveloperlicense
 WindowsErrorReporting,No,No,"Edisable, enable, or retrieve Windows Error Reporting status",https://docs.microsoft.com/en-us/powershell/module/windowserrorreporting
 WindowsSearch,No,No,Get or set Windows Search settings,https://docs.microsoft.com/en-us/powershell/module/windowssearch
+WindowsServerBackup,No,No,Management of Windows Server Backups,https://docs.microsoft.com/en-us/powershell/module/windowsserverbackup
 WindowsUpdate,No,No,Merges Windows Update .etl files into a single log,https://docs.microsoft.com/en-us/powershell/module/windowsupdate
 WindowsUpdateProvider,No,No,Manage Windows Update,
 WSTools,Yes,Yes,"Automation of tasks, workstation/server management, Insider Threat information gathering, domain management, reporting, and vulnerability remediation.",https://wstools.dev
