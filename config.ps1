@@ -5,7 +5,7 @@
 )]
 
 $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
-    # WSTools config v1.2.5
+    # WSTools config v1.2.6
     # Remove the # symbol infront of a line to enable it
     ###########################################################################################################################################
     #Application Service Names - used in Stop-AppService. Uses match to match the name of a service that is running and stops it.
@@ -111,9 +111,14 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     StoreLookup = $false
 
     ################################
+    ##        Print Drivers       ##
+    ################################
+    HPUniversalPrintDriver = "J:\Drivers\Script\HP_Universal"
+    LexmarkUniversalPrintDriver = "J:\Drivers\Script\Lexmark_Universal\Drivers\x64"
+
+    ################################
     ##         Remediation        ##
     ################################
-
     #Install file locations - for normal installation files.
     a7Zip = "J:\Tools\7zip" #64-bit only unless you change Copy-7Zip to use 32-bit
     Edge = "J:\Patches\Edge"

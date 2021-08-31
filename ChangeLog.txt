@@ -4,6 +4,15 @@ Known issues:
 
 ######################
 #                    #
+#      2021.8.3      #
+#                    #
+######################
+1. Added config items HPUniversalPrintDriver and LexmarkUniversalPrintDriver. Bumped config version.
+2. Added functions Copy-HPUniversalPrintDriver and Install-HPUniversalPrintDriver.
+3. Added functions Copy-LexmarkUniversalPrintDriver and Install-LexmarkUniversalPrintDriver.
+
+######################
+#                    #
 #      2021.8.2      #
 #                    #
 ######################
