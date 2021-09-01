@@ -520,9 +520,8 @@ $firefox = $PatchFolderPath + "\firefox"
 $infopath = $PatchFolderPath + "\InfoPath"
 $java = $PatchFolderPath + "\Java"
 $netbanner = $PatchFolderPath + "\NetBanner"
-$onedrive = $PatchFolderPath + "\OneDrive\OneDriveSetup.exe"
+$onedrive = $PatchFolderPath + "\OneDrive"
 $project = $PatchFolderPath + "\Project"
-$silverlight = $PatchFolderPath + "\Silverlight"
 $ssms = $PatchFolderPath + "\SSMS"
 $tanium = $PatchFolderPath + "\Tanium"
 $teams = $PatchFolderPath + "\Teams"
@@ -994,7 +993,7 @@ if (Test-Path $axway) {
 
     #Install or not
     if ($install -eq $true) {
-        if ($cimq -like "*Server*" -or $wmiq -like "*Server*") {
+        if (!($cimq -like "*Server*" -or $wmiq -like "*Server*")) {
             $rn = ((Get-Date).AddSeconds(300))
             Send-ToastNotification "Axway installation/update will begin in 5 minutes ($rn.) During this process it may close. You may need to reboot your computer after it finishes installing" -Title "Axway Install"
             Start-Sleep -Seconds 300
@@ -1144,7 +1143,7 @@ if (Test-Path $chrome) {
 
     #Install or not
     if ($install -eq $true) {
-        if ($cimq -like "*Server*" -or $wmiq -like "*Server*") {
+        if (!($cimq -like "*Server*" -or $wmiq -like "*Server*")) {
             $rn = ((Get-Date).AddSeconds(300))
             Send-ToastNotification "Google Chrome installation/update will begin in 5 minutes ($rn.) During this process it may close. Please save all open files. It may take up to 10 minutes for Google Chrome to be reinstalled." -Title "Google Chrome Install"
             Start-Sleep -Seconds 300
@@ -1286,7 +1285,7 @@ if (Test-Path $edge) {
 
     #Install or not
     if ($install -eq $true) {
-        if ($cimq -like "*Server*" -or $wmiq -like "*Server*") {
+        if (!($cimq -like "*Server*" -or $wmiq -like "*Server*")) {
             $rn = ((Get-Date).AddSeconds(300))
             Send-ToastNotification "Microsoft Edge installation/update will begin in 5 minutes ($rn.) During this process it may close. Please save all open files. It may take up to 10 minutes to be reinstalled." -Title "Microsoft Edge Install"
             Start-Sleep -Seconds 300
@@ -1429,7 +1428,7 @@ if (Test-Path $firefox) {
 
     #Install or not
     if ($install -eq $true) {
-        if ($cimq -like "*Server*" -or $wmiq -like "*Server*") {
+        if (!($cimq -like "*Server*" -or $wmiq -like "*Server*")) {
             $rn = ((Get-Date).AddSeconds(300))
             Send-ToastNotification "Mozilla Firefox installation/update will begin in 5 minutes ($rn.) During this process it may close. Please save all open files. It may take up to 10 minutes to be reinstalled" -Title "Firefox Install"
             Start-Sleep -Seconds 300
@@ -1581,10 +1580,65 @@ if (Test-Path $netbanner) {
 }
 
 if (Test-Path $onedrive) {
-    Write-Output "$cn`: Installing OneDrive."
-    Start-Process $onedrive -ArgumentList "/AllUsers /Silent" -NoNewWindow -Wait
-    Start-Sleep -Seconds 300
-    $Reboot = $true
+    $sv = $null
+    $ipv = $null
+    $install = $false
+    $pn = "OneDrive"
+    $sv = Get-Content $onedrive\SoftwareVersion.txt
+    try {
+        $ipv = ($ip | Where-Object {$_.ProgramName -like "Microsoft OneDriv*"} -ErrorAction Stop | Select-Object Version)[0].Version
+
+        if ($null -ne $ipv -or $ipv -ne "") {
+            $ipv = $ipv.Split('.')
+            $ipv = $ipv.Split(' ')
+        }
+        else {$install -eq $true}
+        $sv = $sv.Split('.')
+        $sv = $sv.Split(' ')
+    }#try
+    catch {
+        $install = $true
+    }
+
+    #Determine if need to install
+    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
+        if ([int32]$sv[0] -gt [int32]$ipv[0]) {
+            $install = $true
+        }
+        elseif ([int32]$sv[0] -eq [int32]$ipv[0]) {
+            if ([int32]$sv[1] -gt [int32]$ipv[1]) {
+                $install = $true
+            }
+            elseif ([int32]$sv[1] -eq [int32]$ipv[1]) {
+                $install = $false
+            }
+            elseif ([int32]$sv[1] -lt [int32]$ipv[1]) {
+                $install = $false
+            }
+        }
+        elseif ([int32]$sv[0] -lt [int32]$ipv[0]) {
+            $install = $false
+        }
+    }#if already installed
+    else {
+        $install = $true
+    }
+
+    #Install or not
+    if ($install -eq $true) {
+        if (!($cimq -like "*Server*" -or $wmiq -like "*Server*")) {
+            $rn = ((Get-Date).AddSeconds(300))
+            Send-ToastNotification "OneDrive installation/update will begin in 5 minutes ($rn.) During this process it may close. You may need to reboot your computer after it finishes installing" -Title "OneDrive Install"
+            Start-Sleep -Seconds 300
+        }
+        Write-Output "$cn`: Installing $pn."
+        Start-Process $onedrive\OneDriveSetup.exe -ArgumentList "/AllUsers /Silent" -NoNewWindow -Wait
+        Start-Sleep 400
+        $Reboot = $true
+    }
+    else {
+        #do nothing Write-Output "$cn`: $pn same as installed version or older. Skipping..."
+    }
 }
 
 if (Test-Path $project) {
@@ -1656,20 +1710,6 @@ if (Test-Path $project) {
     }
     else {
         #do nothing Write-Output "$cn`: $pn same as installed version or older. Skipping..."
-    }
-}
-
-if (Test-Path $silverlight) {
-    $slv = $null
-    $slv = Get-Content $silverlight\SoftwareVersion.txt
-    $ips = ($ip | Where-Object {$_.ProgramName -like "Microsoft Silverligh*"} | Select-Object Version)[0].Version
-    if ($slv -match $ips) {
-        #do nothing Write-Output "$cn`: Silverlight in patches folder same as installed version. Skipping install..."
-    }
-    else {
-        Write-Output "$cn`: Installing Silverlight."
-        Start-Process c:\Patches\Silverlight\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
-        Start-Sleep 150
     }
 }
 
@@ -1817,7 +1857,7 @@ if (Test-Path $teams) {
 
     #Install or not
     if ($install -eq $true) {
-        if ($cimq -like "*Server*" -or $wmiq -like "*Server*") {
+        if (!($cimq -like "*Server*" -or $wmiq -like "*Server*")) {
             $rn = ((Get-Date).AddSeconds(300))
             Send-ToastNotification "Microsoft Teams installation/update will begin in 5 minutes ($rn.) During this process it may close. Please save all open files. If after 10 minutes it appears to be uninstalled, please log off then log back in" -Title "Microsoft Teams Install"
             Start-Sleep -Seconds 300
@@ -2073,10 +2113,74 @@ if (Test-Path $vlc) {
 }
 
 if (Test-Path $vscode) {
-    Write-Output "$cn`: Installing Visual Studio Code."
     $vsp = "$vscode\VSCodeSetup-x64.exe"
-    Start-Process $vsp -ArgumentList "/SP- /VERYSILENT /SUPPRESSMSGBOXES /NOCANCEL /NORESTART /CLOSEAPPLICATIONS /NORESTARTAPPLICATIONS /TYPE=full" -NoNewWindow -Wait
-    Start-Sleep 300
+    $sv = $null
+    $ipv = $null
+    $install = $false
+    $pn = "Teams"
+    $sv = Get-Content $vscode\SoftwareVersion.txt
+    try {
+        $ipv = ($ip | Where-Object {$_.ProgramName -like "Microsoft Visual Studio Cod*"} -ErrorAction Stop | Select-Object Version)[0].Version
+
+        if ($null -ne $ipv -or $ipv -ne "") {
+            $ipv = $ipv.Split('.')
+            $ipv = $ipv.Split(' ')
+        }
+        else {$install -eq $true}
+        $sv = $sv.Split('.')
+        $sv = $sv.Split(' ')
+    }#try
+    catch {
+        $install = $true
+    }
+
+    #Determine if need to install
+    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
+        if ([int32]$sv[0] -gt [int32]$ipv[0]) {
+            $install = $true
+        }
+        elseif ([int32]$sv[0] -eq [int32]$ipv[0]) {
+            if ([int32]$sv[1] -gt [int32]$ipv[1]) {
+                $install = $true
+            }
+            elseif ([int32]$sv[1] -eq [int32]$ipv[1]) {
+                #$install = $false #uncomment and remove below lines if stopping at Major.Minor
+                if ([int32]$sv[2] -gt [int32]$ipv[2]) {
+                    $install = $true
+                }
+                elseif ([int32]$sv[2] -eq [int32]$ipv[2]) {
+                    $install = $false
+                }
+                elseif ([int32]$sv[2] -lt [int32]$ipv[2]) {
+                    $install = $false
+                }
+            }
+            elseif ([int32]$sv[1] -lt [int32]$ipv[1]) {
+                $install = $false
+            }
+        }
+        elseif ([int32]$sv[0] -lt [int32]$ipv[0]) {
+            $install = $false
+        }
+    }#if already installed
+    else {
+        $install = $true
+    }
+
+    #Install or not
+    if ($install -eq $true) {
+        if (!($cimq -like "*Server*" -or $wmiq -like "*Server*")) {
+            $rn = ((Get-Date).AddSeconds(300))
+            Send-ToastNotification "Visual Studio Code installation/update will begin in 5 minutes ($rn.) During this process it may close. Please save all open files. If after 10 minutes it appears to be uninstalled, please log off then log back in" -Title "Visual Studio Code Install"
+            Start-Sleep -Seconds 300
+        }
+        Write-Output "$cn`: Installing $pn."
+        Start-Process $vsp -ArgumentList "/SP- /VERYSILENT /SUPPRESSMSGBOXES /NOCANCEL /NORESTART /CLOSEAPPLICATIONS /NORESTARTAPPLICATIONS /TYPE=full" -NoNewWindow -Wait
+        Start-Sleep 300
+    }
+    else {
+        #do nothing Write-Output "$cn`: $pn same as installed version or older. Skipping..."
+    }
 }
 
 #if (Test-Path $patch2) {

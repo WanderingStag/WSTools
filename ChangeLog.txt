@@ -4,6 +4,16 @@ Known issues:
 
 ######################
 #                    #
+#      2021.8.4      #
+#                    #
+######################
+1. InstallRemote.ps1 - changed OneDrive to newer version checking code (only checks Major.Minor version not Major.Minor.Subversion.Revision).
+2. InstallRemote.ps1 - changed Visual Studio Code to newer version checking code (only checks Major.Minor.Subversion).
+3. InstallRemote.ps1 - removed Silverlight.
+4. InstallRemote.ps1 - fixed notifications showing on servers instead of clients.
+
+######################
+#                    #
 #      2021.8.3      #
 #                    #
 ######################
