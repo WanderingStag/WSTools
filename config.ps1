@@ -38,6 +38,9 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     #Additional paths is used for pushing out to folders in addtion to UpdatePath.
     AdditionalUpdatePaths = @('D:\OneDrive\Scripts\Modules\WSTools')
 
+    #Old PowerShell Modules. Used in Remove-OldPowerShellModule.
+    OldPSModule = @('SHTool','SHTools','SkysTool')
+
 
     ################################
     ##    App/Patching settings   ##

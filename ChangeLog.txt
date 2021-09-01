@@ -12,6 +12,8 @@ Known issues:
 3. InstallRemote.ps1 - removed Silverlight.
 4. InstallRemote.ps1 - fixed notifications showing on servers instead of clients.
 5. InstallRemote.ps1 - Changed Adobe Acrobat to use separate update install if minor version or subversion doesn't match instead of the full install.
+6. Added function Remove-OldPowerShellModule.
+7. Added config item OldPSModule.
 
 ######################
 #                    #
