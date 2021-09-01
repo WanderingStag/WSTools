@@ -1081,7 +1081,7 @@ Function Copy-HPUniversalPrintDriver {
                 [string]$appname
             )
             try {
-                robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs=
+                robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs
             }
             catch {
                 Write-Error "$comp - unable to copy"
@@ -1201,7 +1201,7 @@ Function Copy-LexmarkUniversalPrintDriver {
                 [string]$appname
             )
             try {
-                robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs=
+                robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs
             }
             catch {
                 Write-Error "$comp - unable to copy"
