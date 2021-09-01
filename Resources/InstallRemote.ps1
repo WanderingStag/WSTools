@@ -508,6 +508,7 @@ $patch16 = $PatchFolderPath + "\Patch16\Setup.exe"
 $90meter = $PatchFolderPath + "\90Meter"
 $activclient = $PatchFolderPath + "\ActivClient"
 $acrobat = $PatchFolderPath + "\Acrobat"
+$acroupdate = $PatchFolderPath + "\Acrobat_Update"
 $aem = $PatchFolderPath + "\AEM"
 $anyconnect = $PatchFolderPath + "\JRSS"
 $axway = $PatchFolderPath + "\Axway"
@@ -753,6 +754,7 @@ if (Test-Path $acrobat) {
     $sv = $null
     $ipv = $null
     $install = $false
+    $update = $false
     $pn = "Acrobat"
     $sv = Get-Content $acrobat\SoftwareVersion.txt
     try {
@@ -777,12 +779,14 @@ if (Test-Path $acrobat) {
         }
         elseif ([int32]$sv[0] -eq [int32]$ipv[0]) {
             if ([int32]$sv[1] -gt [int32]$ipv[1]) {
-                $install = $true
+                $install = $false
+                $update = $true
             }
             elseif ([int32]$sv[1] -eq [int32]$ipv[1]) {
                 #$install = $false #uncomment and remove below lines if stopping at Major.Minor
                 if ([int32]$sv[2] -gt [int32]$ipv[2]) {
-                    $install = $true
+                    $install = $false
+                    $update = $true
                 }
                 elseif ([int32]$sv[2] -eq [int32]$ipv[2]) {
                     $install = $false
@@ -804,14 +808,19 @@ if (Test-Path $acrobat) {
     }
 
     #Install or not
-    if ($install -eq $true) {
+    if ($install -eq $true -or $update -eq $true) {
         $rn = ((Get-Date).AddSeconds(300))
         if (!($cimq -like "*Server*" -or $wmiq -like "*Server*")) {
             Send-ToastNotification "Adobe Acrobat installation/update will begin in 5 minutes ($rn.) During this process it may close. Please save all open files." -Title "Adobe Acrobat Install"
             Start-Sleep -Seconds 300
         }
         Write-Output "$cn`: Installing $pn."
-        Start-Process $acrobat\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
+        if ($install -eq $true) {
+            Start-Process $acrobat\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
+        }
+        if ($update -eq $true) {
+            Start-Process $acroupdate\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
+        }
         Start-Sleep 900
         $Reboot = $true
     }

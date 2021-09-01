@@ -11,6 +11,7 @@ Known issues:
 2. InstallRemote.ps1 - changed Visual Studio Code to newer version checking code (only checks Major.Minor.Subversion).
 3. InstallRemote.ps1 - removed Silverlight.
 4. InstallRemote.ps1 - fixed notifications showing on servers instead of clients.
+5. InstallRemote.ps1 - Changed Adobe Acrobat to use separate update install if minor version or subversion doesn't match instead of the full install.
 
 ######################
 #                    #
