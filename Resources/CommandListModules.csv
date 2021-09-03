@@ -1,6 +1,9 @@
 Module,UsedByOrganization,Remote,Purpose,Reference
 AccessControlDSC,Yes,Yes,"DSC Module to manage registry, NTFS access entries, and Active Directory SACL",https://github.com/mcollera/AccessControlDsc
 ActiveDirectory,Yes,Yes,"Management of Active Directory Directory Services (ADDS) and Active Directory objects such as computers, groups, and users. When used remotely, commands are only used on Domain Controllers.",https://docs.microsoft.com/en-us/powershell/module/activedirectory
+ADDSDeployment,No,Yes,"Setup, management, and removal of Active Directory Domain Services (ADDS) or Domain Controllers",https://docs.microsoft.com/en-us/powershell/module/addsdeployment
+ADRMS,No,Yes,"Installation, removal, and update of Active Directory Rights Management Service",https://docs.microsoft.com/en-us/powershell/module/adrms
+ADRMSAdmin,No,Yes,Administration of Active Directory Rights Management Services (AD RMS),https://docs.microsoft.com/en-us/powershell/module/adrmsadmin
 ADSync,No,No,Management of Azure AD Connect,https://docs.microsoft.com/en-us/azure/active-directory/hybrid/reference-connect-adsynctools
 AppBackgroundTask,Yes,No,"Management of background tasks. Allows starting, stopping, and checking the status of them.",https://docs.microsoft.com/en-us/powershell/module/appbackgroundtask
 AppLocker,Yes,Yes,"Used to help author, test, maintain, and troubleshoot application control policies.",https://docs.microsoft.com/en-us/powershell/module/applocker
@@ -9,27 +12,41 @@ Appx,Yes,Yes,Management of MSIX (Windows app packages) and AppX packages (Micros
 AssignedAccess,No,No,Administration of restricted app access to specific user accounts. ,https://docs.microsoft.com/en-us/powershell/module/assignedaccess
 AuditPolicyDsc,Yes,Yes,Configure and manage the advanced audit policy,https://github.com/dsccommunity/AuditPolicyDsc
 AuditSystemDsc,Yes,Yes,Audit system settings and verify compliance,https://github.com/jcwalker/AuditSystemDsc
+Azure,No,Yes,Old version of Az module. Used for management of Azure.,https://docs.microsoft.com/en-us/powershell/azure
+Azure.AnalysisServices,No,Yes,Old version of Az module. Used for management of Azure.,https://docs.microsoft.com/en-us/powershell/azure
 Azure.Storage,No,No,Management of Azure Storage,https://docs.microsoft.com/en-us/powershell/module/az.storage
 AzureAD,No,No,Management of Azure Active Directory,https://docs.microsoft.com/en-us/powershell/module/azuread
+AzureRM.AnalysisServices,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.ApiManagement,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
+AzureRM.ApplicationInsights,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.Automation,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.AzureStackAdmin,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.AzureStackStorage,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.Backup,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.Batch,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
+AzureRM.Billing,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.Cdn,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.CognitiveServices,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.Compute,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
+AzureRM.Consumption,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
+AzureRM.ContainerInstance,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
+AzureRM.ContainerRegistry,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.DataFactories,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
+AzureRM.DataFactoryV2,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.DataLakeAnalytics,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.DataLakeStore,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.DevTestLabs,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.Dns,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
+AzureRM.EventGrid,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
+AzureRM.EventHub,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.HDInsight,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.Insights,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
+AzureRM.IotHub,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.KeyVault,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.LogicApp,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.MachineLearning,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
+AzureRM.MachineLearningCompute,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
+AzureRM.MarketplaceOrdering,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.Media,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.Network,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.NotificationHubs,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
@@ -38,10 +55,14 @@ AzureRM.PowerBIEmbedded,No,No,Use the Azure Resource Manager model for managing 
 AzureRM.Profile,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.RecoveryServices,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.RecoveryServices.Backup,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
+AzureRM.RecoveryServices.SiteRecovery,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.RedisCache,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
+AzureRM.Relay,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.Resources,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.Scheduler,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.ServerManagement,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
+AzureRM.ServiceBus,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
+AzureRM.ServiceFabric,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.SiteRecovery,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.Sql,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.Storage,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
@@ -50,6 +71,7 @@ AzureRM.Tags,No,No,Use the Azure Resource Manager model for managing your Azure 
 AzureRM.TrafficManager,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.UsageAggregates,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
 AzureRM.Websites,No,No,Use the Azure Resource Manager model for managing your Azure Stack Hub resources,https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-powershell-install
+BaselineConfigurationAnalyzer,No,No,Deprecated. Part of Microsoft Baseline Security Analyzer (MBSA),https://docs.microsoft.com/en-us/windows/security/threat-protection/mbsa-removal-and-guidance
 BestPractices,No,Yes,"Display, run, or set Best Practice Analyzer (BPA) modules.",https://docs.microsoft.com/en-us/powershell/module/bestpractices
 BitLocker,Yes,Yes,Management of BitLocker.,https://docs.microsoft.com/en-us/powershell/module/bitlocker
 BitsTransfer,Yes,No,Management of Background Intelligent Transfer (BITS) tasks.,https://docs.microsoft.com/en-us/powershell/module/bitstransfer
@@ -57,10 +79,12 @@ BranchCache,Yes,Yes,Management of BranchCache,https://docs.microsoft.com/en-us/p
 Carbon,Yes,Yes,Automation of configuration of computers.,http://get-carbon.org
 CertificateDsc,Yes,Yes,Simplify administration of certificates on a Windows system,https://github.com/dsccommunity/CertificateDsc
 CimCmdlets,Yes,Yes,Used for interacting with the Common Information Module (CIM) on workstations and servers.,https://docs.microsoft.com/en-us/powershell/module/cimcmdlets
+ClusterAwareUpdating,No,No,Management of Cluster Aware Updating role and services,https://docs.microsoft.com/en-us/powershell/module/clusterawareupdating
 ComputerManagementDsc,Yes,Yes,Perform computer management tasks,https://github.com/dsccommunity/ComputerManagementDsc
 ConfigCI,No,No,"Get, modify, create, and merge Configurable Code Integrity policies",https://docs.microsoft.com/en-us/powershell/module/configci
 ConfigDefender,Yes,Yes,"Get threat information, get Windows Defender configuration, modify configuration, manage scans, and manage threats.",https://docs.microsoft.com/en-us/powershell/module/defender
 DataONTAP,Yes,Yes,Management and monitoring of NetApp's Data ONTAP operating system.,https://mysupport-beta.netapp.com/site/tools/tool-eula/powershell-toolkit
+Deduplication,No,No,Management of Deduplication services on Windows Server,https://docs.microsoft.com/en-us/powershell/module/deduplication
 Defender,Yes,Yes,"Get threat information, get Windows Defender configuration, modify configuration, manage scans, and manage threats.",https://docs.microsoft.com/en-us/powershell/module/defender
 DeliveryOptimization,No,No,Manage Delivery Optimization (Windows Update and BranchCache) settings,
 DFSN,Yes,No,Management of DFS namespaces,https://docs.microsoft.com/en-us/powershell/module/dfsn
@@ -73,6 +97,7 @@ DnsServer,Yes,Yes,Management of DNS server settings. Only used remotely on DNS s
 EventTracingManagement,Yes,Yes,Management of Event Tracing for Windows,https://docs.microsoft.com/en-us/powershell/module/eventtracingmanagement
 ExchangeOnlineManagement,No,No,Management of Microsoft 365 Exchange Online,https://docs.microsoft.com/en-us/powershell/exchange/exchange-online-powershell-v2
 FailoverClusters,No,No,Management of Failover Clusters,https://docs.microsoft.com/en-us/powershell/module/failoverclusters
+FailoverClusterSet,No,No,Management of Failover Cluster Sets,https://docs.microsoft.com/en-us/azure-stack/hci/deploy/cluster-set
 FileContentDsc,Yes,Yes,Manipulation of content in text files (such as config files),https://github.com/dsccommunity/FileContentDsc
 FileServerResourceManager,No,No,Management of File Server Resource Manager (FSRM),https://docs.microsoft.com/en-us/powershell/module/fileserverresourcemanager
 GPRegistryPolicyDsc,Yes,Yes,Apply and manage local group policies through manipulation of .pol files,https://github.com/dsccommunity/GPRegistryPolicyDsc
@@ -82,12 +107,14 @@ HgsDiagnostics,No,No,Perform diagnostics on Host Guardian Service,https://docs.m
 HostNetworkingService,No,No,Management of Host Networking Service,
 Hyper-V,Yes,Yes,Management of Hyper-V and Hyper-V virtual machines,https://docs.microsoft.com/en-us/powershell/module/hyper-v
 IISAdministration,Yes,Yes,Management of Internet Information Service (IIS) settings and websites,https://docs.microsoft.com/en-us/powershell/module/iisadministration
+IntelNetCmdlets,Yes,Yes,Configure and manage the Intel Ethernet Adapters and devices present in your system.,https://www.intel.com/content/www/us/en/support/articles/000023545/network-and-i-o.html
 International,No,No,Control the language that is used for various elements of the user interface,https://docs.microsoft.com/en-us/powershell/module/international
 IpamServer,No,No,Management of IP Address Management (IPAM) server,https://docs.microsoft.com/en-us/powershell/module/ipamserver
 iSCSI,Yes,No,Management of iSCSI initiators,https://docs.microsoft.com/en-us/powershell/module/iscsi
 IscsiTarget,No,No,Management of iSCSI targets,https://docs.microsoft.com/en-us/powershell/module/iscsitarget
 ISE,Yes,No,Management of Integrated Scripting Environment (ISE) snippets,https://docs.microsoft.com/en-us/powershell/module/ise
 Kds,Yes,No,Management of Key Distribution Services (KDS) that are required for group managed service accounts,https://docs.microsoft.com/en-us/powershell/module/kds
+Microsoft.MonitoringAgent.PowerShell,No,Yes,"Locally monitor IIS-hosted ASP.NET web apps and SharePoint 2010 or 2013 applications for errors, performance issues, or other problems by using Microsoft Monitoring Agent.",https://docs.microsoft.com/en-us/visualstudio/debugger/using-the-microsoft-monitoring-agent
 Microsoft.PowerShell.Archive,Yes,Yes,For compressing files into a zipped file or expanding a zipped file,https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.archive
 Microsoft.PowerShell.Core,Yes,Yes,Numerous built-in core cmdlets and providers that manage the basic features of PowerShell,https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core
 Microsoft.PowerShell.Diagnostics,Yes,Yes,Manage data from event logs,https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.diagnostics
@@ -102,7 +129,9 @@ Microsoft.SME.CredSspPolicy,No,No,Management of CredSSP policy,
 Microsoft.WSMan.Management,Yes,Yes,Provides core cmdlets and providers for management of WS-Management protocol in PowerShell,https://docs.microsoft.com/en-us/powershell/module/microsoft.wsman.management
 MicrosoftTeams,Yes,No,Management of Teams directly from PowerShell,https://docs.microsoft.com/en-us/MicrosoftTeams/teams-powershell-overview
 MMAgent,No,No,Management of Memory Management Agent (MMAgent),https://docs.microsoft.com/en-us/powershell/module/mmagent
+MPIO,No,Yes,Management Multipath I/O,https://docs.microsoft.com/en-us/powershell/module/mpio
 MsDtc,No,No,Management of Microsoft Distributed Transaction Coordinator (MSDTC),https://docs.microsoft.com/en-us/powershell/module/msdtc
+MSMQ,No,Yes,Management of Microsoft message queue.,https://docs.microsoft.com/en-us/powershell/module/msmq
 MSOnline,No,No,Management of Azure Active Directory,https://docs.microsoft.com/en-us/powershell/module/msonline
 NetAdapter,Yes,Yes,Management of Network Adapters (interfaces),https://docs.microsoft.com/en-us/powershell/module/netadapter
 NetApp.SANtricity.PowerShell,Yes,Yes,Monitor and provision NetApp E/EF Series Storage Systems,https://mysupport-beta.netapp.com/site/tools/tool-eula/powershell-toolkit
@@ -110,11 +139,13 @@ NetConnection,No,No,Management of Network Connection Profiles,https://docs.micro
 NetEventPacketCapture,No,No,Management of Network Packet Captures in conjunction with Event Tracing for Windows,https://docs.microsoft.com/en-us/powershell/module/neteventpacketcapture
 NetIQ.DRA.PowerShellExtensions,Yes,No,Interface with NetIQ's DRA through PowerShell to manage Active Directory objects,
 NetLbfo,Yes,No,Management of NIC Teaming,https://docs.microsoft.com/en-us/powershell/module/netlbfo
+NetLldpAgent,Yes,Yes,Management of Network Logical Link Discovery Protocol (LLDP) Agent,https://docs.microsoft.com/en-us/powershell/module/netlldpagent
 NetNat,No,No,Management of Network Address Translation settings,https://docs.microsoft.com/en-us/powershell/module/netnat
 NetQos,No,No,Management of Network Quality of Service (QoS) settings,https://docs.microsoft.com/en-us/powershell/module/netqos
 NetSecurity,Yes,Yes,Management of network security (such as IPSec and firewall) settings,https://docs.microsoft.com/en-us/powershell/module/netsecurity
 NetSwitchTeam,No,No,Management of Network Switch Team settings in Hyper-V switches,https://docs.microsoft.com/en-us/powershell/module/netswitchteam
 NetTCPIP,Yes,Yes,Management of TCP/IP and general network interface settings,https://docs.microsoft.com/en-us/powershell/module/nettcpip
+NetWNV,No,Yes,Management of Network Virtualization,https://docs.microsoft.com/en-us/powershell/module/netwnv
 NetworkConnectivityStatus,No,No,Management of Network Connectivity Status settings,https://docs.microsoft.com/en-us/powershell/module/networkconnectivitystatus
 NetworkController,No,No,Management of Network Controllers,https://docs.microsoft.com/en-us/powershell/module/networkcontroller
 NetworkControllerDiagnostics,No,No,Perform diagnostics on Network Controllers,https://docs.microsoft.com/en-us/powershell/module/networkcontrollerdiagnostics
@@ -147,26 +178,42 @@ PSScheduledJob,Yes,Yes,Management of Scheduled Jobs,https://docs.microsoft.com/e
 PSScriptAnalyzer,Yes,No,Static code checker for PowerShell modules and scripts. It generates DiagnosticResults (errors and warnings) to inform users about potential code defects and suggests possible solutions for improvements.,https://github.com/PowerShell/PSScriptAnalyzer
 PSWorkflow,Yes,No,Management of PowerShell Workflow's,https://docs.microsoft.com/en-us/powershell/module/psworkflow
 PSWorkflowUtility,Yes,No,Run a command or expression as a Windows PowerShell Workflow,https://docs.microsoft.com/en-us/powershell/module/psworkflowutility
+PtHTools,Yes,Yes,For running Pass-the-Hash functions,https://github.com/nsacyber/Pass-the-Hash-Guidance/blob/master/PtHTools/README.md
 RemoteAccess,No,No,Manage a Remote Access Server (RAS) and clients,https://docs.microsoft.com/en-us/powershell/module/remoteaccess
 RemoteDesktop,No,No,Management of Remote Desktop Services (RDS),https://docs.microsoft.com/en-us/powershell/module/remotedesktop
 ScheduledTasks,Yes,Yes,Management of Scheduled Tasks,https://docs.microsoft.com/en-us/powershell/module/scheduledtasks
 SecureBoot,Yes,Yes,Management of SecureBoot and UEFI,https://docs.microsoft.com/en-us/powershell/module/secureboot
 SecurityPolicyDsc,Yes,Yes,Configure user rights assignments,https://github.com/dsccommunity/SecurityPolicyDsc
+ServerCore,No,No,Get or set the display resolution,https://docs.microsoft.com/en-us/powershell/module/servercore
 ServerManager,Yes,Yes,Management of Server Manager settings and Windows Features on servers,https://docs.microsoft.com/en-us/powershell/module/servermanager
 ServerManagerTasks,Yes,Yes,"Management of servers, events, and performance collectors",https://docs.microsoft.com/en-us/powershell/module/servermanagertasks
+ShieldedVmCmdlets,No,No,Shielded virtual machine provisioning file cmdlets,https://docs.microsoft.com/en-us/powershell/module/shieldedvmcmdlets
+ShieldedVMDataFile,No,No,Shielded virtual machine provisioning file cmdlets,https://docs.microsoft.com/en-us/powershell/module/shieldedvmdatafile
+ShieldedVMTemplate,No,No,Shielded virtual machine template cmdlets,https://docs.microsoft.com/en-us/powershell/module/shieldedvmtemplate
 SmbShare,Yes,Yes,Management of Server Message Block (SMB) file shares,https://docs.microsoft.com/en-us/powershell/module/smbshare
 SmbWitness,No,No,Management of SMB clients on clustered servers,https://docs.microsoft.com/en-us/powershell/module/smbwitness
+SnapDrive,Yes,Yes,Management of NetApp and connections to the NetApp from Windows devices.,https://library.netapp.com/ecmdocs/ECMLP2440325/html/GUID-9CF85E7D-0A2D-4216-BAF1-A8E2C6987989.html
+SoftwareInventoryLogging,No,Yes,Software Inventory Logging,https://docs.microsoft.com/en-us/powershell/module/softwareinventorylogging
 SpeculationControl,Yes,Yes,Used to query speculation control settings for the system.,https://www.powershellgallery.com/packages/SpeculationControl
+SQLASCMDLETS,No,No,Deprecated. Part of SqlServer module now.,https://docs.microsoft.com/en-us/powershell/module/sqlserver
+SQLPS,Yes,Yes,Management of SQL server,https://docs.microsoft.com/en-us/powershell/module/sqlps
 SqlServer,Yes,Yes,Management of SQL server,https://docs.microsoft.com/en-us/powershell/module/sqlserver
 SqlServerDsc,Yes,Yes,Deployment and configuration of Microsoft SQL Server,https://github.com/dsccommunity/SqlServerDsc
 StartLayout,No,No,Management of start screen layout,https://docs.microsoft.com/en-us/powershell/module/startlayout
+StartScreen,No,No,Management of Windows Start Screen.,https://docs.microsoft.com/en-us/powershell/module/startscreen
 Storage,Yes,Yes,For interacting with Windows Storage Management,https://docs.microsoft.com/en-us/powershell/module/storage
 StorageBusCache,No,No,Management of Storage Bus Cache settings on a Windows Server 2022 or newer file server,https://docs.microsoft.com/en-us/windows-server/storage/storage-spaces/storage-spaces-storage-bus-cache
+StorageMigrationService,No,No,Management of Storage Migration Service.,https://docs.microsoft.com/en-us/windows-server/storage/storage-migration-service/overview
+StorageQoS,No,No,Management of Storage Quality-of-Service.,https://docs.microsoft.com/en-us/powershell/module/storageqos
+StorageReplica,No,No,Management of Storage Replica services.,https://docs.microsoft.com/en-us/powershell/module/storagereplica
 SwisPowerShell,Yes,No,Working with the SolarWinds Information Service.,https://github.com/solarwinds/OrionSDK/wiki/PowerShell
+SystemInsights,No,No,Predictive Analytics for Windows Server.,https://docs.microsoft.com/en-us/powershell/module/systeminsights
 TLS,Yes,Yes,Management of Transport Layer Security (TLS) settings,https://docs.microsoft.com/en-us/powershell/module/tls
 TroubleshootingPack,No,No,Get or start a troubleshooting pack,https://docs.microsoft.com/en-us/powershell/module/troubleshootingpack
 TrustedPlatformModule,Yes,Yes,Management of Trusted Platform Module,https://docs.microsoft.com/en-us/powershell/module/trustedplatformmodule
 UEV,No,No,Manage Microsoft User Experience Virtualization (UE-V),https://docs.microsoft.com/en-us/powershell/module/uev
+UpdateServices,No,No,Windows Server Update Services (WSUS) Administration.,https://docs.microsoft.com/en-us/powershell/module/updateservices
+UserAccessLogging,No,No,Management of User Access Logging components.,https://docs.microsoft.com/en-us/powershell/module/useraccesslogging
 VMware.CloudServices,No,No,"Management of VMware products to include ESXi, vCenter Server Appliance (VCSA), VMware Remote Console (VMRC), and others.",https://blogs.vmware.com/PowerCLI/
 VMware.DeployAutomation,Yes,No,"Management of VMware products to include ESXi, vCenter Server Appliance (VCSA), VMware Remote Console (VMRC), and others.",https://blogs.vmware.com/PowerCLI/
 VMware.ImageBuilder,Yes,No,"Management of VMware products to include ESXi, vCenter Server Appliance (VCSA), VMware Remote Console (VMRC), and others.",https://blogs.vmware.com/PowerCLI/
@@ -194,6 +241,7 @@ VpnClient,No,No,Manage the built-in Windows VPN client,https://docs.microsoft.co
 Wdac,Yes,Yes,Manage Windows Data Access Components (Windows DAC) such as Open Database Connectivity (ODBC) properties,https://docs.microsoft.com/en-us/powershell/module/wdac
 WDS,Yes,Yes,Manage Windows Deployment Services (WDS),https://docs.microsoft.com/en-us/powershell/module/wds
 WebAdministration,Yes,Yes,Management of Windows Web Servers (IIS),https://docs.microsoft.com/en-us/powershell/module/webadministration
+WebApplicationProxy,No,No,Management of Web Application Proxy.,https://docs.microsoft.com/en-us/powershell/module/webapplicationproxy
 Whea,No,No,Get or set Windows Hardware Error Architecture (WHEA) policies,https://docs.microsoft.com/en-us/powershell/module/whea
 WindowsDefenderDsc,Yes,Yes,Management of security mitigations in Windows Defenfer Security Center,https://github.com/erjenkin/WindowsDefenderDsc
 WindowsDeveloperLicense,No,No,Management of Windows Developer License,https://docs.microsoft.com/en-us/powershell/module/windowsdeveloperlicense
@@ -202,6 +250,8 @@ WindowsSearch,No,No,Get or set Windows Search settings,https://docs.microsoft.co
 WindowsServerBackup,No,No,Management of Windows Server Backups,https://docs.microsoft.com/en-us/powershell/module/windowsserverbackup
 WindowsUpdate,No,No,Merges Windows Update .etl files into a single log,https://docs.microsoft.com/en-us/powershell/module/windowsupdate
 WindowsUpdateProvider,No,No,Manage Windows Update,
+WssCmdlets,No,No,Management of Windows Server Solutions on a Windows Server Essentials server.,https://docs.microsoft.com/en-us/powershell/module/wsscmdlets
+WssSetupCmdlets,No,No,Management of Windows Server Solutions on a Windows Server Essentials server.,https://docs.microsoft.com/en-us/powershell/module/wsssetup
 WSTools,Yes,Yes,"Automation of tasks, workstation/server management, Insider Threat information gathering, domain management, reporting, and vulnerability remediation.",https://wstools.dev
 xDnsServer,Yes,Yes,Management and configuration of Windows DNS servers,https://github.com/dsccommunity/DnsServerDsc
 xWebAdministration,Yes,Yes,Management and configuration of Windows Web Servers,https://github.com/dsccommunity/xWebAdministration
