@@ -5734,7 +5734,7 @@ function Stop-AppService {
 .NOTES
     Author: Skyler Hart
     Created: 2021-06-19 23:06:20
-    Last Edit: 2021-06-19 23:06:20
+    Last Edit: 2021-10-12 16:00:59
     Keywords:
     Requires:
         -RunAsAdministrator
@@ -5752,6 +5752,7 @@ function Stop-AppService {
     else {
         Write-Output "Must run PowerShell as admin to run Stop-AppService."
     }
+    Write-Output "Completed stopping application services."
 }
 
 
