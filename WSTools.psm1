@@ -4786,12 +4786,9 @@ function Set-Preferences {
 .NOTES
     Author: Skyler Hart
     Created: 2020-04-18 13:00:47
-    Last Edit: 2020-04-18 13:00:47
+    Last Edit: 2021-10-12 11:23:19
     Keywords:
     Requires:
-        -Module ActiveDirectory
-        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        -RunAsAdministrator
 .LINK
     https://wstools.dev
 #>
@@ -4895,6 +4892,7 @@ function Set-Preferences {
             New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name Link -PropertyType Binary -Value ([byte[]](17,00,00,00)) -Force -ErrorAction SilentlyContinue
         }
     }
+    Write-Output "Some settings will not apply until after you log off and then log back on."
 }
 
 
