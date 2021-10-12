@@ -127,6 +127,7 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     Edge = "J:\Patches\Edge"
     Git = "J:\Patches\GitSCM"
     IE11 = "J:\Patches\IE\IE11"
+    MECM = "J:\Microsoft\SCCM"
     OneDrive = "J:\Patches\OneDrive"
     SplunkUF = "J:\Patches\Splunk_Forwarder"
     SSMS = "J:\Patches\SQL\SSMS" #sql server management studio

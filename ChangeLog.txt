@@ -9,6 +9,8 @@ Known issues:
 ######################
 New features and other changes:
 1. Added message to Set-Preferences about needing to log off then back in.
+2. Added MECM config file item.
+3. Added function Install-MECM.
 
 ######################
 #                    #
