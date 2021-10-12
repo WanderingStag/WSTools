@@ -4,38 +4,6 @@ Known issues:
 
 ######################
 #                    #
-#      2021.8.4      #
-#                    #
-######################
-1. InstallRemote.ps1 - changed OneDrive to newer version checking code (only checks Major.Minor version not Major.Minor.Subversion.Revision).
-2. InstallRemote.ps1 - changed Visual Studio Code to newer version checking code (only checks Major.Minor.Subversion).
-3. InstallRemote.ps1 - removed Silverlight.
-4. InstallRemote.ps1 - fixed notifications showing on servers instead of clients.
-5. InstallRemote.ps1 - Changed Adobe Acrobat to use separate update install if minor version or subversion doesn't match instead of the full install.
-6. Added function Remove-OldPowerShellModule.
-7. Added config item OldPSModule.
-
-######################
-#                    #
-#      2021.8.3      #
-#                    #
-######################
-1. Added config items HPUniversalPrintDriver and LexmarkUniversalPrintDriver. Bumped config version.
-2. Added functions Copy-HPUniversalPrintDriver and Install-HPUniversalPrintDriver.
-3. Added functions Copy-LexmarkUniversalPrintDriver and Install-LexmarkUniversalPrintDriver.
-
-######################
-#                    #
-#      2021.8.2      #
-#                    #
-######################
-New features and other changes:
-1. Added function Get-SplunkStatus.
-2. Changed some text in remediation sub-module.
-3. Made some small changes to add additional information to applications in Get-CommandList.
-
-######################
-#                    #
 #       2021.8       #
 #                    #
 ######################
@@ -47,6 +15,19 @@ New features and other changes:
 5. Added function Get-CommandList.
 6. Added function Get-ModuleList.
 7. Moved InstallRemote.ps1 to Resources folder. Updated Install-Patches with the new path.
+8. Added function Get-SplunkStatus.
+9. Changed some text in remediation sub-module.
+10. Made some small changes to add additional information to applications in Get-CommandList.
+11. Added config items HPUniversalPrintDriver and LexmarkUniversalPrintDriver. Bumped config version.
+12. Added functions Copy-HPUniversalPrintDriver and Install-HPUniversalPrintDriver.
+13. Added functions Copy-LexmarkUniversalPrintDriver and Install-LexmarkUniversalPrintDriver.
+14. InstallRemote.ps1 - changed OneDrive to newer version checking code (only checks Major.Minor version not Major.Minor.Subversion.Revision).
+15. InstallRemote.ps1 - changed Visual Studio Code to newer version checking code (only checks Major.Minor.Subversion).
+16. InstallRemote.ps1 - removed Silverlight.
+17. InstallRemote.ps1 - fixed notifications showing on servers instead of clients.
+18. InstallRemote.ps1 - Changed Adobe Acrobat to use separate update install if minor version or subversion doesn't match instead of the full install.
+19. Added function Remove-OldPowerShellModule.
+20. Added config item OldPSModule.
 
 ######################
 #                    #
