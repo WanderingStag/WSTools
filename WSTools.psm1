@@ -5852,7 +5852,7 @@ Function Test-EmailRelay {
        .Notes
         AUTHOR: Skyler Hart
         CREATED: 08/18/2017 20:40:04
-        LASTEDIT: 2020-08-09 21:36:41
+        LASTEDIT: 2021-10-12 22:09:30
         KEYWORDS: E-mail, email, relay, smtp
         REMARKS: On secure networks, port 25 has to be open
 .LINK
@@ -5879,7 +5879,7 @@ Function Test-EmailRelay {
     $date = Get-Date
     $subject = "Test from $env:COMPUTERNAME $date"
 
-    send-mailmessage -To $Recipient -From $from -Subject $subject -Body "Testing relay of SMTP messages.`nFrom: $from `nTo: $recip `n`nPlease delete this message." -smtpserver $smtpserver -Port $port
+    send-mailmessage -To $Recipient -From $from -Subject $subject -Body "Testing relay of SMTP messages.`nFrom: $from `nTo: $Recipient `n`nPlease delete this message." -smtpserver $smtpserver -Port $port
 }
 New-Alias -Name "Test-SMTPRelay" -Value Test-EmailRelay
 New-Alias -Name "Test-MailRelay" -Value Test-EmailRelay

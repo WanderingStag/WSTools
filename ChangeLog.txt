@@ -12,6 +12,7 @@ New features and other changes:
 2. Added MECM config file item.
 3. Added function Install-MECM.
 4. Modified Copy-PowerShellJSON to create User and snippets folders if they don't already exist. $env:APPDATA\Code still has to exist or it will fail.
+5. Fixed a variable issue in Test-EmailRelay. Body now appropriately shows recipient address.
 
 ######################
 #                    #
