@@ -678,11 +678,17 @@ function Copy-PowerShellJSON {
 .NOTES
     Author: Skyler Hart
     Created: 2020-04-13 22:44:11
-    Last Edit: 2020-04-17 14:24:07
+    Last Edit: 2021-10-12 17:42:29
     Keywords: WSTools, Visual Studio Code, PowerShell, JSON, Preferences, snippets, code blocks
 .LINK
     https://wstools.dev
 #>
+    if (!(Test-Path $env:APPDATA\Code\User)) {
+        New-Item -Path $env:APPDATA\Code -ItemType Directory -Name User -Force
+    }
+    if (!(Test-Path $env:APPDATA\Code\User\snippets)) {
+        New-Item -Path $env:APPDATA\Code\User -ItemType Directory -Name snippets -Force
+    }
     Copy-Item -Path $PSScriptRoot\powershell.json -Destination $env:APPDATA\Code\User\snippets\powershell.json
 }
 New-Alias -Name "Update-PowerShellJSON" -Value Copy-PowerShellJSON
