@@ -4748,12 +4748,10 @@ function Set-NetworkConnectionsShortcut {
 .NOTES
     Author: Skyler Hart
     Created: 2020-05-08 23:01:21
-    Last Edit: 2020-05-08 23:01:21
+    Last Edit: 2021-10-13 20:55:00
     Keywords:
     Requires:
-        -Module ActiveDirectory
-        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        -RunAsAdministrator
+        -RunAsAdministrator if placing in Public Desktop.
 .LINK
     https://wstools.dev
 #>
@@ -4773,7 +4771,7 @@ function Set-NetworkConnectionsShortcut {
         $sp = "C:\Users\Public\Desktop\Network Connections.lnk"
     }
     elseif ($Path -eq "UserDesktop") {
-        $sp = $env:USERPROFILE + "\Desktop\Network Connections.lnk"
+        $sp = ([System.Environment]::GetFolderPath("Desktop")) + "\Network Connections.lnk"
     }
     $AppLocation = "explorer.exe"
     $WshShell = New-Object -ComObject WScript.Shell
