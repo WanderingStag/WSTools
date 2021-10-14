@@ -323,7 +323,7 @@ function Export-MessagesToPST {
    .Notes
     AUTHOR: Skyler Hart
     CREATED: 01/19/2014 01:20:00
-    LASTEDIT: 08/18/2017 20:58:26
+    LASTEDIT: 2021-10-13 20:39:47
     KEYWORDS: Exchange, Mailbox, PST, export, InTh, Insider Threat
     REQUIRES:
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
@@ -337,7 +337,7 @@ function Export-MessagesToPST {
         [string]$TargetUserAlias,
 
         [Parameter(Mandatory=$false, Position=1)]
-        [string]$ExportPath = "$env:USERPROFILE\Desktop"
+        [string]$ExportPath = ([System.Environment]::GetFolderPath("Desktop"))
     )
 
     $wmiq = Get-WmiObject win32_operatingsystem | Select-Object OSArchitecture

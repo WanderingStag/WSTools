@@ -9,6 +9,7 @@ Known issues:
 ######################
 New features and other changes:
 1. Addressed an issue where Update-VisioStencils would copy to "$env:USERPROFILE\Documents\My Shapes". While normally correct, if using a service to redirect the Documents folder such as OneDrive it would not copy to the redirected location.
+2. Addressed folder redirection issue in Export-MessagesToPST where it wouldn't save to a redirected Desktop.
 
 ######################
 #                    #
