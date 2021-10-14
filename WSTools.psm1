@@ -4686,7 +4686,7 @@ function Set-LAPSshortcut {
 .NOTES
     Author: Skyler Hart
     Created: 2020-05-08 22:34:49
-    Last Edit: 2020-05-08 22:34:49
+    Last Edit: 2021-10-13 20:48:50
 .LINK
     https://wstools.dev
 #>
@@ -4706,7 +4706,7 @@ function Set-LAPSshortcut {
         $sp = "C:\Users\Public\Desktop\LAPS.lnk"
     }
     elseif ($Path -eq "UserDesktop") {
-        $sp = $env:USERPROFILE + "\Desktop\LAPS.lnk"
+        $sp = ([System.Environment]::GetFolderPath("Desktop")) + "\LAPS.lnk"
     }
     $AppLocation = "C:\Program Files\LAPS\AdmPwd.UI.exe"
     $WshShell = New-Object -ComObject WScript.Shell
