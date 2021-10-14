@@ -6118,7 +6118,7 @@ function Update-VisioStencils {
 .NOTES
     Author: Skyler Hart
     Created: 2021-05-18 20:56:13
-    Last Edit: 2021-05-18 21:15:21
+    Last Edit: 2021-10-13 20:33:20
     Keywords: Visio, Stencils
 .LINK
     https://wstools.dev
@@ -6135,10 +6135,10 @@ function Update-VisioStencils {
     )]
 
     $vspath = ($Global:WSToolsConfig).Stencils
-    $rpath = "$env:USERPROFILE\Documents\My Shapes"
+    $rpath = [System.Environment]::GetFolderPath("MyDocuments") + "\My Shapes"
 
     if (Test-Path $rpath) {
-        $confirmation = Read-Host "Are you sure you want to overwrite the files in $rpath with files in $vspath`?"
+        $confirmation = Read-Host "Are you sure you want to overwrite the files in $rpath with files in $vspath`? `nPress y for yes and then press enter. To cancel enter any other value then press enter."
         if ($confirmation -eq 'y') {
             robocopy $vspath $rpath /mir /mt:4 /r:3 /w:15 /njh /njs
         }
@@ -6148,6 +6148,7 @@ function Update-VisioStencils {
     }
 }
 New-Alias -Name "Copy-VisioStencils" -Value Update-VisioStencils
+New-Alias -Name "Get-VisioStencils" -Value Update-VisioStencils
 
 
 #####################################
