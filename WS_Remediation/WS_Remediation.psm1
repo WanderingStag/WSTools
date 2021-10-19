@@ -9144,12 +9144,10 @@ Function Set-RemediationValues {
 .Notes
     AUTHOR: Skyler Hart
     CREATED: 02/08/2018 22:10:17
-    LASTEDIT: 2021-04-22 21:54:06
+    LASTEDIT: 2021-10-19 10:42:59
     KEYWORDS:
     REQUIRES:
         #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
@@ -9175,6 +9173,7 @@ Function Set-RemediationValues {
     #PrintNightmare
     $v8 = 'NoWarningNoElevationOnInstall'
     $v9 = 'UpdatePromptSettings'
+    $v10 = 'RestrictDriverInstallationToAdministrators'
 
     $d0 = 0
     $d1 = 1
@@ -9470,6 +9469,10 @@ Function Set-RemediationValues {
         $BaseKey = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine, $comp)
         $SubKey = $BaseKey.OpenSubKey('SOFTWARE\Policies\Microsoft\Windows NT\Printers\PointAndPrint',$true)
         $SubKey.SetValue($v9, $d0, [Microsoft.Win32.RegistryValueKind]::DWORD)
+
+        $BaseKey = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine, $comp)
+        $SubKey = $BaseKey.OpenSubKey('SOFTWARE\Policies\Microsoft\Windows NT\Printers\PointAndPrint',$true)
+        $SubKey.SetValue($v10, $d1, [Microsoft.Win32.RegistryValueKind]::DWORD)
 
         Set-NLA -ComputerName $comp
     }#foreach computer
