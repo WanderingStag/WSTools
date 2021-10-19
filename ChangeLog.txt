@@ -17,6 +17,7 @@ New features and other changes:
 7. Changed example domain to wstools.dev.
 8. Added OWA config item.
 9. Added EAC config item.
+10. Added SDNMgmt config item and function Open-SDN.
 
 ######################
 #                    #

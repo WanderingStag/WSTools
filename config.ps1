@@ -101,6 +101,9 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     #Open-SharePoint
     #SharePoint = "https://sharepoint.wstools.dev"
 
+    #Open-SDNManagement aka Open-Unifi
+    SDNMgmt = "https://unifi.wanderingstag.com"
+
     #Open-vCenter
     #vCenter = "https://vcenter.wstools.dev/"
 
