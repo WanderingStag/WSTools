@@ -24,6 +24,7 @@ New features and other changes:
 14. Changed TLS 1.1 Enabled value to 0 in Set-RemediationValues to address CAT I STIG findings.
 15. Added function Set-HiveNightmareFix (aka SeriousSam.)
 16. Added CMTrace config item and function Open-CMTrace.
+17. Moved powershell.json to resources folder and updated Copy-PowerShellJSON with new path.
 
 ######################
 #                    #
