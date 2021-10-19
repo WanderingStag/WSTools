@@ -12,11 +12,11 @@ New features and other changes:
 2. Addressed folder redirection issue in Export-MessagesToPST where it wouldn't save to a redirected Desktop.
 3. Addressed folder redirection issue in Set-LAPSshortcut where it wouldn't save to a redirected Desktop.
 4. Addressed folder redirection issue in Set-NetworkConnectionsShortcut where it wouldn't save to a redirected Desktop.
-5. Added CMLibrary config item.
-6. Added SharePoint config item.
+5. Added CMLibrary config item and function Open-CMLibrary.
+6. Added SharePoint config item and function Open-SharePoint.
 7. Changed example domain to wstools.dev.
-8. Added OWA config item.
-9. Added EAC config item.
+8. Added OWA config item and function Open-OWA.
+9. Added EAC config item and function Open-EAC.
 10. Added SDNMgmt config item and function Open-SDN.
 
 ######################

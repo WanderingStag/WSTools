@@ -580,6 +580,49 @@ Function Open-ADUsersAndComputers {
 New-Alias -Name "aduc" -Value Open-ADUsersAndComputers
 
 
+function Open-CMLibrary {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 2021-10-18 22:49:11
+    LASTEDIT: 2021-10-18 22:51:31
+.LINK
+    https://wstools.dev
+#>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$false)]
+        [Switch]$Chrome,
+
+        [Parameter(Mandatory=$false)]
+        [Switch]$Edge,
+
+        [Parameter(Mandatory=$false)]
+        [Switch]$Firefox,
+
+        [Parameter(Mandatory=$false)]
+        [Switch]$InternetExplorer
+    )
+
+    $config = $Global:WSToolsConfig
+    $URL = $config.CMLibrary
+
+    if ($Chrome) {Start-Process "chrome.exe" $URL}
+    elseif ($Edge) {Start-Process shell:AppsFolder\Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge $URL}
+    elseif ($Firefox) {Start-Process "firefox.exe" $URL}
+    elseif ($InternetExplorer) {Start-Process "iexplore.exe" $URL}
+    else {
+        #open in default browser
+        (New-Object -com Shell.Application).Open($URL)
+    }
+}
+
+
 Function Open-DHCPmgmt {
 <#
 .Notes
@@ -608,6 +651,52 @@ Function Open-DNSmgmt {
     dnsmgmt.msc
 }
 New-Alias -Name "dns" -Value Open-DNSmgmt
+
+
+function Open-EAC {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 2021-10-18 22:55:39
+    LASTEDIT: 2021-10-18 22:56:47
+.LINK
+    https://wstools.dev
+#>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$false)]
+        [Switch]$Chrome,
+
+        [Parameter(Mandatory=$false)]
+        [Switch]$Edge,
+
+        [Parameter(Mandatory=$false)]
+        [Switch]$Firefox,
+
+        [Parameter(Mandatory=$false)]
+        [Switch]$InternetExplorer
+    )
+
+    $config = $Global:WSToolsConfig
+    $URL = $config.EAC
+
+    if ($Chrome) {Start-Process "chrome.exe" $URL}
+    elseif ($Edge) {Start-Process shell:AppsFolder\Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge $URL}
+    elseif ($Firefox) {Start-Process "firefox.exe" $URL}
+    elseif ($InternetExplorer) {Start-Process "iexplore.exe" $URL}
+    else {
+        #open in default browser
+        (New-Object -com Shell.Application).Open($URL)
+    }
+}
+New-Alias -Name "Open-ECP" -Value Open-EAC
+New-Alias -Name "EAC" -Value Open-EAC
+New-Alias -Name "ECP" -Value Open-EAC
 
 
 Function Open-GroupPolicyMgmt {
@@ -758,6 +847,50 @@ function Open-NetLogonLog {
 }
 
 
+function Open-OWA {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 2021-10-18 22:54:07
+    LASTEDIT: 2021-10-18 22:54:48
+.LINK
+    https://wstools.dev
+#>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$false)]
+        [Switch]$Chrome,
+
+        [Parameter(Mandatory=$false)]
+        [Switch]$Edge,
+
+        [Parameter(Mandatory=$false)]
+        [Switch]$Firefox,
+
+        [Parameter(Mandatory=$false)]
+        [Switch]$InternetExplorer
+    )
+
+    $config = $Global:WSToolsConfig
+    $URL = $config.OWA
+
+    if ($Chrome) {Start-Process "chrome.exe" $URL}
+    elseif ($Edge) {Start-Process shell:AppsFolder\Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge $URL}
+    elseif ($Firefox) {Start-Process "firefox.exe" $URL}
+    elseif ($InternetExplorer) {Start-Process "iexplore.exe" $URL}
+    else {
+        #open in default browser
+        (New-Object -com Shell.Application).Open($URL)
+    }
+}
+New-Alias -Name "OWA" -Value Open-OWA
+
+
 function Open-SDN {
 <#
 .Notes
@@ -827,6 +960,49 @@ Function Open-SharedFolders {
 }
 New-Alias -Name "Shares" -Value Open-SharedFolders
 New-Alias -Name "Get-Shares" -Value Open-SharedFolders
+
+
+function Open-SharePoint {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 2021-10-18 22:51:47
+    LASTEDIT: 2021-10-18 22:52:18
+.LINK
+    https://wstools.dev
+#>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$false)]
+        [Switch]$Chrome,
+
+        [Parameter(Mandatory=$false)]
+        [Switch]$Edge,
+
+        [Parameter(Mandatory=$false)]
+        [Switch]$Firefox,
+
+        [Parameter(Mandatory=$false)]
+        [Switch]$InternetExplorer
+    )
+
+    $config = $Global:WSToolsConfig
+    $URL = $config.SharePoint
+
+    if ($Chrome) {Start-Process "chrome.exe" $URL}
+    elseif ($Edge) {Start-Process shell:AppsFolder\Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge $URL}
+    elseif ($Firefox) {Start-Process "firefox.exe" $URL}
+    elseif ($InternetExplorer) {Start-Process "iexplore.exe" $URL}
+    else {
+        #open in default browser
+        (New-Object -com Shell.Application).Open($URL)
+    }
+}
 
 
 Function Open-vCenter {
