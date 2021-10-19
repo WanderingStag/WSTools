@@ -89,6 +89,9 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     #HP iLO management in the WSTools\WS_DomainMgmt Open-iLO function
     #iLO = "https://iloaddress.wstools.dev"
 
+    #Open-OWA
+    #OWA = "https://owa.wstools.dev"
+
     #Open-Remedy. Because of the aliases (Open-EITSM, EITSM) this can be used for any ticketing system
     #Remedy = "https://remedy.wstools.dev"
 
