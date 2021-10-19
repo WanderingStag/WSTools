@@ -25,6 +25,7 @@ New features and other changes:
 15. Added function Set-HiveNightmareFix (aka SeriousSam.)
 16. Added CMTrace config item and function Open-CMTrace.
 17. Moved powershell.json to resources folder and updated Copy-PowerShellJSON with new path.
+18. Added function Get-LinesOfCode, PowerShell/JSON only. Exludes blank lines. INCLUDES comments.
 
 ######################
 #                    #
