@@ -20,6 +20,8 @@ New features and other changes:
 10. Added SDNMgmt config item and function Open-SDN.
 11. Added SEIM config item and function Open-SEIM.
 12. Added additional registry value to Set-PrintNightmareFix and Set-RemediationValues to resolve an additional PrintNightmare issue.
+13. Added DisabledByDefault registry value to PCT, SSL 2.0, SSL 3.0, and TLS 1.1 in Set-RemediationValues to address CAT I STIG findings. It was already on TLS 1.0.
+14. Changed TLS 1.1 Enabled value to 0 in Set-RemediationValues to address CAT I STIG findings.
 
 ######################
 #                    #
