@@ -938,6 +938,52 @@ New-Alias -Name "Open-Unifi" -Value Open-SDN
 New-Alias -Name "unifi" -Value Open-SDN
 
 
+function Open-SEIM {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 2021-10-18 23:03:53
+    LASTEDIT: 2021-10-18 23:04:54
+.LINK
+    https://wstools.dev
+#>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+        "PSAvoidGlobalVars",
+        "",
+        Justification = "Have tried other methods and they do not work consistently."
+    )]
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$false)]
+        [Switch]$Chrome,
+
+        [Parameter(Mandatory=$false)]
+        [Switch]$Edge,
+
+        [Parameter(Mandatory=$false)]
+        [Switch]$Firefox,
+
+        [Parameter(Mandatory=$false)]
+        [Switch]$InternetExplorer
+    )
+
+    $config = $Global:WSToolsConfig
+    $URL = $config.SEIM
+
+    if ($Chrome) {Start-Process "chrome.exe" $URL}
+    elseif ($Edge) {Start-Process shell:AppsFolder\Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge $URL}
+    elseif ($Firefox) {Start-Process "firefox.exe" $URL}
+    elseif ($InternetExplorer) {Start-Process "iexplore.exe" $URL}
+    else {
+        #open in default browser
+        (New-Object -com Shell.Application).Open($URL)
+    }
+}
+New-Alias -Name "Open-SIEM" -Value Open-SEIM
+New-Alias -Name "Open-ArcSight" -Value Open-SEIM
+New-Alias -Name "Open-Splunk" -Value Open-SEIM
+
+
 Function Open-SharedFolders {
 <#
    .Notes

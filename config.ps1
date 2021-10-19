@@ -104,6 +104,9 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     #Open-SDNManagement aka Open-Unifi
     SDNMgmt = "https://unifi.wanderingstag.com"
 
+    #Open-SEIM
+    #SEIM = "https://seim.wstools.dev"
+
     #Open-vCenter
     #vCenter = "https://vcenter.wstools.dev/"
 

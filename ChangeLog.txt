@@ -18,6 +18,7 @@ New features and other changes:
 8. Added OWA config item and function Open-OWA.
 9. Added EAC config item and function Open-EAC.
 10. Added SDNMgmt config item and function Open-SDN.
+11. Added SEIM config item and function Open-SEIM.
 
 ######################
 #                    #
