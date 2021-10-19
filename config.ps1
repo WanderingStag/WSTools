@@ -5,7 +5,7 @@
 )]
 
 $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
-    # WSTools config v1.2.6
+    # WSTools config v1.2.7
     # Remove the # symbol infront of a line to enable it
     ###########################################################################################################################################
     #Application Service Names - used in Stop-AppService. Uses match to match the name of a service that is running and stops it.
@@ -83,6 +83,9 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     ################################
     ##      Mgmt/Suport URLs      ##
     ################################
+    #Open-CMLibrary
+    #CMLibrary = "https://cmlibrary.somedomain.com"
+
     #HP iLO management in the WSTools\WS_DomainMgmt Open-iLO function
     #iLO = "https://iloaddress.somedomain.com"
 
