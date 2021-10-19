@@ -13,6 +13,8 @@ New features and other changes:
 3. Addressed folder redirection issue in Set-LAPSshortcut where it wouldn't save to a redirected Desktop.
 4. Addressed folder redirection issue in Set-NetworkConnectionsShortcut where it wouldn't save to a redirected Desktop.
 5. Added CMLibrary config item.
+6. Added SharePoint config item.
+7. Changed example domain to wstools.dev.
 
 ######################
 #                    #

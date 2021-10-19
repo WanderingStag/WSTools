@@ -64,10 +64,10 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     ##            DRA             ##
     ################################
     #### only remove the # in front of these and modify them if you have DRA Host/REST servers
-    #DRADomain = "somedomain.com"
-    #DRAHostServer = "server.somedomain.com"
+    #DRADomain = "wstools.dev"
+    #DRAHostServer = "server.wstools.dev"
     #DRAHostPort = 11192 #if not specified 11192 is used by default
-    #DRARESTServer = "server.somedomain.com"
+    #DRARESTServer = "server.wstools.dev"
     #DRARESTPort = 8755 #if not specified 8755 is used by default
     #DRAInstallLocation = "C:\Program Files (x86)\netiq\DRA Extensions\modules\NetIQ.DRA.PowerShellExtensions"
     #DRAInstallFile = "J:\Microsoft\PowerShell\Modules\DRA"
@@ -76,24 +76,27 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     ##         Email relay        ##
     ################################
     #Settings for Test-EmailRelay
-    #Sender = "noreply@somedomain.com"
-    #SMTPServer = "smtprelay.somedomain.com"
+    #Sender = "noreply@wstools.dev"
+    #SMTPServer = "smtprelay.wstools.dev"
     #SMTPPort = 25
 
     ################################
     ##      Mgmt/Suport URLs      ##
     ################################
     #Open-CMLibrary
-    #CMLibrary = "https://cmlibrary.somedomain.com"
+    #CMLibrary = "https://cmlibrary.wstools.dev"
 
     #HP iLO management in the WSTools\WS_DomainMgmt Open-iLO function
-    #iLO = "https://iloaddress.somedomain.com"
+    #iLO = "https://iloaddress.wstools.dev"
 
     #Open-Remedy. Because of the aliases (Open-EITSM, EITSM) this can be used for any ticketing system
-    #Remedy = "https://remedy.somedomain.com"
+    #Remedy = "https://remedy.wstools.dev"
+
+    #Open-SharePoint
+    #SharePoint = "https://sharepoint.wstools.dev"
 
     #Open-vCenter
-    #vCenter = "https://virtualcenter.somedomain.com/"
+    #vCenter = "https://vcenter.wstools.dev/"
 
     ################################
     ##         Preferences        ##
