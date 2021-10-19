@@ -16,6 +16,7 @@ New features and other changes:
 6. Added SharePoint config item.
 7. Changed example domain to wstools.dev.
 8. Added OWA config item.
+9. Added EAC config item.
 
 ######################
 #                    #

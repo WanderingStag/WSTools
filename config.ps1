@@ -86,6 +86,9 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     #Open-CMLibrary
     #CMLibrary = "https://cmlibrary.wstools.dev"
 
+    #Open-ECP/Open-EAC #exchange control panel aka exchange admin center (eac)
+    #EAC = "https://owa.wstools.dev/ecp"
+
     #HP iLO management in the WSTools\WS_DomainMgmt Open-iLO function
     #iLO = "https://iloaddress.wstools.dev"
 
