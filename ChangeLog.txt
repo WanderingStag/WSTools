@@ -23,6 +23,7 @@ New features and other changes:
 13. Added DisabledByDefault server registry value to PCT, SSL 2.0, SSL 3.0, and TLS 1.1 in Set-RemediationValues to address CAT I STIG findings. It was already on TLS 1.0.
 14. Changed TLS 1.1 Enabled value to 0 in Set-RemediationValues to address CAT I STIG findings.
 15. Added function Set-HiveNightmareFix (aka SeriousSam.)
+16. Added CMTrace config item and function Open-CMTrace.
 
 ######################
 #                    #

@@ -48,6 +48,9 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     #Location on network where you store applications
     AppRepo = "J:\"
 
+    #CMTrace application location on network (if can't be found on computer it looks here)
+    CMTrace = "J:\Tools\CMTrace.exe"
+
     #Local Patches folder on machines - this does not change the copy and install functions under WS_Remediation. They will still try to copy to C:\Patches on the remote machine.
     LocalPatches = "C:\Patches"
 
