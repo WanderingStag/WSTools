@@ -1668,6 +1668,9 @@ function Get-HWInfo {
                         elseif ($Build -eq 19043) {
                             $OS = $OS + " v21H1"
                         }
+                        elseif ($Build -eq 19044) {
+                            $OS = $OS + " v21H2"
+                        }
                     }#if os win 10, srv 2016, or srv 2019
 
                     #Get Processor Information
@@ -2645,7 +2648,7 @@ Function Get-OperatingSystem {
    .Notes
     AUTHOR: Skyler Hart
     CREATED: 06/06/2015 20:11:37
-    LASTEDIT: 2020-11-05 09:57:19
+    LASTEDIT: 2021-10-19 21:07:36
     KEYWORDS: Operating System, OS
     REMARKS: For local computer it can be ran as user. For remote computers, it needs to be ran as a user who has administrative rights on the remote computer.
 .LINK
@@ -2730,6 +2733,9 @@ Function Get-OperatingSystem {
                     elseif ($Build -eq 19043) {
                         $OS = $OS + " v21H1"
                     }
+                    elseif ($Build -eq 19044) {
+                        $OS = $OS + " v21H2"
+                    }
                 }#if os win 10, srv 2016, or srv 2019
             }#try
             catch {
@@ -2790,6 +2796,9 @@ Function Get-OperatingSystem {
                         }
                         elseif ($Build -eq 19043) {
                             $OS = $OS + " v21H1"
+                        }
+                        elseif ($Build -eq 19044) {
+                            $OS = $OS + " v21H2"
                         }
                     }#if os win 10, srv 2016, or srv 2019
                     else {$OS = $value}
@@ -2916,6 +2925,9 @@ Function Get-OperatingSystem {
                 }
                 elseif ($Build -eq 19043) {
                     $OS = $OS + " v21H1"
+                }
+                elseif ($Build -eq 19044) {
+                    $OS = $OS + " v21H2"
                 }
             }#if os win 10, srv 2016, or srv 2019
             else {$OS = $value}

@@ -27,6 +27,7 @@ New features and other changes:
 17. Moved powershell.json to resources folder and updated Copy-PowerShellJSON with new path.
 18. Added function Get-LinesOfCode, PowerShell/JSON only. Excludes blank lines. INCLUDES comments.
 19. Added function Get-ModuleCommandCount.
+20. Added Windows 10 21H2 support to Get-HWInfo and Get-OperatingSystem.
 
 ######################
 #                    #
