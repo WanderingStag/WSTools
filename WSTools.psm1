@@ -1637,7 +1637,7 @@ function Get-HWInfo {
                     $OS = $osi.Caption -replace "Microsoft ",""
                     $Build = $osi.BuildNumber
 
-                    if ($OS -like "Windows 10*" -or $OS -match "2016" -or $OS -match "2019") {
+                    if ($OS -like "Windows 10*" -or $OS -like "Windows 11*" -or $OS -match "2016" -or $OS -match "2019") {
                         if ($Build -eq 14393) {
                             $OS = $OS + " v1607"
                         }
@@ -1668,7 +1668,7 @@ function Get-HWInfo {
                         elseif ($Build -eq 19043) {
                             $OS = $OS + " v21H1"
                         }
-                        elseif ($Build -eq 19044) {
+                        elseif ($Build -eq 19044 -or $Build -eq 22000) {
                             $OS = $OS + " v21H2"
                         }
                     }#if os win 10, srv 2016, or srv 2019
@@ -2702,7 +2702,7 @@ Function Get-OperatingSystem {
                 $Bit = $wmiq.OSArchitecture
                 $Build = $wmiq.BuildNumber
 
-                if ($OS -like "Windows 10*" -or $OS -match "2016" -or $OS -match "2019") {
+                if ($OS -like "Windows 10*" -or $OS -like "Windows 11*" -or $OS -match "2016" -or $OS -match "2019") {
                     if ($Build -eq 14393) {
                         $OS = $OS + " v1607"
                     }
@@ -2733,7 +2733,7 @@ Function Get-OperatingSystem {
                     elseif ($Build -eq 19043) {
                         $OS = $OS + " v21H1"
                     }
-                    elseif ($Build -eq 19044) {
+                    elseif ($Build -eq 19044 -or $Build -eq 22000) {
                         $OS = $OS + " v21H2"
                     }
                 }#if os win 10, srv 2016, or srv 2019
@@ -2766,7 +2766,7 @@ Function Get-OperatingSystem {
                     if ($null -eq $value2) {$Bit = "32-bit"}
                     else {$Bit = "64-bit"}
 
-                    if ($value -like "Windows 10*" -or $value -match "2016" -or $value -match "2019") {
+                    if ($value -like "Windows 10*" -or $OS -like "Windows 11*" -or $value -match "2016" -or $value -match "2019") {
                         if ($Build -eq 14393) {
                             $OS = $value + " v1607"
                         }
@@ -2797,7 +2797,7 @@ Function Get-OperatingSystem {
                         elseif ($Build -eq 19043) {
                             $OS = $OS + " v21H1"
                         }
-                        elseif ($Build -eq 19044) {
+                        elseif ($Build -eq 19044 -or $Build -eq 22000) {
                             $OS = $OS + " v21H2"
                         }
                     }#if os win 10, srv 2016, or srv 2019
@@ -2895,7 +2895,7 @@ Function Get-OperatingSystem {
                 else {$bit = "64-bit"}
             }
 
-            if ($value -like "Windows 10*" -or $value -match "2016" -or $value -match "2019") {
+            if ($value -like "Windows 10*" -or $OS -like "Windows 11*" -or $value -match "2016" -or $value -match "2019") {
                 if ($Build -eq 14393) {
                     $OS = $value + " v1607"
                 }
@@ -2926,10 +2926,10 @@ Function Get-OperatingSystem {
                 elseif ($Build -eq 19043) {
                     $OS = $OS + " v21H1"
                 }
-                elseif ($Build -eq 19044) {
+                elseif ($Build -eq 19044 -or $Build -eq 22000) {
                     $OS = $OS + " v21H2"
                 }
-            }#if os win 10, srv 2016, or srv 2019
+            }#if os win 10, win 11, srv 2016, or srv 2019
             else {$OS = $value}
 
             #Create objects
@@ -3098,8 +3098,7 @@ Function Get-PSVersion {
                 if ($os -match "2008" -and $os -notmatch "2008 R2") {$maxver = "3"}
                 elseif ($os -match "2008 R2") {$maxver = "51"}
                 elseif ($os -match "2012 R2") {$maxver = "51"}
-                elseif ($os -match "2016" -or $os -match "Windows 10") {$maxver = "51"}
-                elseif ($os -match "2019") {$maxver = "51"}
+                elseif ($os -match "2016" -or $os -match "2019" -or $os -match "Windows 10" -or $os -match "Windows 11") {$maxver = "7"}
 
                 if ($ver -lt $maxver) {$status = "Outdated"}
                 elseif ($ver -ge $maxver) {$status = "Current"}

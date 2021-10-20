@@ -28,6 +28,7 @@ New features and other changes:
 18. Added function Get-LinesOfCode, PowerShell/JSON only. Excludes blank lines. INCLUDES comments.
 19. Added function Get-ModuleCommandCount.
 20. Added Windows 10 21H2 support to Get-HWInfo and Get-OperatingSystem.
+21. Added Windows 11 support.
 
 ######################
 #                    #
