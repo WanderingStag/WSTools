@@ -10,6 +10,7 @@ Known issues:
 New features and other changes:
 1. Added WSTools_SystemTrayApp.ps1.
 2. Added function Start-WSToolsGUI.
+3. Added function Update-McAfeeSecurity.
 
 ######################
 #                    #

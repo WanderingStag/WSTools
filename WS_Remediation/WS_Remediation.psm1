@@ -10602,6 +10602,26 @@ Function Uninstall-HBSS {
 New-Alias -Name "Uninstall-ENS" -Value Uninstall-HBSS
 
 
+function Update-McAfeeSecurity {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2021-10-30 03:14:47
+    Last Edit: 2021-10-30 03:14:47
+    Keywords:
+.LINK
+    https://wstools.dev
+#>
+    $fpath = "${env:ProgramFiles(x86)}\McAfee\Endpoint Security\Threat Prevention\amcfg.exe"
+    if (Test-Path $fpath) {
+        Start-Process $fpath -ArgumentList "/update"
+    }
+    else {
+        Write-Error "McAfee Endpoint Security Threat Protection not installed"
+    }
+}
+
+
 #Need to fix for new paths
 function Sync-HBSSWithServer {
 <#
