@@ -5693,7 +5693,7 @@ function Start-WSToolsGUI {
 .LINK
     https://wstools.dev
 #>
-    Start-Process powershell.exe -ArgumentList "`$host.ui.RawUI.WindowTitle = 'WSTools Tray App'; `$PSScriptRoot\Resources\WSTools_SystemTrayApp.ps1"
+    Start-Process powershell.exe -ArgumentList "`$host.ui.RawUI.WindowTitle = 'WSTools Tray App'; '`$PSScriptRoot\Resources\WSTools_SystemTrayApp.ps1'"
 }
 New-Alias -Name wstgui -Value Start-WSToolsGUI
 New-Alias -Name "Start-WSToolsTrayApp" -Value Start-WSToolsGUI
