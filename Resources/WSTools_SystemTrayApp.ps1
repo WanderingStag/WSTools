@@ -209,7 +209,7 @@ if (Test-Path "$env:ProgramFiles\Microsoft VS Code\Code.exe") {
         })
     }
 
-    $MenuVSCode_VSCSnippets = $MenuVSCode.MenuItems.Add("Copy snippets to profile")
+    $MenuVSCode_VSCSnippets = $MenuVSCode.MenuItems.Add("Copy PS snippets to profile")
     $MenuVSCode_VSCSnippets.Add_Click({
         Copy-PowerShellJSON
     })
@@ -266,7 +266,7 @@ $MenuWSTools.Text = "WSTools"
 
     #Stop app services
     if (!([string]::IsNullOrWhiteSpace(($Global:WSToolsConfig).AppNames))) {
-        $MenuWSTools_StopApps = $MenuWSTools.MenuItems.Add("Stop Server App Services")
+        $MenuWSTools_StopApps = $MenuWSTools.MenuItems.Add("Stop app services")
         $MenuWSTools_StopApps.Add_Click({
             Stop-AppService
         })
