@@ -5,7 +5,7 @@
 )]
 
 $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
-    # WSTools config v1.2.7
+    # WSTools config v2021.11.1
     # Remove the # symbol infront of a line to enable it
     ###########################################################################################################################################
     #Application Service Names - used in Stop-AppService. Uses match to match the name of a service that is running and stops it.
@@ -59,6 +59,9 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
 
     #Visio Stencil Path
     Stencils = "J:\Microsoft\VisioStencils"
+
+    #Visual Studio Code settings path (network share or local path) used in Copy-VSCodeSettingsToProfile. Needs to be a txt or JSON file.
+    VSCodeSettingsPath = "J:\Patches\VisualStudioCode\Settings.txt"
 
     #Save-UpdateHistory path also changes Save-MaintenanceReport path
     UHPath = "J:\ComputerInfo\Updates"

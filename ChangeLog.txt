@@ -4,45 +4,17 @@ Known issues:
 
 ######################
 #                    #
-#     2021.10.3      #
+#     2021.11.1      #
 #                    #
 ######################
 New features and other changes:
-1. Added WSTools_SystemTrayApp.ps1.
-2. Added function Start-WSToolsGUI.
-3. Added function Update-McAfeeSecurity.
+1. Added VSCodeSettingsPath config item and function Copy-VSCodeSettingsToProfile.
+2. In WSTools Tray App, moved VS Code items to their own menu, changed some wording, and added some functionality.
+3. Changed config file versioning to Year.Month.Revision.
 
 ######################
 #                    #
-#     2021.10.2      #
-#                    #
-######################
-New features and other changes:
-1. Addressed an issue where Update-VisioStencils would copy to "$env:USERPROFILE\Documents\My Shapes". While normally correct, if using a service to redirect the Documents folder such as OneDrive it would not copy to the redirected location.
-2. Addressed folder redirection issue in Export-MessagesToPST where it wouldn't save to a redirected Desktop.
-3. Addressed folder redirection issue in Set-LAPSshortcut where it wouldn't save to a redirected Desktop.
-4. Addressed folder redirection issue in Set-NetworkConnectionsShortcut where it wouldn't save to a redirected Desktop.
-5. Added CMLibrary config item and function Open-CMLibrary.
-6. Added SharePoint config item and function Open-SharePoint.
-7. Changed example domain to wstools.dev.
-8. Added OWA config item and function Open-OWA.
-9. Added EAC config item and function Open-EAC.
-10. Added SDNMgmt config item and function Open-SDN.
-11. Added SEIM config item and function Open-SEIM.
-12. Added additional registry value to Set-PrintNightmareFix and Set-RemediationValues to resolve an additional PrintNightmare issue.
-13. Added DisabledByDefault server registry value to PCT, SSL 2.0, SSL 3.0, and TLS 1.1 in Set-RemediationValues to address CAT I STIG findings. It was already on TLS 1.0.
-14. Changed TLS 1.1 Enabled value to 0 in Set-RemediationValues to address CAT I STIG findings.
-15. Added function Set-HiveNightmareFix (aka SeriousSam.)
-16. Added CMTrace config item and function Open-CMTrace.
-17. Moved powershell.json to resources folder and updated Copy-PowerShellJSON with new path.
-18. Added function Get-LinesOfCode, PowerShell/JSON only. Excludes blank lines. INCLUDES comments.
-19. Added function Get-ModuleCommandCount.
-20. Added Windows 10 21H2 support to Get-HWInfo and Get-OperatingSystem.
-21. Added Windows 11 support.
-
-######################
-#                    #
-#     2021.10.1      #
+#      2021.10       #
 #                    #
 ######################
 New features and other changes:
@@ -51,6 +23,30 @@ New features and other changes:
 3. Added function Install-MECM.
 4. Modified Copy-PowerShellJSON to create User and snippets folders if they don't already exist. $env:APPDATA\Code still has to exist or it will fail.
 5. Fixed a variable issue in Test-EmailRelay. Body now appropriately shows recipient address.
+6. Addressed an issue where Update-VisioStencils would copy to "$env:USERPROFILE\Documents\My Shapes". While normally correct, if using a service to redirect the Documents folder such as OneDrive it would not copy to the redirected location.
+7. Addressed folder redirection issue in Export-MessagesToPST where it wouldn't save to a redirected Desktop.
+8. Addressed folder redirection issue in Set-LAPSshortcut where it wouldn't save to a redirected Desktop.
+9. Addressed folder redirection issue in Set-NetworkConnectionsShortcut where it wouldn't save to a redirected Desktop.
+10. Added CMLibrary config item and function Open-CMLibrary.
+11. Added SharePoint config item and function Open-SharePoint.
+12. Changed example domain to wstools.dev.
+13. Added OWA config item and function Open-OWA.
+14. Added EAC config item and function Open-EAC.
+15. Added SDNMgmt config item and function Open-SDN.
+16. Added SEIM config item and function Open-SEIM.
+17. Added additional registry value to Set-PrintNightmareFix and Set-RemediationValues to resolve an additional PrintNightmare issue.
+18. Added DisabledByDefault server registry value to PCT, SSL 2.0, SSL 3.0, and TLS 1.1 in Set-RemediationValues to address CAT I STIG findings. It was already on TLS 1.0.
+19. Changed TLS 1.1 Enabled value to 0 in Set-RemediationValues to address CAT I STIG findings.
+20. Added function Set-HiveNightmareFix (aka SeriousSam.)
+21. Added CMTrace config item and function Open-CMTrace.
+22. Moved powershell.json to resources folder and updated Copy-PowerShellJSON with new path.
+23. Added function Get-LinesOfCode, PowerShell/JSON only. Excludes blank lines. INCLUDES comments.
+24. Added function Get-ModuleCommandCount.
+25. Added Windows 10 21H2 support to Get-HWInfo and Get-OperatingSystem.
+26. Added Windows 11 support.
+27. Added WSTools_SystemTrayApp.ps1.
+28. Added function Start-WSToolsGUI.
+29. Added function Update-McAfeeSecurity.
 
 ######################
 #                    #

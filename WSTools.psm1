@@ -695,6 +695,32 @@ New-Alias -Name "Update-PowerShellJSON" -Value Copy-PowerShellJSON
 New-Alias -Name "Set-PowerShellJSON" -Value Copy-PowerShellJSON
 
 
+function Copy-VSCodeSettingsToProfile {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2021-11-01 22:14:14
+    Last Edit: 2021-11-01 22:14:14
+    Keywords: WSTools, Visual Studio Code, Preferences
+.LINK
+    https://wstools.dev
+#>
+    $vscs = ($Global:WSToolsConfig).VSCodeSettingsPath
+    if (!(Test-Path $env:APPDATA\Code\User)) {
+        New-Item -Path $env:APPDATA\Code -ItemType Directory -Name User -Force
+    }
+
+    $i = Get-Content $vscs
+
+    if (Test-Path "$env:APPDATA\Code\User\settings.json") {
+        Set-Content -Path "$env:APPDATA\Code\User\settings.json" -Value $i -Force
+    }
+    else {
+        Add-Content -Path "$env:APPDATA\Code\User\settings.json" -Value $i -Force
+    }
+}
+
+
 function Disable-RDP {
 <#
 .NOTES

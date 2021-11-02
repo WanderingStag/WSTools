@@ -196,6 +196,33 @@ $MenuSites.Text = "Sites"
         })
     }
 
+#Visual Studio Code menu
+if (Test-Path "$env:ProgramFiles\Microsoft VS Code\Code.exe") {
+    $vsci = $true
+    $MenuVSCode = New-Object System.Windows.Forms.MenuItem
+    $MenuVSCode.Text = "VS Code"
+
+    if (!([string]::IsNullOrWhiteSpace(($Global:WSToolsConfig).VSCodeSettingsPath))) {
+        $MenuVSCode_VSCCSettings = $MenuVSCode.MenuItems.Add("Copy settings to profile")
+        $MenuVSCode_VSCCSettings.Add_Click({
+            Copy-VSCodeSettingsToProfile
+        })
+    }
+
+    $MenuVSCode_VSCSnippets = $MenuVSCode.MenuItems.Add("Copy snippets to profile")
+    $MenuVSCode_VSCSnippets.Add_Click({
+        Copy-PowerShellJSON
+    })
+
+    $MenuVSCode_VSCESettings = $MenuVSCode.MenuItems.Add("Edit settings")
+    $MenuVSCode_VSCESettings.Add_Click({
+        code "$env:APPDATA\Code\User\settings.json"
+    })
+}
+else {
+    $vsci = $false
+}
+
 # WSTools menu displayed in the Context menu
 $MenuWSTools = New-Object System.Windows.Forms.MenuItem
 $MenuWSTools.Text = "WSTools"
@@ -216,18 +243,6 @@ $MenuWSTools.Text = "WSTools"
         })
     }
 
-    if (Test-Path "$env:ProgramFiles\Microsoft VS Code\Code.exe") {
-        $MenuWSTools_VSCSnippets = $MenuWSTools.MenuItems.Add("VS Code - Copy Snippets")
-        $MenuWSTools_VSCSnippets.Add_Click({
-            Copy-PowerShellJSON
-        })
-
-        $MenuWSTools_VSCSettings = $MenuWSTools.MenuItems.Add("VS Code - Settings")
-        $MenuWSTools_VSCSettings.Add_Click({
-            code "$env:APPDATA\Code\User\settings.json"
-        })
-    }
-
 # Restart menu item in the Context menu - This will kill the systray tool and launched it again in 10 seconds
 $Menu_Restart_Tool = New-Object System.Windows.Forms.MenuItem
 $Menu_Restart_Tool.Text = "Restart GUI"
@@ -241,6 +256,7 @@ $contextmenu = New-Object System.Windows.Forms.ContextMenu
 $Systray_Tool_Icon.ContextMenu = $contextmenu
 $Systray_Tool_Icon.contextMenu.MenuItems.AddRange($MenuAdmin)
 $Systray_Tool_Icon.contextMenu.MenuItems.AddRange($MenuSites)
+if ($vsci) {$Systray_Tool_Icon.contextMenu.MenuItems.AddRange($MenuVSCode)}
 $Systray_Tool_Icon.contextMenu.MenuItems.AddRange($MenuWSTools)
 $Systray_Tool_Icon.contextMenu.MenuItems.AddRange($Menu_Restart_Tool)
 $Systray_Tool_Icon.contextMenu.MenuItems.AddRange($Menu_Exit)
