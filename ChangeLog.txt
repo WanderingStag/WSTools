@@ -11,6 +11,7 @@ New features and other changes:
 1. Added VSCodeSettingsPath config item and function Copy-VSCodeSettingsToProfile.
 2. In WSTools Tray App, moved VS Code items to their own menu, changed some wording, and added some functionality.
 3. Changed config file versioning to Year.Month.Revision.
+4. Added VSCodeExtRepo config item and function Copy-VSCodeExtensions.
 
 ######################
 #                    #

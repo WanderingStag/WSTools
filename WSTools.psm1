@@ -695,6 +695,28 @@ New-Alias -Name "Update-PowerShellJSON" -Value Copy-PowerShellJSON
 New-Alias -Name "Set-PowerShellJSON" -Value Copy-PowerShellJSON
 
 
+function Copy-VSCodeExtensions {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2021-11-01 23:18:30
+    Last Edit: 2021-11-01 23:18:30
+    Keywords:
+.LINK
+    https://wstools.dev
+#>
+
+    $repo = ($Global:WSToolsConfig).VSCodeExtRepo
+    $dst = "$env:userprofile\.vscode\extensions"
+
+    if (!(Test-Path $dst)) {
+        New-Item -Path $env:userprofile\.vscode -ItemType Directory -Name extensions -Force
+    }
+
+    robocopy $repo $dst /mir /mt:4 /r:4 /w:15 /njh /njs
+}
+
+
 function Copy-VSCodeSettingsToProfile {
 <#
 .NOTES

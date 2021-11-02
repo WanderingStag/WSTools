@@ -60,6 +60,9 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     #Visio Stencil Path
     Stencils = "J:\Microsoft\VisioStencils"
 
+    #Visual Studio Code extensions path (network share or local path) used in Copy-VSCodeExtensions.
+    VSCodeExtRepo = "J:\Patches\VisualStudioCode\Extensions"
+
     #Visual Studio Code settings path (network share or local path) used in Copy-VSCodeSettingsToProfile. Needs to be a txt or JSON file.
     VSCodeSettingsPath = "J:\Patches\VisualStudioCode\Settings.txt"
 
