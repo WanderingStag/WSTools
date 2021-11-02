@@ -218,6 +218,13 @@ if (Test-Path "$env:ProgramFiles\Microsoft VS Code\Code.exe") {
     $MenuVSCode_VSCESettings.Add_Click({
         code "$env:APPDATA\Code\User\settings.json"
     })
+
+    if (!([string]::IsNullOrWhiteSpace(($Global:WSToolsConfig).VSCodeExtRepo))) {
+        $MenuVSCode_VSCExtensions = $MenuVSCode.MenuItems.Add("Update extensions from share")
+        $MenuVSCode_VSCExtensions.Add_Click({
+            Copy-VSCodeExtensions
+        })
+    }
 }
 else {
     $vsci = $false
