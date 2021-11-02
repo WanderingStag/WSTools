@@ -234,15 +234,45 @@ else {
 $MenuWSTools = New-Object System.Windows.Forms.MenuItem
 $MenuWSTools.Text = "WSTools"
 
-    # Create submenu for the menu 2
-    $MenuWSTools_SubMenu1 = $MenuWSTools.MenuItems.Add("About")
-        $MenuWSTools_SubMenu1.Add_Click({
-            $i = Get-WSToolsVersion
-            $version = $i.WSToolsVersion.ToString()
-            $mdate = $i.Date
-            [System.Windows.Forms.MessageBox]::Show("Version: $version`rDate: $mdate")
-        })
+    #About
+    $MenuWSTools_About = $MenuWSTools.MenuItems.Add("About")
+    $MenuWSTools_About.Add_Click({
+        $i = Get-WSToolsVersion
+        $version = $i.WSToolsVersion.ToString()
+        $mdate = $i.Date
+        [System.Windows.Forms.MessageBox]::Show("Version: $version`rDate: $mdate")
+    })
 
+    #Set preferences
+    $MenuWSTools_Preferences = $MenuWSTools.MenuItems.Add("Set Preferences")
+    $MenuWSTools_Preferences.Add_Click({
+        Set-Preferences
+    })
+
+    #Set Remediation Values
+    $MenuWSTools_Remediation = $MenuWSTools.MenuItems.Add("Set remediation values (admin)")
+    $MenuWSTools_Remediation.Add_Click({
+        Start-Process powershell.exe -ArgumentList {Set-RemediationValues} -Verb RunAs
+    })
+
+    #Server config - only if a DC or Server
+    $pt = Get-CimInstance -ClassName Win32_OperatingSystem | Select-Object ProductType -ExpandProperty ProductType
+    if ('2','3' -contains $pt) {
+        $MenuWSTools_ServerConfig = $MenuWSTools.MenuItems.Add("Set server config (admin)")
+        $MenuWSTools_ServerConfig.Add_Click({
+            Start-Process powershell.exe -ArgumentList {Set-ServerConfig} -Verb RunAs
+        })
+    }
+
+    #Stop app services
+    if (!([string]::IsNullOrWhiteSpace(($Global:WSToolsConfig).AppNames))) {
+        $MenuWSTools_StopApps = $MenuWSTools.MenuItems.Add("Stop Server App Services")
+        $MenuWSTools_StopApps.Add_Click({
+            Stop-AppService
+        })
+    }
+
+    #Update Visio
     if ((Test-Path ([System.Environment]::GetFolderPath("MyDocuments") + "\My Shapes")) -and (!([string]::IsNullOrWhiteSpace(($Global:WSToolsConfig).Stencils)))) {
         $MenuWSTools_VisioSt = $MenuWSTools.MenuItems.Add("Visio - Update Stencils from share")
         $MenuWSTools_VisioSt.Add_Click({
