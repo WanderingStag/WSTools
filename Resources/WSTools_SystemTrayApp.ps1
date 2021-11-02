@@ -174,9 +174,9 @@ $MenuSites.Text = "Sites"
 
     #If Remedy config item not blank
     if (!([string]::IsNullOrWhiteSpace(($Global:WSToolsConfig).Remedy))) {
-        $MenuSites_Remedy = $MenuSites.MenuItems.Add("Remedy")
-        $MenuSites_Remedy.Add_Click({
-            Open-Remedy
+        $MenuSites_EITSM = $MenuSites.MenuItems.Add("EITSM")
+        $MenuSites_EITSM.Add_Click({
+            Open-EITSM
         })
     }
 
