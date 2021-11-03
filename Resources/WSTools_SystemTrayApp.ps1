@@ -244,7 +244,7 @@ $MenuWSTools.Text = "WSTools"
     })
 
     #Set preferences
-    $MenuWSTools_Preferences = $MenuWSTools.MenuItems.Add("Set Preferences")
+    $MenuWSTools_Preferences = $MenuWSTools.MenuItems.Add("Set preferences")
     $MenuWSTools_Preferences.Add_Click({
         Set-Preferences
     })
@@ -295,7 +295,7 @@ $Systray_Tool_Icon.contextMenu.MenuItems.AddRange($MenuAdmin)
 $Systray_Tool_Icon.contextMenu.MenuItems.AddRange($MenuSites)
 if ($vsci) {$Systray_Tool_Icon.contextMenu.MenuItems.AddRange($MenuVSCode)}
 $Systray_Tool_Icon.contextMenu.MenuItems.AddRange($MenuWSTools)
-$Systray_Tool_Icon.contextMenu.MenuItems.AddRange($Menu_Restart_Tool)
+#$Systray_Tool_Icon.contextMenu.MenuItems.AddRange($Menu_Restart_Tool)
 $Systray_Tool_Icon.contextMenu.MenuItems.AddRange($Menu_Exit)
 
 
