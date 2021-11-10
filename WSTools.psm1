@@ -4891,22 +4891,29 @@ Function Set-JavaException {
                     if ($FromShare) {
                         Import-Module WSTools
                         $jes = ($Global:WSToolsConfig).JException
-                        $Path = Get-ChildItem "$env:ProgramFiles\Java" | Where-Object {$_.Name -like "jre*.*_*"} | Select-Object -ExpandProperty Name
+                        try {$Path = Get-ChildItem "$env:ProgramFiles\Java" -ErrorAction Stop | Where-Object {$_.Name -like "jre*.*_*"} | Select-Object -ExpandProperty Name}
+                        catch {$Path = Get-ChildItem "${env:ProgramFiles(x86)}\Java" | Where-Object {$_.Name -like "jre*.*_*"} | Select-Object -ExpandProperty Name}
                         $lib = [environment]::ExpandEnvironmentVariables("%PROGRAMFILES%\Java\$Path\lib")
                         $lib32 = [environment]::ExpandEnvironmentVariables("%PROGRAMFILES(x86)%\Java\$Path\lib")
 
-                        Copy-Item -Path $jes\exception.sites -Destination $lib -Force
+                        if (Test-Path $lib) {
+                            Copy-Item -Path $jes\exception.sites -Destination $lib -Force
+                        }
 
                         if (Test-Path $lib32) {
                             Copy-Item -Path $jes\exception.sites -Destination $lib32 -Force
                         }
                     }
                     else {
-                        $Path = Get-ChildItem "$env:ProgramFiles\Java" | Where-Object {$_.Name -like "jre*.*_*"} | Select-Object -ExpandProperty Name
+                        try {$Path = Get-ChildItem "$env:ProgramFiles\Java" -ErrorAction Stop | Where-Object {$_.Name -like "jre*.*_*"} | Select-Object -ExpandProperty Name}
+                        catch {$Path = Get-ChildItem "${env:ProgramFiles(x86)}\Java" | Where-Object {$_.Name -like "jre*.*_*"} | Select-Object -ExpandProperty Name}
                         $lib = [environment]::ExpandEnvironmentVariables("%PROGRAMFILES%\Java\$Path\lib")
                         $lib32 = [environment]::ExpandEnvironmentVariables("%PROGRAMFILES(x86)%\Java\$Path\lib")
 
-                        Add-Content -Path $lib\exception.sites -Value $URL -Force
+                        if (Test-Path $lib) {
+                            Add-Content -Path $lib\exception.sites -Value $URL -Force
+                        }
+
                         if (Test-Path $lib32) {
                             Add-Content -Path $lib32\exception.sites -Value $URL -Force
                         }
@@ -4918,22 +4925,29 @@ Function Set-JavaException {
                 if ($FromShare) {
                     Import-Module WSTools
                     $jes = ($Global:WSToolsConfig).JException
-                    $Path = Get-ChildItem "\\$comp\c$\Program Files\Java" | Where-Object {$_.Name -like "jre*.*_*"} | Select-Object -ExpandProperty Name
+                    try {$Path = Get-ChildItem "\\$comp\c$\Program Files\Java" -ErrorAction Stop | Where-Object {$_.Name -like "jre*.*_*"} | Select-Object -ExpandProperty Name}
+                    catch {$Path = Get-ChildItem "\\$comp\c$\Program Files (x86)\Java" | Where-Object {$_.Name -like "jre*.*_*"} | Select-Object -ExpandProperty Name}
                     $lib = "\\" + $comp + "\c$\Program Files\Java\" + $Path + "\lib"
                     $lib32 = "\\" + $comp + "\c$\Program Files (x86)\Java\" + $Path + "\lib"
 
-                    Robocopy.exe $jes $lib exception.sites | Out-Null
+                    if (Test-Path $lib) {
+                        Robocopy.exe $jes $lib exception.sites | Out-Null
+                    }
 
                     if (Test-Path $lib32) {
                         Robocopy.exe $jes $lib32 exception.sites | Out-Null
                     }
                 }
                 else {
-                    $Path = Get-ChildItem "\\$comp\c$\Program Files\Java" | Where-Object {$_.Name -like "jre*.*_*"} | Select-Object -ExpandProperty Name
+                    try {$Path = Get-ChildItem "\\$comp\c$\Program Files\Java" -ErrorAction Stop | Where-Object {$_.Name -like "jre*.*_*"} | Select-Object -ExpandProperty Name}
+                    catch {$Path = Get-ChildItem "\\$comp\c$\Program Files (x86)\Java" | Where-Object {$_.Name -like "jre*.*_*"} | Select-Object -ExpandProperty Name}
                     $lib = "\\" + $comp + "\c$\Program Files\Java\" + $Path + "\lib"
                     $lib32 = "\\" + $comp + "\c$\Program Files (x86)\Java\" + $Path + "\lib"
 
-                    Add-Content -Path $lib\exception.sites -Value $URL -Force
+                    if (Test-Path $lib) {
+                        Add-Content -Path $lib\exception.sites -Value $URL -Force
+                    }
+
                     if (Test-Path $lib32) {
                         Add-Content -Path $lib32\exception.sites -Value $URL -Force
                     }
