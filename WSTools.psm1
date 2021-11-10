@@ -4973,7 +4973,7 @@ Function Set-JavaException {
             $PowershellThread = [powershell]::Create().AddScript($Code)
             $PowershellThread.AddArgument($Object.ToString()) | out-null
             $PowershellThread.AddArgument($URL.ToString()) | out-null
-            $PowershellThread.AddArgument($FromShare.ToString()) | out-null
+            $PowershellThread.AddArgument($Share.ToString()) | out-null
             $PowershellThread.RunspacePool = $RunspacePool
             $Handle = $PowershellThread.BeginInvoke()
             $Job = "" | Select-Object Handle, Thread, object
