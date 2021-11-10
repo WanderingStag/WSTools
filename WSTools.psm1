@@ -4929,24 +4929,26 @@ Function Set-JavaException {
                     catch {$Path = Get-ChildItem "\\$comp\c$\Program Files (x86)\Java" | Where-Object {$_.Name -like "jre*.*_*"} | Select-Object -ExpandProperty Name}
                     $lib = "\\" + $comp + "\c$\Program Files\Java\" + $Path + "\lib"
                     $lib32 = "\\" + $comp + "\c$\Program Files (x86)\Java\" + $Path + "\lib"
-                    $je = Get-Content $jes\exception.sites
+                    #$je = Get-Content $jes\exception.sites
 
                     if (Test-Path $lib) {
-                        if (Test-Path $lib\exception.sites) {
-                            Set-Content -Path $lib\exception.sites -Value $je -Force
-                        }
-                        else {
-                            Add-Content -Path $lib\exception.sites -Value $je -Force
-                        }
+                        Robocopy.exe $jes $lib exception.sites
+                        #if (Test-Path $lib\exception.sites) {
+                        #    Set-Content -Path $lib\exception.sites -Value $je -Force
+                        #}
+                        #else {
+                        #    Add-Content -Path $lib\exception.sites -Value $je -Force
+                        #}
                     }
 
                     if (Test-Path $lib32) {
-                        if (Test-Path $lib32\exception.sites) {
-                            Set-Content -Path $lib32\exception.sites -Value $je -Force
-                        }
-                        else {
-                            Add-Content -Path $lib32\exception.sites -Value $je -Force
-                        }
+                        Robocopy.exe $jes $lib32 exception.sites
+                        #if (Test-Path $lib32\exception.sites) {
+                        #    Set-Content -Path $lib32\exception.sites -Value $je -Force
+                        #}
+                        #else {
+                        #    Add-Content -Path $lib32\exception.sites -Value $je -Force
+                        #}
                     }
                 }
                 else {
