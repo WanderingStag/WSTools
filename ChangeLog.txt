@@ -4,6 +4,14 @@ Known issues:
 
 ######################
 #                    #
+#     2021.11.2      #
+#                    #
+######################
+New features and other changes:
+1. Changed function Add-JavaException to Add-UserJavaException. It strictly only modifies the exceptions.site file in the user profile and not machine wide.
+
+######################
+#                    #
 #     2021.11.1      #
 #                    #
 ######################

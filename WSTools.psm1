@@ -1,4 +1,4 @@
-﻿function Add-JavaException {
+﻿function Add-UserJavaException {
 <#
 .NOTES
     Author: Skyler Hart
