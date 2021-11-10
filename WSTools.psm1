@@ -4858,8 +4858,8 @@ Function Set-JavaException {
     )
 
     Begin {
-        if ($FromShare) {$FromShare = "-FromShare"}
-        else {$FromShare = ""}
+        if ($FromShare) {$Share = "FromShareTrue"}
+        else {$Share = ""}
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
@@ -4882,13 +4882,13 @@ Function Set-JavaException {
                     Mandatory=$true,
                     Position=2
                 )]
-                [switch]$FromShare
+                [string]$FromShare
             )
 
             if ($comp -eq $env:COMPUTERNAME) {
                 $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
                 if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-                    if ($FromShare) {
+                    if ($FromShare -eq "FromShareTrue") {
                         Import-Module WSTools
                         $jes = ($Global:WSToolsConfig).JException
                         try {$Path = Get-ChildItem "$env:ProgramFiles\Java" -ErrorAction Stop | Where-Object {$_.Name -like "jre*.*_*"} | Select-Object -ExpandProperty Name}
@@ -4922,7 +4922,7 @@ Function Set-JavaException {
                 else {Write-Error "Must be ran as administrator"}
             }#if local comp
             else {
-                if ($FromShare) {
+                if ($FromShare -eq "FromShareTrue") {
                     Import-Module WSTools
                     $jes = ($Global:WSToolsConfig).JException
                     try {$Path = Get-ChildItem "\\$comp\c$\Program Files\Java" -ErrorAction Stop | Where-Object {$_.Name -like "jre*.*_*"} | Select-Object -ExpandProperty Name}
