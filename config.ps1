@@ -52,7 +52,7 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     CMTrace = "J:\Tools\CMTrace.exe"
 
     #Java exception.sites file path. Only give path to the folder it's in.
-    JException = "J:\Other\JavaExceptions"
+    JException = "J:\JavaExceptions"
 
     #Local Patches folder on machines - this does not change the copy and install functions under WS_Remediation. They will still try to copy to C:\Patches on the remote machine.
     LocalPatches = "C:\Patches"
