@@ -5,7 +5,7 @@
 )]
 
 $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
-    # WSTools config v2021.11.1
+    # WSTools config v2021.11.2
     # Remove the # symbol infront of a line to enable it
     ###########################################################################################################################################
     #Application Service Names - used in Stop-AppService. Uses match to match the name of a service that is running and stops it.
@@ -50,6 +50,9 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
 
     #CMTrace application location on network (if can't be found on computer it looks here)
     CMTrace = "J:\Tools\CMTrace.exe"
+
+    #Java exception.sites file path. Only give path to the folder it's in.
+    JException = "J:\Other\JavaExceptions"
 
     #Local Patches folder on machines - this does not change the copy and install functions under WS_Remediation. They will still try to copy to C:\Patches on the remote machine.
     LocalPatches = "C:\Patches"
