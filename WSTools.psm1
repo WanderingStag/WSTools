@@ -921,6 +921,58 @@ function Get-BitLockerStatus {
 }
 
 
+function Get-CertificateInventory {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2021-11-18 22:44:53
+    Last Edit: 2021-11-18 22:44:53
+    Keywords:
+.LINK
+    https://wstools.dev
+#>
+    $cpath = @('Cert:\LocalMachine\My','Cert:\LocalMachine\Remote Desktop')
+    $certinfo = @()
+
+    $os = (Get-WmiObject Win32_OperatingSystem).ProductType
+
+    if ($os -eq 1) {$type = "Workstation"}
+    elseif (($os -eq 2) -or ($os -eq 3)) {$type = "Server"}
+
+    foreach ($cp in $cpath) {
+        $certinfo += Get-ChildItem $cp | Select-Object *
+    }
+
+    $certs = @()
+    foreach ($cert in $certinfo) {
+        $cp = $cert.PSParentPath -replace "Microsoft.PowerShell.Security\\Certificate\:\:",""
+
+        if (($cert.Subject) -eq ($cert.Issuer)) {$ss = $true}
+        else {$ss = $false}
+
+        $daystoexpire = (New-TimeSpan -Start (get-date) -End ($cert.NotAfter)).Days
+
+        $certs += New-Object -TypeName PSObject -Property @{
+            ComputerName = ($env:computername)
+            ProductType = $type
+            Subject = ($cert.Subject)
+            Issuer = ($cert.Issuer)
+            Location = $cp
+            SelfSigned = $ss
+            ValidFrom = ($cert.NotBefore)
+            ValidTo = ($cert.NotAfter)
+            DaysToExpiration = $daystoexpire
+            SerialNumber = ($cert.SerialNumber)
+            Thumbprint = ($cert.Thumbprint)
+        }#new object
+    }
+
+    $certs | Select-Object ComputerName,ProductType,Location,Subject,Issuer,SelfSigned,ValidFrom,ValidTo,DaysToExpiration,SerialNumber,Thumbprint | Sort-Object Subject
+}
+New-Alias -Name "Get-CertInv" -Value Get-CertificateInventory
+New-Alias -Name "Get-CertInfo" -Value Get-CertificateInventory
+
+
 function Get-CommandList {
 <#
 .NOTES
@@ -5318,6 +5370,37 @@ function Set-Reboot {
             }
         }#else
     }
+}
+
+
+function Set-RemoteDesktopCert {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2021-11-18 22:53:02
+    Last Edit: 2021-11-18 22:53:02
+    Keywords:
+    Requires:
+        -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    param(
+        [Parameter(
+            HelpMessage = "Enter the thumbprint of the certificate.",
+            Mandatory=$true
+        )]
+        [Alias('Cert')]
+        [string]$Thumbprint
+    )
+
+    $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+    if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+        $tsgs = Get-WmiObject -Class Win32_TSGeneralSetting -Namespace root\cimV2\terminalservices -Filter "TerminalName='RDP-tcp'"
+        Set-WmiInstance -Path $tsgs.__path -argument @{SSLCertificateSHA1Hash="$Thumbprint"}
+    }
+    else {Write-Error "Must be ran as administrator."}
 }
 
 
