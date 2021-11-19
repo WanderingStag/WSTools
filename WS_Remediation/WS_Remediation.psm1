@@ -4117,7 +4117,7 @@ Function Copy-VisualStudioCode {
 .Notes
     AUTHOR: Skyler Hart
     CREATED: 2021-06-15 21:43:12
-    LASTEDIT: 2021-06-15 21:56:20
+    LASTEDIT: 2021-11-18 22:31:01
     KEYWORDS:
     REQUIRES:
         -RunAsAdministrator
@@ -4186,7 +4186,7 @@ Begin {
                 [string]$ScriptWD
             )
             try {
-                robocopy $app "\\$comp\c$\Patches\$appname" VSCodeSetup*.exe /r:3 /w:15 /njh /njs
+                robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:2 /r:3 /w:15 /njh /njs
                 $end = Get-Date
                 $info = New-Object -TypeName PSObject -Property @{
                     ComputerName = $comp
@@ -5520,7 +5520,7 @@ Function Install-VisualStudioCode {
 .Notes
     AUTHOR: Skyler Hart
     CREATED: 2021-06-15 21:56:38
-    LASTEDIT: 2021-07-21 23:58:22
+    LASTEDIT: 2021-11-18 22:32:44
     KEYWORDS:
     REQUIRES:
         -RunAsAdministrator
@@ -5548,7 +5548,7 @@ Function Install-VisualStudioCode {
         }
 
         try {
-            robocopy $app \\$comp\c$\Patches\VSCode VSCodeSetup*.exe /r:3 /w:15 /njh /njs
+            robocopy $app \\$comp\c$\Patches\VSCode /mir /mt:2 /r:3 /w:15 /njh /njs
             $install = Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList "cmd /c c:\Patches\VSCode\VSCodeSetup-x64.exe /SP- /VERYSILENT /SUPPRESSMSGBOXES /NOCANCEL /NORESTART /CLOSEAPPLICATIONS /NORESTARTAPPLICATIONS /TYPE=full" -ErrorAction Stop #DevSkim: ignore DS104456
             $end = Get-Date
             $info = New-Object -TypeName PSObject -Property @{
