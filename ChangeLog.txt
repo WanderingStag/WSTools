@@ -10,6 +10,7 @@ Known issues:
 New features and other changes:
 1. Changed function Add-JavaException to Add-UserJavaException. It strictly only modifies the exceptions.site file in the user profile and not machine wide.
 2. Added JException config item and added Set-JavaException with alias Add-JavaException.
+3. Fixed issue with Copy-VisualStudioCode and Install-VisualStudioCode not copying all files in source folder.
 
 ######################
 #                    #
