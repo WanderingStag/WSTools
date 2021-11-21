@@ -4,6 +4,14 @@ Known issues:
 
 ######################
 #                    #
+#     2021.11.3      #
+#                    #
+######################
+New features and other changes:
+1. Save-UpdateHistory had several changes including but not limited to: default day value was updated to include an additional day, added BypassCopy switch, now saves to a local file and to location in UHPath if it exists.
+
+######################
+#                    #
 #     2021.11.2      #
 #                    #
 ######################

@@ -4737,7 +4737,7 @@ function Save-UpdateHistory {
 .NOTES
     Author: Skyler Hart
     Created: 2020-06-15 13:03:22
-    Last Edit: 2020-09-28 11:29:05
+    Last Edit: 2021-11-20 22:28:06
     Keywords:
 .LINK
     https://wstools.dev
@@ -4753,11 +4753,31 @@ function Save-UpdateHistory {
             Mandatory=$false,
             Position=0
         )]
-        [int32]$Days = ((Get-Date -Format yyyyMMdd) - ((Get-Date -Format yyyyMMdd).Substring(0,6) + "01"))
+        [int32]$Days = ((Get-Date -Format yyyyMMdd) - ((Get-Date -Format yyyyMMdd).Substring(0,6) + "01") + 1),#This defaults to days between today and the beginning of the month
+
+        [Parameter()]
+        [Switch]$BypassCopy
     )
-    $UHPath = ($Global:WSToolsConfig).UHPath + "\" + $env:computername + ".csv"
+    $fn = $env:computername + "_UpdateHistory.csv"
+    $lf = $env:ProgramData + "\WSTools\Reports"
+    $lp = $lf + "\" + $fn
+    $UHPath = ($Global:WSToolsConfig).UHPath + "\" + $fn
     $info = Get-UpdateHistory -Days $Days
-    $info | Export-Csv $UHPath -Force
+
+    if (!(Test-Path $env:ProgramData\WSTools)) {
+        New-Item -Path $env:ProgramData -Name WSTools -ItemType Directory
+    }
+    if (!(Test-Path $lf)) {
+        New-Item -Path $env:ProgramData\WSTools -Name Reports -ItemType Directory
+    }
+
+    $info | Export-Csv $lp -Force
+
+    if (!([string]::IsNullOrWhiteSpace(($Global:WSToolsConfig).UHPath))) {
+        if (!($BypassCopy)) {
+            $info | Export-Csv $UHPath -Force
+        }
+    }
 }
 
 
