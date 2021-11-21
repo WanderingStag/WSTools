@@ -9,6 +9,8 @@ Known issues:
 ######################
 New features and other changes:
 1. Save-UpdateHistory had several changes including but not limited to: default day value was updated to include an additional day, added BypassCopy switch, now saves to a local file and to location in UHPath if it exists.
+2. Cleaned up unnecessary text in some snippets.
+3. Added IsNullOrWhiteSpace snippet.
 
 ######################
 #                    #

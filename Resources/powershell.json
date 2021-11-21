@@ -236,6 +236,13 @@
 		],
 		"description": "Adds if statements to check domain"
 	},
+	"IsNullOrWhiteSpace": {
+		"prefix": "IsNullOrWhiteSpace",
+		"body": [
+			"[string]::IsNullOrWhiteSpace(\\$variable)"
+		],
+		"description": "Adds string IsNullOrWhiteSpace"
+	},
 	"OSI Function": {
 		"prefix": "osifunction",
 		"body": [
