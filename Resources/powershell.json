@@ -267,8 +267,6 @@
 			"\t\t-RunAsAdministrator",
 			".LINK",
 			"\thttps://wstools.dev",
-			".LINK",
-			"\thttps://www.skylerhart.com",
 			"#>",
 			"\t[CmdletBinding()]",
 			"\tparam(",
