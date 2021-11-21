@@ -173,8 +173,6 @@
 			"\t\t-RunAsAdministrator",
 			".LINK",
 			"\thttps://wstools.dev",
-			".LINK",
-			"\thttps://www.skylerhart.com",
 			"#>"
 		],
 		"description": "WSTools Help comment block"
