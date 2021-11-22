@@ -311,14 +311,14 @@ $Systray_Tool_Icon.contextMenu.MenuItems.AddRange($Menu_Exit)
 
 
 # Action after clicking on the systray icon - This will display the GUI mentioned above
-$Systray_Tool_Icon.Add_Click({
-    If ($_.Button -eq [Windows.Forms.MouseButtons]::Left) {
-        $window.Left = $([System.Windows.SystemParameters]::WorkArea.Width-$window.Width)
-        $window.Top = $([System.Windows.SystemParameters]::WorkArea.Height-$window.Height)
-        $window.Show()
-        $window.Activate()
-    }
-})
+#$Systray_Tool_Icon.Add_Click({
+#    If ($_.Button -eq [Windows.Forms.MouseButtons]::Left) {
+#        $window.Left = $([System.Windows.SystemParameters]::WorkArea.Width-$window.Width)
+#        $window.Top = $([System.Windows.SystemParameters]::WorkArea.Height-$window.Height)
+#        $window.Show()
+#        $window.Activate()
+#    }
+#})
 
 
 # When Restart the tool is clicked, close everything and kill the PowerShell process then open again the tool
