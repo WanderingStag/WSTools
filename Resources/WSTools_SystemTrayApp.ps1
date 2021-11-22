@@ -9,29 +9,40 @@ Add-Type -AssemblyName PresentationFramework -IgnoreWarnings
 [System.Reflection.Assembly]::LoadWithPartialName('WindowsFormsIntegration') | out-null
 [System.Reflection.Assembly]::LoadWithPartialName('System.Xml') | out-null
 
-# Example of GUI to display
+#Left click on sys tray icon to display this GUI. Right click will show menu.
 [xml]$xaml =
 @"
 <Window
-xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-WindowStyle="None"
-Height="300"
-Width="200"
-ResizeMode="NoResize"
-ShowInTaskbar="False"
-AllowsTransparency="True"
-Background="Transparent"
->
-<Border BorderBrush="Transparent" BorderThickness="1" Margin="10,10,10,10">
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        WindowStyle="None"
+        Height="300"
+        Width="200"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        AllowsTransparency="True"
+        Background="Transparent">
 
-<Grid Name="grid" Background="Transparent">
- <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-  <Button Name="WSRestart" Width="80" Height="20"></Button>
-  <Button Name="WSExit" Width="80" Height="20"></Button>
- </StackPanel>
-</Grid>
-</Border>
+    <Border BorderBrush="Transparent" BorderThickness="1" Margin="10,10,10,10">
+        <TabControl>
+            <TabItem Header="Admin Tools">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            <TabItem Header="Sites">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            <TabItem Header="VS Code">
+                <Grid Background="#FFE5E5E5">
+                    <StackPanel HorizontalAlignment="Left" Height="209" Margin="10,10,0,0" VerticalAlignment="Top" Width="151">
+                        <Button x:Name="VSCode_ButtonCopySettings" Content="Copy settings to profile"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="WSTools">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+        </TabControl>
+    </Border>
 </Window>
 "@
 
@@ -300,14 +311,14 @@ $Systray_Tool_Icon.contextMenu.MenuItems.AddRange($Menu_Exit)
 
 
 # Action after clicking on the systray icon - This will display the GUI mentioned above
-#$Systray_Tool_Icon.Add_Click({
-#    If ($_.Button -eq [Windows.Forms.MouseButtons]::Left) {
-#        $window.Left = $([System.Windows.SystemParameters]::WorkArea.Width-$window.Width)
-#        $window.Top = $([System.Windows.SystemParameters]::WorkArea.Height-$window.Height)
-#        $window.Show()
-#        $window.Activate()
-#    }
-#})
+$Systray_Tool_Icon.Add_Click({
+    If ($_.Button -eq [Windows.Forms.MouseButtons]::Left) {
+        $window.Left = $([System.Windows.SystemParameters]::WorkArea.Width-$window.Width)
+        $window.Top = $([System.Windows.SystemParameters]::WorkArea.Height-$window.Height)
+        $window.Show()
+        $window.Activate()
+    }
+})
 
 
 # When Restart the tool is clicked, close everything and kill the PowerShell process then open again the tool
