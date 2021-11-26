@@ -11,6 +11,7 @@ New features and other changes:
 1. Save-UpdateHistory had several changes including but not limited to: default day value was updated to include an additional day, added BypassCopy switch, now saves to a local file and to location in UHPath if it exists.
 2. Cleaned up unnecessary text in some snippets.
 3. Added IsNullOrWhiteSpace snippet.
+4. Added Windows Server 2022 21H2 support to Get-OperatingSystem. #STILL NEED TO ADD IT TO THE OTHER FUNCTIONS
 
 ######################
 #                    #

@@ -2748,7 +2748,7 @@ Function Get-OperatingSystem {
    .Notes
     AUTHOR: Skyler Hart
     CREATED: 06/06/2015 20:11:37
-    LASTEDIT: 2021-10-19 21:07:36
+    LASTEDIT: 2021-11-26 17:02:59
     KEYWORDS: Operating System, OS
     REMARKS: For local computer it can be ran as user. For remote computers, it needs to be ran as a user who has administrative rights on the remote computer.
 .LINK
@@ -2802,7 +2802,7 @@ Function Get-OperatingSystem {
                 $Bit = $wmiq.OSArchitecture
                 $Build = $wmiq.BuildNumber
 
-                if ($OS -like "Windows 10*" -or $OS -like "Windows 11*" -or $OS -match "2016" -or $OS -match "2019") {
+                if ($OS -like "Windows 10*" -or $OS -like "Windows 11*" -or $OS -match "2016" -or $OS -match "2019" -or $OS -match "2022") {
                     if ($Build -eq 14393) {
                         $OS = $OS + " v1607"
                     }
@@ -2833,7 +2833,7 @@ Function Get-OperatingSystem {
                     elseif ($Build -eq 19043) {
                         $OS = $OS + " v21H1"
                     }
-                    elseif ($Build -eq 19044 -or $Build -eq 22000) {
+                    elseif ($Build -eq 19044 -or $Build -eq 22000 -or $Build -eq 20348) {
                         $OS = $OS + " v21H2"
                     }
                 }#if os win 10, srv 2016, or srv 2019
@@ -2866,7 +2866,7 @@ Function Get-OperatingSystem {
                     if ($null -eq $value2) {$Bit = "32-bit"}
                     else {$Bit = "64-bit"}
 
-                    if ($value -like "Windows 10*" -or $OS -like "Windows 11*" -or $value -match "2016" -or $value -match "2019") {
+                    if ($value -like "Windows 10*" -or $OS -like "Windows 11*" -or $value -match "2016" -or $value -match "2019" -or $value -match "2022") {
                         if ($Build -eq 14393) {
                             $OS = $value + " v1607"
                         }
@@ -2897,7 +2897,7 @@ Function Get-OperatingSystem {
                         elseif ($Build -eq 19043) {
                             $OS = $OS + " v21H1"
                         }
-                        elseif ($Build -eq 19044 -or $Build -eq 22000) {
+                        elseif ($Build -eq 19044 -or $Build -eq 22000 -or $Build -eq 20348) {
                             $OS = $OS + " v21H2"
                         }
                     }#if os win 10, srv 2016, or srv 2019
@@ -2995,7 +2995,7 @@ Function Get-OperatingSystem {
                 else {$bit = "64-bit"}
             }
 
-            if ($value -like "Windows 10*" -or $OS -like "Windows 11*" -or $value -match "2016" -or $value -match "2019") {
+            if ($value -like "Windows 10*" -or $OS -like "Windows 11*" -or $value -match "2016" -or $value -match "2019" -or $value -match "2022") {
                 if ($Build -eq 14393) {
                     $OS = $value + " v1607"
                 }
@@ -3026,7 +3026,7 @@ Function Get-OperatingSystem {
                 elseif ($Build -eq 19043) {
                     $OS = $OS + " v21H1"
                 }
-                elseif ($Build -eq 19044 -or $Build -eq 22000) {
+                elseif ($Build -eq 19044 -or $Build -eq 22000 -or $Build -eq 20348) {
                     $OS = $OS + " v21H2"
                 }
             }#if os win 10, win 11, srv 2016, or srv 2019
