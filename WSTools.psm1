@@ -1737,7 +1737,7 @@ function Get-HWInfo {
                     $OS = $osi.Caption -replace "Microsoft ",""
                     $Build = $osi.BuildNumber
 
-                    if ($OS -like "Windows 10*" -or $OS -like "Windows 11*" -or $OS -match "2016" -or $OS -match "2019") {
+                    if ($OS -like "Windows 10*" -or $OS -like "Windows 11*" -or $OS -match "2016" -or $OS -match "2019" -or $OS -match "2022") {
                         if ($Build -eq 14393) {
                             $OS = $OS + " v1607"
                         }
@@ -1768,7 +1768,7 @@ function Get-HWInfo {
                         elseif ($Build -eq 19043) {
                             $OS = $OS + " v21H1"
                         }
-                        elseif ($Build -eq 19044 -or $Build -eq 22000) {
+                        elseif ($Build -eq 19044 -or $Build -eq 22000 -or $Build -eq 20348) {#Win 10 Win 11 Srv 2022
                             $OS = $OS + " v21H2"
                         }
                     }#if os win 10, srv 2016, or srv 2019
