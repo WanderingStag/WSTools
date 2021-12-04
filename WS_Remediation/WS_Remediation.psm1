@@ -10047,8 +10047,6 @@ software updates for compliance assessment and whether there are updates to the 
 
 Function Start-WindowsUpdateCheck {
 <#
-   .Parameter ComputerName
-    Specifies the computer or computers
 .Notes
     AUTHOR: Skyler Hart
     CREATED: 2021-12-03 19:41:37
@@ -10061,58 +10059,12 @@ Function Start-WindowsUpdateCheck {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0)]
-        [Alias('Host','Name','Computer','CN')]
-        [string[]]$ComputerName = "$env:COMPUTERNAME",
-
         [Parameter(Mandatory=$false)]
         [switch]$InstallUpdates
     )
 
-    $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
-    if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-        $b = 0
-        $n = $ComputerName.Count
-        foreach ($comp in $ComputerName) {
-            if ($n -gt 1) {
-                $b++
-                $p = ($b / $n)
-                $p1 = $p.ToString("P")
-                Write-Progress -Id 1 -activity "Initializing Windows Update scan" -status "Computer $b of $n. Percent complete:  $p1" -PercentComplete (($b / $n)  * 100)
-            }
-
-            try {
-                if ($InstallUpdates) {
-                    $install = Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList "cmd /c wuauclt /detectnow /updatenow" -ErrorAction Stop #DevSkim: ignore DS104456
-                    $end = Get-Date
-                    $info = New-Object -TypeName PSObject -Property @{
-                        ComputerName = $comp
-                        Status = "Update scan initialized"
-                        Time = $end
-                    }#new object
-                }
-                else {
-                    $install = Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList "cmd /c wuauclt /detectnow" -ErrorAction Stop #DevSkim: ignore DS104456
-                    $end = Get-Date
-                    $info = New-Object -TypeName PSObject -Property @{
-                        ComputerName = $comp
-                        Status = "Update scan and install initialized"
-                        Time = $end
-                    }#new object
-                }
-            }
-            catch {
-                $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
-                    ComputerName = $comp
-                    Status = "Unable to run Windows Update"
-                    Time = $end
-                }#new object
-            }
-            $info
-        }
-    }
-    else {Write-Error "Must be ran as admin"}
+    if ($InstallUpdates) {wuauclt /detectnow /updatenow}
+    else {wuauclt /detectnow}
 }
 
 ###########################################################################
