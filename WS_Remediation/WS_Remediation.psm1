@@ -10063,8 +10063,8 @@ Function Start-WindowsUpdateCheck {
         [switch]$InstallUpdates
     )
 
-    if ($InstallUpdates) {wuauclt /detectnow /updatenow}
-    else {wuauclt /detectnow}
+    if ($InstallUpdates) {Start-Process wuauclt -ArgumentList "/detectnow /updatenow"}
+    else {Start-Process wuauclt -ArgumentList "/detectnow"}
 }
 
 ###########################################################################
