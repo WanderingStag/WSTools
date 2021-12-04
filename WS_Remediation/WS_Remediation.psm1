@@ -10045,7 +10045,7 @@ software updates for compliance assessment and whether there are updates to the 
 }
 
 
-Function Start-WindowsUpdateCheck {
+Function Restore-WindowsUpdate {
 <#
 .Notes
     AUTHOR: Skyler Hart
@@ -10057,14 +10057,9 @@ Function Start-WindowsUpdateCheck {
 .Link
     https://wstools.dev
 #>
-    [CmdletBinding()]
-    Param (
-        [Parameter(Mandatory=$false)]
-        [switch]$InstallUpdates
-    )
-
-    if ($InstallUpdates) {Start-Process cmd -ArgumentList "wuauclt /detectnow /updatenow"}
-    else {Start-Process cmd -ArgumentList "wuauclt /detectnow"}
+    $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+    if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {dism.exe /Online /Cleanup-image /Restorehealth}
+    else {Write-Error "Must be ran as admin"}
 }
 
 ###########################################################################
