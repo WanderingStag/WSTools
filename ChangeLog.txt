@@ -9,6 +9,7 @@ Known issues:
 ######################
 New features and other changes:
 1. Added Windows Server 2022 21H2 support to Get-OperatingSystem and Get-HWInfo.
+2. Added function Start-WindowsUpdateCheck.
 
 ######################
 #                    #
