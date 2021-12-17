@@ -406,6 +406,15 @@
 		],
 		"description": "Adds code for a progress bar."
 	},
+	"PSCustomObject": {
+		"prefix": "pscustomobject",
+		"body": [
+			"[PSCustomObject]@{",
+			"\t$ComputerName = $value$0",
+			"}#new object"
+		],
+		"description": "Adds PSCustomObject code compatible with PowerShell v3 and above."
+	},
 	"PSObject": {
 		"prefix": "psobject",
 		"body": [
