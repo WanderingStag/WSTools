@@ -794,6 +794,22 @@ function Enable-RDP {
 }
 
 
+function Enable-ServerManager {
+<#
+.NOTES
+    Author: Skyler Hart
+    Created: 2021-12-16 21:29:35
+    Last Edit: 2021-12-16 21:29:35
+    Keywords:
+.LINK
+    https://wstools.dev
+#>
+    $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+    if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {Get-ScheduledTask -TaskName ServerManager | Enable-ScheduledTask}
+    else {Write-Output "Must run this function as admin"}
+}
+
+
 function Get-BitLockerStatus {
 <#
 .NOTES
