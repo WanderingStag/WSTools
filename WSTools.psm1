@@ -959,7 +959,7 @@ function Get-CertificateInventory {
     }
 
     $certs = @()
-    foreach ($cert in $certinfo) {
+    $certs = foreach ($cert in $certinfo) {
         $cp = $cert.PSParentPath -replace "Microsoft.PowerShell.Security\\Certificate\:\:",""
 
         if (($cert.Subject) -eq ($cert.Issuer)) {$ss = $true}
@@ -967,7 +967,7 @@ function Get-CertificateInventory {
 
         $daystoexpire = (New-TimeSpan -Start (get-date) -End ($cert.NotAfter)).Days
 
-        $certs += New-Object -TypeName PSObject -Property @{
+        New-Object -TypeName PSObject -Property @{
             ComputerName = ($env:computername)
             ProductType = $type
             Subject = ($cert.Subject)
@@ -981,7 +981,6 @@ function Get-CertificateInventory {
             Thumbprint = ($cert.Thumbprint)
         }#new object
     }
-
     $certs | Select-Object ComputerName,ProductType,Location,Subject,Issuer,SelfSigned,ValidFrom,ValidTo,DaysToExpiration,SerialNumber,Thumbprint | Sort-Object Subject
 }
 New-Alias -Name "Get-CertInv" -Value Get-CertificateInventory
