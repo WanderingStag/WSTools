@@ -435,12 +435,19 @@
 		],
 		"description": "Switch statement"
 	},
+	"osiconfig": {
+		"prefix": "osiconfig",
+		"body": [
+			"\\$config = \\$Global:OSIToolsConfig\r"
+		],
+		"description": "Adds config variable for OSITools"
+	},
 	"wsconfig": {
 		"prefix": "wsconfig",
 		"body": [
 			"\\$config = \\$Global:WSToolsConfig\r"
 		],
-		"description": "Adds config statement"
+		"description": "Adds config variable for WSTools"
 	},
 	"admincheck": {
 		"prefix": "AdminCheck",
