@@ -202,9 +202,7 @@
 		"prefix": "link",
 		"body": [
 			".LINK",
-			"\thttps://wstools.dev",
-			".LINK",
-			"\thttps://www.skylerhart.com"
+			"\thttps://wstools.dev"
 		],
 		"description": "Link section for help block"
 	},
