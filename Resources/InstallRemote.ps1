@@ -487,7 +487,6 @@ function Send-ToastNotification {
     }
 }
 
-$comp = $env:COMPUTERNAME
 $cn = $env:COMPUTERNAME
 $PatchFolderPath = "C:\Patches"
 $cab = $PatchFolderPath + "\cab"
@@ -498,11 +497,6 @@ $cimq = Get-CimInstance Win32_OperatingSystem -ErrorAction SilentlyContinue
 $wmiq = Get-WmiObject Win32_OperatingSystem -ErrorAction SilentlyContinue
 
 $dn48path = $PatchFolderPath + "\ndp48-x86-x64-allos-enu.exe"
-$patch2 = $PatchFolderPath + "\Patch2\Setup.exe"
-$patch4 = $PatchFolderPath + "\Patch4\Setup.exe"
-$patch11 = $PatchFolderPath + "\Patch11\Setup.exe"
-$patch15 = $PatchFolderPath + "\Patch15\Setup.exe"
-$patch16 = $PatchFolderPath + "\Patch16\Setup.exe"
 
 #$7zip = $PatchFolderPath + "\7zip"
 $90meter = $PatchFolderPath + "\90Meter"
@@ -518,7 +512,6 @@ $dset = $PatchFolderPath + "\DSET"
 $edge = $PatchFolderPath + "\Edge"
 $encase = $PatchFolderPath + "\Encase"
 $firefox = $PatchFolderPath + "\firefox"
-$infopath = $PatchFolderPath + "\InfoPath"
 $java = $PatchFolderPath + "\Java"
 $netbanner = $PatchFolderPath + "\NetBanner"
 $onedrive = $PatchFolderPath + "\OneDrive"
@@ -2190,36 +2183,6 @@ if (Test-Path $vscode) {
     else {
         #do nothing Write-Output "$cn`: $pn same as installed version or older. Skipping..."
     }
-}
-
-#if (Test-Path $patch2) {
-#    Write-Output "$cn`: Installing McAfee Patch 2."
-#    Start-Process $patch2 -ArgumentList "/quiet /norestart" -NoNewWindow -Wait
-#    Start-Sleep -Seconds 300
-#}
-
-#if (Test-Path $patch4) {
-#    Write-Output "$cn`: Installing McAfee Patch 4."
-#    Start-Process $patch4 -ArgumentList "/quiet /norestart" -NoNewWindow -Wait
-#    Start-Sleep -Seconds 300
-#}
-
-#if (Test-Path $patch11) {
-#    Write-Output "$cn`: Installing McAfee Patch 11."
-#    Start-Process $patch11 -ArgumentList "/quiet /norestart" -NoNewWindow -Wait
-#    Start-Sleep -Seconds 300
-#}
-
-#if (Test-Path $patch15) {
-#    Write-Output "$cn`: Installing McAfee Patch 15."
-#    Start-Process $patch15 -ArgumentList "/quiet /norestart" -NoNewWindow -Wait
-#    Start-Sleep -Seconds 300
-#}
-
-if (Test-Path $patch16) {
-    Write-Output "$cn`: Installing McAfee Patch 16."
-    Start-Process $patch16 -ArgumentList "/quiet /norestart" -NoNewWindow -Wait
-    Start-Sleep -Seconds 300
 }
 
 if ($datun -ge 1) {
