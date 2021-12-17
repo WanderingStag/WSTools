@@ -992,13 +992,11 @@ function Get-CommandList {
 .NOTES
     Author: Skyler Hart
     Created: 2021-08-06 23:09:24
-    Last Edit: 2021-08-15 15:09:21
+    Last Edit: 2021-12-16 21:41:15
     Keywords:
     Other:
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (
@@ -1022,7 +1020,7 @@ function Get-CommandList {
     $i = 0
     $number = $commands.length
     $info = @()
-    foreach ($c in $commands) {
+    $info = foreach ($c in $commands) {
         #Progress Bar
         if ($number -gt "1") {
             $i++
@@ -1043,7 +1041,7 @@ function Get-CommandList {
         $mn = $c.ModuleName
         $sli = $slist | Where-Object {$_.Module -eq $mn}
         if ([string]::IsNullOrWhiteSpace($sli)) {
-            $info += New-Object -TypeName PSObject -Property @{
+            New-Object -TypeName PSObject -Property @{
                 CommandType = ($c.CommandType)
                 Name = ($c.Name)
                 ResolvedName = $rn
@@ -1059,7 +1057,7 @@ function Get-CommandList {
             }#new object
         }
         else {
-            $info += New-Object -TypeName PSObject -Property @{
+            New-Object -TypeName PSObject -Property @{
                 CommandType = ($c.CommandType)
                 Name = ($c.Name)
                 ResolvedName = $rn
