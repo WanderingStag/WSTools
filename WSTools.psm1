@@ -18,7 +18,6 @@
         [Alias('Site','URL','Address')]
         [string]$Website
     )
-
     Add-Content -Path "$env:USERPROFILE\AppData\LocalLow\Sun\Java\Deployment\security\exception.sites" -Value "$Website"
 }
 
