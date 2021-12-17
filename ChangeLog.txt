@@ -13,6 +13,7 @@ New features and other changes:
 3. Added numerous app service names.
 4. Added PSCustomObject snippet to powershell.json.
 5. Added Enable-ServerManager.
+6. Fixed some PSScriptAnalyzer issues.
 
 ######################
 #                    #
