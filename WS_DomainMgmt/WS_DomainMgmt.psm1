@@ -330,7 +330,7 @@ Function Get-NewADGroup {
 }
 
 
-Function Get-PrivilegedGroups {
+Function Get-PrivilegedGroup {
 <#
 .Notes
     AUTHOR: Skyler Hart
@@ -1423,11 +1423,7 @@ Function Copy-LexmarkUniversalPrintDriver {
     )]
     [CmdletBinding()]
     Param (
-        [Parameter(
-            Mandatory = $false,
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true
-        )]
+        [Parameter()]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = $env:COMPUTERNAME,
 
@@ -1538,7 +1534,7 @@ Function Install-HPUniversalPrintDriver {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -1593,7 +1589,7 @@ Function Install-LexmarkUniversalPrintDriver {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter()]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )

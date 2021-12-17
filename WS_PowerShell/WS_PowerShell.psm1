@@ -468,7 +468,7 @@ switch (`$variable) {
 }
 
 
-Function Get-Accelerators {
+Function Get-Accelerator {
 <#
 .Notes
     AUTHOR: Skyler Hart

@@ -5351,7 +5351,7 @@ Function Install-MECM {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter()]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -5390,7 +5390,7 @@ Function Install-MECM {
         }
         $info
     }
-    Write-Host "The MECM install can take over an install to fully complete. Please wait a minimum of 30 minutes before rebooting or installing another program." -ForegroundColor Yellow
+    Write-Output "The MECM install can take over an install to fully complete. Please wait a minimum of 30 minutes before rebooting or installing another program."
 }
 New-Alias -Name "Install-SCCM" -Value Install-MECM
 
@@ -5471,7 +5471,7 @@ Function Install-SQLServerManagementStudio {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter()]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
@@ -5529,7 +5529,7 @@ Function Install-VisualStudioCode {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter()]
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
