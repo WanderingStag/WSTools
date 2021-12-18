@@ -3308,12 +3308,9 @@ Function Get-ShutdownLog {
     $i = 0
     $number = $ComputerName.length
     $stime = (Get-Date) - (New-TimeSpan -Day $DaysBackToSearch)
-    $info = @()
 
     #Search Each Computer
     foreach ($comp in $ComputerName) {
-        $info = $null
-        $info = @()
         #Progress Bar
         if ($number -gt "1") {
             $i++
