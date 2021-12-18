@@ -41,6 +41,9 @@ $Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
     #Old PowerShell Modules. Used in Remove-OldPowerShellModule.
     OldPSModule = @('SHTool','SHTools','SkysTool')
 
+    #Help folder location used by Update-HelpFromFile
+    HelpFolder = "J:\PowerShell\OfflineHelp"
+
 
     ################################
     ##    App/Patching settings   ##
