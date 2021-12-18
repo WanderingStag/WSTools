@@ -964,7 +964,7 @@ function Get-CertificateInventory {
 
         $daystoexpire = (New-TimeSpan -Start (get-date) -End ($cert.NotAfter)).Days
 
-        New-Object -TypeName PSObject -Property @{
+        [PSCustomObject]@{
             ComputerName = ($env:computername)
             ProductType = $type
             Subject = ($cert.Subject)
