@@ -646,9 +646,6 @@ function Convert-ImageToBase64 {
 
     $b64 = [convert]::ToBase64String((get-content $ImagePath -encoding byte))
     $b64
-    #New-Object -TypeName PSObject -Property @{
-    #    Base64Value = $b64
-    #}#new object
 }
 New-Alias -Name "Convert-ICOtoBase64" -Value Convert-ImageToBase64
 
