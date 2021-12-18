@@ -1504,7 +1504,6 @@ Function Get-FeaturesOnDemand {
 .LINK
     https://wstools.dev
 #>
-    $ninfo = @()
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
     if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {$Role = 'Admin'}
     else {$Role = 'User'}
@@ -1515,15 +1514,12 @@ Function Get-FeaturesOnDemand {
         $state = $info | Where-Object {$_ -like "State*"}
         $state = $state -replace "State : "
 
-        $i = 0
         foreach ($ident in $idents) {
             $state2 = $state[$i]
-            $ninfo = New-Object -TypeName PSObject -Property @{
+            [PSCustomObject]@{
                 CapabilityIdentity = $ident
                 State = $state2
-            }#new object
-            $ninfo | Select-Object CapabilityIdentity,State
-            $i++
+            }
         }
     }#if admin
     else {
