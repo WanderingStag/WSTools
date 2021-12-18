@@ -2218,7 +2218,7 @@ Function Get-LockedOutLocation {
         $PDCEmulator = ($DomainControllers | Where-Object {$_.OperationMasterRoles -contains "PDCEmulator"})
 
         Write-Verbose "Finding the domain controllers in the domain"
-        Foreach($DC in $DomainControllers) {
+        $LockedOutStats = Foreach ($DC in $DomainControllers) {
             $DCCounter++
             Write-Progress -Activity "Contacting DCs for lockout info" -Status "Querying $($DC.Hostname)" -PercentComplete (($DCCounter/$DomainControllers.Count) * 100)
             Try {
@@ -2229,7 +2229,7 @@ Function Get-LockedOutLocation {
                 Continue
             }
             If($UserInfo.LastBadPasswordAttempt) {
-                $LockedOutStats += New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                         Name                   = $UserInfo.SamAccountName
                         SID                    = $UserInfo.SID.Value
                         LockedOut              = $UserInfo.LockedOut
@@ -2408,7 +2408,7 @@ Function Get-MTU {
                 }
                 else {
                     $adprop = $netad | Where-Object {$_.GUID -eq $int}
-                    New-Object -TypeName PSObject -Property @{
+                    [PSCustomObject]@{
                         ComputerName = $comp
                         Name = ($adprop.Name)
                         ConnectionID = ($adprop.NetConnectionID)
@@ -2557,7 +2557,7 @@ Function Get-NICInfo {
                     #$ipv6dns3 = $ipv6dnssrvs[2]
 
                     #Create Objects
-                    New-Object psobject -Property @{
+                    [PSCustomObject]@{
                         Name = $Comp
                         Interface = $intname
                         MACAddress = $mac
@@ -2590,7 +2590,7 @@ Function Get-NICInfo {
         }#try
 
         catch {
-            New-Object psobject -Property @{
+            [PSCustomObject]@{
                 Name = $Comp
                 Interface = "Comm Error"
                 MACAddress = $mac
@@ -2647,7 +2647,7 @@ function Get-NotificationApp {
         $_.Name -notmatch "Windows.SystemToast.Suggested" -and $_.Name -notmatch "Windows.SystemToast.WindowsTip"
     }
 
-    foreach ($app in $apps) {
+    $info = foreach ($app in $apps) {
         $name = $app.Name -replace "HKEY_CLASSES_ROOT\\AppUserModelId\\",""
         $apppath = $AppRegPath + "\" + $name
         $dn = Get-ItemProperty -Path $apppath -Name DisplayName -ErrorAction SilentlyContinue | Select-Object -ExpandProperty DisplayName -ErrorAction SilentlyContinue
@@ -2716,14 +2716,14 @@ function Get-NotificationApp {
         elseif ([string]::IsNullOrWhiteSpace($dn)) {$dn = "unknown"}
 
         $zname = $dn + " (" + $name + ")"
-        $info += New-Object -TypeName PSObject -Property @{
+        [PSCustomObject]@{
             Name = $name
             DisplayName = $dn
             zName = $zname
         }#new object
     }
 
-    $info | Select-Object Name,DisplayName,zName
+    $info
     #Remove-PSDrive -Name HKCR -Force
 }
 New-Alias -Name "Get-ToastNotifierApp" -Value Get-NotificationApp
@@ -2909,14 +2909,6 @@ Function Get-OperatingSystem {
                         }
                     }#if os win 10, srv 2016, or srv 2019
                     else {$OS = $value}
-
-                    #Create objects
-                    #New-Object psobject -Property @{
-                    #    ComputerName = $comp
-                    #    OS = $OS
-                    #    Bit = $bit
-                    #    Build = $build
-                    #}#newobject
                 }
                 catch [System.UnauthorizedAccessException],[System.Management.Automation.MethodInvocationException] {
                     $err = $_.Exception.message.Trim()
@@ -2942,7 +2934,7 @@ Function Get-OperatingSystem {
                     $Build = ""
                 }
             }#catch
-            New-Object -TypeName PSObject -Property @{
+            [PSCustomObject]@{
                 ComputerName = $Comp
                 OS = $OS
                 Bit = $Bit
@@ -3040,7 +3032,7 @@ Function Get-OperatingSystem {
             else {$OS = $value}
 
             #Create objects
-            New-Object psobject -Property @{
+            [PSCustomObject]@{
                 ComputerName = $comp
                 OS = $OS
                 Bit = $bit
@@ -3049,7 +3041,7 @@ Function Get-OperatingSystem {
         }#elseif registry
     }#continue -eq $true
     else {
-        New-Object psobject -Property @{
+        [PSCustomObject]@{
             ComputerName = $comp
             OS = "Error: not running PowerShell as admin"
             Bit = $null
@@ -3131,13 +3123,12 @@ Function Get-ProcessorCapability {
             $curbit = $null
             $capof = $null
         }
-        $info = New-Object psobject -Property @{
+        [PSCustomObject]@{
             ComputerName = $comp
             CurrentBit = $curbit
             CapableOf = $capof
             Architecture = $strCpuArchitecture
-        }#newobject
-        $info | Select-Object ComputerName,Architecture,CurrentBit,CapableOf
+        }
     }#foreach comp
 }
 
@@ -3175,7 +3166,7 @@ Function Get-PSVersion {
 
     $i = 0
     $number = $ComputerName.length
-    foreach ($comp in $ComputerName) {
+    $compinfo = foreach ($comp in $ComputerName) {
         #Progress Bar
         if ($number -gt "1") {
             $i++
@@ -3211,7 +3202,7 @@ Function Get-PSVersion {
                 elseif ($ver -ge $maxver) {$status = "Current"}
                 else {$ver = "NA"}
 
-                $compinfo += New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     InstalledPowerShellVersion = $ver
                     Status = $status
@@ -3220,7 +3211,7 @@ Function Get-PSVersion {
                 }#new object
             }
             catch {
-                $compinfo += New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     InstalledPowerShellVersion = "Unable to connect"
                     Status = "NA"
@@ -3230,7 +3221,7 @@ Function Get-PSVersion {
             }
         }
     }
-    $compinfo | Select-Object ComputerName,InstalledPowerShellVersion,Status,HighestSupportedVersion,OS
+    $compinfo
 }
 New-Alias -Name "Get-PowerShellVersion" -Value Get-PSVersion
 
@@ -3267,19 +3258,17 @@ Function Get-SerialNumber {
         }#if length
         try {
             $sn = (Get-WmiObject win32_bios -ComputerName $comp | Select-Object SerialNumber).SerialNumber
-            $info = New-Object -TypeName PSObject -Property @{
+            [PSCustomObject]@{
                 ComputerName = $comp
                 SerialNumber = $sn
             }#new object
         }
         catch {
-            $info = New-Object -TypeName PSObject -Property @{
+            [PSCustomObject]@{
                 ComputerName = $comp
                 SerialNumber = "NA"
             }#new object
         }
-
-        $info
     }
 }
 New-Alias -Name "Get-SN" -Value Get-SerialNumber
@@ -3389,7 +3378,7 @@ Function Get-ShutdownLog {
                 }
             }
 
-            $info += New-Object -TypeName PSObject -Property @{
+            [PSCustomObject]@{
                 ComputerName = $comp
                 Time = $time
                 Status = $st
@@ -3399,8 +3388,6 @@ Function Get-ShutdownLog {
                 Reason = $reason
             }#new object
         }#foreach event found
-
-        $info | Select-Object ComputerName,Time,Type,Status,User,Program,Reason | Select-Object -First $MostRecent
     }#foreach computer
 }
 
@@ -3431,7 +3418,7 @@ Function Get-UpTime {
             $bootup = [Management.ManagementDateTimeConverter]::ToDateTime($wmiq.LastBootUpTime)
             $ts = New-TimeSpan $bootup
             $tot = [string]([math]::Round($ts.totalhours,2)) + " h"
-            $info = New-Object psobject -Property @{
+            [PSCustomObject]@{
                 ComputerName = $Comp
                 LastBoot = $bootup
                 Total = $tot
@@ -3443,7 +3430,7 @@ Function Get-UpTime {
         }#try
         catch {
             $bootup = "Failed: Could not connect to computer"
-            $info = New-Object psobject -Property @{
+            [PSCustomObject]@{
                 ComputerName = $Comp
                 LastBoot = $bootup
                 Total = ""
@@ -3453,7 +3440,6 @@ Function Get-UpTime {
                 Seconds = ""
             }#newobject
         }#catch
-        $info | Select-Object ComputerName,LastBoot,Total,Days,Hours,Minutes,Seconds
     }#foreach comp
 }
 
@@ -3494,7 +3480,7 @@ function Get-UpdateHistory {
 
         $Cat = $e.Categories | Select-Object -First 1 -ExpandProperty Name
 
-        $obj = New-Object -TypeName PSObject -Property @{
+        [PSCustomObject]@{
             ComputerName = $env:computername
             Date = ($e.Date)
             Result = $Result
@@ -3504,9 +3490,7 @@ function Get-UpdateHistory {
             ClientApplicationID = ($e.ClientApplicationID)
             Description = ($e.Description)
             SupportUrl = ($e.SupportUrl)
-        } | Select-Object ComputerName,Date,Result,KB,Title,Category,ClientApplicationID,Description,SupportUrl
-
-        $obj
+        }
     }#foreach event in history
 
 <#
@@ -3595,7 +3579,7 @@ function Get-User {
             }
 
             ForEach ($u in $ui) {
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     Computer = $Comp
                     User = $u.Name
                     Description = $u.Description
@@ -3604,11 +3588,11 @@ function Get-User {
                     PasswordChangeable = $u.PasswordChangeable
                     PasswordExpires = $u.PasswordExpires
                     PasswordRequired = $u.PasswordRequired
-                } | Select-Object Computer,User,Description,Disabled,Locked,PasswordChangeable,PasswordExpires,PasswordRequired
+                }
             }#foreach u
         }#try
         catch {
-            New-Object -TypeName PSObject -Property @{
+            [PSCustomObject]@{
                 Computer = $Comp
                 User = $null
                 Description = $null
@@ -3617,7 +3601,7 @@ function Get-User {
                 PasswordChangeable = $null
                 PasswordExpires = $null
                 PasswordRequired = $null
-            } | Select-Object Computer,User,Description,Disabled,Locked,PasswordChangeable,PasswordExpires,PasswordRequired
+            }
         }#catch
     }#foreach comp
 }
@@ -3740,7 +3724,7 @@ function Get-WindowsSetupLog {
             #Gather events
             $winevents = Get-WinEvent -ComputerName $Comp -FilterHashTable @{Logname='setup'; ID= $ID; StartTime=$stime} -ErrorAction Stop | Select-Object ProviderName,Message,Id,TimeCreated
 
-            foreach ($winevent in $winevents) {
+            $info += foreach ($winevent in $winevents) {
                 if ($winevent.ProviderName -eq "Microsoft-Windows-Servicing" -or ($winevent.ProviderName -eq "Microsoft-Windows-WUSA" -and $winevent.Id -eq "3")) {
                     switch ($winevent.Id) {
                         1 {$st = "Initiating Update"}
@@ -3766,7 +3750,7 @@ function Get-WindowsSetupLog {
                             -replace ". Current state is Absent. Target state is Installed. Client id: UpdateAgentLCU.",""
                     }
 
-                    $info += New-Object -TypeName PSObject -Property @{
+                    [PSCustomObject]@{
                         ComputerName = $comp
                         Update = $update
                         Status = $st
@@ -3775,11 +3759,9 @@ function Get-WindowsSetupLog {
                     }#new object
                 }#if servicing provider or error
             }#foreach event
-
-
         }
         catch {
-            $info += New-Object -TypeName PSObject -Property @{
+            $info += [PSCustomObject]@{
                 ComputerName = $comp
                 Update = "NA"
                 Status = ""
