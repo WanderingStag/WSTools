@@ -5950,7 +5950,7 @@ Function Split-File {
    .Notes
     AUTHOR: Skyler Hart
     CREATED: 04/30/2019 13:18:22
-    LASTEDIT: 04/30/2019 17:27:34
+    LASTEDIT: 2021-12-17 21:13:05
     KEYWORDS:
     REQUIRES:
         #Requires -Version 3.0
@@ -5985,7 +5985,7 @@ Function Split-File {
     )
 
     $FilePath = [IO.Path]::GetDirectoryName($Path)
-    if ((null -eq $$DestinationFolder -or $DestinationFolder -eq "") -and $FilePath -ne "") {$FilePath = $FilePath + "\"}
+    if (([string]::IsNullOrWhiteSpace($DestinationFolder)) -and $FilePath -ne "") {$FilePath = $FilePath + "\"}
     elseif ($null -ne $DestinationFolder -and $DestinationFolder -ne "") {
         $FilePath = $DestinationFolder + "\"
     }
