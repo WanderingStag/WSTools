@@ -14,6 +14,8 @@ New features and other changes:
 4. Added PSCustomObject snippet to powershell.json.
 5. Added Enable-ServerManager.
 6. Fixed some PSScriptAnalyzer issues.
+7. Changed 30+ "new-object -typename PSObject"'s to [PSCustomObjects] in WSTools.psm1.
+8. Removed a lot of excess code.
 
 ######################
 #                    #
