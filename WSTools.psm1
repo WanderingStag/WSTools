@@ -1127,7 +1127,7 @@ Function Get-ComputerHWInfo {
         $SPN = $key.GetValue('SystemProductName')
         $SV = $key.GetValue('SystemVersion')
 
-        New-Object -TypeName PSObject -Property @{
+        [PSCustomObject]@{
             ComputerName = $comp
             Manufacturer = $SM
             Model = $SPN
