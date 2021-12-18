@@ -273,7 +273,7 @@ function Get-NotificationApp {
         elseif ($name -eq "Windows.SystemToast.WindowsUpdate.Notification") {$dn = "Windows Update"}
         elseif ($name -eq "Windows.SystemToast.Winlogon") {$dn = "Windows logon reminder"}
         elseif ($name -eq "Windows.SystemToast.Wwansvc") {$dn = "Cellular"}
-        elseif ($null -eq $dn -or $dn -eq "") {$dn = "unknown"}
+        elseif ([string]::IsNullOrWhiteSpace($dn)) {$dn = "unknown"}
 
         $zname = $dn + " (" + $name + ")"
         $info += New-Object -TypeName PSObject -Property @{
@@ -412,8 +412,8 @@ function Send-ToastNotification {
     }
     Begin {
         $Notifier = $PsBoundParameters[$ParameterName]
-        if ($null -eq $Notifier -or $Notifier -eq "") {$Notifier = "Windows.SystemToast.SecurityAndMaintenance"}
-        if ($null -eq $Title -or $Title -eq '') {
+        if ([string]::IsNullOrWhiteSpace($Notifier)) {$Notifier = "Windows.SystemToast.SecurityAndMaintenance"}
+        if ([string]::IsNullOrWhiteSpace($Title)) {
             $ttext = $null
         }
         else {

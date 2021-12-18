@@ -1130,7 +1130,7 @@ function Get-WSLocalGroup {
         $Jobs = @()
     }
     Process {
-        if ($null -eq $Output -or $Output -eq "") {
+        if ([string]::IsNullOrWhiteSpace($Output)) {
             if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
             $Output = $ScriptWD + "\WS_LocalGroup.csv"
         }
@@ -1327,7 +1327,7 @@ function Get-WSLocalUser {
         $Jobs = @()
     }
     Process {
-        if ($null -eq $Output -or $Output -eq "") {
+        if ([string]::IsNullOrWhiteSpace($Output)) {
             if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
             $Output = $ScriptWD + "\WS_LocalUser.csv"
         }

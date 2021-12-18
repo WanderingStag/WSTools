@@ -827,8 +827,8 @@ function Send-ToastNotification {
     }
     Begin {
         $Notifier = $PsBoundParameters[$ParameterName]
-        if ($null -eq $Notifier -or $Notifier -eq "") {$Notifier = "Windows.SystemToast.NfpAppAcquire"}
-        if ($null -eq $Title -or $Title -eq '') {
+        if ([string]::IsNullOrWhiteSpace($Notifier)) {$Notifier = "Windows.SystemToast.NfpAppAcquire"}
+        if ([string]::IsNullOrWhiteSpace($Title)) {
             $ttext = $null
         }
         else {

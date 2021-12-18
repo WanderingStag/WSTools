@@ -8885,7 +8885,7 @@ function Initialize-GPUpdate {
         [string[]]$ComputerName
     )
 
-    if ($null -eq $ComputerName -or $ComputerName -eq "") {
+    if ([string]::IsNullOrWhiteSpace($ComputerName)) {
         gpupdate.exe /force
     }
     else {
@@ -10141,7 +10141,7 @@ Function Get-ENSStatus {
                     [string]$lasc = $key2.GetValue('LastASCI')
                     $ensversion = $key2.GetValue('Version')
 
-                    if ($null -eq $epolist -or $epolist -eq "") {
+                    if ([string]::IsNullOrWhiteSpace($epolist)) {
                         $ensinstalled = "Partial - not functional"
                     }
 
@@ -10169,7 +10169,7 @@ Function Get-ENSStatus {
                 foreach ($ePOServer in $ePOServers) {
                     $name = $null
                     $name = $ePOServer.Substring(0, $ePOServer.IndexOf('.'))
-                    if ($null -eq $ePOServerList -or $ePOServerList -eq "") {
+                    if ([string]::IsNullOrWhiteSpace($ePOServerList)) {
                         $ePOServerList = $name
                     }
                     else {
