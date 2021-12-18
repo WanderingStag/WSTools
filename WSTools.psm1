@@ -1333,7 +1333,17 @@ function Get-DirectoryStat {
     Begin {}
     Process {
         foreach ($Directory in $DirectoryName) {
-            $stats = New-Object PsObject -Property @{Directory = $null; FileCount = 0; SizeBytes = [long]0; SizeKB = 0; SizeMB = 0; SizeGB = 0; Over100MB = 0; Over1GB = 0; Over5GB = 0}
+            $stats = [PSCustomObject]@{
+                Directory = $null
+                FileCount = 0
+                SizeBytes = [long]0
+                SizeKB = 0
+                SizeMB = 0
+                SizeGB = 0
+                Over100MB = 0
+                Over1GB = 0
+                Over5GB = 0
+            }
             $stats.Directory = $Directory
             foreach ($d in [system.io.Directory]::EnumerateDirectories($Directory)) {
                 foreach ($f in [system.io.Directory]::EnumerateFiles($d)) {
