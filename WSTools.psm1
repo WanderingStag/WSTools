@@ -1195,27 +1195,25 @@ Function Get-ComputerModel {
                 $manu = $csi.Manufacturer
                 $model = $csi.Model
 
-                $info = New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     DomainRole = $dr
                     Manufacturer = $manu
                     Model = $model
                     PorV = $PorV
                     Type = $type
-                }#new object
-                $info | Select-Object ComputerName,DomainRole,Manufacturer,Model,PorV,Type
+                }
             }
             catch {
                 $na = "NA"
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     DomainRole = "Unable to connect"
                     Manufacturer = $na
                     Model = $na
                     PorV = $na
                     Type = $na
-                }#new object
-                $info | Select-Object ComputerName,DomainRole,Manufacturer,Model,PorV,Type
+                }
             }
         }
     }
