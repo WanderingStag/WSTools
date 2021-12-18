@@ -1258,7 +1258,7 @@ function Get-DayOfYear {
     $c = $Day.Length
     if ($c -le 3) {
         $nd = $Day - 1
-        if ($null -eq $Year -or $Year -eq "") {
+        if ([string]::IsNullOrWhiteSpace($Year)) {
             [string]$Year = (Get-Date).Year
             $info = (Get-Date -Day 1 -Month 1 -Year $Year).AddDays($nd)
         }
@@ -1412,7 +1412,7 @@ function Get-Error {
 
     $Errors = $Global:Error
 
-    if ($null -eq $HowMany -or $HowMany -eq "") {
+    if ([string]::IsNullOrWhiteSpace($HowMany)) {
         [int32]$HowMany = $Errors.Count
     }
 
@@ -2394,21 +2394,21 @@ Function Get-MTU {
                 $RegKey2 = $RegBase.OpenSubKey($RegLoc2)
                 $mtu = $null
                 $mtu = $RegKey2.GetValue('MTU')
-                if ($null -eq $mtu -or $mtu -eq "") {
+                if ([string]::IsNullOrWhiteSpace($mtu)) {
                     $mtu = "1500"
                 }
                 $domain = $RegKey2.GetValue('Domain')
                 $dhcpaddr = $RegKey2.GetValue('DhcpIPAddress')
                 $ipaddr = $RegKey2.GetValue('IPAddress')
                 $ip = $null
-                if ($null -eq $dhcpaddr -or $dhcpaddr -eq "") {
+                if ([string]::IsNullOrWhiteSpace($dhcpaddr)) {
                     $ip = $ipaddr[0]
                 }
                 else {
                     $ip = $dhcpaddr
                 }
 
-                if ($null -eq $ip -or $ip -eq "" -or $ip -like "0*") {
+                if ([string]::IsNullOrWhiteSpace($ip) -or $ip -like "0*") {
                     #don't report
                 }
                 else {
@@ -2718,7 +2718,7 @@ function Get-NotificationApp {
         elseif ($name -eq "Windows.SystemToast.WindowsUpdate.Notification") {$dn = "Windows Update"}
         elseif ($name -eq "Windows.SystemToast.Winlogon") {$dn = "Windows logon reminder"}
         elseif ($name -eq "Windows.SystemToast.Wwansvc") {$dn = "Cellular"}
-        elseif ($null -eq $dn -or $dn -eq "") {$dn = "unknown"}
+        elseif ([string]::IsNullOrWhiteSpace($dn)) {$dn = "unknown"}
 
         $zname = $dn + " (" + $name + ")"
         $info += New-Object -TypeName PSObject -Property @{
@@ -4827,7 +4827,7 @@ function Set-AxwayConfig {
         [string]$ConfigFile
     )
 
-    if ($null -eq $ComputerName -or $ComputerName -eq "") {
+    if ([string]::IsNullOrWhiteSpace($ComputerName)) {
         $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
         if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
             Start-Process "$env:ProgramFiles\Tumbleweed\Desktop Validator\dvconfig.exe" -ArgumentList "-command write -file $ConfigFile"
@@ -5790,7 +5790,7 @@ function Show-FederalHoliday {
     $lyear = $holidays.Year | Select-Object -Last 1
     $cyear = (Get-Date).Year
 
-    if ($null -eq $Year -or $Year -eq "") {
+    if ([string]::IsNullOrWhiteSpace($Year)) {
         $Year = $cyear
     }
     else {
@@ -5803,7 +5803,7 @@ function Show-FederalHoliday {
         }
     }
 
-    if ($null -eq $Name -or $Name -eq "") {
+    if ([string]::IsNullOrWhiteSpace($Name)) {
         if ($AllYears) {
             $holidays | Select-Object Name,Year,Date,DayOfWeek | Sort-Object Date
         }
