@@ -1626,7 +1626,6 @@ function Get-HWInfo {
     $ErrorActionPreference = "Stop"
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
     if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-        $info = @()
         $j = 0
         $number = $ComputerName.length
         foreach ($Comp in $ComputerName) {
@@ -1860,7 +1859,7 @@ function Get-HWInfo {
                     $bl = ""
                 }
 
-                $info += New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $Comp
                     Status = $status
                     Manufacturer = $manu
@@ -1896,7 +1895,7 @@ function Get-HWInfo {
             }#if online
             else {
                 $status = "Offline"
-                $info += New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $Comp
                     Status = $status
                     Manufacturer = $null
@@ -1931,9 +1930,6 @@ function Get-HWInfo {
                 }#new object
             }#if offline
         }#foreach computer
-        $info | Select-Object ComputerName,Status,PorV,Type,Manufacturer,Model,SerialNumber,OperatingSystem,Build,Architecture,DomainRole,BitLocker,`
-            NetAdapterName,IPAddress,Subnet,Gateway,DNS,MACAddress,ProcessorManufacturer,ProcessorName,Processors,CoresPerProcessor,TotalCores,`
-            InstalledRAM,MaxRAM,RAMSlotsUsed,TotalRAMSlots,LogicalDiskName,LogicalDiskSize,LogicalDiskFree,LogicalDiskUsed
     }#if admin
     else {Write-Error "Not admin. Please run PowerShell as admin."}
 }
