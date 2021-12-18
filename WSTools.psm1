@@ -1423,7 +1423,6 @@ function Get-Error {
 
     $n = $HowMany - 1
     $logs = $Errors[0..$n]
-    $info = @()
 
     foreach ($log in $logs) {
         $scriptn = $log.InvocationInfo.ScriptName
@@ -1432,16 +1431,15 @@ function Get-Error {
         $command = $log.InvocationInfo.Line.Trim()
         $exc = $log.Exception.GetType().fullname
         $mes = $log.Exception.message.Trim()
-        $info += New-Object -TypeName PSObject -Property @{
+        [PSCustomObject]@{
             Exception = "[$exc]"
             Message = $mes
             Script = $scriptn
             Command = $command
             Line = $line
             Character = $char
-        } | Select-Object Exception,Message,Script,Command,Line,Character
+        }
     }
-    $info
 }
 New-Alias -Name "Error" -Value Get-Error
 
