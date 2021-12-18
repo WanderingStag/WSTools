@@ -1963,7 +1963,7 @@ Function Get-IEVersion {
         $reg = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey('LocalMachine', $comp)
         $key = $reg.OpenSubkey($keyname)
         $value = $key.GetValue('Version')
-        New-Object psobject -Property @{
+        [PSCustomObject]@{
             ComputerName = $comp
             IEVersion = $value
         }#new object
