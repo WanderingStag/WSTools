@@ -1038,7 +1038,7 @@ function Get-CommandList {
         $mn = $c.ModuleName
         $sli = $slist | Where-Object {$_.Module -eq $mn}
         if ([string]::IsNullOrWhiteSpace($sli)) {
-            New-Object -TypeName PSObject -Property @{
+            [PSCustomObject]@{
                 CommandType = ($c.CommandType)
                 Name = ($c.Name)
                 ResolvedName = $rn
@@ -1054,7 +1054,7 @@ function Get-CommandList {
             }#new object
         }
         else {
-            New-Object -TypeName PSObject -Property @{
+            [PSCustomObject]@{
                 CommandType = ($c.CommandType)
                 Name = ($c.Name)
                 ResolvedName = $rn
