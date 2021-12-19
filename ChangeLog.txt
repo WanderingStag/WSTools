@@ -10,7 +10,7 @@ Known issues:
 New features and other changes:
 1. Added Windows Server 2022 21H2 support to Get-OperatingSystem and Get-HWInfo.
 2. Added function Restore-WindowsUpdate.
-3. Added numerous app service names.
+3. Added numerous app service names to config (used in Stop-AppService.)
 4. Added PSCustomObject snippet to powershell.json.
 5. Added Enable-ServerManager.
 6. Fixed some PSScriptAnalyzer issues.
