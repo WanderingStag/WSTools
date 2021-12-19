@@ -144,11 +144,11 @@ Function Get-ComputerADSite {
         $info = @()
     }
     Process {
-        foreach ($comp in $ComputerName) {
+        $info = foreach ($comp in $ComputerName) {
             $site = nltest /server:$comp /dsgetsite 2>$null
             if($LASTEXITCODE -eq 0){$st = $site[0]}
             else {$st = "NA"}
-            $info += New-Object -TypeName PSObject -Property @{
+            [PSCustomObject]@{
                 ComputerName = $comp
                 Site = $st
             }#new object
