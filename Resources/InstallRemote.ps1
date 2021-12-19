@@ -78,7 +78,7 @@
                                 -and $DisplayName -notlike "Outils de v*" -and $DisplayName -notlike "Intel(R) Processor*" -and $DisplayName -notlike "Intel(R) Chipset*" -and $DisplayName -notlike "herramientas de corr*" `
                                 -and $DisplayName -notlike "Dell Touchpa*" -and $DisplayName -notmatch "Crystal Reports" -and $DisplayName -notmatch "Catalyst Control" -and $DisplayName -notlike "AMD *" -and $DisplayName -notlike "Microsoft * MUI*" `
                                 -and $DisplayName -notlike "Microsoft Visual C* Redist*" -and $DisplayName -notlike "Vulkan Run Time Libraries*" -and $DisplayName -notlike "Microsoft Visual C* Minimum*" -and $DisplayName -notlike "Microsoft Visual C* Additional*")) {
-                                $installed += New-Object -TypeName PSCustomObject -Property $HashProperty |
+                                $installed += [PSCustomObject]$HashProperty |
                                 Select-Object -Property $SelectProperty
                             }
                             $DisplayVersion | Out-Null
@@ -123,15 +123,14 @@ Function Join-File {
 
     $og = (Get-Location).Path
     $objs = Get-ChildItem $Path | Where-Object {$_.Name -like "*_Part*"}
-    $myobjs = @()
-    foreach ($obj in $objs) {
+    $myobjs = foreach ($obj in $objs) {
         $ext = $obj.Extension
         $name = $obj.Name
         $num = $name -replace "[\s\S]*.*(_Part)","" -replace $ext,""
         $fn = $obj.FullName
         $dp = $obj.Directory.FullName
 
-        $myobjs += New-Object -TypeName PSObject -Property @{
+        [PSCustomObject]@{
             FullName = $fn
             Name = $name
             Extension = $ext
@@ -207,7 +206,7 @@ function Get-NotificationApp {
         $_.Name -notmatch "Windows.SystemToast.Suggested" -and $_.Name -notmatch "Windows.SystemToast.WindowsTip"
     }
 
-    foreach ($app in $apps) {
+    $info = foreach ($app in $apps) {
         $name = $app.Name -replace "HKEY_CLASSES_ROOT\\AppUserModelId\\",""
         $apppath = $AppRegPath + "\" + $name
         $dn = Get-ItemProperty -Path $apppath -Name DisplayName -ErrorAction SilentlyContinue | Select-Object -ExpandProperty DisplayName -ErrorAction SilentlyContinue
@@ -276,14 +275,14 @@ function Get-NotificationApp {
         elseif ([string]::IsNullOrWhiteSpace($dn)) {$dn = "unknown"}
 
         $zname = $dn + " (" + $name + ")"
-        $info += New-Object -TypeName PSObject -Property @{
+        [PSCustomObject]@{
             Name = $name
             DisplayName = $dn
             zName = $zname
         }#new object
     }
 
-    $info | Select-Object Name,DisplayName,zName
+    $info
     #Remove-PSDrive -Name HKCR -Force
 }
 
