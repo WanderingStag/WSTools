@@ -110,7 +110,7 @@ function Find-UserProfile {
                     $usrpath = "ProfCk:\Users\$User"
                     if (Test-Path -Path $usrpath) {
                         $modtime = Get-Item $usrpath | ForEach-Object {$_.LastWriteTime}
-                        New-Object psobject -Property @{
+                        [PSCustomObject]@{
                             Name = $Comp
                             Status = "Online"
                             User = $User
@@ -119,7 +119,7 @@ function Find-UserProfile {
                         } | Select-Object Name,Status,User,Profile,ModifiedTime
                     }#if user profile exists on computer
                     else {
-                        New-Object psobject -Property @{
+                        [PSCustomObject]@{
                             Name = $Comp
                             Status = "Online"
                             User = $User
@@ -129,7 +129,7 @@ function Find-UserProfile {
                     }#else no profile
                 }#try
                 Catch [System.UnauthorizedAccessException] {
-                    New-Object psobject -Property @{
+                    [PSCustomObject]@{
                         Name = $Comp
                         Status = "Access Denied"
                         User = $user
@@ -141,7 +141,7 @@ function Find-UserProfile {
             Remove-PSDrive -Name ProfCk -ErrorAction SilentlyContinue -Force | Out-Null
         }#try new psdrive
         Catch {
-            New-Object psobject -Property @{
+            [PSCustomObject]@{
                 Name = $Comp
                 Status = "Comm Error"
                 User = $null
@@ -151,7 +151,7 @@ function Find-UserProfile {
         }#catch new psdrive
         }#if online
         else {
-            New-Object psobject -Property @{
+            [PSCustomObject]@{
                 Name = $Comp
                 Status = "Offline"
                 User = $null
@@ -223,7 +223,7 @@ function Find-UserProfileWithPSTSearch {
                                 $pstlat = ($pst).LastAccessTime
                                 $pstdir = ($pst).Directory.FullName
 
-                                New-Object psobject -Property @{
+                                [PSCustomObject]@{
                                     Name = $Comp
                                     Status = "Online"
                                     User = $User
@@ -238,7 +238,7 @@ function Find-UserProfileWithPSTSearch {
                             }#foreach pst
                         }#if pstck not null
                         else {
-                            New-Object psobject -Property @{
+                            [PSCustomObject]@{
                                 Name = $Comp
                                 Status = "Online"
                                 User = $User
@@ -253,7 +253,7 @@ function Find-UserProfileWithPSTSearch {
                         }#else pstck is null
                     }#if user profile exists on computer
                     else {
-                        New-Object psobject -Property @{
+                        [PSCustomObject]@{
                             Name = $Comp
                             Status = "Online"
                             User = $User
@@ -268,7 +268,7 @@ function Find-UserProfileWithPSTSearch {
                     }#else no profile
                 }#try
                 Catch [System.UnauthorizedAccessException] {
-                    New-Object psobject -Property @{
+                    [PSCustomObject]@{
                         Name = $Comp
                         Status = "Access Denied"
                         User = $user
@@ -285,7 +285,7 @@ function Find-UserProfileWithPSTSearch {
             Remove-PSDrive -Name ProfCk -ErrorAction SilentlyContinue -Force | Out-Null
         }#try new psdrive
         Catch {
-            New-Object psobject -Property @{
+            [PSCustomObject]@{
                 Name = $Comp
                 Status = "Comm Error"
                 User = $null
@@ -424,7 +424,7 @@ function Get-CurrentUser {
                     $processinfo | Foreach-Object {$_.GetOwner().User} |
                     Where-Object {$_ -ne "NETWORK SERVICE" -and $_ -ne "LOCAL SERVICE" -and $_ -ne "SYSTEM" -and $_ -ne "DWM-1" -and $_ -ne "UMFD-0" -and $_ -ne "UMFD-1 "} |
                     Sort-Object -Unique |
-                    ForEach-Object { New-Object psobject -Property @{Computer=$Computer;LoggedOn=$_} } |
+                    ForEach-Object {[PSCustomObject]@{Computer=$Computer;LoggedOn=$_} } |
                     Select-Object Computer,LoggedOn
                 }#If
         }
@@ -469,7 +469,7 @@ function Get-LoggedOnUser {
                 $username2 = $username -creplace '^[^\\]*\\', ''
                 $disp = (Get-ADUser $username2 -Properties DisplayName).DisplayName
 
-                New-Object psobject -Property @{
+                [PSCustomObject]@{
                     Computer = $Comp
                     Username = $Username
                     DisplayName = $disp
@@ -477,7 +477,7 @@ function Get-LoggedOnUser {
             }#try
             catch {
                 $Username = "Comm Error"
-                New-Object psobject -Property @{
+                [PSCustomObject]@{
                     Computer = $Comp
                     Username = $Username
                     DisplayName = $null
@@ -488,14 +488,14 @@ function Get-LoggedOnUser {
             try {
                 $Hardware = get-wmiobject Win32_computerSystem -Computername $comp
                 $username = $Hardware.Username
-                New-Object psobject -Property @{
+                [PSCustomObject]@{
                     Computer = $Comp
                     Username = $Username
                 } | Select-Object Computer,Username
             }#try
             catch {
                 $Username = "Comm Error"
-                New-Object psobject -Property @{
+                [PSCustomObject]@{
                     Computer = $Comp
                     Username = $Username
                 } | Select-Object Computer,Username
@@ -586,7 +586,7 @@ Process Name:"
                     if ($_.LogonType1 -eq 3) {$type2 = "Remote"}#if 3
                     if ($_.LogonType1 -eq 7) {$type2 = "UnlockScreen"}#if 7
                     if ($_.LogonType1 -eq 11) {$type2 = "CachedLocal"}#if 11
-                    New-Object psobject -Property @{
+                    [PSCustomObject]@{
                         When = $_.When1
                         Computer = $_.Computer1
                         Type = $type2
@@ -709,7 +709,6 @@ function Get-USBStorageDevice {
         $ErrorActionPreference = "Stop"
         $Hive = "LocalMachine"
         $Key = "SYSTEM\CurrentControlSet\Enum\USBSTOR"
-        $USBDevices = @()
         $ComputerCount = 0
     }
     Process {
@@ -766,7 +765,7 @@ function Get-USBStorageDevice {
                 $USBDevice = $USBKey.GetValue('FriendlyName')
 
                 if ($USBDevice) {
-                    $USBDevices += New-Object -TypeName PSObject -Property @{
+                    $USBDevices += [PSCustomObject]@{
                         USBDevice = $USBDevice
                         Computer  = $Comp
                         SerialNumber = ($ChildSubkey1.Split("\")[-1]).Split("&")[0]
@@ -815,7 +814,7 @@ function Get-USBStorageDevice {
                     if ($Description -match "Flash" -or $Name -match "Flash" -or $Name -match " FD ") {$DT = "Flash Drive"}
                     else {$DT = "External Hard Drive"}
 
-                    $info += New-Object psobject -Property @{
+                    $info += [PSCustomObject]@{
                         Computer = $comp
                         DeviceType = $DT
                         "Instance Path" = $DeviceID
@@ -827,7 +826,7 @@ function Get-USBStorageDevice {
                 }#foreach storage device on the computer
                 if ($null -eq $usbinfo) {
                     $DeviceID = "NO USB STORAGE DEVICE FOUND"
-                    $info += New-Object psobject -Property @{
+                    $info += [PSCustomObject]@{
                         Computer = $comp
                         DeviceType = $null
                         "Instance Path" = $DeviceID
@@ -841,7 +840,7 @@ function Get-USBStorageDevice {
             catch {
                 $Description,$DeviceID,$DT,$mac,$Manu,$Name,$sn = $null
                 $DeviceID = "Unable to connect"
-                $info += New-Object psobject -Property @{
+                $info += [PSCustomObject]@{
                     Computer = $comp
                     DeviceType = $null
                     "Instance Path" = $DeviceID
@@ -882,7 +881,7 @@ function Get-USBStorageDevice {
                     }
                 }
 
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $Comp
                     DeviceType = $DT
                     "Instance Path" = $IP
@@ -998,7 +997,7 @@ Process Name:"
                 if ($_.LogonType1 -eq 3) {$type2 = "Remote"}#if 3
                 if ($_.LogonType1 -eq 7) {$type2 = "UnlockScreen"}#if 7
                 if ($_.LogonType1 -eq 11) {$type2 = "CachedLocal"}#if 11
-                New-Object psobject -Property @{
+                [PSCustomObject]@{
                     When = $_.When1
                     Computer = $_.Computer1
                     Task = $_.Task
@@ -1084,7 +1083,7 @@ function Get-WSLocalGroup {
                 $Role = (Get-WmiObject -ComputerName $comp -Class Win32_ComputerSystem -Property DomainRole -ErrorAction Stop).DomainRole
             }
             catch {
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     DatePulled = $Null
                     Description = $Null
@@ -1095,7 +1094,7 @@ function Get-WSLocalGroup {
             }
 
             if ($Role -match "4|5") {
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     DatePulled = $Null
                     Description = $Null
@@ -1109,7 +1108,7 @@ function Get-WSLocalGroup {
                 $GI = ([ADSI]"WinNT://$comp").Children | Where-Object {$_.SchemaClassName -eq 'Group'}
                 foreach ($group in $GI) {
                     $members = ($group.Invoke('Members') | ForEach-Object {$_.GetType().InvokeMember("Name", 'GetProperty', $null, $_, $null)}) -join ", "
-                    $info += New-Object -TypeName PSObject -Property @{
+                    $info += [PSCustomObject]@{
                         ComputerName = $comp
                         DatePulled = $td
                         Description = $group.Description[0]
@@ -1242,7 +1241,7 @@ function Get-WSLocalUser {
                 $Role = (Get-WmiObject -ComputerName $comp -Class Win32_ComputerSystem -Property DomainRole -ErrorAction Stop).DomainRole
             }
             catch {
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     DatePulled = $Null
                     Description = $Null
@@ -1261,7 +1260,7 @@ function Get-WSLocalUser {
             }
 
             if ($Role -match "4|5") {
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     DatePulled = $Null
                     Description = $Null
@@ -1281,7 +1280,7 @@ function Get-WSLocalUser {
             elseif ($Role -match "0|1|2|3") {
                 $UI = ([ADSI]"WinNT://$comp").Children | Where-Object {$_.SchemaClassName -eq 'User'}
                 $td = Get-Date
-                foreach ($user in $UI) {
+                $info = foreach ($user in $UI) {
                     $uflags = $user.UserFlags[0]
                     $flags = New-Object System.Collections.ArrayList
                     switch ($uflags) {
@@ -1298,7 +1297,7 @@ function Get-WSLocalUser {
                     $pls = ((Get-Date).AddSeconds(-($pa)))
                     $plsd = (New-TimeSpan -Start $pls -End (Get-Date)).Days
 
-                    $info += New-Object -TypeName PSObject -Property @{
+                    [PSCustomObject]@{
                         ComputerName = $comp
                         DatePulled  = $td
                         Description = $user.Description[0]
