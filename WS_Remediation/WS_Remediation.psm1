@@ -3746,7 +3746,7 @@ Begin {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -3881,7 +3881,7 @@ Begin {
             try {
                 robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -3890,7 +3890,7 @@ Begin {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
@@ -3904,7 +3904,7 @@ Begin {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -4035,7 +4035,7 @@ Function Copy-TransVerse {
             try {
                 robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -4044,7 +4044,7 @@ Function Copy-TransVerse {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
@@ -4058,7 +4058,7 @@ Function Copy-TransVerse {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -4188,7 +4188,7 @@ Begin {
             try {
                 robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:2 /r:3 /w:15 /njh /njs
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -4197,7 +4197,7 @@ Begin {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
@@ -4211,7 +4211,7 @@ Begin {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -4342,7 +4342,7 @@ Begin {
             try {
                 robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -4351,7 +4351,7 @@ Begin {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
@@ -4365,7 +4365,7 @@ Begin {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -4495,7 +4495,7 @@ Begin {
             try {
                 robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -4504,7 +4504,7 @@ Begin {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
@@ -4518,7 +4518,7 @@ Begin {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -4648,7 +4648,7 @@ Begin {
             try {
                 robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -4657,7 +4657,7 @@ Begin {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
@@ -4671,7 +4671,7 @@ Begin {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -4801,7 +4801,7 @@ Begin {
             try {
                 robocopy $app "\\$comp\c$\Patches\$appname" *.exe /mir /mt:3 /r:3 /w:15 /njh /njs
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -4810,7 +4810,7 @@ Begin {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
@@ -4824,7 +4824,7 @@ Begin {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -4954,7 +4954,7 @@ Begin {
             try {
                 robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -4963,7 +4963,7 @@ Begin {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
@@ -4977,7 +4977,7 @@ Begin {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -5107,7 +5107,7 @@ Begin {
             try {
                 robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -5116,7 +5116,7 @@ Begin {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
@@ -5130,7 +5130,7 @@ Begin {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -5260,7 +5260,7 @@ Begin {
             try {
                 robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -5269,7 +5269,7 @@ Begin {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
@@ -5283,7 +5283,7 @@ Begin {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -5374,7 +5374,7 @@ Function Install-MECM {
             $install = Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList "cmd /c c:\Patches\MECM\ccmsetup.exe" -ErrorAction Stop #DevSkim: ignore DS104456
             $install | Out-Null
             $end = Get-Date
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = $comp
                 Status = "Install Initialized"
                 Time = $end
@@ -5382,7 +5382,7 @@ Function Install-MECM {
         }
         catch {
             $end = Get-Date
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = $comp
                 Status = "Unable to install"
                 Time = $end
@@ -5493,7 +5493,7 @@ Function Install-SQLServerManagementStudio {
             robocopy $app \\$comp\c$\Patches\SSMS SSMS-Setup*.exe /r:3 /w:15 /njh /njs
             $install = Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList 'cmd /c c:\Patches\SSMS\SSMS-Setup-ENU.exe /Quiet SSMSInstallRoot="C:\Program Files (x86)\Microsoft SQL Server Management Studio 18" DoNotInstallAzureDataStudio=1' -ErrorAction Stop #DevSkim: ignore DS104456
             $end = Get-Date
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = $comp
                 Status = "Install Initialized"
                 Time = $end
@@ -5501,7 +5501,7 @@ Function Install-SQLServerManagementStudio {
         }
         catch {
             $end = Get-Date
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = $comp
                 Status = "Unable to install"
                 Time = $end
@@ -5551,7 +5551,7 @@ Function Install-VisualStudioCode {
             robocopy $app \\$comp\c$\Patches\VSCode /mir /mt:2 /r:3 /w:15 /njh /njs
             $install = Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList "cmd /c c:\Patches\VSCode\VSCodeSetup-x64.exe /SP- /VERYSILENT /SUPPRESSMSGBOXES /NOCANCEL /NORESTART /CLOSEAPPLICATIONS /NORESTARTAPPLICATIONS /TYPE=full" -ErrorAction Stop #DevSkim: ignore DS104456
             $end = Get-Date
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = $comp
                 Status = "Install Initialized"
                 Time = $end
@@ -5559,7 +5559,7 @@ Function Install-VisualStudioCode {
         }
         catch {
             $end = Get-Date
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = $comp
                 Status = "Unable to install"
                 Time = $end
@@ -5631,14 +5631,14 @@ Function Uninstall-7Zip {
 
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name='7-Zip%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "7-Zip"
                     Status = "Removed"
                 }#new object
             }#try
             catch {
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "7-Zip"
                     Status = "Failed"
@@ -5743,14 +5743,14 @@ Function Uninstall-90Meter {
                 $uninstall
                 Start-Sleep -Seconds 20
                 Get-WmiObject -Class Win32_Product -Filter "Name LIKE '90Meter%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "90Meter"
                     Status = "Removed"
                 }#new object
             }#try
             catch {
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "90Meter"
                     Status = "Failed"
@@ -5852,14 +5852,14 @@ Function Uninstall-AdobeAir {
             )
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name LIKE 'Adobe Air%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "Adobe Air"
                     Status = "Removed"
                 }#new object
             }#try
             catch {
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "Adobe Air"
                     Status = "Failed"
@@ -5961,14 +5961,14 @@ Function Uninstall-AdobeExperienceManager {
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name LIKE 'Adobe Experienc%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
                 Get-WmiObject -Class Win32_Product -Filter "Name LIKE 'Designe%' AND Vendor LIKE 'Adobe%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "Adobe Experience Manager (AEM)"
                     Status = "Removed"
                 }#new object
             }#try
             catch {
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "Adobe Experience Manager (AEM)"
                     Status = "Failed"
@@ -6074,14 +6074,14 @@ Function Uninstall-AdobeFlash {
             )
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name LIKE 'Adobe Flash%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "Adobe Flash"
                     Status = "Removed"
                 }#new object
             }#try
             catch {
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "Adobe Flash"
                     Status = "Failed"
@@ -6184,14 +6184,14 @@ Function Uninstall-AdobePro {
             )
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name LIKE 'Adobe Acrobat%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "Adobe Acrobat Pro"
                     Status = "Removed"
                 }#new object
             }#try
             catch {
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "Adobe Acrobat Pro"
                     Status = "Failed"
@@ -6295,14 +6295,14 @@ Function Uninstall-AdobeReader {
             )
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name LIKE 'Adobe Reader%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "Adobe Reader"
                     Status = "Removed"
                 }#new object
             }#try
             catch {
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "Adobe Reader"
                     Status = "Failed"
@@ -6404,14 +6404,14 @@ Function Uninstall-AdobeShockwave {
             )
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name LIKE 'Adobe Shockwave%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "Adobe Shockwave"
                     Status = "Removed"
                 }#new object
             }#try
             catch {
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "Adobe Shockwave"
                     Status = "Failed"
@@ -6510,14 +6510,14 @@ Function Uninstall-CiscoAnyConnect {
             )
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name LIKE 'Cisco AnyConnect%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "Cisco AnyConnect"
                     Status = "Removed"
                 }#new object
             }#try
             catch {
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "Cisco AnyConnect"
                     Status = "Failed"
@@ -6616,14 +6616,14 @@ Function Uninstall-F5BigIPEdgeClient {
             )
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name LIKE 'BIG-IP Edge%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "F5 BIG-IP Edge Client"
                     Status = "Removed"
                 }#new object
             }#try
             catch {
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "F5 BIG-IP Edge Client"
                     Status = "Failed"
@@ -6726,14 +6726,14 @@ Function Uninstall-GoogleChrome {
             )
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name LIKE '%Chrome%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "Google Chrome"
                     Status = "Removed"
                 }#new object
             }#try
             catch {
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "Google Chrome"
                     Status = "Failed"
@@ -6836,14 +6836,14 @@ Function Uninstall-HPInsightAgent {
             )
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name LIKE 'HP Insight%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "HP Insight Agent"
                     Status = "Removed"
                 }#new object
             }#try
             catch {
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "HP Insight Agent"
                     Status = "Failed"
@@ -6945,14 +6945,14 @@ Function Uninstall-HPVersionControlAgent {
             )
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name LIKE 'HP Version%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "HP Version Control Agent"
                     Status = "Removed"
                 }#new object
             }#try
             catch {
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "HP Version Control Agent"
                     Status = "Failed"
@@ -7059,14 +7059,14 @@ Function Uninstall-IBMForms {
             )
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name like 'IBM Forms%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "IBM Forms"
                     Status = "Removed"
                 }#new object
             }#try
             catch {
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "IBM Forms"
                     Status = "Failed"
@@ -7168,14 +7168,14 @@ Function Uninstall-McAfeeVSE {
             )
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name='McAfee VirusScan%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "McAfee VirusScan"
                     Status = "Removed"
                 }#new object
             }#try
             catch {
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "McAfee VirusScan"
                     Status = "Failed"
@@ -7278,14 +7278,14 @@ Function Uninstall-MicrosoftInfoPath {
             )
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name like '%InfoPath%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "InfoPath"
                     Status = "Removed"
                 }#new object
             }#try
             catch {
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "InfoPath"
                     Status = "Failed"
@@ -7393,14 +7393,14 @@ Function Uninstall-MozillaFirefox {
                 Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList 'cmd /c "C:\Program Files (x86)\Mozilla Maintenance Service\uninstall.exe" /S' -ErrorAction SilentlyContinue | Out-Null
                 Start-Sleep -Seconds 30
                 Get-WmiObject -Class Win32_Product -Filter "Name like '%Firefox%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "Mozilla Firefox"
                     Status = "Removal Initialized"
                 }#new object
             }#try
             catch {
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "Mozilla Firefox"
                     Status = "Failed"
@@ -7506,14 +7506,14 @@ Function Uninstall-MozillaMaintenanceService {
                 Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList 'cmd /c "C:\Program Files (x86)\Mozilla Maintenance Service\uninstall.exe" /S' -ErrorAction Stop | Out-Null
                 Start-Sleep -Seconds 30
                 Get-WmiObject -Class Win32_Product -Filter "Name like '%Firefox%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "Mozilla Maintenance Service"
                     Status = "Removal Initialized"
                 }#new object
             }#try
             catch {
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "Mozilla Maintenance Service"
                     Status = "Failed"
@@ -7616,14 +7616,14 @@ Function Uninstall-OracleJava {
             )
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name like 'Java%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "Java"
                     Status = "Removed"
                 }#new object
             }#try
             catch {
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "Java"
                     Status = "Failed"
@@ -7724,14 +7724,14 @@ Function Uninstall-TransVerse {
             )
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name like 'TransVerse%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "TransVerse"
                     Status = "Removed"
                 }#new object
             }#try
             catch {
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "TransVerse"
                     Status = "Failed"
@@ -7833,14 +7833,14 @@ Function Uninstall-VLC {
             )
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name='VLC%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "VLC"
                     Status = "Removed"
                 }#new object
             }#try
             catch {
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "VLC"
                     Status = "Failed"
@@ -7940,14 +7940,14 @@ Function Uninstall-Wireshark {
             )
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name='Wireshar%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "Wireshark"
                     Status = "Removed"
                 }#new object
             }#try
             catch {
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "Wireshark"
                     Status = "Failed"
@@ -8045,14 +8045,14 @@ Function Uninstall-WinRAR {
             )
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name='WinRA%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "WinRAR"
                     Status = "Removed"
                 }#new object
             }#try
             catch {
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "WinRAR"
                     Status = "Failed"
@@ -8154,14 +8154,14 @@ Function Uninstall-WinSCP {
             )
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name='WinSCP%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "WinSCP"
                     Status = "Removed"
                 }#new object
             }#try
             catch {
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "WinSCP"
                     Status = "Failed"
@@ -8259,14 +8259,14 @@ Function Uninstall-WinZip {
             )
             try {
                 Get-WmiObject -Class Win32_Product -Filter "Name='WinZi%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "WinZip"
                     Status = "Removed"
                 }#new object
             }#try
             catch {
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "WinZip"
                     Status = "Failed"
@@ -8904,13 +8904,13 @@ function Initialize-GPUpdate {
 
                 try {
                     $install = Invoke-WMIMethod -Class Win32_Process -ComputerName $Comp -Name Create -ArgumentList "cmd /c gpupdate /force" -ErrorAction Stop #DevSkim: ignore DS104456
-                    $info = New-Object -TypeName PSObject -Property @{
+                    $info = [PSCustomObject]@{
                         ComputerName = $Comp
                         Status = "GPUpdate Initialized"
                     }#new object
                 }
                 catch {
-                    $info = New-Object -TypeName PSObject -Property @{
+                    $info = [PSCustomObject]@{
                         ComputerName = $Comp
                         Status = "Unable to initialize GPUpdate"
                     }#new object
@@ -8961,7 +8961,7 @@ Function Set-FeatureSettingsOverride {
 
 
     foreach ($info in $infos) {
-        $RES += New-Object -TypeName psobject -Property $info
+        $RES += [PSCustomObject]$info
     }
 
 
@@ -9632,7 +9632,7 @@ function Get-NetworkLevelAuthentication {
             $key = $reg.OpenSubKey("SYSTEM\\CurrentControlSet\\Control\\Terminal Server\\WinStations\\RDP-Tcp")
             [Bool]$ua = $key.GetValue('UserAuthentication')
 
-            New-Object -TypeName PSObject -Property @{
+            [PSCustomObject]@{
                 ComputerName = $Comp
                 UserAuthentication = $ua
             }#new object
@@ -9648,13 +9648,13 @@ function Get-NetworkLevelAuthentication {
             else {
                 $ua = "Unknown error"
             }
-            New-Object -TypeName PSObject -Property @{
+            [PSCustomObject]@{
                 ComputerName = $Comp
                 UserAuthentication = $ua
             }#new object
         }
         catch {
-            New-Object -TypeName PSObject -Property @{
+            [PSCustomObject]@{
                 ComputerName = $Comp
                 UserAuthentication = "Unknown error"
             }#new object
@@ -9725,7 +9725,7 @@ function Set-NetworkLevelAuthentication {
             else {
                 $ua = "Unknown error"
             }
-            New-Object -TypeName PSObject -Property @{
+            [PSCustomObject]@{
                 ComputerName = $Comp
                 UserAuthentication = $ua
             }#new object
@@ -10094,7 +10094,7 @@ Function Get-ENSStatus {
     #Set variables needed for overall script
     $i = 0
     $number = $ComputerName.length
-    $version = $host.Version.Major
+    [int32]$version = $PSVersionTable.PSVersion.Major
     $hname = $host.Name
     $64na = 'SOFTWARE\\WOW6432Node\\Network Associates\\ePolicy Orchestrator\\Agent'
     $64ens = 'SOFTWARE\\WOW6432Node\\Network Associates\\TVD\\Shared Components\\Framework'
@@ -10119,7 +10119,7 @@ Function Get-ENSStatus {
         }#progress bar
 
         #Make sure running at least PowerShell v3
-        if ($version -gt "2" -or $hname -like "ServerRemote*") {
+        if ($version -gt 2 -or $hname -like "ServerRemote*") {
 
             #try 64 if fails then try 32-bit and if that fails then mark as unable to connect
             try {
@@ -10194,7 +10194,7 @@ Function Get-ENSStatus {
             }
 
             #Create the object data
-            New-Object psobject -Property @{
+            [PSCustomObject]@{
                 ComputerName = $comp
                 FrameworkInstalled = $ensinstalled
                 FrameworkVersion = $ensversion
@@ -10202,7 +10202,7 @@ Function Get-ENSStatus {
                 LastServerComms = $lascd
                 LastSecurityUpdateCheck = $lucd
 
-            } | Select-Object ComputerName,FrameworkInstalled,FrameworkVersion,ePOServerList,LastServerComms,LastSecurityUpdateCheck
+            }
         }#if host version gt 2
         else {
             Write-Output "  PowerShell must be at least version 3. Current version:  $version"
@@ -10409,7 +10409,7 @@ function Get-HBSSStatus {
             $DATVersion = $DATVersionval.substring(0,4)
 
             #Create the object data
-            New-Object psobject -Property @{
+            [PSCustomObject]@{
                 Computer = "$comp"
                 DatDate = "$datdateval"
                 DatVersion = "$DATVersion"
@@ -10558,14 +10558,14 @@ Function Uninstall-HBSS {
                 Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList 'cmd /c "C:\Program Files\McAfee\Agent\x86\FrmInst.exe" /Remove=Agent /Silent' -ErrorAction Stop | Out-Null
                 Start-Sleep -Seconds 30
                 Get-WmiObject -Class Win32_Product -Filter "Name like 'McAfee Agent%'" -ComputerName $Comp -ErrorAction SilentlyContinue | Remove-WmiObject -ErrorAction SilentlyContinue
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "McAfee ENS (HBSS) Agent"
                     Status = "Removal Initialized"
                 }#new object
             }#try
             catch {
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "McAfee ENS (HBSS) Agent"
                     Status = "Failed"
@@ -10741,7 +10741,7 @@ function Get-SplunkStatus {
 
     if ($ComputerName -eq $env:COMPUTERNAME) {
         $info = Get-Service -Name SplunkForwarder -ComputerName $comp
-        New-Object -TypeName PSObject -Property @{
+        [PSCustomObject]@{
             ComputerName = $comp
             SplunkStatus = ($info.Status)
         }#new object
@@ -10760,7 +10760,7 @@ function Get-SplunkStatus {
                     Write-Progress -activity "Getting status of Splunk Service" -status "Computer $i ($comp) of $number. Percent complete:  $perc1" -PercentComplete (($i / $ComputerName.length)  * 100)
                 }#if length
                 $info = Get-Service -Name SplunkForwarder -ComputerName $comp
-                New-Object -TypeName PSObject -Property @{
+                [PSCustomObject]@{
                     ComputerName = $comp
                     SplunkStatus = ($info.Status)
                 }#new object
