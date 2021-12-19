@@ -4,8 +4,8 @@
     Justification = "Have tried other methods and they do not work consistently."
 )]
 
-$Global:WSToolsConfig = New-Object -TypeName PSObject -Property @{
-    # WSTools config v2021.11.2
+$Global:WSToolsConfig = [PSCustomObject]@{
+    # WSTools config v2021.12.1
     # Remove the # symbol infront of a line to enable it
     ###########################################################################################################################################
     #Application Service Names - used in Stop-AppService. Uses match to match the name of a service that is running and stops it.
