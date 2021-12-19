@@ -912,7 +912,7 @@ function Get-BitLockerStatus {
 
         $num = $drives.Length
         do {
-            $overall += New-Object -TypeName PSObject -Property @{
+            $overall += [PSCustomObject]@{
                 ComputerName = $Comp
                 Drive = $drives[$i]
                 Size = $size[$i]
@@ -1572,7 +1572,7 @@ Function Get-FileMetaData {
         $objShell = New-Object -ComObject Shell.Application
         $objFolder = $objShell.namespace($sFolder)
         foreach ($File in $objFolder.items()) {
-            $FileMetaData = New-Object PSOBJECT
+            $FileMetaData = New-Object PSCustomObject
             for ($a ; $a  -le 266; $a++) {
                 if($objFolder.getDetailsOf($File, $a)) {
                     $hash += @{$($objFolder.getDetailsOf($objFolder.items, $a)) = $($objFolder.getDetailsOf($File, $a))}
@@ -2053,7 +2053,7 @@ Function Get-InstalledProgram {
                                 -and $DisplayName -notlike "Outils de v*" -and $DisplayName -notlike "Intel(R) Processor*" -and $DisplayName -notlike "Intel(R) Chipset*" -and $DisplayName -notlike "herramientas de corr*" `
                                 -and $DisplayName -notlike "Dell Touchpa*" -and $DisplayName -notmatch "Crystal Reports" -and $DisplayName -notmatch "Catalyst Control" -and $DisplayName -notlike "AMD *" -and $DisplayName -notlike "Microsoft * MUI*" `
                                 -and $DisplayName -notlike "Microsoft Visual C* Redist*" -and $DisplayName -notlike "Vulkan Run Time Libraries*" -and $DisplayName -notlike "Microsoft Visual C* Minimum*" -and $DisplayName -notlike "Microsoft Visual C* Additional*")) {
-                                $installed += New-Object -TypeName PSCustomObject -Property $HashProperty |
+                                $installed += [PSCustomObject]$HashProperty |
                                 Select-Object -Property $SelectProperty
                             }
                             $DisplayVersion | Out-Null
@@ -3517,7 +3517,7 @@ function Get-UpdateHistory {
 
             $Cat = $e.Categories | Select-Object -First 1 -ExpandProperty Name
 
-            $obj = New-Object -TypeName PSObject -Property @{
+            $obj = [PSCustomObject]@{
                 ComputerName = $comp
                 Date = ($e.Date)
                 Result = $Result
@@ -3527,7 +3527,7 @@ function Get-UpdateHistory {
                 ClientApplicationID = ($e.ClientApplicationID)
                 Description = ($e.Description)
                 SupportUrl = ($e.SupportUrl)
-            } | Select-Object ComputerName,Date,Result,KB,Title,Category,ClientApplicationID,Description,SupportUrl
+            }
 
             $obj
         }#foreach event in history
@@ -3916,15 +3916,14 @@ Function Join-File {
     $og = (Get-Location).Path
     $objs = Get-ChildItem $Path | Where-Object {$_.Name -like "*_Part*"}
 
-    $myobjs = @()
-    foreach ($obj in $objs) {
+    $myobjs = foreach ($obj in $objs) {
         $ext = $obj.Extension
         $name = $obj.Name
         $num = $name -replace "[\s\S]*.*(_Part)","" -replace $ext,""
         $fn = $obj.FullName
         $dp = $obj.Directory.FullName
 
-        $myobjs += New-Object -TypeName PSObject -Property @{
+        [PSCustomObject]@{
             FullName = $fn
             Name = $name
             Extension = $ext
@@ -4858,13 +4857,13 @@ function Set-AxwayConfig {
                 try {
                     Invoke-Command -ComputerName $Comp -ScriptBlock {Start-Process "$env:ProgramFiles\Tumbleweed\Desktop Validator\dvconfig.exe" -ArgumentList "-command write -file $ConfigFile"} -ErrorAction Stop #DevSkim: ignore DS104456
                     #$install = Invoke-WMIMethod -Class Win32_Process -ComputerName $Comp -Name Create -ArgumentList 'cmd /c "c:\Program Files\Tumbleweed\Desktop Validator\dvconfig.exe" -command write -file $ConfigFile' -ErrorAction Stop #DevSkim: ignore DS104456
-                    $info = New-Object -TypeName PSObject -Property @{
+                    $info = [PSCustomObject]@{
                         ComputerName = $Comp
                         Status = "Axway config imported"
                     }#new object
                 }
                 catch {
-                    $info = New-Object -TypeName PSObject -Property @{
+                    $info = [PSCustomObject]@{
                         ComputerName = $Comp
                         Status = "Unable to import Axway config"
                     }#new object
@@ -6422,7 +6421,7 @@ Function Test-Online {
         catch {
             $status = "Comm error"
         }
-        New-Object psobject -Property @{
+        [PSCustomObject]@{
             Name = $comp
             Status = $status
         }#newobject
@@ -6762,7 +6761,7 @@ Function Get-WSToolsVersion {
                 $i2 = "NA"
             }
 
-            $version = New-Object -TypeName PSObject -Property @{
+            $version = [PSCustomObject]@{
                 ComputerName = $comp
                 WSToolsVersion = $ver
                 Date = $i2
@@ -6790,7 +6789,7 @@ Function Get-WSToolsVersion {
         }
         $cn = $env:COMPUTERNAME
 
-        $version = New-Object -TypeName PSObject -Property @{
+        $version = [PSCustomObject]@{
             ComputerName = $cn
             WSToolsVersion = $ver
             Date = $i2
