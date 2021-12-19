@@ -203,13 +203,11 @@ Function Get-DaysSinceLastLogon {
                 $dsll = "NA"
             }
 
-            $info = New-Object -TypeName PSObject -Property @{
+            [PSCustomObject]@{
                 Name = $obj
                 DaysSinceLastLogon = $dsll
                 SamAccountName = $sam
             }#new object
-
-            $info | Select-Object Name,DaysSinceLastLogon,SamAccountName
         }
     }
     End {}
@@ -263,7 +261,7 @@ Function Get-LockedOutStatus {
             $locked = $usrquery.LockedOut
             $locktime = $usrquery.lockoutTime
             if ($locked -eq $true) {
-                New-Object psobject -Property @{
+                [PSCustomObject]@{
                     User = $user
                     Status = "Locked"
                     Date = $locktime
@@ -271,7 +269,7 @@ Function Get-LockedOutStatus {
                 }
             }#if
             else {
-                New-Object psobject -Property @{
+                [PSCustomObject]@{
                     User = $user
                     Status = "Not Locked"
                     Date = "--"
