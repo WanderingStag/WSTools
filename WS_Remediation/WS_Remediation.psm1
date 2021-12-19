@@ -90,13 +90,13 @@
                         if ((Get-Location).Path -eq $patches) {
                             Remove-Item * -Recurse -force -ErrorAction SilentlyContinue
                         }
-                        $info = New-Object -TypeName PSObject -Property @{
+                        $info = [PSCustomObject]@{
                             ComputerName = $Comp
                             Status = "Cleared"
                         }#new object
                     }
                     else {
-                        $info = New-Object -TypeName PSObject -Property @{
+                        $info = [PSCustomObject]@{
                             ComputerName = $Comp
                             Status = "No patches folder"
                         }#new object
@@ -104,7 +104,7 @@
                     Remove-PSDrive -Name $dn -ErrorAction SilentlyContinue -Force | Out-Null
                 }#try
                 catch {
-                    $info = New-Object -TypeName PSObject -Property @{
+                    $info = [PSCustomObject]@{
                         ComputerName = $Comp
                         Status = "Unable to clear"
                     }#new object
@@ -136,13 +136,13 @@
                         foreach ($p in $op) {
                             Remove-Item -Path $p -Force -ErrorAction SilentlyContinue
                         }
-                        $info = New-Object -TypeName PSObject -Property @{
+                        $info = [PSCustomObject]@{
                             ComputerName = $Comp
                             Status = "Cleared"
                         }#new object
                     }
                     else {
-                        $info = New-Object -TypeName PSObject -Property @{
+                        $info = [PSCustomObject]@{
                             ComputerName = $Comp
                             Status = "No patches folder"
                         }#new object
@@ -150,7 +150,7 @@
                     Remove-PSDrive -Name $dn -ErrorAction SilentlyContinue -Force | Out-Null
                 }#try
                 catch {
-                    $info = New-Object -TypeName PSObject -Property @{
+                    $info = [PSCustomObject]@{
                         ComputerName = $Comp
                         Status = "Unable to clear"
                     }#new object
@@ -181,13 +181,13 @@
                             Remove-Item .\*.* -force -ErrorAction SilentlyContinue
                             Remove-Item .\cab\* -Recurse -Force -ErrorAction SilentlyContinue
                         }
-                        $info = New-Object -TypeName PSObject -Property @{
+                        $info = [PSCustomObject]@{
                             ComputerName = $Comp
                             Status = "Cleared"
                         }#new object
                     }
                     else {
-                        $info = New-Object -TypeName PSObject -Property @{
+                        $info = [PSCustomObject]@{
                             ComputerName = $Comp
                             Status = "No patches folder"
                         }#new object
@@ -195,7 +195,7 @@
                     Remove-PSDrive -Name $dn -ErrorAction SilentlyContinue -Force | Out-Null
                 }#try
                 catch {
-                    $info = New-Object -TypeName PSObject -Property @{
+                    $info = [PSCustomObject]@{
                         ComputerName = $Comp
                         Status = "Unable to clear"
                     }#new object
@@ -333,7 +333,7 @@ Function Copy-7Zip {
             try {
                 robocopy $app "\\$comp\c$\Patches\$appname" *x64.exe /mir /mt:3 /r:3 /w:15 /njh /njs
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -342,7 +342,7 @@ Function Copy-7Zip {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
@@ -356,7 +356,7 @@ Function Copy-7Zip {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -486,7 +486,7 @@ Function Copy-90Meter {
             try {
                 robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -495,7 +495,7 @@ Function Copy-90Meter {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
@@ -509,7 +509,7 @@ Function Copy-90Meter {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -638,7 +638,7 @@ Function Copy-ActivClient {
             try {
                 robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -647,7 +647,7 @@ Function Copy-ActivClient {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
@@ -661,7 +661,7 @@ Function Copy-ActivClient {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -790,7 +790,7 @@ Function Copy-AdobeAcrobat {
             try {
                 robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -799,7 +799,7 @@ Function Copy-AdobeAcrobat {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
@@ -813,7 +813,7 @@ Function Copy-AdobeAcrobat {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -942,7 +942,7 @@ Function Copy-AdobeExperienceManager {
             try {
                 robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -951,7 +951,7 @@ Function Copy-AdobeExperienceManager {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
@@ -965,7 +965,7 @@ Function Copy-AdobeExperienceManager {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -1065,7 +1065,7 @@ Function Copy-Axway {
         $ScriptWD = $config.ScriptWD
         if (!(Test-Path C:\Scripts)) {mkdir C:\Scripts}
         if (!(Test-Path C:\Scripts\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -1119,7 +1119,7 @@ Function Copy-Axway {
                     robocopy $app \\$comp\c$\Patches\$appname /mir /mt:3 /r:3 /w:15 /njh /njs
                 }
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -1128,7 +1128,7 @@ Function Copy-Axway {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
@@ -1142,7 +1142,7 @@ Function Copy-Axway {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -1272,7 +1272,7 @@ Function Copy-Chrome {
             try {
                 robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -1281,7 +1281,7 @@ Function Copy-Chrome {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
@@ -1295,7 +1295,7 @@ Function Copy-Chrome {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -1425,7 +1425,7 @@ Begin {
             try {
                 robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -1434,7 +1434,7 @@ Begin {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
@@ -1448,7 +1448,7 @@ Begin {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -1577,7 +1577,7 @@ Function Copy-Edge {
             try {
                 robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -1586,7 +1586,7 @@ Function Copy-Edge {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
@@ -1600,7 +1600,7 @@ Function Copy-Edge {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -1729,7 +1729,7 @@ Function Copy-Encase {
             try {
                 robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -1738,7 +1738,7 @@ Function Copy-Encase {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
@@ -1752,7 +1752,7 @@ Function Copy-Encase {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -1882,7 +1882,7 @@ Begin {
             try {
                 robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -1891,7 +1891,7 @@ Begin {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
@@ -1905,7 +1905,7 @@ Begin {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -2035,7 +2035,7 @@ Begin {
             try {
                 robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -2044,7 +2044,7 @@ Begin {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
@@ -2058,7 +2058,7 @@ Begin {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -2188,7 +2188,7 @@ Begin {
             try {
                 robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -2197,7 +2197,7 @@ Begin {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
@@ -2211,7 +2211,7 @@ Begin {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -2339,7 +2339,7 @@ Function Copy-MicrosoftInfoPath {
             try {
                 robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -2348,7 +2348,7 @@ Function Copy-MicrosoftInfoPath {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
@@ -2362,7 +2362,7 @@ Function Copy-MicrosoftInfoPath {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -2493,7 +2493,7 @@ Begin {
             try {
                 robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -2502,7 +2502,7 @@ Begin {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
@@ -2516,7 +2516,7 @@ Begin {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -2646,7 +2646,7 @@ Begin {
             try {
                 robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -2655,7 +2655,7 @@ Begin {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
@@ -2669,7 +2669,7 @@ Begin {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -2799,7 +2799,7 @@ Begin {
             try {
                 robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -2808,7 +2808,7 @@ Begin {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
@@ -2822,7 +2822,7 @@ Begin {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -2952,7 +2952,7 @@ Begin {
             try {
                 robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -2961,7 +2961,7 @@ Begin {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
@@ -2975,7 +2975,7 @@ Begin {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -3105,7 +3105,7 @@ Begin {
             try {
                 robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -3114,7 +3114,7 @@ Begin {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
@@ -3128,7 +3128,7 @@ Begin {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -3258,7 +3258,7 @@ Begin {
             try {
                 robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -3267,7 +3267,7 @@ Begin {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
@@ -3281,7 +3281,7 @@ Begin {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -3412,7 +3412,7 @@ Begin {
             try {
                 robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -3421,7 +3421,7 @@ Begin {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
@@ -3435,7 +3435,7 @@ Begin {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -3565,7 +3565,7 @@ Begin {
             try {
                 robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -3574,7 +3574,7 @@ Begin {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
@@ -3588,7 +3588,7 @@ Begin {
     Process {
         if (!(Test-Path $ScriptWD)) {mkdir $ScriptWD}
         if (!(Test-Path $ScriptWD\CopyStatus.csv)) {
-            $info = New-Object -TypeName PSObject -Property @{
+            $info = [PSCustomObject]@{
                 ComputerName = "NA"
                 Program = "NA"
                 Status = "NA"
@@ -3723,7 +3723,7 @@ Begin {
             try {
                 robocopy $app "\\$comp\c$\Patches\$appname" /mir /mt:3 /r:3 /w:15 /njh /njs
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Copied"
@@ -3732,7 +3732,7 @@ Begin {
             }
             catch {
                 $end = Get-Date
-                $info = New-Object -TypeName PSObject -Property @{
+                $info = [PSCustomObject]@{
                     ComputerName = $comp
                     Program = $appname
                     Status = "Failed"
