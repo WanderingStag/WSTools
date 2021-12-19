@@ -136,7 +136,7 @@ else {
 
 if ($Object) {
     $objectText = @"
-    New-Object -TypeName PSObject -Property @{
+    [PSCustomObject]@{
         ComputerName = `$comp
     }#new object
 "@
@@ -436,7 +436,7 @@ Function Add-PSObject {
     }#if custom object
     else {
         $objectText = @"
-New-Object -TypeName PSObject -Property @{
+[PSCustomObject]@{
     ComputerName = `$comp
 }#new object
 "@
