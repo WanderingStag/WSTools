@@ -492,17 +492,16 @@ Function Get-UserWithThumbnail {
         $users += $people
     }
 
-    foreach ($user in $users) {
+    $info = foreach ($user in $users) {
         $name = $user.Name
         $upn = $user.UserPrincipalName
-        $info += New-Object -TypeName PSObject -Property @{
+        [PSCustomObject]@{
             User = $name
             UserPrincipalName = $upn
             HasThumbnail = $true
         }#new object
     }
-
-    $info | Select-Object Name,UserPrincipalName,HasThumbnail
+    $info
 }
 
 
@@ -1542,7 +1541,7 @@ Function Install-HPUniversalPrintDriver {
 
     $b = 0
     $n = $ComputerName.Count
-    foreach ($comp in $ComputerName) {
+    $info = foreach ($comp in $ComputerName) {
         if ($n -gt 1) {
             $b++
             $p = ($b / $n)
@@ -1554,7 +1553,7 @@ Function Install-HPUniversalPrintDriver {
             robocopy $app \\$comp\c$\Patches\HP_UniversalPrintDriver /mir /mt:4 /r:3 /w:15 /njh /njs
             $install = Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList "cmd /c c:\Patches\HP_UniversalPrintDriver\Install.exe /dm /q /h" -ErrorAction Stop #DevSkim: ignore DS104456
             $end = Get-Date
-            $info = New-Object -TypeName PSObject -Property @{
+            [PSCustomObject]@{
                 ComputerName = $comp
                 Status = "Install Initialized"
                 Time = $end
@@ -1562,14 +1561,14 @@ Function Install-HPUniversalPrintDriver {
         }
         catch {
             $end = Get-Date
-            $info = New-Object -TypeName PSObject -Property @{
+            [PSCustomObject]@{
                 ComputerName = $comp
                 Status = "Unable to install"
                 Time = $end
             }#new object
         }
-        $info
     }
+    $info
 }
 
 
@@ -1597,7 +1596,7 @@ Function Install-LexmarkUniversalPrintDriver {
 
     $b = 0
     $n = $ComputerName.Count
-    foreach ($comp in $ComputerName) {
+    $info = foreach ($comp in $ComputerName) {
         if ($n -gt 1) {
             $b++
             $p = ($b / $n)
@@ -1609,7 +1608,7 @@ Function Install-LexmarkUniversalPrintDriver {
             robocopy $app \\$comp\c$\Patches\Lexmark_UniversalPrintDriver /mir /mt:4 /r:3 /w:15 /njh /njs
             $install = Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList "cmd /c msiexec.exe /i c:\Patches\Lexmark_UniversalPrintDriver\print64PCL.msi /quiet /norestart" -ErrorAction Stop #DevSkim: ignore DS104456
             $end = Get-Date
-            $info = New-Object -TypeName PSObject -Property @{
+            [PSCustomObject]@{
                 ComputerName = $comp
                 Status = "Install Initialized"
                 Time = $end
@@ -1617,14 +1616,14 @@ Function Install-LexmarkUniversalPrintDriver {
         }
         catch {
             $end = Get-Date
-            $info = New-Object -TypeName PSObject -Property @{
+            [PSCustomObject]@{
                 ComputerName = $comp
                 Status = "Unable to install"
                 Time = $end
             }#new object
         }
-        $info
     }
+    $info
 }
 
 Export-ModuleMember -Alias * -Function *
