@@ -19,7 +19,7 @@ New features and other changes:
 9. Changed minimum required version of PowerShell to version 3. Some functions still work in version 2 but as more functions are converted to newer better capabilities version 2 functionality is going to become more limited.
 10. Throughout module and submodules changed "$null -eq $variable -or $variable -eq ''" to [string]::IsNullOrWhiteSpace($variable) as it provides more capabilities.
 11. Added function Save-HelpToFile, function Update-HelpFromFile, and HelpFolder config item.
-12. Updated Get-FileMetaData so that you can specify a particular file and not just a folder. Due to the nature of the command, the more items in a folder the longer it will take.
+12. Updated Get-FileMetaData so that you can specify a particular file and not just a folder. Due to the nature of the command, the more items in a folder the longer it will take even if specifying a file.
 
 ######################
 #                    #
