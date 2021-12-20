@@ -15,8 +15,8 @@
             Mandatory=$true
         )]
         [ValidateNotNullOrEmpty()]
-        [Alias('Site','URL','Address')]
-        [string]$Website
+        [Alias('Site','URL','Address','Website')]
+        [string]$URI
     )
     Add-Content -Path "$env:USERPROFILE\AppData\LocalLow\Sun\Java\Deployment\security\exception.sites" -Value "$Website"
 }
@@ -24,12 +24,6 @@
 
 function Clear-DirtyShutdown {
 <#
-.EXAMPLE
-    C:\PS>Clear-DirtyShutdown
-    Example of how to use this cmdlet. Will clear a dirty shutdown that causes the shutdown tracker to appear.
-.EXAMPLE
-    C:\PS>Clear-DirtyShutdown -ComputerName COMP1
-    Another example of how to use this cmdlet. Will clear the dirty shutdown on COMP1
 .NOTES
     Author: Skyler Hart
     Created: 2020-05-08 17:54:09
