@@ -1,12 +1,34 @@
 ﻿function Add-UserJavaException {
 <#
+.SYNOPSIS
+    Adds Java exception.
+.DESCRIPTION
+    Will add a website entry to $env:USERPROFILE\AppData\LocalLow\Sun\Java\Deployment\security\exception.sites.
+.PARAMETER URI
+    Specifies the URI of the website you want to add to the exception.sites file. Must be in the format http://wstools.dev or https://wstools.dev.
+.EXAMPLE
+    C:\PS>Add-UserJavaException https://wstools.dev
+    Example of how to use this cmdlet
+.INPUTS
+    System.String
+.OUTPUTS
+    No output
+.COMPONENT
+    WSTools
+.COMPONENT
+    Java
+.FUNCTIONALITY
+    Java
+.FUNCTIONALITY
+    exception
 .NOTES
     Author: Skyler Hart
     Created: 2019-03-20 10:40:11
-    Last Edit: 2019-03-20 10:40:11
-    Keywords: Java, Exception
+    Last Edit: 2021-12-20 00:15:00
 .LINK
     https://wstools.dev
+.LINK
+    Add-Content
 #>
     [CmdletBinding()]
     param(
@@ -18,7 +40,7 @@
         [Alias('Site','URL','Address','Website')]
         [string]$URI
     )
-    Add-Content -Path "$env:USERPROFILE\AppData\LocalLow\Sun\Java\Deployment\security\exception.sites" -Value "$Website"
+    Add-Content -Path "$env:USERPROFILE\AppData\LocalLow\Sun\Java\Deployment\security\exception.sites" -Value "$URI"
 }
 
 
