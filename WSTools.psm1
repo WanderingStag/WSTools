@@ -14,7 +14,7 @@
 .OUTPUTS
     No output
 .COMPONENT
-    java, WSTools
+    WSTools
 .FUNCTIONALITY
     java, exception
 .NOTES
