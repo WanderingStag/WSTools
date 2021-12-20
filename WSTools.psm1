@@ -24,13 +24,31 @@
 
 function Clear-DirtyShutdown {
 <#
+.SYNOPSIS
+    Clears dirty shutdown registry key.
+.DESCRIPTION
+    Clears the registry key that prompts you to enter a reason the computer/server was shutdown, even after a clean shutdown.
+.PARAMETER ComputerName
+    Specifies the name of one or more computers.
+.EXAMPLE
+    C:\PS>Clear-DirtyShutdown
+    Will clear a dirty shutdown that causes the shutdown tracker to appear.
+.EXAMPLE
+    C:\PS>Clear-DirtyShutdown -ComputerName COMP1
+    Will clear the dirty shutdown on COMP1. You must have admin rights on the remote computer.
+.INPUTS
+    System.String
+.OUTPUTS
+    No output
+.COMPONENT
+    WSTools
+.FUNCTIONALITY
+    registry, dirty shutdown, computer management, server
 .NOTES
     Author: Skyler Hart
     Created: 2020-05-08 17:54:09
-    Last Edit: 2020-05-08 18:28:01
-    Keywords:
-    Requires:
-        -RunAsAdministrator
+    Last Edit: 2021-12-19 23:58:28
+    Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
 #>
