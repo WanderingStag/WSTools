@@ -538,7 +538,7 @@ else {
 #If there are part files, join them together
 $parts = $null
 $parts = (Get-ChildItem $PatchFolderPath | Where-Object {$_.Attributes -eq "Directory" -and $_.Name -match "Part_"} | Select-Object FullName).FullName
-if ($null -ne $parts) {
+if (!([string]::IsNullOrWhiteSpace($parts))) {
     Write-Output "$cn`: Joining part files."
     foreach ($part in $parts) {
         Join-File $part $PatchFolderPath
@@ -574,7 +574,7 @@ if ($ofi.Length -ge 1) {
         $ofcs += (Get-ChildItem $of | Where-Object {$_.Name -like "*.cab"} | Select-Object FullName).FullName
     }
     foreach ($ofc in $ofcs) {
-        if ($null -ne $ofc -and $ofc -ne "") {
+        if (!([string]::IsNullOrWhiteSpace($ofc))) {
             Copy-Item $ofc $cab -Force
         }
     }
@@ -630,7 +630,7 @@ if ((Test-Path $90meter) -and $env:USERDNSDOMAIN -like "*.smil.mil") {
     try {
         $ipv = ($ip | Where-Object {$_.ProgramName -like "90meter*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-        if ($null -ne $ipv -or $ipv -ne "") {
+        if (!([string]::IsNullOrWhiteSpace($ipv))) {
             $ipv = $ipv.Split('.')
             $ipv = $ipv.Split(' ')
         }
@@ -643,7 +643,7 @@ if ((Test-Path $90meter) -and $env:USERDNSDOMAIN -like "*.smil.mil") {
     }
 
     #Determine if need to install
-    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
+    if ($install -eq $false -and (!([string]::IsNullOrWhiteSpace($ipv)))) {
         if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
@@ -695,7 +695,7 @@ if ((Test-Path $activclient) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
     try {
         $ipv = ($ip | Where-Object {$_.ProgramName -like "ActivClien*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-        if ($null -ne $ipv -or $ipv -ne "") {
+        if (!([string]::IsNullOrWhiteSpace($ipv))) {
             $ipv = $ipv.Split('.')
             $ipv = $ipv.Split(' ')
         }
@@ -708,7 +708,7 @@ if ((Test-Path $activclient) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
     }
 
     #Determine if need to install
-    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
+    if ($install -eq $false -and (!([string]::IsNullOrWhiteSpace($ipv)))) {
         if ($sv[0] -gt $ipv[0]) {
             $install = $true
         }
@@ -752,7 +752,7 @@ if (Test-Path $acrobat) {
     try {
         $ipv = ($ip | Where-Object {$_.ProgramName -like "Adobe Acrobat*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-        if ($null -ne $ipv -or $ipv -ne "") {
+        if (!([string]::IsNullOrWhiteSpace($ipv))) {
             $ipv = $ipv.Split('.')
             $ipv = $ipv.Split(' ')
         }
@@ -765,7 +765,7 @@ if (Test-Path $acrobat) {
     }
 
     #Determine if need to install
-    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
+    if ($install -eq $false -and (!([string]::IsNullOrWhiteSpace($ipv)))) {
         if ($sv[0] -gt $ipv[0]) {
             $install = $true
         }
@@ -830,7 +830,7 @@ if (Test-Path $aem) {
     try {
         $ipv = ($ip | Where-Object {$_.ProgramName -like "Designe*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-        if ($null -ne $ipv -or $ipv -ne "") {
+        if (!([string]::IsNullOrWhiteSpace($ipv))) {
             $ipv = $ipv.Split('.')
             $ipv = $ipv.Split(' ')
         }
@@ -843,7 +843,7 @@ if (Test-Path $aem) {
     }
 
     #Determine if need to install
-    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
+    if ($install -eq $false -and (!([string]::IsNullOrWhiteSpace($ipv)))) {
         if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
@@ -886,7 +886,7 @@ if ((Test-Path $anyconnect) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
     try {
         $ipv = ($ip | Where-Object {$_.ProgramName -like "Cisco AnyConnec*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-        if ($null -ne $ipv -or $ipv -ne "") {
+        if (!([string]::IsNullOrWhiteSpace($ipv))) {
             $ipv = $ipv.Split('.')
             $ipv = $ipv.Split(' ')
         }
@@ -899,7 +899,7 @@ if ((Test-Path $anyconnect) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
     }
 
     #Determine if need to install
-    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
+    if ($install -eq $false -and (!([string]::IsNullOrWhiteSpace($ipv)))) {
         if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
@@ -956,7 +956,7 @@ if (Test-Path $axway) {
     try {
         $ipv = ($ip | Where-Object {$_.ProgramName -like "Axway*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-        if ($null -ne $ipv -or $ipv -ne "") {
+        if (!([string]::IsNullOrWhiteSpace($ipv))) {
             $ipv = $ipv.Split('.')
             $ipv = $ipv.Split(' ')
         }
@@ -969,7 +969,7 @@ if (Test-Path $axway) {
     }
 
     #Determine if need to install
-    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
+    if ($install -eq $false -and (!([string]::IsNullOrWhiteSpace($ipv)))) {
         if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
@@ -1018,7 +1018,7 @@ if ((Test-Path $BigIP) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
     try {
         $ipv = ($ip | Where-Object {$_.ProgramName -like "BIG-IP Edg*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-        if ($null -ne $ipv -or $ipv -ne "") {
+        if (!([string]::IsNullOrWhiteSpace($ipv))) {
             $ipv = $ipv.Split('.')
             $ipv = $ipv.Split(' ')
         }
@@ -1031,7 +1031,7 @@ if ((Test-Path $BigIP) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
     }
 
     #Determine if need to install
-    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
+    if ($install -eq $false -and (!([string]::IsNullOrWhiteSpace($ipv)))) {
         if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
@@ -1090,7 +1090,7 @@ if (Test-Path $chrome) {
     try {
         $ipv = ($ip | Where-Object {$_.ProgramName -like "Google Chrom*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-        if ($null -ne $ipv -or $ipv -ne "") {
+        if (!([string]::IsNullOrWhiteSpace($ipv))) {
             $ipv = $ipv.Split('.')
             $ipv = $ipv.Split(' ')
         }
@@ -1103,7 +1103,7 @@ if (Test-Path $chrome) {
     }
 
     #Determine if need to install
-    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
+    if ($install -eq $false -and (!([string]::IsNullOrWhiteSpace($ipv)))) {
         if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
@@ -1167,7 +1167,7 @@ if ((Test-Path $dset) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
     try {
         $ipv = ($ip | Where-Object {$_.ProgramName -like "DSET*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-        if ($null -ne $ipv -or $ipv -ne "") {
+        if (!([string]::IsNullOrWhiteSpace($ipv))) {
             $ipv = $ipv.Split('.')
             $ipv = $ipv.Split(' ')
         }
@@ -1180,7 +1180,7 @@ if ((Test-Path $dset) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
     }
 
     #Determine if need to install
-    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
+    if ($install -eq $false -and (!([string]::IsNullOrWhiteSpace($ipv)))) {
         if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
@@ -1232,7 +1232,7 @@ if (Test-Path $edge) {
     try {
         $ipv = ($ip | Where-Object {$_.ProgramName -like "Microsoft Edg*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-        if ($null -ne $ipv -or $ipv -ne "") {
+        if (!([string]::IsNullOrWhiteSpace($ipv))) {
             $ipv = $ipv.Split('.')
             $ipv = $ipv.Split(' ')
         }
@@ -1245,7 +1245,7 @@ if (Test-Path $edge) {
     }
 
     #Determine if need to install
-    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
+    if ($install -eq $false -and (!([string]::IsNullOrWhiteSpace($ipv)))) {
         if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
@@ -1310,7 +1310,7 @@ if (Test-Path $encase) {
     try {
         $ipv = ($ip | Where-Object {$_.ProgramName -like "Encas*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-        if ($null -ne $ipv -or $ipv -ne "") {
+        if (!([string]::IsNullOrWhiteSpace($ipv))) {
             $ipv = $ipv.Split('.')
             $ipv = $ipv.Split(' ')
         }
@@ -1323,7 +1323,7 @@ if (Test-Path $encase) {
     }
 
     #Determine if need to install
-    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
+    if ($install -eq $false -and (!([string]::IsNullOrWhiteSpace($ipv)))) {
         if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
@@ -1382,7 +1382,7 @@ if (Test-Path $firefox) {
     try {
         $ipv = ($ip | Where-Object {$_.ProgramName -like "Mozilla Firefo*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-        if ($null -ne $ipv -or $ipv -ne "") {
+        if (!([string]::IsNullOrWhiteSpace($ipv))) {
             $ipv = $ipv.Split('.')
             $ipv = $ipv.Split(' ')
         }
@@ -1395,7 +1395,7 @@ if (Test-Path $firefox) {
     }
 
     #Determine if need to install
-    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
+    if ($install -eq $false -and (!([string]::IsNullOrWhiteSpace($ipv)))) {
         if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
@@ -1452,7 +1452,7 @@ if (Test-Path $java) {
     try {
         $ipv = ($ip | Where-Object {$_.ProgramName -like "Java*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-        if ($null -ne $ipv -or $ipv -ne "") {
+        if (!([string]::IsNullOrWhiteSpace($ipv))) {
             $ipv = $ipv.Split('.')
             $ipv = $ipv.Split(' ')
         }
@@ -1465,7 +1465,7 @@ if (Test-Path $java) {
     }
 
     #Determine if need to install
-    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
+    if ($install -eq $false -and (!([string]::IsNullOrWhiteSpace($ipv)))) {
         if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
@@ -1524,7 +1524,7 @@ if (Test-Path $netbanner) {
     try {
         $ipv = ($ip | Where-Object {$_.ProgramName -like "Microsoft NetBanne*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-        if ($null -ne $ipv -or $ipv -ne "") {
+        if (!([string]::IsNullOrWhiteSpace($ipv))) {
             $ipv = $ipv.Split('.')
             $ipv = $ipv.Split(' ')
         }
@@ -1537,7 +1537,7 @@ if (Test-Path $netbanner) {
     }
 
     #Determine if need to install
-    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
+    if ($install -eq $false -and (!([string]::IsNullOrWhiteSpace($ipv)))) {
         if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
@@ -1589,7 +1589,7 @@ if (Test-Path $onedrive) {
     try {
         $ipv = ($ip | Where-Object {$_.ProgramName -like "Microsoft OneDriv*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-        if ($null -ne $ipv -or $ipv -ne "") {
+        if (!([string]::IsNullOrWhiteSpace($ipv))) {
             $ipv = $ipv.Split('.')
             $ipv = $ipv.Split(' ')
         }
@@ -1602,7 +1602,7 @@ if (Test-Path $onedrive) {
     }
 
     #Determine if need to install
-    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
+    if ($install -eq $false -and (!([string]::IsNullOrWhiteSpace($ipv)))) {
         if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
@@ -1651,7 +1651,7 @@ if (Test-Path $project) {
     try {
         $ipv = ($ip | Where-Object {$_.ProgramName -like "Microsoft Project*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-        if ($null -ne $ipv -or $ipv -ne "") {
+        if (!([string]::IsNullOrWhiteSpace($ipv))) {
             $ipv = $ipv.Split('.')
             $ipv = $ipv.Split(' ')
         }
@@ -1664,7 +1664,7 @@ if (Test-Path $project) {
     }
 
     #Determine if need to install
-    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
+    if ($install -eq $false -and (!([string]::IsNullOrWhiteSpace($ipv)))) {
         if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
@@ -1729,7 +1729,7 @@ if (Test-Path $tanium) {
     try {
         $ipv = ($ip | Where-Object {$_.ProgramName -like "Tanium*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-        if ($null -ne $ipv -or $ipv -ne "") {
+        if (!([string]::IsNullOrWhiteSpace($ipv))) {
             $ipv = $ipv.Split('.')
             $ipv = $ipv.Split(' ')
         }
@@ -1742,7 +1742,7 @@ if (Test-Path $tanium) {
     }
 
     #Determine if need to install
-    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
+    if ($install -eq $false -and (!([string]::IsNullOrWhiteSpace($ipv)))) {
         if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
@@ -1802,7 +1802,7 @@ if (Test-Path $teams) {
     try {
         $ipv = ($ip | Where-Object {$_.ProgramName -like "Teams Mac*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-        if ($null -ne $ipv -or $ipv -ne "") {
+        if (!([string]::IsNullOrWhiteSpace($ipv))) {
             $ipv = $ipv.Split('.')
             $ipv = $ipv.Split(' ')
         }
@@ -1815,7 +1815,7 @@ if (Test-Path $teams) {
     }
 
     #Determine if need to install
-    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
+    if ($install -eq $false -and (!([string]::IsNullOrWhiteSpace($ipv)))) {
         if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
@@ -1881,7 +1881,7 @@ if ((Test-Path $titus) -and $env:USERDNSDOMAIN -like "*.smil.mil") {
     try {
         $ipv = ($ip | Where-Object {$_.ProgramName -like "Titus*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-        if ($null -ne $ipv -or $ipv -ne "") {
+        if (!([string]::IsNullOrWhiteSpace($ipv))) {
             $ipv = $ipv.Split('.')
             $ipv = $ipv.Split(' ')
         }
@@ -1894,7 +1894,7 @@ if ((Test-Path $titus) -and $env:USERDNSDOMAIN -like "*.smil.mil") {
     }
 
     #Determine if need to install
-    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
+    if ($install -eq $false -and (!([string]::IsNullOrWhiteSpace($ipv)))) {
         if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
@@ -1953,7 +1953,7 @@ if (Test-Path $transverse) {
     try {
         $ipv = ($ip | Where-Object {$_.ProgramName -like "*Transverse*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-        if ($null -ne $ipv -or $ipv -ne "") {
+        if (!([string]::IsNullOrWhiteSpace($ipv))) {
             $ipv = $ipv.Split('.')
             $ipv = $ipv.Split(' ')
         }
@@ -1966,7 +1966,7 @@ if (Test-Path $transverse) {
     }
 
     #Determine if need to install
-    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
+    if ($install -eq $false -and (!([string]::IsNullOrWhiteSpace($ipv)))) {
         if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
@@ -2042,7 +2042,7 @@ if (Test-Path $visio) {
     try {
         $ipv = ($ip | Where-Object {$_.ProgramName -like "Microsoft Visi*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-        if ($null -ne $ipv -or $ipv -ne "") {
+        if (!([string]::IsNullOrWhiteSpace($ipv))) {
             $ipv = $ipv.Split('.')
             $ipv = $ipv.Split(' ')
         }
@@ -2055,7 +2055,7 @@ if (Test-Path $visio) {
     }
 
     #Determine if need to install
-    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
+    if ($install -eq $false -and (!([string]::IsNullOrWhiteSpace($ipv)))) {
         if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
@@ -2123,7 +2123,7 @@ if (Test-Path $vscode) {
     try {
         $ipv = ($ip | Where-Object {$_.ProgramName -like "Microsoft Visual Studio Cod*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
-        if ($null -ne $ipv -or $ipv -ne "") {
+        if (!([string]::IsNullOrWhiteSpace($ipv))) {
             $ipv = $ipv.Split('.')
             $ipv = $ipv.Split(' ')
         }
@@ -2136,7 +2136,7 @@ if (Test-Path $vscode) {
     }
 
     #Determine if need to install
-    if ($install -eq $false -and ($null -ne $ipv -or $ipv -ne "")) {
+    if ($install -eq $false -and (!([string]::IsNullOrWhiteSpace($ipv)))) {
         if ([int32]$sv[0] -gt [int32]$ipv[0]) {
             $install = $true
         }
