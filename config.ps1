@@ -5,7 +5,7 @@
 )]
 
 $Global:WSToolsConfig = [PSCustomObject]@{
-    # WSTools config v2021.12.1
+    # WSTools config v2022.2.0
     # Remove the # symbol infront of a line to enable it
     ###########################################################################################################################################
     #Application Service Names - used in Stop-AppService. Uses match to match the name of a service that is running and stops it.
@@ -145,12 +145,6 @@ $Global:WSToolsConfig = [PSCustomObject]@{
     #When opening documents of unknown file types, recommend to lookup an App that can open them in the Windows Store ($true - Windows default) or not recommend an App in the Store ($false.)
     #Doesn't always work
     StoreLookup = $false
-
-    ################################
-    ##        Print Drivers       ##
-    ################################
-    HPUniversalPrintDriver = "J:\Drivers\Script\HP_Universal"
-    LexmarkUniversalPrintDriver = "J:\Drivers\Script\Lexmark_Universal\Drivers\x64"
 
     ################################
     ##         Remediation        ##
