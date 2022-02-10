@@ -4,6 +4,14 @@ Known issues:
 
 ######################
 #                    #
+#      2022.02       #
+#                    #
+######################
+New features and other changes:
+1. Removed print driver copy and installation functions.
+
+######################
+#                    #
 #      2021.12       #
 #                    #
 ######################
