@@ -9167,7 +9167,7 @@ Function Set-RemediationValues {
 .Notes
     AUTHOR: Skyler Hart
     CREATED: 02/08/2018 22:10:17
-    LASTEDIT: 2021-10-19 10:42:59
+    LASTEDIT: 2022-02-18 19:37:37
     KEYWORDS:
     REQUIRES:
         #Requires -Version 3.0
@@ -9479,11 +9479,11 @@ Function Set-RemediationValues {
             }
             else {
                 #Disable SMB1
-                Disable-WindowsOptionalFeature -Online -FeatureName SMB1Protocol
+                Disable-WindowsOptionalFeature -Online -FeatureName SMB1Protocol -NoRestart
                 Start-Sleep 3
 
                 #Enable SMB2
-                Set-SmbServerConfiguration -EnableSMB2Protocol $true
+                Set-SmbServerConfiguration -EnableSMB2Protocol $true -Force
             }
         }
         #endregion
