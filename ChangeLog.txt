@@ -10,6 +10,7 @@ Known issues:
 New features and other changes:
 1. Removed print driver copy and installation functions.
 2. In Set-RemediationValues added switches to SMB 1 and 2 commands to disable user prompts.
+3. Made Install-WSTools multithreaded.
 
 ######################
 #                    #
