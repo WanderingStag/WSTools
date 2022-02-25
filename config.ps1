@@ -9,7 +9,7 @@ $Global:WSToolsConfig = [PSCustomObject]@{
     # Remove the # symbol infront of a line to enable it
     ###########################################################################################################################################
     #Application Service Names - used in Stop-AppService. Uses match to match the name of a service that is running and stops it.
-    AppNames = @('BarTender','Cognos','Commvault','Dameware','Exchange','IBM','IDenticard','IIS','InstallRoot','LiveLink','Moodle','Oracle','Seagull','SharePoint','SolarWinds','SQL','Tanium','World Wide Web','WSUS')
+    AppNames = @('BarTender','Cognos','Commvault','Dameware','Exchange','IBM','IDenticard','IIS','InstallRoot','LiveLink','Moodle','Oracle','Seagull','SharePoint','SolarWinds','Splunk','SQL','Tanium','World Wide Web','WSUS')
 
     #Ignore list. Used in several functions. Computers, users, and groups to ignore that cause issues. Objects such as clustered object computer names, non-windows systems, and other such things. Uses -match in some places and -eq in others so be as precise as possible.
     #Ignore = @('comp1','comp2','user1','user2','group1','group2')
@@ -33,10 +33,10 @@ $Global:WSToolsConfig = [PSCustomObject]@{
     UpdateComp = "snib1" #do not use the fqdn, only the shortname
 
     #Path to where module files are stored on a central server. Used in Install-WSTools (aka Copy-WSTools) and Update-WSTools
-    UpdatePath = "J:\PowerShell\Modules\WSTools"
+    UpdatePath = "\\snse\Temp\Modules\WSTools"
 
     #Additional paths is used for pushing out to folders in addtion to UpdatePath.
-    AdditionalUpdatePaths = @('D:\OneDrive\Scripts\Modules\WSTools')
+    AdditionalUpdatePaths = @('J:\PowerShell\Modules\WSTools','D:\OneDrive\Scripts\Modules\WSTools')
 
     #Old PowerShell Modules. Used in Remove-OldPowerShellModule.
     OldPSModule = @('SHTool','SHTools','SkysTool')
