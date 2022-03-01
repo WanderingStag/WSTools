@@ -600,7 +600,7 @@ Process Name:"
             Clear-Variable -Name notuser1,notuser2,user2,user3 -ErrorAction SilentlyContinue | Out-Null
 
             $events2 = Import-Csv "$env:Temp\events2.csv"
-            if (null -ne $($events2).User) {$user1 = ($events2).User[0]}
+            if ($null -ne $($events2).User) {$user1 = ($events2).User[0]}
 
             ($events2) | Select-Object Computer,When,Type,User | ForEach-Object {
                 if ($_.User -ne $user1) {[string[]]$notuser1 += $_.User}
