@@ -177,8 +177,8 @@ $MenuSites.Text = "Sites"
 
     #If HomeAssistant config item not blank
     if (!([string]::IsNullOrWhiteSpace(($Global:WSToolsConfig).HomeAssistant))) {
-        $MenuSites_EAC = $MenuSites.MenuItems.Add("Exchange Admin Console")
-        $MenuSites_EAC.Add_Click({
+        $MenuSites_HomeAssistant = $MenuSites.MenuItems.Add("Home Assistant")
+        $MenuSites_HomeAssistant.Add_Click({
             Open-HomeAssistant
         })
     }
@@ -188,6 +188,20 @@ $MenuSites.Text = "Sites"
         $MenuSites_iLO = $MenuSites.MenuItems.Add("iLO")
         $MenuSites_iLO.Add_Click({
             Open-iLO
+        })
+    }
+
+    #If LMC config item not blank (aka LexmarkManagementConsole) and print release
+    if (!([string]::IsNullOrWhiteSpace(($Global:WSToolsConfig).LMC))) {
+        $MenuSites_LMC = $MenuSites.MenuItems.Add("Lexmark Management Console")
+        $MenuSites_LMC.Add_Click({
+            Open-LexmarkManagementConsole
+        })
+    }
+    if (!([string]::IsNullOrWhiteSpace(($Global:WSToolsConfig).PrintRelease))) {
+        $MenuSites_PrintRelease = $MenuSites.MenuItems.Add("Lexmark Print Release")
+        $MenuSites_PrintRelease.Add_Click({
+            Open-PrintRelease
         })
     }
 

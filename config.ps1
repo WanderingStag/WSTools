@@ -110,6 +110,10 @@ $Global:WSToolsConfig = [PSCustomObject]@{
     #HP iLO management in the WSTools\WS_DomainMgmt Open-iLO function
     #iLO = "https://iloaddress.wstools.dev"
 
+    #Open-LexmarkManagementConsole and Open-PrintRelease
+    #LMC = "https://lmcserver.wstools.dev/lmc"
+    #PrintRelease = "https://lmcserver.wstools.dev/PrintRelease"
+
     #Open-OWA
     #OWA = "https://owa.wstools.dev"
 

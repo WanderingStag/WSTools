@@ -10,6 +10,8 @@ Known issues:
 New features and other changes:
 1. Fixed an issue that caused Get-RecentUser to not work.
 2. Added Open-HomeAssistant function and HomeAssistant config item.
+3. Added Open-LexmarkManagementConsole and Open-PrintRelease functions.
+4. Added LMC and PrintRelease config items.
 
 ######################
 #                    #
