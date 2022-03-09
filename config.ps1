@@ -105,7 +105,7 @@ $Global:WSToolsConfig = [PSCustomObject]@{
     #EAC = "https://owa.wstools.dev/ecp"
 
     #Open-HomeAssistant
-    HomeAssistant = "https://homeassistant.skylerhart.com:8123"
+    HomeAssistant = "http://homeassistant.skylerhart.com:8123"
 
     #HP iLO management in the WSTools\WS_DomainMgmt Open-iLO function
     #iLO = "https://iloaddress.wstools.dev"
