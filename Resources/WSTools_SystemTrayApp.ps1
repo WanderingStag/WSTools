@@ -175,6 +175,14 @@ $MenuSites.Text = "Sites"
         })
     }
 
+    #If HomeAssistant config item not blank
+    if (!([string]::IsNullOrWhiteSpace(($Global:WSToolsConfig).HomeAssistant))) {
+        $MenuSites_EAC = $MenuSites.MenuItems.Add("Exchange Admin Console")
+        $MenuSites_EAC.Add_Click({
+            Open-HomeAssistant
+        })
+    }
+
     #If iLO config item not blank
     if (!([string]::IsNullOrWhiteSpace(($Global:WSToolsConfig).iLO))) {
         $MenuSites_iLO = $MenuSites.MenuItems.Add("iLO")
