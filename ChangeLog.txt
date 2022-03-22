@@ -12,6 +12,7 @@ New features and other changes:
 2. Added Open-HomeAssistant function and HomeAssistant config item.
 3. Added Open-LexmarkManagementConsole and Open-PrintRelease functions.
 4. Added LMC and PrintRelease config items.
+5. Changed Get-RecentUser so it ignores additional UMFD-x accounts.
 
 ######################
 #                    #
