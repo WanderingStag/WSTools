@@ -5807,7 +5807,7 @@ Function Uninstall-7Zip {
     Param (
         [Parameter(
             HelpMessage = "Enter one or more computer names separated by commas.",
-            Mandatory=$true,
+            Mandatory=$false,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
@@ -5825,6 +5825,9 @@ Function Uninstall-7Zip {
     )
 
     Begin {
+        if ([string]::IsNullOrWhiteSpace($ObjectList)) {
+            $ObjectList = $env:COMPUTERNAME
+        }
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
@@ -5917,7 +5920,7 @@ Function Uninstall-90Meter {
     Param (
         [Parameter(
             HelpMessage = "Enter one or more computer names separated by commas.",
-            Mandatory=$true,
+            Mandatory=$false,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
@@ -5933,7 +5936,11 @@ Function Uninstall-90Meter {
         [Parameter()]
         $MaxResultTime = 1200
     )
+
     Begin {
+        if ([string]::IsNullOrWhiteSpace($ObjectList)) {
+            $ObjectList = $env:COMPUTERNAME
+        }
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
@@ -6030,8 +6037,9 @@ Function Uninstall-AdobeAir {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
-            Mandatory=$true,
+        [Parameter(
+            HelpMessage = "Enter one or more computer names separated by commas.",
+            Mandatory=$false,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
@@ -6047,7 +6055,11 @@ Function Uninstall-AdobeAir {
         [Parameter()]
         $MaxResultTime = 1200
     )
-    Begin{
+
+    Begin {
+        if ([string]::IsNullOrWhiteSpace($ObjectList)) {
+            $ObjectList = $env:COMPUTERNAME
+        }
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
@@ -6138,8 +6150,9 @@ Function Uninstall-AdobeExperienceManager {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
-            Mandatory=$true,
+        [Parameter(
+            HelpMessage = "Enter one or more computer names separated by commas.",
+            Mandatory=$false,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
@@ -6155,7 +6168,11 @@ Function Uninstall-AdobeExperienceManager {
         [Parameter()]
         $MaxResultTime = 1200
     )
-    Begin{
+
+    Begin {
+        if ([string]::IsNullOrWhiteSpace($ObjectList)) {
+            $ObjectList = $env:COMPUTERNAME
+        }
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
@@ -6252,8 +6269,9 @@ Function Uninstall-AdobeFlash {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
-            Mandatory=$true,
+        [Parameter(
+            HelpMessage = "Enter one or more computer names separated by commas.",
+            Mandatory=$false,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
@@ -6269,7 +6287,11 @@ Function Uninstall-AdobeFlash {
         [Parameter()]
         $MaxResultTime = 1200
     )
+
     Begin {
+        if ([string]::IsNullOrWhiteSpace($ObjectList)) {
+            $ObjectList = $env:COMPUTERNAME
+        }
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
@@ -6362,8 +6384,9 @@ Function Uninstall-AdobePro {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
-            Mandatory=$true,
+        [Parameter(
+            HelpMessage = "Enter one or more computer names separated by commas.",
+            Mandatory=$false,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
@@ -6379,7 +6402,11 @@ Function Uninstall-AdobePro {
         [Parameter()]
         $MaxResultTime = 1200
     )
+
     Begin {
+        if ([string]::IsNullOrWhiteSpace($ObjectList)) {
+            $ObjectList = $env:COMPUTERNAME
+        }
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
@@ -6473,8 +6500,9 @@ Function Uninstall-AdobeReader {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
-            Mandatory=$true,
+        [Parameter(
+            HelpMessage = "Enter one or more computer names separated by commas.",
+            Mandatory=$false,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
@@ -6490,7 +6518,11 @@ Function Uninstall-AdobeReader {
         [Parameter()]
         $MaxResultTime = 1200
     )
+
     Begin {
+        if ([string]::IsNullOrWhiteSpace($ObjectList)) {
+            $ObjectList = $env:COMPUTERNAME
+        }
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
@@ -6582,8 +6614,9 @@ Function Uninstall-AdobeShockwave {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
-            Mandatory=$true,
+        [Parameter(
+            HelpMessage = "Enter one or more computer names separated by commas.",
+            Mandatory=$false,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
@@ -6599,7 +6632,11 @@ Function Uninstall-AdobeShockwave {
         [Parameter()]
         $MaxResultTime = 1200
     )
+
     Begin {
+        if ([string]::IsNullOrWhiteSpace($ObjectList)) {
+            $ObjectList = $env:COMPUTERNAME
+        }
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
@@ -6688,8 +6725,9 @@ Function Uninstall-CiscoAnyConnect {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
-            Mandatory=$true,
+        [Parameter(
+            HelpMessage = "Enter one or more computer names separated by commas.",
+            Mandatory=$false,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
@@ -6705,7 +6743,11 @@ Function Uninstall-CiscoAnyConnect {
         [Parameter()]
         $MaxResultTime = 1200
     )
+
     Begin {
+        if ([string]::IsNullOrWhiteSpace($ObjectList)) {
+            $ObjectList = $env:COMPUTERNAME
+        }
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
@@ -6794,8 +6836,9 @@ Function Uninstall-F5BigIPEdgeClient {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
-            Mandatory=$true,
+        [Parameter(
+            HelpMessage = "Enter one or more computer names separated by commas.",
+            Mandatory=$false,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
@@ -6811,7 +6854,11 @@ Function Uninstall-F5BigIPEdgeClient {
         [Parameter()]
         $MaxResultTime = 1200
     )
+
     Begin {
+        if ([string]::IsNullOrWhiteSpace($ObjectList)) {
+            $ObjectList = $env:COMPUTERNAME
+        }
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
@@ -6904,8 +6951,9 @@ Function Uninstall-GoogleChrome {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
-            Mandatory=$true,
+        [Parameter(
+            HelpMessage = "Enter one or more computer names separated by commas.",
+            Mandatory=$false,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
@@ -6921,7 +6969,11 @@ Function Uninstall-GoogleChrome {
         [Parameter()]
         $MaxResultTime = 1200
     )
+
     Begin {
+        if ([string]::IsNullOrWhiteSpace($ObjectList)) {
+            $ObjectList = $env:COMPUTERNAME
+        }
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
@@ -7014,8 +7066,9 @@ Function Uninstall-HPInsightAgent {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
-            Mandatory=$true,
+        [Parameter(
+            HelpMessage = "Enter one or more computer names separated by commas.",
+            Mandatory=$false,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
@@ -7031,7 +7084,11 @@ Function Uninstall-HPInsightAgent {
         [Parameter()]
         $MaxResultTime = 1200
     )
+
     Begin {
+        if ([string]::IsNullOrWhiteSpace($ObjectList)) {
+            $ObjectList = $env:COMPUTERNAME
+        }
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
@@ -7123,8 +7180,9 @@ Function Uninstall-HPVersionControlAgent {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
-            Mandatory=$true,
+        [Parameter(
+            HelpMessage = "Enter one or more computer names separated by commas.",
+            Mandatory=$false,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
@@ -7140,7 +7198,11 @@ Function Uninstall-HPVersionControlAgent {
         [Parameter()]
         $MaxResultTime = 1200
     )
+
     Begin {
+        if ([string]::IsNullOrWhiteSpace($ObjectList)) {
+            $ObjectList = $env:COMPUTERNAME
+        }
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
@@ -7237,8 +7299,9 @@ Function Uninstall-IBMForms {
     )]
     [CmdletBinding()]
     Param (
-        [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
-            Mandatory=$true,
+        [Parameter(
+            HelpMessage = "Enter one or more computer names separated by commas.",
+            Mandatory=$false,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
@@ -7254,7 +7317,11 @@ Function Uninstall-IBMForms {
         [Parameter()]
         $MaxResultTime = 1200
     )
+
     Begin {
+        if ([string]::IsNullOrWhiteSpace($ObjectList)) {
+            $ObjectList = $env:COMPUTERNAME
+        }
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
@@ -7346,8 +7413,9 @@ Function Uninstall-McAfeeVSE {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
-            Mandatory=$true,
+        [Parameter(
+            HelpMessage = "Enter one or more computer names separated by commas.",
+            Mandatory=$false,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
@@ -7363,7 +7431,11 @@ Function Uninstall-McAfeeVSE {
         [Parameter()]
         $MaxResultTime = 1200
     )
+
     Begin {
+        if ([string]::IsNullOrWhiteSpace($ObjectList)) {
+            $ObjectList = $env:COMPUTERNAME
+        }
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
@@ -7456,8 +7528,9 @@ Function Uninstall-MicrosoftInfoPath {
     )]
     [CmdletBinding()]
     Param (
-        [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
-            Mandatory=$true,
+        [Parameter(
+            HelpMessage = "Enter one or more computer names separated by commas.",
+            Mandatory=$false,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
@@ -7473,7 +7546,11 @@ Function Uninstall-MicrosoftInfoPath {
         [Parameter()]
         $MaxResultTime = 1200
     )
+
     Begin {
+        if ([string]::IsNullOrWhiteSpace($ObjectList)) {
+            $ObjectList = $env:COMPUTERNAME
+        }
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
@@ -7566,8 +7643,9 @@ Function Uninstall-MozillaFirefox {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
-            Mandatory=$true,
+        [Parameter(
+            HelpMessage = "Enter one or more computer names separated by commas.",
+            Mandatory=$false,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
@@ -7583,7 +7661,11 @@ Function Uninstall-MozillaFirefox {
         [Parameter()]
         $MaxResultTime = 1200
     )
+
     Begin {
+        if ([string]::IsNullOrWhiteSpace($ObjectList)) {
+            $ObjectList = $env:COMPUTERNAME
+        }
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
@@ -7681,8 +7763,9 @@ Function Uninstall-MozillaMaintenanceService {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
-            Mandatory=$true,
+        [Parameter(
+            HelpMessage = "Enter one or more computer names separated by commas.",
+            Mandatory=$false,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
@@ -7698,7 +7781,11 @@ Function Uninstall-MozillaMaintenanceService {
         [Parameter()]
         $MaxResultTime = 1200
     )
+
     Begin {
+        if ([string]::IsNullOrWhiteSpace($ObjectList)) {
+            $ObjectList = $env:COMPUTERNAME
+        }
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
@@ -7794,8 +7881,9 @@ Function Uninstall-OracleJava {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
-            Mandatory=$true,
+        [Parameter(
+            HelpMessage = "Enter one or more computer names separated by commas.",
+            Mandatory=$false,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
@@ -7811,7 +7899,11 @@ Function Uninstall-OracleJava {
         [Parameter()]
         $MaxResultTime = 1200
     )
+
     Begin {
+        if ([string]::IsNullOrWhiteSpace($ObjectList)) {
+            $ObjectList = $env:COMPUTERNAME
+        }
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
@@ -7902,8 +7994,9 @@ Function Uninstall-TransVerse {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
-            Mandatory=$true,
+        [Parameter(
+            HelpMessage = "Enter one or more computer names separated by commas.",
+            Mandatory=$false,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
@@ -7919,7 +8012,11 @@ Function Uninstall-TransVerse {
         [Parameter()]
         $MaxResultTime = 1200
     )
+
     Begin {
+        if ([string]::IsNullOrWhiteSpace($ObjectList)) {
+            $ObjectList = $env:COMPUTERNAME
+        }
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
@@ -8011,8 +8108,9 @@ Function Uninstall-VLC {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
-            Mandatory=$true,
+        [Parameter(
+            HelpMessage = "Enter one or more computer names separated by commas.",
+            Mandatory=$false,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
@@ -8028,7 +8126,11 @@ Function Uninstall-VLC {
         [Parameter()]
         $MaxResultTime = 1200
     )
+
     Begin {
+        if ([string]::IsNullOrWhiteSpace($ObjectList)) {
+            $ObjectList = $env:COMPUTERNAME
+        }
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
@@ -8118,8 +8220,9 @@ Function Uninstall-Wireshark {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
-            Mandatory=$true,
+        [Parameter(
+            HelpMessage = "Enter one or more computer names separated by commas.",
+            Mandatory=$false,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
@@ -8135,7 +8238,11 @@ Function Uninstall-Wireshark {
         [Parameter()]
         $MaxResultTime = 1200
     )
+
     Begin {
+        if ([string]::IsNullOrWhiteSpace($ObjectList)) {
+            $ObjectList = $env:COMPUTERNAME
+        }
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
@@ -8223,8 +8330,9 @@ Function Uninstall-WinRAR {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
-            Mandatory=$true,
+        [Parameter(
+            HelpMessage = "Enter one or more computer names separated by commas.",
+            Mandatory=$false,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
@@ -8240,7 +8348,11 @@ Function Uninstall-WinRAR {
         [Parameter()]
         $MaxResultTime = 1200
     )
+
     Begin {
+        if ([string]::IsNullOrWhiteSpace($ObjectList)) {
+            $ObjectList = $env:COMPUTERNAME
+        }
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
@@ -8332,8 +8444,9 @@ Function Uninstall-WinSCP {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
-            Mandatory=$true,
+        [Parameter(
+            HelpMessage = "Enter one or more computer names separated by commas.",
+            Mandatory=$false,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
@@ -8349,7 +8462,11 @@ Function Uninstall-WinSCP {
         [Parameter()]
         $MaxResultTime = 1200
     )
+
     Begin {
+        if ([string]::IsNullOrWhiteSpace($ObjectList)) {
+            $ObjectList = $env:COMPUTERNAME
+        }
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
@@ -8437,8 +8554,9 @@ Function Uninstall-WinZip {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
-            Mandatory=$true,
+        [Parameter(
+            HelpMessage = "Enter one or more computer names separated by commas.",
+            Mandatory=$false,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
@@ -8454,7 +8572,11 @@ Function Uninstall-WinZip {
         [Parameter()]
         $MaxResultTime = 1200
     )
+
     Begin {
+        if ([string]::IsNullOrWhiteSpace($ObjectList)) {
+            $ObjectList = $env:COMPUTERNAME
+        }
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
@@ -8542,8 +8664,9 @@ Function Uninstall-Zoom {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
-            Mandatory=$true,
+        [Parameter(
+            HelpMessage = "Enter one or more computer names separated by commas.",
+            Mandatory=$false,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
@@ -8559,7 +8682,11 @@ Function Uninstall-Zoom {
         [Parameter()]
         $MaxResultTime = 1200
     )
+
     Begin {
+        if ([string]::IsNullOrWhiteSpace($ObjectList)) {
+            $ObjectList = $env:COMPUTERNAME
+        }
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()
@@ -10839,8 +10966,9 @@ Function Uninstall-HBSS {
 #>
     [CmdletBinding()]
     Param (
-        [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
-            Mandatory=$true,
+        [Parameter(
+            HelpMessage = "Enter one or more computer names separated by commas.",
+            Mandatory=$false,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
@@ -10856,7 +10984,11 @@ Function Uninstall-HBSS {
         [Parameter()]
         $MaxResultTime = 1200
     )
+
     Begin {
+        if ([string]::IsNullOrWhiteSpace($ObjectList)) {
+            $ObjectList = $env:COMPUTERNAME
+        }
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
         $RunspacePool.Open()

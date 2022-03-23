@@ -14,6 +14,7 @@ New features and other changes:
 4. Added LMC and PrintRelease config items.
 5. Changed Get-RecentUser so it ignores additional UMFD-x accounts.
 6. Added Zoom config item and functions Copy-Zoom, Install-Zoom, and Uninstall-Zoom. Also added Zoom install to InstallRemote.ps1.
+7. Changed Uninstall functions so they don't require an object and now default to the local computer.
 
 ######################
 #                    #
