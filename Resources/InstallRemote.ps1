@@ -524,6 +524,7 @@ $vESD = $PatchFolderPath + "\vESD"
 $visio = $PatchFolderPath + "\visio"
 $vlc = $PatchFolderPath + "\vlc"
 $vscode = $PatchFolderPath + "\VSCode"
+$zoom = $PatchFolderPath + "\Zoom"
 
 $datu = Get-ChildItem -Path $PatchFolderPath | Where-Object {$_.Name -like "CM-*xdat.exe"}
 $datun = $datu.Count
@@ -2183,6 +2184,77 @@ if (Test-Path $vscode) {
         #do nothing Write-Output "$cn`: $pn same as installed version or older. Skipping..."
     }
 }
+
+if (Test-Path $zoom) {
+    $sv = $null
+    $ipv = $null
+    $install = $false
+    $pn = "Zoom"
+    $sv = Get-Content $zoom\SoftwareVersion.txt
+    try {
+        $ipv = ($ip | Where-Object {$_.ProgramName -like "Zoom*"} -ErrorAction Stop | Select-Object Version)[0].Version
+
+        if (!([string]::IsNullOrWhiteSpace($ipv))) {
+            $ipv = $ipv.Split('.')
+            $ipv = $ipv.Split(' ')
+        }
+        else {$install -eq $true}
+        $sv = $sv.Split('.')
+        $sv = $sv.Split(' ')
+    }#try
+    catch {
+        $install = $true
+    }
+
+    #Determine if need to install
+    if ($install -eq $false -and (!([string]::IsNullOrWhiteSpace($ipv)))) {
+        if ([int32]$sv[0] -gt [int32]$ipv[0]) {
+            $install = $true
+        }
+        elseif ([int32]$sv[0] -eq [int32]$ipv[0]) {
+            if ([int32]$sv[1] -gt [int32]$ipv[1]) {
+                $install = $true
+            }
+            elseif ([int32]$sv[1] -eq [int32]$ipv[1]) {
+                #$install = $false #uncomment and remove below lines if stopping at Major.Minor
+                if ([int32]$sv[2] -gt [int32]$ipv[2]) {
+                    $install = $true
+                }
+                elseif ([int32]$sv[2] -eq [int32]$ipv[2]) {
+                    $install = $false
+                }
+                elseif ([int32]$sv[2] -lt [int32]$ipv[2]) {
+                    $install = $false
+                }
+            }
+            elseif ([int32]$sv[1] -lt [int32]$ipv[1]) {
+                $install = $false
+            }
+        }
+        elseif ([int32]$sv[0] -lt [int32]$ipv[0]) {
+            $install = $false
+        }
+    }#if already installed
+    else {
+        $install = $true
+    }
+
+    #Install or not
+    if ($install -eq $true) {
+        if (!($cimq -like "*Server*" -or $wmiq -like "*Server*")) {
+            $rn = ((Get-Date).AddSeconds(300))
+            Send-ToastNotification "Zoom client installation/update will begin in 5 minutes ($rn.) During this process it may close. Please save all open files. If after 10 minutes it appears to be uninstalled, please log off then log back in" -Title "Zoom Install"
+            Start-Sleep -Seconds 300
+        }
+        Write-Output "$cn`: Installing $pn."
+        Start-Process msiexec.exe -ArgumentList "$zoom\ZoomInstallerFull.msi /quiet /norestart" -NoNewWindow -Wait
+        Start-Sleep 150
+    }
+    else {
+        #do nothing Write-Output "$cn`: $pn same as installed version or older. Skipping..."
+    }
+}
+
 
 if ($datun -ge 1) {
     Write-Output "$cn`: Installing McAfee DAT update."
