@@ -173,6 +173,7 @@ $Global:WSToolsConfig = [PSCustomObject]@{
     WMF3 = "J:\Microsoft\Windows Management Framework 3.0"
     WMF4 = "J:\Microsoft\Windows Management Framework 4.0"
     WMF5 = "J:\Microsoft\Windows Management Framework 5.1"
+    Zoom = "J:\Approved\Zoom"
 
     #Install file locations that use the PowerShell App Deployment Toolkit from https://psappdeploytoolkit.com/
     a90Meter = "J:\Patches\SDC-APPS\90Meter"

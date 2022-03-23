@@ -13,6 +13,7 @@ New features and other changes:
 3. Added Open-LexmarkManagementConsole and Open-PrintRelease functions.
 4. Added LMC and PrintRelease config items.
 5. Changed Get-RecentUser so it ignores additional UMFD-x accounts.
+6. Added Zoom config item and function Install-Zoom.
 
 ######################
 #                    #
