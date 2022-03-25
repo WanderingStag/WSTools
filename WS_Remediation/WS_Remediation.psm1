@@ -5731,7 +5731,7 @@ Function Install-Zoom {
 .Notes
     AUTHOR: Skyler Hart
     CREATED: 2022-03-22 20:16:54
-    LASTEDIT: 2022-03-22 20:16:54
+    LASTEDIT: 2022-03-24 21:35:15
     KEYWORDS:
     REQUIRES:
         -RunAsAdministrator
@@ -5760,7 +5760,7 @@ Function Install-Zoom {
 
         try {
             robocopy $app \\$comp\c$\Patches\Zoom /mir /xf *.exe /r:3 /w:15 /njh /njs
-            $install = Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList 'cmd /c msiexec.exe c:\Patches\Zoom\ZoomInstallerFull.msi /quiet /norestart' -ErrorAction Stop #DevSkim: ignore DS104456
+            $install = Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList 'cmd /c msiexec.exe /i c:\Patches\Zoom\ZoomInstallerFull.msi /qn' -ErrorAction Stop #DevSkim: ignore DS104456
             $end = Get-Date
             $info = [PSCustomObject]@{
                 ComputerName = $comp
