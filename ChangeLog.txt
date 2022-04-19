@@ -11,6 +11,7 @@ New features and other changes:
 1. Added function Uninstall-DamewareMiniRemoteControl.
 2. Removed Transverse from InstallRemote.ps1.
 3. Removed function Copy-Transverse.
+4. Updated the WMI query used to find the Transverse program in Uninstall-TransVerse.
 
 ######################
 #                    #

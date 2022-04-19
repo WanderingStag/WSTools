@@ -7940,7 +7940,7 @@ Function Uninstall-TransVerse {
 .NOTES
     Author: Skyler Hart
     Created: 2021-01-25 14:42:32
-    Last Edit: 2021-01-25 14:42:32
+    Last Edit: 2022-04-19 16:14:09
     Requires:
         -RunAsAdministrator
 .LINK
@@ -7986,7 +7986,7 @@ Function Uninstall-TransVerse {
                 [string]$comp
             )
             try {
-                Get-WmiObject -Class Win32_Product -Filter "Name like 'TransVerse%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
+                Get-WmiObject -Class Win32_Product -Filter "Name like '%TransVerse%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
                 [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "TransVerse"
