@@ -519,7 +519,6 @@ $ssms = $PatchFolderPath + "\SSMS"
 $tanium = $PatchFolderPath + "\Tanium"
 $teams = $PatchFolderPath + "\Teams"
 $titus = $PatchFolderPath + "\Titus"
-$transverse = $PatchFolderPath + "\Transverse"
 $vESD = $PatchFolderPath + "\vESD"
 $visio = $PatchFolderPath + "\visio"
 $vlc = $PatchFolderPath + "\vlc"
@@ -1939,78 +1938,6 @@ if ((Test-Path $titus) -and $env:USERDNSDOMAIN -like "*.smil.mil") {
         Write-Output "$cn`: Installing $pn."
         Start-Process $titus\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 300
-    }
-    else {
-        #do nothing Write-Output "$cn`: $pn same as installed version or older. Skipping..."
-    }
-}
-
-if (Test-Path $transverse) {
-    $sv = $null
-    $ipv = $null
-    $install = $false
-    $pn = "Transverse"
-    $sv = Get-Content $transverse\SoftwareVersion.txt
-    try {
-        $ipv = ($ip | Where-Object {$_.ProgramName -like "*Transverse*"} -ErrorAction Stop | Select-Object Version)[0].Version
-
-        if (!([string]::IsNullOrWhiteSpace($ipv))) {
-            $ipv = $ipv.Split('.')
-            $ipv = $ipv.Split(' ')
-        }
-        else {$install -eq $true}
-        $sv = $sv.Split('.')
-        $sv = $sv.Split(' ')
-    }#try
-    catch {
-        $install = $true
-    }
-
-    #Determine if need to install
-    if ($install -eq $false -and (!([string]::IsNullOrWhiteSpace($ipv)))) {
-        if ([int32]$sv[0] -gt [int32]$ipv[0]) {
-            $install = $true
-        }
-        elseif ([int32]$sv[0] -eq [int32]$ipv[0]) {
-            if ([int32]$sv[1] -gt [int32]$ipv[1]) {
-                $install = $true
-            }
-            elseif ([int32]$sv[1] -eq [int32]$ipv[1]) {
-                if ([int32]$sv[2] -gt [int32]$ipv[2]) {
-                    $install = $true
-                }
-                elseif ([int32]$sv[2] -eq [int32]$ipv[2]) {
-                    if ([int32]$sv[3] -gt [int32]$ipv[3]) {
-                        $install = $true
-                    }
-                    elseif ([int32]$sv[3] -eq [int32]$ipv[3]) {
-                        $install = $false
-                    }
-                    elseif ([int32]$sv[3] -lt [int32]$ipv[3]) {
-                        $install = $false
-                    }
-                }
-                elseif ([int32]$sv[2] -lt [int32]$ipv[2]) {
-                    $install = $false
-                }
-            }
-            elseif ([int32]$sv[1] -lt [int32]$ipv[1]) {
-                $install = $false
-            }
-        }
-        elseif ([int32]$sv[0] -lt [int32]$ipv[0]) {
-            $install = $false
-        }
-    }#if already installed
-    else {
-        $install = $true
-    }
-
-    #Install or not
-    if ($install -eq $true) {
-        Write-Output "$cn`: Installing $pn."
-        Start-Process $transverse\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
-        Start-Sleep 360
     }
     else {
         #do nothing Write-Output "$cn`: $pn same as installed version or older. Skipping..."

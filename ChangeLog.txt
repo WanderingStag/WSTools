@@ -9,6 +9,7 @@ Known issues:
 ######################
 New features and other changes:
 1. Added function Uninstall-DamewareMiniRemoteControl.
+2. Removed Transverse from InstallRemote.ps1.
 
 ######################
 #                    #
