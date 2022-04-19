@@ -4,6 +4,14 @@ Known issues:
 
 ######################
 #                    #
+#      2022.04       #
+#                    #
+######################
+New features and other changes:
+1. Added function Uninstall-DamewareMiniRemoteControl.
+
+######################
+#                    #
 #      2022.03       #
 #                    #
 ######################
