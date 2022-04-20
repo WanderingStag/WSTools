@@ -195,7 +195,6 @@ $Global:WSToolsConfig = [PSCustomObject]@{
     Tanium = "J:\Patches\SDC-APPS\Tanium\NIPR"
     Teams = "J:\Patches\SDC-APPS\Teams"
     Titus = "J:\Patches\SDC-APPS\Titus"
-    TransVerse = "J:\Patches\SDC-APPS\TransVerse"
     VPN = "J:\Patches\SDC-APPS\VPN"
 
     ########################################
