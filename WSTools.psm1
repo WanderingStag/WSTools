@@ -2026,7 +2026,12 @@ function Get-HWPerformanceScore {
                 )]
                 [string]$comp
             )
-            Get-CimInstance -ClassName Win32_WinSAT -ComputerName $comp -ErrorAction Stop
+            if ($comp -eq $env:COMPUTERNAME) {
+                Get-CimInstance -ClassName Win32_WinSAT -ErrorAction Stop
+            }
+            else {
+                Get-CimInstance -ClassName Win32_WinSAT -ComputerName $comp -ErrorAction Stop
+            }
         }#end code block
         $Jobs = @()
     }
