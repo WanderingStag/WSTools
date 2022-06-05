@@ -2034,7 +2034,7 @@ function Get-HWPerformanceScore {
         Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
         ForEach ($Object in $ComputerName){
             $PowershellThread = [powershell]::Create().AddScript($Code)
-            $PowershellThread.AddArgument($Object.ToString()) | out-null            $PowershellThread.AddArgument($app.ToString()) | out-null
+            $PowershellThread.AddArgument($Object.ToString()) | out-null
             $PowershellThread.RunspacePool = $RunspacePool
             $Handle = $PowershellThread.BeginInvoke()
             $Job = "" | Select-Object Handle, Thread, object
