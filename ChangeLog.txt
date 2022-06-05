@@ -8,6 +8,14 @@ Known issues:
 #                    #
 ######################
 New features and other changes:
+1. Added function Get-HWPerformanceScore.
+
+######################
+#                    #
+#      2022.04       #
+#                    #
+######################
+New features and other changes:
 1. Added function Uninstall-DamewareMiniRemoteControl.
 2. Removed Transverse from InstallRemote.ps1.
 3. Removed function Copy-Transverse and the Transverse config item.
