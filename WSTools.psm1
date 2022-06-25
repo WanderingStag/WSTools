@@ -6658,7 +6658,7 @@ function Test-NetworkSpeed {
         catch {
             Write-Warning "Unable to create local file at $LocalFile"
             Write-Warning "Error: $($Error[0])"
-            exit 1
+            break
         }
 
         try {
@@ -6672,7 +6672,7 @@ function Test-NetworkSpeed {
         catch {
             Write-Warning "Unable to create remote file at $RemoteFile"
             Write-Warning "Error: $($Error[0])"
-            exit 1
+            break
         }
     }
     Process {
