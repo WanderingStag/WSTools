@@ -6630,6 +6630,7 @@ function Test-NetworkSpeed {
         if ([string]::IsNullOrWhiteSpace($FileSize)) {
             $FileSize = $config.NSFileSize
         }
+        Write-Verbose "$(Get-Date): File size is: $FileSize"
 
         if ([string]::IsNullOrWhiteSpace($LocalPath)) {
             $LocalPath = $config.NSLocal
@@ -6638,6 +6639,8 @@ function Test-NetworkSpeed {
         else {
             $LocalFile = $LocalPath + "\" + $filename + "_upload.dat"
         }
+        Write-Verbose "$(Get-Date): LocalPath is: $LocalPath"
+        Write-Verbose "$(Get-Date): LocalFile is: $LocalFile"
 
         if ([string]::IsNullOrWhiteSpace($RemotePath)) {
             $RemotePath = $config.NSRemote
@@ -6646,6 +6649,8 @@ function Test-NetworkSpeed {
         else {
             $RemoteFile = $RemotePath + "\" + $filename + "_download.dat"
         }
+        Write-Verbose "$(Get-Date): RemotePath is: $RemotePath"
+        Write-Verbose "$(Get-Date): RemoteFile is: $RemoteFile"
 
         try {
             Write-Verbose "$(Get-Date): Create local file"
