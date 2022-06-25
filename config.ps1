@@ -5,7 +5,7 @@
 )]
 
 $Global:WSToolsConfig = [PSCustomObject]@{
-    # WSTools config v2022.2.0
+    # WSTools config v2022.6.0
     # Remove the # symbol infront of a line to enable it
     ###########################################################################################################################################
     #Application Service Names - used in Stop-AppService. Uses match to match the name of a service that is running and stops it.
@@ -13,6 +13,11 @@ $Global:WSToolsConfig = [PSCustomObject]@{
 
     #Ignore list. Used in several functions. Computers, users, and groups to ignore that cause issues. Objects such as clustered object computer names, non-windows systems, and other such things. Uses -match in some places and -eq in others so be as precise as possible.
     #Ignore = @('comp1','comp2','user1','user2','group1','group2')
+
+    #Network speed test settings, paths are for folder where files will be created. File size can be entered in the format 100KB, 5MB, 1GB, etc.
+    NSLocal = "$env:Temp"
+    NSRemote = "\\snse\Temp"
+    NSFileSize = "5MB"
 
     #Privileged groups list - used for some monitoring and reporting features. You should populate this with groups that grant admin permissions.
     #PrivGroups = @('group1','group2')
