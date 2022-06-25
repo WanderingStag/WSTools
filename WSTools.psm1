@@ -6651,7 +6651,7 @@ function Test-NetworkSpeed {
         }
 
         $LocalDownFile = $LocalPath + "\" + $filename + "_download.dat"
-        $RemoteUpFile = RemotePath + "\" + $filename + "_upload.dat"
+        $RemoteUpFile = $RemotePath + "\" + $filename + "_upload.dat"
 
         Write-Verbose "$(Get-Date): RemotePath is: $RemotePath"
         Write-Verbose "$(Get-Date): RemoteFile is: $RemoteFile"
