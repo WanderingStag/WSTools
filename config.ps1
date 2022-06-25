@@ -17,7 +17,7 @@ $Global:WSToolsConfig = [PSCustomObject]@{
     #Network speed test settings, paths are for folder where files will be created. File size can be entered in the format 100KB, 5MB, 1GB, etc.
     NSLocal = "$env:Temp"
     NSRemote = "\\snse\Temp"
-    NSFileSize = "5MB"
+    NSFileSize = 5MB
 
     #Privileged groups list - used for some monitoring and reporting features. You should populate this with groups that grant admin permissions.
     #PrivGroups = @('group1','group2')
