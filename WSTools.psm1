@@ -6590,7 +6590,7 @@ function Test-NetworkSpeed {
     C:\PS>Test-NetworkSpeed -LocalPath D:\Temp -RemotePath \\server1.wstools.dev\Transfer
     Another example of how to use this cmdlet but with the local and remote path parameters.
 .INPUTS
-    System.String
+    System.String, System.Int64
 .OUTPUTS
     System.Management.Automation.PSCustomObject
 .COMPONENT
