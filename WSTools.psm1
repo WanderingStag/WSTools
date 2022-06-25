@@ -6657,7 +6657,7 @@ function Test-NetworkSpeed {
         }
         catch {
             Write-Warning "Unable to create local file at $LocalFile"
-            Write-Warning "Error: $(Error[0])"
+            Write-Warning "Error: $($Error[0])"
             exit 1
         }
 
@@ -6671,7 +6671,7 @@ function Test-NetworkSpeed {
         }
         catch {
             Write-Warning "Unable to create remote file at $RemoteFile"
-            Write-Warning "Error: $(Error[0])"
+            Write-Warning "Error: $($Error[0])"
             exit 1
         }
     }
@@ -6722,7 +6722,7 @@ function Test-NetworkSpeed {
         [PSCustomObject]@{
             FileSizeMB = ([Math]::Round($UpSize/1024/1024,2))
             DownloadStatus = $DStatus
-            DownloadSeconds = DownloadSeconds
+            DownloadSeconds = $DownloadSeconds
             DownMbps = $DownMbps
             DownMBperSecond = $DownMB
             UploadStatus = $UStatus
