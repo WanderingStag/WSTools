@@ -6649,6 +6649,10 @@ function Test-NetworkSpeed {
         else {
             $RemoteFile = $RemotePath + "\" + $filename + "_download.dat"
         }
+
+        $LocalDownFile = $LocalPath + "\" + $filename + "_download.dat"
+        $RemoteUpFile = RemotePath + "\" + $filename + "_upload.dat"
+
         Write-Verbose "$(Get-Date): RemotePath is: $RemotePath"
         Write-Verbose "$(Get-Date): RemoteFile is: $RemoteFile"
 
@@ -6716,6 +6720,8 @@ function Test-NetworkSpeed {
         Write-Verbose "$(Get-Date): Removing generated files."
         Remove-Item $LocalFile -Force -ErrorAction SilentlyContinue
         Remove-Item $RemoteFile -Force -ErrorAction SilentlyContinue
+        Remove-Item $LocalDownFile -Force -ErrorAction SilentlyContinue
+        Remove-Item $RemoteUpFile -Force -ErrorAction SilentlyContinue
 
         Write-Verbose "$(Get-Date): Calculating speeds"
         $UpMbps = [Math]::Round((($UpSize * 8) / $UploadSeconds) / 1048576,2)
