@@ -6619,7 +6619,7 @@ function Test-NetworkSpeed {
         [Parameter(
             Mandatory=$false
         )]
-        [string]$FileSize
+        [int64]$FileSize
     )
 
     Begin {
