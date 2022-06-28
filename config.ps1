@@ -41,44 +41,44 @@ $Global:WSToolsConfig = [PSCustomObject]@{
     UpdatePath = "\\snse\Temp\Modules\WSTools"
 
     #Additional paths is used for pushing out to folders in addtion to UpdatePath.
-    AdditionalUpdatePaths = @('J:\PowerShell\Modules\WSTools','D:\OneDrive\Scripts\Modules\WSTools')
+    AdditionalUpdatePaths = @('\\192.168.201.10\apps\Microsoft\PowerShell\Modules\WSTools','D:\OneDrive\Scripts\Modules\WSTools')
 
     #Old PowerShell Modules. Used in Remove-OldPowerShellModule.
     OldPSModule = @('SHTool','SHTools','SkysTool')
 
     #Help folder location used by Update-HelpFromFile
-    HelpFolder = "J:\PowerShell\OfflineHelp"
+    HelpFolder = "\\192.168.201.10\apps\Microsoft\PowerShell\OfflineHelp"
 
 
     ################################
     ##    App/Patching settings   ##
     ################################
     #Location on network where you store applications
-    AppRepo = "J:\"
+    AppRepo = "\\192.168.201.10\apps\"
 
     #CMTrace application location on network (if can't be found on computer it looks here)
-    CMTrace = "J:\Tools\CMTrace.exe"
+    CMTrace = "\\192.168.201.10\apps\Tools\CMTrace.exe"
 
     #Java exception.sites file path. Only give path to the folder it's in.
-    JException = "J:\Java"
+    JException = "\\192.168.201.10\apps\Java"
 
     #Local Patches folder on machines - this does not change the copy and install functions under WS_Remediation. They will still try to copy to C:\Patches on the remote machine.
     LocalPatches = "C:\Patches"
 
     #Network Patch Repository
-    PatchRepo = "J:\Patches"
+    PatchRepo = "\\192.168.201.10\apps\Patches"
 
     #Visio Stencil Path
-    Stencils = "J:\Microsoft\VisioStencils"
+    Stencils = "\\192.168.201.10\apps\Tools\Visio Stencils"
 
     #Visual Studio Code extensions path (network share or local path) used in Copy-VSCodeExtensions.
-    VSCodeExtRepo = "J:\Patches\VisualStudioCode\Extensions"
+    VSCodeExtRepo = "\\192.168.201.10\apps\Patches\VisualStudioCode\Extensions"
 
     #Visual Studio Code settings path (network share or local path) used in Copy-VSCodeSettingsToProfile. Needs to be a txt or JSON file.
-    VSCodeSettingsPath = "J:\Patches\VisualStudioCode\Settings.txt"
+    VSCodeSettingsPath = "\\192.168.201.10\apps\Patches\VisualStudioCode\Settings.txt"
 
     #Save-UpdateHistory path also changes Save-MaintenanceReport path
-    UHPath = "J:\ComputerInfo\Updates"
+    UHPath = "\\192.168.201.10\apps\ComputerInfo\Updates"
 
     ################################
     ##            DRA             ##
@@ -90,7 +90,7 @@ $Global:WSToolsConfig = [PSCustomObject]@{
     #DRARESTServer = "server.wstools.dev"
     #DRARESTPort = 8755 #if not specified 8755 is used by default
     #DRAInstallLocation = "C:\Program Files (x86)\netiq\DRA Extensions\modules\NetIQ.DRA.PowerShellExtensions"
-    #DRAInstallFile = "J:\Microsoft\PowerShell\Modules\DRA"
+    #DRAInstallFile = "\\192.168.201.10\apps\Microsoft\PowerShell\Modules\DRA"
 
     ################################
     ##         Email relay        ##
@@ -162,45 +162,45 @@ $Global:WSToolsConfig = [PSCustomObject]@{
     ##         Remediation        ##
     ################################
     #Install file locations - for normal installation files.
-    a7Zip = "J:\Tools\7zip" #64-bit only unless you change Copy-7Zip to use 32-bit
-    Edge = "J:\Patches\Edge"
-    Git = "J:\Patches\GitSCM"
-    IE11 = "J:\Patches\IE\IE11"
-    MECM = "J:\Microsoft\SCCM"
-    OneDrive = "J:\Patches\OneDrive"
-    SplunkUF = "J:\Patches\Splunk_Forwarder"
-    SSMS = "J:\Patches\SQL\SSMS" #sql server management studio
-    SysInternals = "J:\Tools\SysinternalsSuite"
-    VSCode = "J:\Patches\VisualStudioCode\VSCode_Installer"
-    VLC = "J:\Tools\VLC"
-    VMwareTools = "J:\Patches\VMware_Tools"
-    Wireshark = "J:\Tools\Wireshark"
-    WMF3 = "J:\Microsoft\Windows Management Framework 3.0"
-    WMF4 = "J:\Microsoft\Windows Management Framework 4.0"
-    WMF5 = "J:\Microsoft\Windows Management Framework 5.1"
-    Zoom = "J:\Approved\Zoom"
+    a7Zip = "\\192.168.201.10\apps\Tools\7zip" #64-bit only unless you change Copy-7Zip to use 32-bit
+    Edge = "\\192.168.201.10\apps\Patches\Edge"
+    Git = "\\192.168.201.10\apps\Patches\GitSCM"
+    IE11 = "\\192.168.201.10\apps\Patches\IE\IE11"
+    MECM = "\\192.168.201.10\apps\Microsoft\SCCM"
+    OneDrive = "\\192.168.201.10\apps\Patches\OneDrive"
+    SplunkUF = "\\192.168.201.10\apps\Patches\Splunk_Forwarder"
+    SSMS = "\\192.168.201.10\apps\Patches\SQL\SSMS" #sql server management studio
+    SysInternals = "\\192.168.201.10\apps\Tools\SysinternalsSuite"
+    VSCode = "\\192.168.201.10\apps\Patches\VisualStudioCode\VSCode_Installer"
+    VLC = "\\192.168.201.10\apps\Tools\VLC"
+    VMwareTools = "\\192.168.201.10\apps\Patches\VMware_Tools"
+    Wireshark = "\\192.168.201.10\apps\Tools\Wireshark"
+    WMF3 = "\\192.168.201.10\apps\Microsoft\Windows Management Framework 3.0"
+    WMF4 = "\\192.168.201.10\apps\Microsoft\Windows Management Framework 4.0"
+    WMF5 = "\\192.168.201.10\apps\Microsoft\Windows Management Framework 5.1"
+    Zoom = "\\192.168.201.10\apps\Approved\Zoom"
 
     #Install file locations that use the PowerShell App Deployment Toolkit from https://psappdeploytoolkit.com/
-    a90Meter = "J:\Patches\SDC-APPS\90Meter"
-    ActivClient = "J:\Patches\SDC-APPS\ActivClient"
-    Acrobat = "J:\Patches\SDC-APPS\Adobe\Acrobat NIPR"
-    AEM = "J:\Patches\SDC-APPS\Adobe\AEM_FormsDesigner"
-    AxwayServer = "J:\Patches\SDC-APPS\Axway\DSCC"
-    AxwayClient = "J:\Patches\SDC-APPS\Axway\NIPR"
-    Chrome = "J:\Patches\SDC-APPS\Chrome"
-    DSET = "J:\Patches\SDC-APPS\DSET"
-    Encase = "J:\Patches\SDC-APPS\Encase\NIPR"
-    Firefox = "J:\Patches\SDC-APPS\Firefox"
-    InfoPath = "J:\Patches\SDC-APPS\InfoPath"
-    Java = "J:\Patches\SDC-APPS\Java\NIPR"
-    JRSS = "J:\Patches\SDC-APPS\JRSS"
-    NetBanner = "J:\Patches\SDC-APPS\NetBanner"
-    Office2016 = "J:\Patches\SDC-APPS\Office2016"
-    Silverlight = "J:\Patches\SDC-APPS\Silverlight"
-    Tanium = "J:\Patches\SDC-APPS\Tanium\NIPR"
-    Teams = "J:\Patches\SDC-APPS\Teams"
-    Titus = "J:\Patches\SDC-APPS\Titus"
-    VPN = "J:\Patches\SDC-APPS\VPN"
+    a90Meter = "\\192.168.201.10\apps\Patches\SDC-APPS\90Meter"
+    ActivClient = "\\192.168.201.10\apps\Patches\SDC-APPS\ActivClient"
+    Acrobat = "\\192.168.201.10\apps\Patches\SDC-APPS\Adobe\Acrobat NIPR"
+    AEM = "\\192.168.201.10\apps\Patches\SDC-APPS\Adobe\AEM_FormsDesigner"
+    AxwayServer = "\\192.168.201.10\apps\Patches\SDC-APPS\Axway\DSCC"
+    AxwayClient = "\\192.168.201.10\apps\Patches\SDC-APPS\Axway\NIPR"
+    Chrome = "\\192.168.201.10\apps\Patches\SDC-APPS\Chrome"
+    DSET = "\\192.168.201.10\apps\Patches\SDC-APPS\DSET"
+    Encase = "\\192.168.201.10\apps\Patches\SDC-APPS\Encase\NIPR"
+    Firefox = "\\192.168.201.10\apps\Patches\SDC-APPS\Firefox"
+    InfoPath = "\\192.168.201.10\apps\Patches\SDC-APPS\InfoPath"
+    Java = "\\192.168.201.10\apps\Patches\SDC-APPS\Java\NIPR"
+    JRSS = "\\192.168.201.10\apps\Patches\SDC-APPS\JRSS"
+    NetBanner = "\\192.168.201.10\apps\Patches\SDC-APPS\NetBanner"
+    Office2016 = "\\192.168.201.10\apps\Patches\SDC-APPS\Office2016"
+    Silverlight = "\\192.168.201.10\apps\Patches\SDC-APPS\Silverlight"
+    Tanium = "\\192.168.201.10\apps\Patches\SDC-APPS\Tanium\NIPR"
+    Teams = "\\192.168.201.10\apps\Patches\SDC-APPS\Teams"
+    Titus = "\\192.168.201.10\apps\Patches\SDC-APPS\Titus"
+    VPN = "\\192.168.201.10\apps\Patches\SDC-APPS\VPN"
 
     ########################################
     ##         Remediation Settings       ##
