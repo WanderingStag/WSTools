@@ -7042,14 +7042,14 @@ function Update-ModuleFromLocalRepo {
         $MaxResultTime = 1200,
 
         [Parameter()]
-        [string]$Name
+        [string]$ModuleName
     )
     Begin {
         $config = $Global:WSToolsConfig
         $repo = $config.LocalPSRepo
 
-        if ([string]::IsNullOrWhiteSpace($Name)) {
-            $Name = "All"
+        if ([string]::IsNullOrWhiteSpace($ModuleName)) {
+            $ModuleName = "All"
         }
 
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
@@ -7117,7 +7117,7 @@ function Update-ModuleFromLocalRepo {
             $PowershellThread = [powershell]::Create().AddScript($Code)
             $PowershellThread.AddArgument($Object.ToString()) | out-null
             $PowershellThread.AddArgument($repo.ToString()) | out-null
-            $PowershellThread.AddArgument($Name.ToString()) | out-null
+            $PowershellThread.AddArgument($ModuleName.ToString()) | out-null
             $PowershellThread.RunspacePool = $RunspacePool
             $Handle = $PowershellThread.BeginInvoke()
             $Job = "" | Select-Object Handle, Thread, object
