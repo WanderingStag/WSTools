@@ -7105,7 +7105,7 @@ function Update-ModuleFromLocalRepo {
                 }
                 else {
                     Write-Output "$(Get-Date) - ${comp}: Updating $modname"
-                    robocopy $rpath $modpath /mir /mt:4 /njh /njs | Out-Null
+                    robocopy $rpath $modpath /mir /mt:4 /njh /njs /r:3 /w:10 | Out-Null
                 }
             }
         }#end code block
