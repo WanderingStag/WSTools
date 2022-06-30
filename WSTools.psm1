@@ -5,7 +5,7 @@
 .DESCRIPTION
     Will add a website entry to $env:USERPROFILE\AppData\LocalLow\Sun\Java\Deployment\security\exception.sites.
 .PARAMETER URI
-    Specifies the URI of the website you want to add to the exception.sites file. Must be in the format http://wstools.dev or https://wstools.dev.
+    Specifies the URI of the website you want to add to the exception.sites file. Must be in the format https://wstools.dev.
 .EXAMPLE
     C:\PS>Add-UserJavaException https://wstools.dev
     Example of how to use this cmdlet
