@@ -7002,7 +7002,7 @@ function Update-HelpFromFile {
 }
 
 
-function Update-ModuleFromLocalRepo {
+function Update-ModulesFromLocalRepo {
 <#
 .NOTES
     Author: Skyler Hart
@@ -7039,18 +7039,11 @@ function Update-ModuleFromLocalRepo {
         $SleepTimer = 200,
 
         [Parameter()]
-        $MaxResultTime = 1200,
-
-        [Parameter()]
-        [string]$ModuleName
+        $MaxResultTime = 1200
     )
     Begin {
         $config = $Global:WSToolsConfig
         $repo = $config.LocalPSRepo
-
-        if ([string]::IsNullOrWhiteSpace($ModuleName)) {
-            $ModuleName = "All"
-        }
 
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
@@ -7068,30 +7061,14 @@ function Update-ModuleFromLocalRepo {
                     Mandatory=$true,
                     Position=1
                 )]
-                [string]$repo,
-
-                [Parameter(
-                    Mandatory=$true,
-                    Position=2
-                )]
-                [string]$Name
+                [string]$repo
             )
             $rmodules = Get-ChildItem $repo | Where-Object {$_.Attributes -eq "Directory"} | Select-Object Name,FullName
             if ($comp -eq $env:COMPUTERNAME) {
-                if ([string]::IsNullOrWhiteSpace($Name) -or $Name -eq "All") {
-                    $lmodules = Get-ChildItem $env:ProgramFiles\WindowsPowerShell\Modules | Where-Object {$_.Attributes -eq "Directory"} | Select-Object Name,FullName
-                }
-                else {
-                    $lmodules = Get-ChildItem $env:ProgramFiles\WindowsPowerShell\Modules | Where-Object {$_.Attributes -eq "Directory" -and $_.Name -match $Name} | Select-Object Name,FullName
-                }
+                $lmodules = Get-ChildItem $env:ProgramFiles\WindowsPowerShell\Modules | Where-Object {$_.Attributes -eq "Directory"} | Select-Object Name,FullName
             }#if local
             else {
-                if ([string]::IsNullOrWhiteSpace($Name) -or $Name -eq "All") {
-                    $lmodules = Get-ChildItem "\\$comp\c$\Program Files\WindowsPowerShell\Modules" | Where-Object {$_.Attributes -eq "Directory"} | Select-Object Name,FullName
-                }
-                else {
-                    $lmodules = Get-ChildItem $env:ProgramFiles\WindowsPowerShell\Modules | Where-Object {$_.Attributes -eq "Directory" -and $_.Name -match $Name} | Select-Object Name,FullName
-                }
+                $lmodules = Get-ChildItem "\\$comp\c$\Program Files\WindowsPowerShell\Modules" | Where-Object {$_.Attributes -eq "Directory"} | Select-Object Name,FullName
             }#if remote
 
             foreach ($mod in $lmodules) {
@@ -7117,7 +7094,6 @@ function Update-ModuleFromLocalRepo {
             $PowershellThread = [powershell]::Create().AddScript($Code)
             $PowershellThread.AddArgument($Object.ToString()) | out-null
             $PowershellThread.AddArgument($repo.ToString()) | out-null
-            $PowershellThread.AddArgument($ModuleName.ToString()) | out-null
             $PowershellThread.RunspacePool = $RunspacePool
             $Handle = $PowershellThread.BeginInvoke()
             $Job = "" | Select-Object Handle, Thread, object
