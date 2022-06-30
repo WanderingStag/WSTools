@@ -11,6 +11,7 @@ New features and other changes:
 1. Added function Get-HWPerformanceScore.
 2. Added function Test-NetworkSpeed and config file items NSLocal, NSRemote, NSFileSize.
 3. Added Juneteenth to Federal Holiday list.
+4. Added LocalPSRepo config item.
 
 ######################
 #                    #

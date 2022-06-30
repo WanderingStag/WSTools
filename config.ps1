@@ -5,7 +5,7 @@
 )]
 
 $Global:WSToolsConfig = [PSCustomObject]@{
-    # WSTools config v2022.6.0
+    # WSTools config v2022.6.1
     # Remove the # symbol infront of a line to enable it
     ###########################################################################################################################################
     #Application Service Names - used in Stop-AppService. Uses match to match the name of a service that is running and stops it.
@@ -67,6 +67,9 @@ $Global:WSToolsConfig = [PSCustomObject]@{
 
     #Network Patch Repository
     PatchRepo = "\\192.168.201.10\apps\Patches"
+
+    #Local/Network PowerShell Repository
+    LocalPSRepo = "\\192.168.201.10\Apps\Microsoft\PowerShell\Modules"
 
     #Visio Stencil Path
     Stencils = "\\192.168.201.10\apps\Tools\Visio Stencils"
