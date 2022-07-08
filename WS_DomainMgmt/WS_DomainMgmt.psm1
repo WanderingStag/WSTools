@@ -961,6 +961,8 @@ function Open-NetworkDiagram {
         Start-Process $dpath
     }
 }
+New-Alias -Name "netdiagram" -Value Open-NetworkDiagram
+New-Alias -Name "networkdiagram" -Value Open-NetworkDiagram
 
 
 function Open-OWA {
@@ -1097,6 +1099,8 @@ function Open-RackElevation {
         Start-Process $dpath
     }
 }
+New-Alias -Name "rackel" -Value Open-RackElevation
+New-Alias -Name "rackelevation" -Value Open-RackElevation
 
 
 function Open-SDN {
