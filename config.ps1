@@ -5,7 +5,7 @@
 )]
 
 $Global:WSToolsConfig = [PSCustomObject]@{
-    # WSTools config v2022.6.2
+    # WSTools config v2022.7.0
     # Remove the # symbol infront of a line to enable it
     ###########################################################################################################################################
     #Application Service Names - used in Stop-AppService. Uses match to match the name of a service that is running and stops it.
