@@ -936,7 +936,7 @@ function Open-NetworkDiagram {
         }
     }#is web address
     else {
-        & $dpath
+        Invoke-Item $dpath
     }
 }
 New-Alias -Name "netdiagram" -Value Open-NetworkDiagram
@@ -1074,7 +1074,7 @@ function Open-RackElevation {
         }
     }#is web address
     else {
-        & $dpath
+        Invoke-Item $dpath
     }
 }
 New-Alias -Name "rackel" -Value Open-RackElevation
