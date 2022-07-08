@@ -8,6 +8,14 @@ Known issues:
 #                    #
 ######################
 New features and other changes:
+1. Added NetDiagram and RackEl to config items.
+
+######################
+#                    #
+#      2022.06       #
+#                    #
+######################
+New features and other changes:
 1. Added function Get-HWPerformanceScore.
 2. Added function Test-NetworkSpeed and config file items NSLocal, NSRemote, NSFileSize.
 3. Added Juneteenth to Federal Holiday list.

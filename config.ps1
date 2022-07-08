@@ -122,6 +122,10 @@ $Global:WSToolsConfig = [PSCustomObject]@{
     #LMC = "https://lmcserver.wstools.dev/lmc"
     #PrintRelease = "https://lmcserver.wstools.dev/PrintRelease"
 
+    #Open diagrams (Open-NetworkDiagram and Open-RackElevation). Can be file/unc path or URL.
+    NetDiagram = "J:\ComputerInfo\Diagram\networkdiagram.vsdx"
+    RackEl = "J:\ComputerInfo\Diagram\rackelevation.vsdx"
+
     #Open-OWA
     #OWA = "https://owa.wstools.dev"
 
