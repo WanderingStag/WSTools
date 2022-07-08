@@ -890,28 +890,6 @@ function Open-NetLogonLog {
 
 function Open-NetworkDiagram {
 <#
-.SYNOPSIS
-    Short description
-.DESCRIPTION
-    Long description
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.PARAMETER Path
-    Specifies a path to one or more locations.
-.EXAMPLE
-    C:\PS>Open-NetworkDiagram
-    Example of how to use this cmdlet
-.EXAMPLE
-    C:\PS>Open-NetworkDiagram -PARAMETER
-    Another example of how to use this cmdlet but with a parameter or switch.
-.INPUTS
-    System.String
-.OUTPUTS
-    System.Management.Automation.PSCustomObject
-.COMPONENT
-    WSTools
-.FUNCTIONALITY
-    The functionality (keywords) that best describes this cmdlet
 .NOTES
     Author: Skyler Hart
     Created: 2022-07-07 20:59:35
@@ -958,7 +936,7 @@ function Open-NetworkDiagram {
         }
     }#is web address
     else {
-        Start-Process $dpath
+        & $dpath
     }
 }
 New-Alias -Name "netdiagram" -Value Open-NetworkDiagram
@@ -1096,7 +1074,7 @@ function Open-RackElevation {
         }
     }#is web address
     else {
-        Start-Process $dpath
+        & $dpath
     }
 }
 New-Alias -Name "rackel" -Value Open-RackElevation
