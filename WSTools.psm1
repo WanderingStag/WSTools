@@ -780,15 +780,15 @@ function Copy-UpdateHistory {
         }#if length
 
         if ($Comp -eq $env:COMPUTERNAME) {
-            if (Test-Path C:\ProgramData\WSTools\Report\$Comp`_UpdateHistory.csv) {
-                robocopy C:\ProgramData\WSTools\Report $uhpath *_UpdateHistory.csv /r:3 /w:5 /njh /njs | Out-Null
+            if (Test-Path C:\ProgramData\WSTools\Reports\$Comp`_UpdateHistory.csv) {
+                robocopy C:\ProgramData\WSTools\Reports $uhpath *_UpdateHistory.csv /r:3 /w:5 /njh /njs | Out-Null
             }
             else {
                 Write-Error "Report not found. Please use Save-UpdateHistory to create a report."
             }
         }
         else {
-            robocopy \\$Comp\c$\ProgramData\WSTools\Report $uhpath *_UpdateHistory.csv /r:3 /w:5 /njh /njs | Out-Null
+            robocopy \\$Comp\c$\ProgramData\WSTools\Reports $uhpath *_UpdateHistory.csv /r:3 /w:5 /njh /njs | Out-Null
         }
     }
 }
@@ -5140,11 +5140,11 @@ function Save-UpdateHistory {
         $info = Get-UpdateHistory -Days $Days
 
         if (!(Test-Path $env:ProgramData\WSTools)) {
-            New-Item -Path $env:ProgramData -Name WSTools -ItemType Directory
+            New-Item -Path $env:ProgramData -Name WSTools -ItemType Directory | Out-Null
         }
 
         if (!(Test-Path $lf)) {
-            New-Item -Path $env:ProgramData\WSTools -Name Reports -ItemType Directory
+            New-Item -Path $env:ProgramData\WSTools -Name Reports -ItemType Directory | Out-Null
         }
 
         $info | Export-Csv $lp -Force
