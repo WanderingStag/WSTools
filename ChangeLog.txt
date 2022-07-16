@@ -10,6 +10,7 @@ Known issues:
 New features and other changes:
 1. Added NetDiagram and RackEl to config items.
 2. Added functions Open-NetworkDiagram and Open-RackElevation.
+3. Added function Repair-DuplicateSusClientID.
 
 ######################
 #                    #

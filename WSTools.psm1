@@ -837,6 +837,83 @@ function Enable-ServerManager {
 }
 
 
+function Repair-DuplicateSusClientID {
+<#
+.SYNOPSIS
+    Short description
+.DESCRIPTION
+    Long description
+.PARAMETER ComputerName
+    Specifies the name of one or more computers.
+.PARAMETER Path
+    Specifies a path to one or more locations.
+.EXAMPLE
+    C:\PS>Repair-DuplicateSusClientID
+    Example of how to use this cmdlet
+.EXAMPLE
+    C:\PS>Repair-DuplicateSusClientID -PARAMETER
+    Another example of how to use this cmdlet but with a parameter or switch.
+.INPUTS
+    System.String
+.OUTPUTS
+    System.Management.Automation.PSCustomObject
+.COMPONENT
+    WSTools
+.FUNCTIONALITY
+    The functionality (keywords) that best describes this cmdlet
+.NOTES
+    Author: Skyler Hart
+    Created: 2022-07-15 21:05:27
+    Last Edit: 2022-07-15 21:05:27
+    Other:
+    Requires:
+        -Module ActiveDirectory
+        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    param(
+        [Parameter(
+            #HelpMessage = "Enter one or more computer names separated by commas.",
+            Mandatory=$false#,
+            #Position=0,
+            #ValueFromPipelineByPropertyName = $true,
+            #ValueFromPipeline = $true
+        )]
+        [ValidateNotNullOrEmpty()]
+        [ValidateCount(min,max)]
+        [ValidateLength(min,max)]
+        [ValidateSet('Info','Error','Warning','One','Two','Three')]
+        [Alias('Host','Name','Computer','CN')]
+        [string[]]$ComputerName = "$env:COMPUTERNAME"
+    )
+
+    Invoke-Command -ComputerName $ComputerName -ScriptBlock {#DevSkim: ignore DS104456
+        $comp = $env:COMPUTERNAME
+        Write-Output "$(Get-Date) - ${comp}: Stoppping Services"
+        Get-Service -Name BITS | Stop-Service
+        Get-Service -Name wuauserv | Stop-Service
+        Write-Output "$(Get-Date) - ${comp}: Removing registry keys"
+        Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate" -Name "AccountDomainSid" -Force | Out-Null
+        Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate" -Name "PingID" -Force | Out-Null
+        Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate" -Name "SusClientId" -Force | Out-Null
+        Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate" -Name "SusClientIdValidation" -Force | Out-Null
+        Write-Output "$(Get-Date) - ${comp}: Removing SoftwareDistribution folder"
+        Remove-Item -Path C:\Windows\SoftwareDistribution -Force | Out-Null
+        Write-Output "$(Get-Date) - ${comp}: Starting Services"
+        Get-Service -Name BITS | Start-Service
+        Get-Service -Name wuauserv | Start-Service
+        Write-Output "$(Get-Date) - ${comp}: Reauthorizing client"
+        Start-Process -FilePath "C:\Windows\System32\wuauclt.exe" -ArgumentList "/resetauthorization /detectnow" -Wait
+        Start-Sleep -Seconds 10
+        Write-Output "$(Get-Date) - ${comp}: Starting detection"
+        (New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
+    } -ThrottleLimit 5
+}
+
+
 function Get-BitLockerStatus {
 <#
 .NOTES
