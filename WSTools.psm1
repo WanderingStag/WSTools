@@ -721,7 +721,7 @@ New-Alias -Name "Update-PowerShellJSON" -Value Copy-PowerShellJSON
 New-Alias -Name "Set-PowerShellJSON" -Value Copy-PowerShellJSON
 
 
-function Copy-UpdateHistoryReport {
+function Copy-UpdateHistory {
 <#
 .SYNOPSIS
     Copies the UpdateHistory.csv report to the UHPath config item path.
@@ -730,10 +730,10 @@ function Copy-UpdateHistoryReport {
 .PARAMETER ComputerName
     Specifies the name of one or more computers.
 .EXAMPLE
-    C:\PS>Copy-UpdateHistoryReport
+    C:\PS>Copy-UpdateHistory
     Example of how to use this cmdlet to copy the UpdateHistory.csv file for the local computer to the UHPath location.
 .EXAMPLE
-    C:\PS>Copy-UpdateHistoryReport -ComputerName Server1
+    C:\PS>Copy-UpdateHistory -ComputerName Server1
     Example of how to use this cmdlet to copy the UpdateHistory.csv file for the remote computer Server1 to the UHPath location.
 .INPUTS
     System.String
