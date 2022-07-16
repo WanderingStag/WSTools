@@ -12,6 +12,7 @@ New features and other changes:
 2. Added functions Open-NetworkDiagram and Open-RackElevation.
 3. Added function Repair-DuplicateSusClientID.
 4. Added function Copy-UpdateHistory.
+5. Added remote functionality to Save-UpdateHistory.
 
 ######################
 #                    #
