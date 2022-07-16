@@ -74,14 +74,14 @@ $Global:WSToolsConfig = [PSCustomObject]@{
     #Visio Stencil Path
     Stencils = "\\192.168.201.10\apps\Tools\Visio Stencils"
 
+    #Save-UpdateHistory path also changes Save-MaintenanceReport path
+    UHPath = "\\192.168.201.10\apps\ComputerInfo\Updates"
+
     #Visual Studio Code extensions path (network share or local path) used in Copy-VSCodeExtensions.
     VSCodeExtRepo = "\\192.168.201.10\apps\Patches\VisualStudioCode\Extensions"
 
     #Visual Studio Code settings path (network share or local path) used in Copy-VSCodeSettingsToProfile. Needs to be a txt or JSON file.
     VSCodeSettingsPath = "\\192.168.201.10\apps\Patches\VisualStudioCode\Settings.txt"
-
-    #Save-UpdateHistory path also changes Save-MaintenanceReport path
-    UHPath = "\\192.168.201.10\apps\ComputerInfo\Updates"
 
     ################################
     ##            DRA             ##
