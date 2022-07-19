@@ -5104,7 +5104,7 @@ function Save-UpdateHistory {
 .NOTES
     Author: Skyler Hart
     Created: 2020-06-15 13:03:22
-    Last Edit: 2022-07-15 23:27:10
+    Last Edit: 2022-07-18 21:50:28
     Keywords:
 .LINK
     https://wstools.dev
@@ -5122,60 +5122,63 @@ function Save-UpdateHistory {
         )]
         [string[]]$ComputerName = "$env:COMPUTERNAME",
 
-        [Parameter(
-            Mandatory=$false,
-            Position=1
-        )]
-        [int32]$Days = ((Get-Date -Format yyyyMMdd) - ((Get-Date -Format yyyyMMdd).Substring(0,6) + "01") + 1),#This defaults to days between today and the beginning of the month
-
-        [Parameter()]
-        [Switch]$BypassCopy
+        [int32]$ThrottleLimit = 5
     )
 
-    if ($ComputerName -eq $env:COMPUTERNAME) {
+    Invoke-Command -ComputerName $ComputerName -ScriptBlock {#DevSkim: ignore DS104456
+        [int32]$Days = ((Get-Date -Format yyyyMMdd) - ((Get-Date -Format yyyyMMdd).Substring(0,6) + "01") + 1)
         $fn = $env:computername + "_UpdateHistory.csv"
         $lf = $env:ProgramData + "\WSTools\Reports"
         $lp = $lf + "\" + $fn
-        $UHPath = ($Global:WSToolsConfig).UHPath + "\" + $fn
-        $info = Get-UpdateHistory -Days $Days
 
-        if (!(Test-Path $env:ProgramData\WSTools)) {
-            New-Item -Path $env:ProgramData -Name WSTools -ItemType Directory | Out-Null
+        $stime = (Get-Date) - (New-TimeSpan -Day $Days)
+        $session = New-Object -ComObject 'Microsoft.Update.Session'
+        $ec = ($session.CreateUpdateSearcher()).GetTotalHistoryCount()
+        $history = ($session.QueryHistory("",0,$ec) | Select-Object ResultCode,Date,Title,Description,ClientApplicationID,Categories,SupportUrl)
+        $ef = $history | Where-Object {$_.Date -gt $stime}
+
+        $info = foreach ($e in $ef | Where-Object {!([string]::IsNullOrWhiteSpace($e.Title))}) {
+            switch ($e.ResultCode) {
+                0 {$Result = "Not Started"}
+                1 {$Result = "Restart Required"}
+                2 {$Result = "Succeeded"}
+                3 {$Result = "Succeeded With Errors"}
+                4 {$Result = "Failed"}
+                5 {$Result = "Aborted"}
+                Default {$Result = ($e.ResultCode)}
+            }#switch
+
+            $Cat = $e.Categories | Select-Object -First 1 -ExpandProperty Name
+
+            [PSCustomObject]@{
+                ComputerName = $env:computername
+                Date = ($e.Date)
+                Result = $Result
+                KB = (([regex]::match($e.Title,'KB(\d+)')).Value)
+                Title = ($e.Title)
+                Category = $Cat
+                ClientApplicationID = ($e.ClientApplicationID)
+                Description = ($e.Description)
+                SupportUrl = ($e.SupportUrl)
+            }
+        }#foreach event in history
+
+        if (Test-Path $env:ProgramData\WSTools) {
+            #do nothing
+        }
+        else {
+            New-Item -Path $env:ProgramData -Name WSTools -ItemType Directory
         }
 
-        if (!(Test-Path $lf)) {
-            New-Item -Path $env:ProgramData\WSTools -Name Reports -ItemType Directory | Out-Null
+        if (Test-Path $lf) {
+            #do nothing
+        }
+        else {
+            New-Item -Path $env:ProgramData\WSTools -Name Reports -ItemType Directory
         }
 
         $info | Export-Csv $lp -Force
-
-        if (!([string]::IsNullOrWhiteSpace(($Global:WSToolsConfig).UHPath))) {
-            if (!($BypassCopy)) {
-                $info | Export-Csv $UHPath -Force
-            }
-        }
-    }
-    else {
-        Invoke-Command -ComputerName -ScriptBlock {#DevSkim: ignore DS104456
-            Import-Module WSTools
-            [int32]$Days = ((Get-Date -Format yyyyMMdd) - ((Get-Date -Format yyyyMMdd).Substring(0,6) + "01") + 1)
-            $fn = $env:computername + "_UpdateHistory.csv"
-            $lf = $env:ProgramData + "\WSTools\Reports"
-            $lp = $lf + "\" + $fn
-            $info = Get-UpdateHistory -Days $Days
-
-            if (!(Test-Path $env:ProgramData\WSTools)) {
-                New-Item -Path $env:ProgramData -Name WSTools -ItemType Directory
-            }
-
-            if (!(Test-Path $lf)) {
-                New-Item -Path $env:ProgramData\WSTools -Name Reports -ItemType Directory
-            }
-
-            $info | Export-Csv $lp -Force
-        } -ThrottleLimit 5
-
-    }
+    } -ThrottleLimit $ThrottleLimit
 }
 
 
