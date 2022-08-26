@@ -8,7 +8,8 @@ Known issues:
 #                    #
 ######################
 New features and other changes:
-1. Uninstall-AdobeLiveCycleFormsDesigner
+1. Added Uninstall-AdobeLiveCycleFormsDesigner.
+2. Added Uninstall-Axway.
 
 ######################
 #                    #
