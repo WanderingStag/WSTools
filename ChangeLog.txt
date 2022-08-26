@@ -4,6 +4,14 @@ Known issues:
 
 ######################
 #                    #
+#      2022.08       #
+#                    #
+######################
+New features and other changes:
+1. Uninstall-AdobeLiveCycleFormsDesigner
+
+######################
+#                    #
 #      2022.07       #
 #                    #
 ######################
