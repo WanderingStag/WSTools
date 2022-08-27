@@ -8162,7 +8162,7 @@ Function Uninstall-TransVerse {
 .NOTES
     Author: Skyler Hart
     Created: 2021-01-25 14:42:32
-    Last Edit: 2022-04-19 16:14:09
+    Last Edit: 2022-08-26 20:59:03
     Requires:
         -RunAsAdministrator
 .LINK
@@ -8207,21 +8207,30 @@ Function Uninstall-TransVerse {
                 )]
                 [string]$comp
             )
-            try {
-                Get-WmiObject -Class Win32_Product -Filter "Name like '%TransVerse%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
-                [PSCustomObject]@{
-                    ComputerName = $comp
-                    Program = "TransVerse"
-                    Status = "Removed"
-                }#new object
-            }#try
-            catch {
-                [PSCustomObject]@{
-                    ComputerName = $comp
-                    Program = "TransVerse"
-                    Status = "Failed"
-                }#new object
-            }#catch
+
+            if ($comp -eq $env:COMPUTERNAME) {
+                & ${env:ProgramFiles(x86)}\Transverse\unins000.exe /SILENT
+                Start-Sleep -Seconds 10
+                Get-WmiObject -Class Win32_Product -Filter "Name like '%TransVerse%'" -ErrorAction Stop | Remove-WmiObject -ErrorAction SilentlyContinue
+            }
+            else {
+                Invoke-Command -ComputerName $comp -ScriptBlock {& ${env:ProgramFiles(x86)}\Transverse\unins000.exe /SILENT}
+                try {
+                    Get-WmiObject -Class Win32_Product -Filter "Name like '%TransVerse%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
+                    [PSCustomObject]@{
+                        ComputerName = $comp
+                        Program = "TransVerse"
+                        Status = "Removed"
+                    }#new object
+                }#try
+                catch {
+                    [PSCustomObject]@{
+                        ComputerName = $comp
+                        Program = "TransVerse"
+                        Status = "Failed"
+                    }#new object
+                }#catch
+            }#if not local
         }#end code block
         $Jobs = @()
     }
