@@ -11,6 +11,7 @@ New features and other changes:
 1. Added Uninstall-AdobeLiveCycleFormsDesigner.
 2. Added Uninstall-Axway.
 3. Added an additional uninstall method to Uninstall-TransVerse.
+4. Fixed an issue in Save-UpdateHistory where it was resulting in no data being exported.
 
 ######################
 #                    #

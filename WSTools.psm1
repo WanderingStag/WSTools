@@ -5104,7 +5104,7 @@ function Save-UpdateHistory {
 .NOTES
     Author: Skyler Hart
     Created: 2020-06-15 13:03:22
-    Last Edit: 2022-07-18 21:50:28
+    Last Edit: 2022-08-27 22:06:46
     Keywords:
 .LINK
     https://wstools.dev
@@ -5135,9 +5135,9 @@ function Save-UpdateHistory {
         $session = New-Object -ComObject 'Microsoft.Update.Session'
         $ec = ($session.CreateUpdateSearcher()).GetTotalHistoryCount()
         $history = ($session.QueryHistory("",0,$ec) | Select-Object ResultCode,Date,Title,Description,ClientApplicationID,Categories,SupportUrl)
-        $ef = $history | Where-Object {$_.Date -gt $stime}
+        $ef = $history | Where-Object {$_.Date -gt $stime -and !([string]::IsNullOrWhiteSpace($_.Title))}
 
-        $info = foreach ($e in $ef | Where-Object {!([string]::IsNullOrWhiteSpace($e.Title))}) {
+        $info = foreach ($e in $ef) {
             switch ($e.ResultCode) {
                 0 {$Result = "Not Started"}
                 1 {$Result = "Restart Required"}
