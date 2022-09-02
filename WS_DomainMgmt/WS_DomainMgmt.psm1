@@ -234,7 +234,12 @@ Function Get-FSMO {
 .LINK
     https://wstools.dev
 #>
-    if (Get-Module -ListAvailable -Name ActiveDirectory) {
+    [CmdletBinding()]
+    Param (
+        [Parameter()]
+        [Switch]$netdom
+    )
+    if (Get-Module -ListAvailable -Name ActiveDirectory -and !($netdom)) {
         $RoleHolders = Get-ADDomainController -Filter * | Select-Object Name,OperationMasterRoles
         $RoleHolderInfo = foreach ($RoleHolder in $RoleHolders) {
             $Comp = $RoleHolder.Name
