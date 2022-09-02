@@ -4,6 +4,15 @@ Known issues:
 
 ######################
 #                    #
+#      2022.09       #
+#                    #
+######################
+New features and other changes:
+1. Added check on Find-EmptyGroup to see if Active Directory module is installed.
+2. Changed the way the AD query in Find-EmptyGroup runs so that it is faster.
+
+######################
+#                    #
 #      2022.08       #
 #                    #
 ######################

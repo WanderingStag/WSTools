@@ -13,7 +13,7 @@ Function Find-EmptyGroup {
 .Notes
     AUTHOR: Skyler Hart
     CREATED: 01/18/2014 11:50:00
-    LASTEDIT: 10/04/2018 20:20:39
+    LASTEDIT: 2022-09-01 21:59:13
     KEYWORDS: Groups, empty groups, group management
     REQUIRES:
         #Requires -Modules ActiveDirectory
@@ -29,15 +29,18 @@ Function Find-EmptyGroup {
       [string]$SearchBase
      )
 
-    if ($null -ne $SearchBase) {
-        get-adgroup -filter * -properties * -SearchBase $SearchBase | Where-Object {-Not
-        ($_ | get-adgroupmember)} |
-        Select-Object CN,GroupScope,GroupCategory,ManagedBy,SamAccountName,whenCreated,CanonicalName
+    if (Get-Module -ListAvailable -Name ActiveDirectory) {
+        if ([string]::IsNullOrWhiteSpace($SearchBase)) {
+            Get-ADGroup -Filter * -Properties CN,GroupScope,GroupCategory,ManagedBy,SamAccountName,whenCreated,CanonicalName,Members -SearchBase $SearchBase | Where-Object {-Not $_.Members} |
+            Select-Object CN,GroupScope,GroupCategory,ManagedBy,SamAccountName,whenCreated,CanonicalName
+        }
+        else {
+            Get-ADGroup -Filter * -Properties CN,GroupScope,GroupCategory,ManagedBy,SamAccountName,whenCreated,CanonicalName,Members | Where-Object {-Not $_.Members} |
+            Select-Object CN,GroupScope,GroupCategory,ManagedBy,SamAccountName,whenCreated,CanonicalName
+        }
     }
     else {
-        get-adgroup -filter * -properties * | Where-Object {-Not
-        ($_ | get-adgroupmember)} |
-        Select-Object CN,GroupScope,GroupCategory,ManagedBy,SamAccountName,whenCreated,CanonicalName
+        Write-Warning "Active Directory module is not installed and is required to run Find-EmptyGroup."
     }
 }#find emptygroups
 
