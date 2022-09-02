@@ -239,18 +239,23 @@ Function Get-FSMO {
         [Parameter()]
         [Switch]$netdom
     )
-    if (Get-Module -ListAvailable -Name ActiveDirectory -and !($netdom)) {
-        $RoleHolders = Get-ADDomainController -Filter * | Select-Object Name,OperationMasterRoles
-        $RoleHolderInfo = foreach ($RoleHolder in $RoleHolders) {
-            $Comp = $RoleHolder.Name
-            $Roles = $RoleHolder.OperationMasterRoles
-            $Roles = $Roles -join ", "
-            [PSCustomObject]@{
-                ComputerName = $Comp
-                Roles = $Roles
-            }#new object
+    if ([string]::IsNullOrWhiteSpace($netdom)) {
+        if (Get-Module -ListAvailable -Name ActiveDirectory) {
+            $RoleHolders = Get-ADDomainController -Filter * | Select-Object Name,OperationMasterRoles
+            $RoleHolderInfo = foreach ($RoleHolder in $RoleHolders) {
+                $Comp = $RoleHolder.Name
+                $Roles = $RoleHolder.OperationMasterRoles
+                $Roles = $Roles -join ", "
+                [PSCustomObject]@{
+                    ComputerName = $Comp
+                    Roles = $Roles
+                }#new object
+            }
+            $RoleHolderInfo
         }
-        $RoleHolderInfo
+        else {
+            netdom /query FSMO
+        }
     }
     else {
         netdom /query FSMO
