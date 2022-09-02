@@ -30,12 +30,13 @@ Function Find-EmptyGroup {
      )
 
     if (Get-Module -ListAvailable -Name ActiveDirectory) {
-        if ([string]::IsNullOrWhiteSpace($SearchBase)) {
+        if (!([string]::IsNullOrWhiteSpace($SearchBase))) {
             Get-ADGroup -Filter * -Properties CN,GroupScope,GroupCategory,ManagedBy,SamAccountName,whenCreated,CanonicalName,Members -SearchBase $SearchBase | Where-Object {-Not $_.Members} |
             Select-Object CN,GroupScope,GroupCategory,ManagedBy,SamAccountName,whenCreated,CanonicalName
         }
         else {
-            Get-ADGroup -Filter * -Properties CN,GroupScope,GroupCategory,ManagedBy,SamAccountName,whenCreated,CanonicalName,Members | Where-Object {-Not $_.Members} |
+            $sb = Get-ADDomain | Select-Object -ExpandProperty DistinguishedName
+            Get-ADGroup -Filter * -Properties CN,GroupScope,GroupCategory,ManagedBy,SamAccountName,whenCreated,CanonicalName,Members -SearchBase $sb | Where-Object {-Not $_.Members} |
             Select-Object CN,GroupScope,GroupCategory,ManagedBy,SamAccountName,whenCreated,CanonicalName
         }
     }
