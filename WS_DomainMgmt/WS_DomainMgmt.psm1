@@ -269,7 +269,7 @@ Function Get-LockedOutStatus {
 .Notes
     AUTHOR: Skyler Hart
     CREATED: 09/21/2017 13:06:06
-    LASTEDIT: 09/21/2017 13:06:06
+    LASTEDIT: 2022-09-01 23:01:39
     KEYWORDS:
     REQUIRES:
         -Modules ActiveDirectory
@@ -288,7 +288,14 @@ Function Get-LockedOutStatus {
         [string[]]$Username = "$env:USERNAME"
     )
     Begin {
-    $cktime = Get-Date -Format t
+        $cktime = Get-Date -Format t
+        if (Get-Module -ListAvailable -Name ActiveDirectory) {
+            #ad module is installed
+        }
+        else {
+            Write-Warning "Active Directory module is not installed and is required to run this command."
+            break
+        }
     }
     Process {
         foreach ($user in $Username) {
