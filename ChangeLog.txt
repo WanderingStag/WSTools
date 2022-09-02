@@ -8,8 +8,8 @@ Known issues:
 #                    #
 ######################
 New features and other changes:
-1. Added check on Find-EmptyGroup to see if Active Directory module is installed.
-2. Changed the way the AD query in Find-EmptyGroup runs so that it is faster and resolved an issue where if the SearchBase string was empty it was throwing an error.
+1. Added check on Find-EmptyGroup and Find-HiddenGALUser to see if Active Directory module is installed.
+2. Changed the way the AD query in Find-EmptyGroup and Find-HiddenGALUser run so that it is faster and resolved an issue where if the SearchBase string was empty it was throwing an error.
 
 ######################
 #                    #

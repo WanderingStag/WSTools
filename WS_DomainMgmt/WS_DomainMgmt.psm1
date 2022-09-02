@@ -60,7 +60,7 @@ Function Find-HiddenGALUser {
    .Notes
     AUTHOR: Skyler Hart
     CREATED: 01/18/2014 02:50:00
-    LASTEDIT: 10/04/2018 20:11:20
+    LASTEDIT: 2022-09-01 22:30:56
     KEYWORDS: Hidden Users, User, Exchange, GAL, Global Address List
     REQUIRES:
         #Requires -Modules ActiveDirectory
@@ -76,13 +76,19 @@ Function Find-HiddenGALUser {
         [string]$SearchBase
     )
 
-    if ($null -ne $SearchBase) {
-        Get-ADUser -filter * -Properties * -SearchBase $SearchBase | Where-Object {$_.msExchHideFromAddressLists -eq "TRUE"} |
-        Select-Object givenName,Surname,SamAccountname,EmailAddress,msExchHideFromAddressLists
+    if (Get-Module -ListAvailable -Name ActiveDirectory) {
+        if (!([string]::IsNullOrWhiteSpace($SearchBase))) {
+            Get-ADUser -Filter * -Properties givenName,Surname,SamAccountname,EmailAddress,msExchHideFromAddressLists -SearchBase $SearchBase | Where-Object {$_.msExchHideFromAddressLists -eq "TRUE"} |
+            Select-Object givenName,Surname,SamAccountname,EmailAddress,msExchHideFromAddressLists
+        }
+        else {
+            $sb = Get-ADDomain | Select-Object -ExpandProperty DistinguishedName
+            Get-ADUser -Filter * -Properties givenName,Surname,SamAccountname,EmailAddress,msExchHideFromAddressLists -SearchBase $sb | Where-Object {$_.msExchHideFromAddressLists -eq "TRUE"} |
+            Select-Object givenName,Surname,SamAccountname,EmailAddress,msExchHideFromAddressLists
+        }
     }
     else {
-        Get-ADUser -filter * -Properties * | Where-Object {$_.msExchHideFromAddressLists -eq "TRUE"} |
-        Select-Object givenName,Surname,SamAccountname,EmailAddress,msExchHideFromAddressLists
+        Write-Warning "Active Directory module is not installed."
     }
 }#get hidden GAL users
 
