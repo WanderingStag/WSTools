@@ -1446,14 +1446,19 @@ Function Register-Schema {
 .Notes
     AUTHOR: Skyler Hart
     CREATED: 02/12/2018 20:10:54
-    LASTEDIT: 02/12/2018 20:10:54
+    LASTEDIT: 2022-09-04 12:20:42
     KEYWORDS:
     REQUIRES:
         -RunAsAdministrator
 .LINK
     https://wstools.dev
 #>
-    regsvr32 schmmgmt.dll
+    if (Test-Path $env:windir\System32\schmmgmt.dll) {
+        regsvr32.exe schmmgmt.dll
+    }
+    else {
+        Write-Warning "schmmgmt.dll not found. Please ensure Active Directory tools are installed."
+    }
 }
 
 
@@ -1462,7 +1467,7 @@ Function Restart-ActiveDirectory {
 .Notes
     AUTHOR: Skyler Hart
     CREATED: 09/08/2017 16:03:23
-    LASTEDIT: 09/08/2017 16:03:39
+    LASTEDIT: 2022-09-04 12:22:27
     KEYWORDS:
     REQUIRES:
         -Modules ActiveDirectory
@@ -1477,20 +1482,25 @@ Function Restart-ActiveDirectory {
         [string]$DC = "$env:COMPUTERNAME",
         [Switch]$All
     )
-    if (!($All)) {
-        Write-Information "Restarting Active Directory service on $DC"
-        try {Restart-Service -inputobject $(Get-Service -ComputerName $DC -Name NTDS -ErrorAction Stop) -Force -ErrorAction Stop}
-        catch {Throw "Unable to connect to $DC or failed to restart service."}
-    }#if not all
-    elseif ($All) {
-        $AllDCs = (Get-ADForest).Domains | ForEach-Object {Get-ADDomainController -Filter * -Server $_}
-        foreach ($Srv in $AllDCs) {
-            $SrvName = $Srv.HostName
-            Write-Output "Restarting Active Directory service on $SrvName"
-        	try {Restart-Service -inputobject $(Get-Service -ComputerName $SrvName -Name NTDS) -Force}
+    if (Get-Module -ListAvailable -Name ActiveDirectory) {
+        if (!($All)) {
+            Write-Information "Restarting Active Directory service on $DC"
+            try {Restart-Service -inputobject $(Get-Service -ComputerName $DC -Name NTDS -ErrorAction Stop) -Force -ErrorAction Stop}
             catch {Throw "Unable to connect to $DC or failed to restart service."}
-        }#foreach dc
-    }#elseif
+        }#if not all
+        elseif ($All) {
+            $AllDCs = (Get-ADForest).Domains | ForEach-Object {Get-ADDomainController -Filter * -Server $_}
+            foreach ($Srv in $AllDCs) {
+                $SrvName = $Srv.HostName
+                Write-Output "Restarting Active Directory service on $SrvName"
+                try {Restart-Service -inputobject $(Get-Service -ComputerName $SrvName -Name NTDS) -Force}
+                catch {Throw "Unable to connect to $DC or failed to restart service."}
+            }#foreach dc
+        }#elseif
+    }
+    else {
+        Write-Warning "Active Directory module is not installed and is required to run this command."
+    }
 }
 
 
