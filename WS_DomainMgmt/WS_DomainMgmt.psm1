@@ -446,11 +446,12 @@ Function Get-PrivilegedGroup {
             Write-Verbose "Parent groups: $parentgroupscount"
 
             $bgroups = $ParentGroups | Where-Object {$_ -notlike "CN=*"} | Select-Object -Unique
+            $domaindn = Get-ADDomain | Select-Object DistinguishedName
             $PrivGroupsCoded = foreach ($group in $bgroups) {
-                Get-ADGroup $group -Properties MemberOf | Add-Member -NotePropertyName Why -NotePropertyValue Parent -Force -PassThru
+                Get-ADGroup $group -Properties MemberOf -SearchBase $domaindn | Add-Member -NotePropertyName Why -NotePropertyValue Parent -Force -PassThru
             }
             $pgccount = $PrivGroupsCoded.Count
-            Write-Verbose "PrivGroupsCoded after getting parent: $pgccount"
+            Write-Verbose "Priv Groups after getting parent: $pgccount"
         }
 
         Write-Verbose "Getting sub groups"
