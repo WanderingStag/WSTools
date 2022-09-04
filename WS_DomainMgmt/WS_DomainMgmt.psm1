@@ -594,8 +594,6 @@ Function Get-UserWithThumbnail {
     else {
         Write-Warning "Active Directory module is not installed and is required to run this command."
     }
-
-
 }
 
 
