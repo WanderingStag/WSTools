@@ -410,6 +410,8 @@ Function Get-PrivilegedGroup {
         $PrivGroupsCoded = foreach ($ag in $agroups) {
             Get-ADGroup $ag -Properties MemberOf | Add-Member -NotePropertyName Why -NotePropertyValue ParentInScript -Force -PassThru
         }
+        $pgccount = $PrivGroupsCoded.Count
+        Write-Verbose "Priv Groups in config: $pgccount"
 
         if ($GetParentGroups) {
             Write-Verbose "Getting Parent Groups"
@@ -444,6 +446,8 @@ Function Get-PrivilegedGroup {
             $PrivGroupsCoded = foreach ($ag in $agroups) {
                 Get-ADGroup $ag -Properties MemberOf | Add-Member -NotePropertyName Why -NotePropertyValue Parent -Force -PassThru
             }
+            $pgccount = $PrivGroupsCoded.Count
+            Write-Verbose "Parent groups: $pgccount"
         }
 
         Write-Verbose "Getting sub groups"
@@ -482,6 +486,8 @@ Function Get-PrivilegedGroup {
                 Get-ADGroup $group | Add-Member -NotePropertyName Why -NotePropertyValue "Subgroup" -Force -PassThru
             }
         }
+        $pgscount = $PrivGroupsSub.Count
+        Write-Verbose "Sub Groups: $pgscount"
 
         Write-Verbose "Combining info"
         $AllGroups = @()
