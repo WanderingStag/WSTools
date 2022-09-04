@@ -442,12 +442,15 @@ Function Get-PrivilegedGroup {
                 }
             }
 
-            $agroups = $ParentGroups | Where-Object {$_ -notlike "CN=*"} | Select-Object -Unique
-            $PrivGroupsCoded = foreach ($ag in $agroups) {
-                Get-ADGroup $ag -Properties MemberOf | Add-Member -NotePropertyName Why -NotePropertyValue Parent -Force -PassThru
+            $parentgroupscount = $ParentGroups.Count
+            Write-Verbose "Parent groups: $parentgroupscount"
+
+            $bgroups = $ParentGroups | Where-Object {$_ -notlike "CN=*"} | Select-Object -Unique
+            $PrivGroupsCoded = foreach ($group in $bgroups) {
+                Get-ADGroup $group -Properties MemberOf | Add-Member -NotePropertyName Why -NotePropertyValue Parent -Force -PassThru
             }
             $pgccount = $PrivGroupsCoded.Count
-            Write-Verbose "Parent groups: $pgccount"
+            Write-Verbose "PrivGroupsCoded after getting parent: $pgccount"
         }
 
         Write-Verbose "Getting sub groups"
