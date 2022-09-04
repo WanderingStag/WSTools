@@ -735,12 +735,18 @@ Function Open-DHCPmgmt {
 .Notes
     AUTHOR: Skyler Hart
     CREATED: 08/19/2017 22:25:18
-    LASTEDIT: 08/19/2017 22:25:18
+    LASTEDIT: 2022-09-04 12:09:18
     KEYWORDS:
 .LINK
     https://wstools.dev
 #>
-    dhcpmgmt.msc
+    try {
+        $ErrorActionPreference = "Stop"
+        dhcpmgmt.msc
+    }
+    catch {
+        Write-Output "Active Directory snapins are not installed/enabled."
+    }
 }
 New-Alias -Name "dhcp" -Value Open-DHCPmgmt
 
