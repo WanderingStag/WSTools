@@ -573,37 +573,29 @@ Function Get-UserWithThumbnail {
 .Notes
     AUTHOR: Skyler Hart
     CREATED: 10/03/2014 14:18:42
-    LASTEDIT: 2020-08-24 20:36:05
+    LASTEDIT: 2022-09-04 11:56:28
     KEYWORDS:
     REQUIRES:
         -Modules ActiveDirectory
 .LINK
     https://wstools.dev
 #>
-    Write-Output "Getting OU names . . ."
-    $ous = (Get-ADOrganizationalUnit -Filter 'Name -like "*"' | Select-Object DistinguishedName).DistinguishedName
-    $number = $ous.Count
-    $info = @()
-    $users = @()
+    if (Get-Module -ListAvailable -Name ActiveDirectory) {
+        Write-Output "Getting OU names . . ."
+        $ous = (Get-ADOrganizationalUnit -Filter 'Name -like "*"' | Select-Object DistinguishedName).DistinguishedName
 
-    $ounum = 0
-    foreach ($ouname in $ous) {
-        $ounum++
-        Write-Output "Getting OU $ounum of $number"
-        $people = (get-aduser -filter * -properties thumbnailPhoto -searchbase "$ouname" -SearchScope OneLevel | Where-Object {$null -ne $_.thumbnailPhoto} | Select-Object Name,UserPrincipalName,thumbnailPhoto)
-        $users += $people
+        Write-Output "Getting Users . . ."
+        $users = foreach ($ouname in $ous) {
+            Get-ADUser -Filter * -Properties thumbnailPhoto -SearchBase "$ouname" -SearchScope OneLevel | Where-Object {!([string]::IsNullOrWhiteSpace($_.thumbnailPhoto))} | Select-Object Name,UserPrincipalName,thumbnailPhoto
+        }
+
+        $users | Select-Object Name,UserPrincipalName,thumbnailPhoto
+    }
+    else {
+        Write-Warning "Active Directory module is not installed and is required to run this command."
     }
 
-    $info = foreach ($user in $users) {
-        $name = $user.Name
-        $upn = $user.UserPrincipalName
-        [PSCustomObject]@{
-            User = $name
-            UserPrincipalName = $upn
-            HasThumbnail = $true
-        }#new object
-    }
-    $info
+
 }
 
 
