@@ -1590,13 +1590,13 @@ Function Restart-KDC {
 
 function Set-ADProfilePicture {
 <#
-.Notes
-    AUTHOR: Skyler Hart
-    LASTEDIT: 08/18/2017 20:47:20
-    KEYWORDS:
-    REQUIRES:
-        -Modules ActiveDirectory
-        -RunAsAdministrator
+.NOTES
+    Author: Skyler Hart
+    Created: 2017-08-18 20:47:20
+    Last Edit: 2022-09-04 12:42:30
+    Other:
+    Requires:
+        -Module ActiveDirectory
 .LINK
     https://wstools.dev
 #>
@@ -1607,21 +1607,26 @@ function Set-ADProfilePicture {
         [string]$Username
     )
 
-    [System.Reflection.Assembly]::LoadWithPartialName("System.windows.forms") | Out-Null
-    $OpenFileDialog = New-Object System.Windows.Forms.OpenFileDialog
-    $OpenFileDialog.initialDirectory = "C:\"
-    $OpenFileDialog.filter = "JPG (*.jpg)| *.jpg"
-    $OpenFileDialog.ShowDialog() | Out-Null
-    $OpenFileDialog.filename
-    $OpenFileDialog.ShowHelp = $true
-    $ppath = $OpenFileDialog.FileName
+    if (Get-Module -ListAvailable -Name ActiveDirectory) {
+        [System.Reflection.Assembly]::LoadWithPartialName("System.windows.forms") | Out-Null
+        $OpenFileDialog = New-Object System.Windows.Forms.OpenFileDialog
+        $OpenFileDialog.initialDirectory = "C:\"
+        $OpenFileDialog.filter = "JPG (*.jpg)| *.jpg"
+        $OpenFileDialog.ShowDialog() | Out-Null
+        $OpenFileDialog.filename
+        $OpenFileDialog.ShowHelp = $true
+        $ppath = $OpenFileDialog.FileName
 
-    $item = Get-Item $ppath
-    if ($item.Length -gt 102400) {Throw "Unable to set $Username's picture. Picture must be less than 100 KB. Also recommend max size of 96 x 96 pixels."}
+        $item = Get-Item $ppath
+        if ($item.Length -gt 102400) {Throw "Unable to set $Username's picture. Picture must be less than 100 KB. Also recommend max size of 96 x 96 pixels."}
+        else {
+            Import-Module activedirectory
+            $photo1 = [byte[]](Get-Content $ppath -Encoding byte)
+            Set-ADUser $UserName -Replace @{thumbnailPhoto=$photo1}
+        }
+    }
     else {
-        Import-Module activedirectory
-        $photo1 = [byte[]](Get-Content $ppath -Encoding byte)
-        Set-ADUser $UserName -Replace @{thumbnailPhoto=$photo1}
+        Write-Warning "Active Directory module is not installed and is required to run this command."
     }
 }
 
