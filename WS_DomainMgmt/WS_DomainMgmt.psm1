@@ -501,7 +501,7 @@ Function Get-PrivilegedGroup {
         $AllGroups = @()
         $AllGroups += $PrivGroupsCoded
         $AllGroups += $PrivGroupsSub
-        $AllGroups | Select-Object Name,Why,GroupScope,GroupCategory,DistinguishedName
+        $AllGroups | Select-Object Name,Why,GroupScope,GroupCategory,DistinguishedName -Unique
     }
     else {
         Write-Warning "Active Directory module is not installed and is required to run this command."
