@@ -13,6 +13,7 @@ New features and other changes:
 3. In Get-FSMO, now defaults to native PowerShell method. If ActiveDirectory module is not installed it will use the legacy netdom query. Also added -netdom switch so you can specify to use legacy method.
 4. Re-wrote Get-PrivilegedGroup so it now does a full recursive search for nested groups. Also added GetParentGroup switch to find parent groups of the groups listed in the PrivGroups config item in addition to the nested groups.
 5. Removed excess code in Get-UserWithThumbnail that was duplicating/triplicating tasks.
+6. Added check on Open-HyperVmgmt to see if the tools are installed.
 
 ######################
 #                    #
