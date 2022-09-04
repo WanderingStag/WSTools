@@ -424,7 +424,7 @@ Function Get-PrivilegedGroup {
                 $holdinglist = @()
                 foreach ($group in $groups) {
                     Write-Verbose "Checking $group"
-                    [array]$new_groups = Get-ADPrincipalGroupMembership $group | ForEach-Object {$_.Name}
+                    [array]$new_groups = Get-ADPrincipalGroupMembership $group | ForEach-Object {$_.distinguishedName}
                     if ($new_groups.Length -ge 1) {
                         $NewGroupsAdded = $true
                         foreach ($new in $new_groups) {
@@ -436,7 +436,7 @@ Function Get-PrivilegedGroup {
                     }
                 }
                 [array]$groups = $holdinglist
-                $ParentGroups += $groups | Sort-Object | Select-Object -Unique
+                $ParentGroups += $groups | Where-Object {$_ -like "CN=*"} | Sort-Object | Select-Object -Unique
                 if ($NewGroupsAdded) {
                     Write-Verbose "Starting re-check"
                 }
@@ -446,14 +446,12 @@ Function Get-PrivilegedGroup {
             Write-Verbose "Parent groups: $parentgroupscount"
 
             $bgroups = $ParentGroups | Select-Object -Unique
-            $bgcount = $bgroups.Count
-            Write-Verbose "Parent groups after CN filter: $bgcount"
             $domaindn = Get-ADDomain | Select-Object DistinguishedName
-            $newPrivGroupsCoded = foreach ($group in $bgroups) {
+            $PrivGroupsCoded = foreach ($group in $bgroups) {
                 Write-Verbose "Getting AD info of parent group: $group"
-                Get-ADGroup $group -SearchBase $domaindn | Add-Member -NotePropertyName Why -NotePropertyValue Parent -Force -PassThru
+                Get-ADGroup -Filter $group | Add-Member -NotePropertyName Why -NotePropertyValue Parent -Force -PassThru
             }
-            $pgccount = $newPrivGroupsCoded.Count
+            $pgccount = $PrivGroupsCoded.Count
             Write-Verbose "Priv Groups after getting parent: $pgccount"
         }
 
