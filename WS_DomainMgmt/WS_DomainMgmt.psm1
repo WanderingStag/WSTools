@@ -455,9 +455,13 @@ Function Get-PrivilegedGroup {
         }
 
         Write-Verbose "Getting sub groups"
-        $PrivSubGroups = @()
         $subgroups = foreach ($group in $PrivGroupsCoded) {
             Get-ADGroupMember $group | Select-Object * | Where-Object {$_.objectClass -eq "group"} | Select-Object -ExpandProperty Name
+        }
+        $subgroups = $subgroups | Sort-Object | Select-Object -Unique
+        $PrivSubGroups = @()
+        $PrivSubGroups += foreach ($group in $subgroups) {
+            Get-ADGroup $group | Select-Object -ExpandProperty distinguishedName
         }
         $NewGroupsAdded = $true
         while ($NewGroupsAdded) {
