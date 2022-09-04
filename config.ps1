@@ -20,7 +20,7 @@ $Global:WSToolsConfig = [PSCustomObject]@{
     NSFileSize = 5MB
 
     #Privileged groups list - used for some monitoring and reporting features. You should populate this with groups that grant admin permissions.
-    PrivGroups = @('CompAdmins_AD','CompAdmins_Local','DHCP Administrators','UserAdmins_AD','Priv Role - Admins')
+    PrivGroups = @('CompAdmins_AD','CompAdmins_Local','DHCP Administrators','UserAdmins_AD','Priv Role - Admins','Priv Role - Domain Admin')
 
     #Default time of reboot when no time is specified in Set-Reboot. Must be entered in HHmm (24 hour/military time) format. Ex: For 7 PM enter 1900.
     RebootTime = "0030"
