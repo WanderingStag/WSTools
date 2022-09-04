@@ -8,9 +8,10 @@ Known issues:
 #                    #
 ######################
 New features and other changes:
-1. Added check on Find-EmptyGroup, Find-HiddenGALUser, Get-FSMO, Get-LockedOutStatus, Get-NewADUser, and Get-NewADGroup to see if Active Directory module is installed.
+1. Added check on Find-EmptyGroup, Find-HiddenGALUser, Get-FSMO, Get-LockedOutStatus, Get-NewADUser, Get-NewADGroup, and Get-PrivilegedGroup to see if Active Directory module is installed.
 2. Changed the way the AD query in Find-EmptyGroup and Find-HiddenGALUser run so that it is faster and resolved an issue where if the SearchBase string was empty it was throwing an error.
 3. In Get-FSMO, now defaults to native PowerShell method. If ActiveDirectory module is not installed it will use the legacy netdom query. Also added -netdom switch so you can specify to use legacy method.
+4. Re-wrote Get-PrivilegedGroup so it now does a full recursive search for nested groups. Also added GetParentGroup switch will allows finding parent groups of the groups listed in the PrivGroups config item.
 
 ######################
 #                    #

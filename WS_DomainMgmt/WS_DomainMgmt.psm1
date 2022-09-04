@@ -385,7 +385,7 @@ Function Get-PrivilegedGroup {
 .Notes
     AUTHOR: Skyler Hart
     CREATED: 03/05/2019 14:56:27
-    LASTEDIT: 2020-09-09 11:03:16
+    LASTEDIT: 2022-09-04 00:41:10
     KEYWORDS:
     REQUIRES:
         -Modules ActiveDirectory
@@ -397,75 +397,102 @@ Function Get-PrivilegedGroup {
         "",
         Justification = "Have tried other methods and they do not work consistently."
     )]
+    [CmdletBinding()]
+    Param (
+        [Parameter(
+            Mandatory=$false
+        )]
+
+        [Parameter()]
+        [Switch]$GetParentGroups
+    )
     $config = $Global:WSToolsConfig
     $agroups = $config.PrivGroups
 
-    $aginfo = $null
-    $aginfo = @()
-    $ginfo = @()
-    foreach ($ag in $agroups) {
-        $aginfo += (Get-ADGroup $ag | Add-Member -NotePropertyName Why -NotePropertyValue Hardcoded -Force -PassThru)
-    }
+    if (Get-Module -ListAvailable -Name ActiveDirectory) {
+        Write-Verbose "Getting groups listed in config file"
+        $PrivGroupsCoded = foreach ($ag in $agroups) {
+            Get-ADGroup $ag -Properties MemberOf | Add-Member -NotePropertyName Why -NotePropertyValue ParentInScript -Force -PassThru
+        }
 
-    foreach ($agroup in $aginfo) {
-        $aname = $agroup.Name
-        $ginfo += Get-ADGroupMember $agroup | Select-Object * | Add-Member -NotePropertyName Why -NotePropertyValue "Sub of $aname" -Force -PassThru
-    }
+        if ($GetParentGroups) {
+            Write-Verbose "Getting Parent Groups"
+            $ParentGroups = @()
+            $groups = $PrivGroupsCoded.MemberOf | Select-Object -Unique
+            $NewGroupsAdded = $true
 
-    $addgroups = $null
-    $addgroups = $ginfo | Where-Object {$_.objectClass -eq "group"}
-    if ($null -ne $addgroups) {
-        foreach ($addgroup in $addgroups) {
-            $agname = $null
-            $agname = $addgroup.Name
-            $agroups += $addgroup
-
-            $ginfo2 = $null
-            $ginfo2 = Get-ADGroupMember $agname | Select-Object * | Add-Member -NotePropertyName Why -NotePropertyValue "Sub of $agname" -Force -PassThru
-            if ($null -ne $ginfo2) {
-                $addgroups2 = $null
-                $addgroups2 = $ginfo2 | Where-Object {$_.objectClass -eq "group"}
-                if ($null -ne $addgroups2) {
-                    foreach ($addgroup2 in $addgroups2) {
-                        $ag2name = $null
-                        $ag2name = $addgroup2.name
-                        $agroups += $addgroup2
-
-                        $ginfo3 = $null
-                        $ginfo3 = Get-ADGroupMember $ag2name | Select-Object * | Add-Member -NotePropertyName Why -NotePropertyValue "Sub of $ag2name" -Force -PassThru
-                        if ($null -ne $ginfo3) {
-                            $addgroups3 = $null
-                            $addgroups3 = $ginfo3 | Where-Object {$_.objectClass -eq "group"}
-                            if ($null -ne $addgroups3) {
-                                foreach ($addgroup3 in $addgroups3) {
-                                    $ag3name = $null
-                                    $ag3name = $addgroup3.name
-                                    $agroups += $ddgroup3
-
-                                    $ginfo4 = $null
-                                    $ginfo4 = Get-ADGroupMember $ag3name | Select-Object * | Add-Member -NotePropertyName Why -NotePropertyValue "Sub of $ag3name" -Force -PassThru
-                                    if ($null -ne $ginfo4) {
-                                        $addgroups4 = $null
-                                        $addgroups4 = $ginfo4 | Where-Object {$_.objectClass -eq "group"}
-                                        if ($null -ne $addgroups4) {
-                                            foreach ($addgroup4 in $addgroups4) {
-                                                #Clear-Variable ag4name
-                                                #$ag4name = $addgroup4.name
-                                                $agroups += $addgroup4
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+            while ($NewGroupsAdded) {
+                $NewGroupsAdded = $false
+                $holdinglist = @()
+                foreach ($group in $groups) {
+                    Write-Verbose "Checking $group"
+                    [array]$new_groups = Get-ADPrincipalGroupMembership $group | ForEach-Object {$_.Name}
+                    if ($new_groups.Length -ge 1) {
+                        $NewGroupsAdded = $true
+                        foreach ($new in $new_groups) {
+                            $holdinglist += $new
                         }
                     }
+                    else {
+                        $holdinglist += $group
+                    }
+                }
+                [array]$groups = $holdinglist
+                $ParentGroups += $groups | Sort-Object | Select-Object -Unique
+                if ($NewGroupsAdded) {
+                    Write-Verbose "Starting re-check"
                 }
             }
-        }#foreach additional group
-    }#if there are additional groups as sub-members
 
-    $augroups = ($agroups | Sort-Object Name -Unique | Select-Object Name,Why)
-    $augroups
+            $agroups = $ParentGroups | Where-Object {$_ -notlike "CN=*"} | Select-Object -Unique
+            $PrivGroupsCoded = foreach ($ag in $agroups) {
+                Get-ADGroup $ag -Properties MemberOf | Add-Member -NotePropertyName Why -NotePropertyValue Parent -Force -PassThru
+            }
+        }
+
+        Write-Verbose "Getting sub groups"
+        $PrivSubGroups = @()
+        $subgroups = foreach ($group in $PrivGroupsCoded) {
+            Get-ADGroupMember $group | Select-Object * | Where-Object {$_.objectClass -eq "group"} | Select-Object -ExpandProperty Name
+        }
+        $NewGroupsAdded = $true
+        while ($NewGroupsAdded) {
+            $NewGroupsAdded = $false
+            $holdinglist = @()
+            foreach ($group in $subgroups) {
+                Write-Verbose "Checking subgroup"
+                [array]$new_groups = Get-ADGroupMember $group | Where-Object {$_.objectClass -eq "group"} | Select-Object -ExpandProperty Name
+                if ($new_groups.Length -ge 1) {
+                    $NewGroupsAdded = $true
+                    foreach ($new in $new_groups) {
+                        $holdinglist += $new
+                    }
+                }
+                else {
+                    $holdinglist += $group
+                }
+            }
+            [array]$subgroups = $holdinglist
+            $PrivSubGroups += $subgroups | Sort-Object | Select-Object -Unique
+            if ($NewGroupsAdded) {
+                Write-Verbose "Starting re-check"
+            }
+        }
+        $PrivSubGroups = $PrivSubGroups | Sort-Object | Select-Object -Unique
+        $PrivGroupsSub = foreach ($group in $PrivSubGroups) {
+            if ($PrivGroupsCoded -notmatch $group) {
+                Get-ADGroup $group | Add-Member -NotePropertyName Why -NotePropertyValue "Subgroup" -Force -PassThru
+            }
+        }
+
+        $AllGroups = @()
+        $AllGroups += $PrivGroupsCoded
+        $AllGroups += $PrivGroupsSub
+        $AllGroups
+    }
+    else {
+        Write-Warning "Active Directory module is not installed and is required to run this command."
+    }
 }
 
 
