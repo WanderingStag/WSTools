@@ -239,7 +239,7 @@ Function Get-FSMO {
         [Parameter()]
         [Switch]$netdom
     )
-    if ([string]::IsNullOrWhiteSpace($netdom)) {
+    if (!$netdom) {
         if (Get-Module -ListAvailable -Name ActiveDirectory) {
             $RoleHolders = Get-ADDomainController -Filter * | Select-Object Name,OperationMasterRoles
             $RoleHolderInfo = foreach ($RoleHolder in $RoleHolders) {
