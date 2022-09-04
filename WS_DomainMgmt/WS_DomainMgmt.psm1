@@ -399,10 +399,6 @@ Function Get-PrivilegedGroup {
     )]
     [CmdletBinding()]
     Param (
-        [Parameter(
-            Mandatory=$false
-        )]
-
         [Parameter()]
         [Switch]$GetParentGroups
     )
@@ -488,7 +484,7 @@ Function Get-PrivilegedGroup {
         $AllGroups = @()
         $AllGroups += $PrivGroupsCoded
         $AllGroups += $PrivGroupsSub
-        $AllGroups
+        $AllGroups | Select-Object Name,Why,GroupScope,GroupCategory,DistinguishedName
     }
     else {
         Write-Warning "Active Directory module is not installed and is required to run this command."
