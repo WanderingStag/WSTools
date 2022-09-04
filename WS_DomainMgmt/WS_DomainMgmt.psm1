@@ -456,7 +456,7 @@ Function Get-PrivilegedGroup {
             $NewGroupsAdded = $false
             $holdinglist = @()
             foreach ($group in $subgroups) {
-                Write-Verbose "Checking subgroup"
+                Write-Verbose "Checking subgroup $group"
                 [array]$new_groups = Get-ADGroupMember $group | Where-Object {$_.objectClass -eq "group"} | Select-Object -ExpandProperty Name
                 if ($new_groups.Length -ge 1) {
                     $NewGroupsAdded = $true
@@ -475,12 +475,15 @@ Function Get-PrivilegedGroup {
             }
         }
         $PrivSubGroups = $PrivSubGroups | Sort-Object | Select-Object -Unique
+        Write-Verbose "Getting AD info of each subgroup"
         $PrivGroupsSub = foreach ($group in $PrivSubGroups) {
             if ($PrivGroupsCoded -notmatch $group) {
+                Write-Verbose " - Getting AD info of $group"
                 Get-ADGroup $group | Add-Member -NotePropertyName Why -NotePropertyValue "Subgroup" -Force -PassThru
             }
         }
 
+        Write-Verbose "Combining info"
         $AllGroups = @()
         $AllGroups += $PrivGroupsCoded
         $AllGroups += $PrivGroupsSub
