@@ -448,7 +448,7 @@ Function Get-PrivilegedGroup {
             $bgroups = $ParentGroups | Select-Object -Unique
             $PrivGroupsCoded = foreach ($group in $bgroups) {
                 Write-Verbose "Getting AD info of parent group: $group"
-                Get-ADGroup -Filter $group | Add-Member -NotePropertyName Why -NotePropertyValue Parent -Force -PassThru
+                Get-ADGroup $group | Add-Member -NotePropertyName Why -NotePropertyValue Parent -Force -PassThru
             }
             $pgccount = $PrivGroupsCoded.Count
             Write-Verbose "Priv Groups after getting parent: $pgccount"
