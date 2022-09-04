@@ -399,299 +399,6 @@ function Connect-RDP {
 New-Alias -Name "rdp" -Value Connect-RDP
 
 
-function Convert-AppIconToBase64 {
-<#
-.SYNOPSIS
-    Short description
-.DESCRIPTION
-    Long description
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.PARAMETER Path
-    Specifies a path to one or more locations.
-.EXAMPLE
-    C:\PS>Convert-AppIconToBase64
-    Example of how to use this cmdlet
-.EXAMPLE
-    C:\PS>Convert-AppIconToBase64 -PARAMETER
-    Another example of how to use this cmdlet but with a parameter or switch.
-.NOTES
-    Author: Skyler Hart
-    Created: 2020-11-10 18:57:12
-    Last Edit: 2020-11-10 18:57:12
-    Keywords:
-    Other:
-    Requires:
-        -Module ActiveDirectory
-        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        -RunAsAdministrator
-.LINK
-    https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#>
-    [CmdletBinding()]
-    param(
-        [Parameter(
-            HelpMessage = "Enter the path of the file to extract the icon from. Ex: C:\Temp\app.exe",
-            Mandatory=$true
-        )]
-        [ValidateNotNullOrEmpty()]
-        [string]$Path
-    )
-    Add-Type -AssemblyName System.Drawing
-    Add-Type -AssemblyName System.IO
-    $Icon = [System.Drawing.Icon]::ExtractAssociatedIcon($Path)
-    $stream = New-Object System.IO.MemoryStream
-    $Icon.Save($stream)
-    $Bytes = $stream.ToArray()
-    $stream.Flush()
-    $stream.Dispose()
-    $b64 = [convert]::ToBase64String($Bytes)
-    $b64
-}
-
-
-function Convert-DatesToDays {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2021-06-03 08:54:49
-    Last Edit: 2021-06-03 09:23:27
-    Keywords: date, converter
-.LINK
-    https://wstools.dev
-#>
-    [CmdletBinding()]
-    param(
-        [Parameter(
-            Mandatory=$false,
-            Position=0
-        )]
-        [ValidateLength(8,10)]
-        [Alias('Day1')]
-        [string]$Date1 = (Get-Date -Format "yyyy-MM-dd"),
-
-        [Parameter(
-            Mandatory=$false,
-            Position=1
-        )]
-        [ValidateLength(8,10)]
-        [Alias('Day2')]
-        [string]$Date2 = (Get-Date -Format "yyyy-MM-dd")
-    )
-
-    $c1 = $Date1.Length
-    if ($c1 -eq 8) {
-        $y = $Date1.Substring(0,4)
-        $m = $Date1.Substring(4)
-        $m = $m.Substring(0,2)
-        $d = $Date1.Substring(6)
-        $start = (Get-Date -Year $y -Month $m -Day $d)
-    }
-    elseif ($c1 -eq 10) {
-        $y = $Date1.Substring(0,4)
-        $m = $Date1.Substring(5)
-        $m = $m.Substring(0,2)
-        $d = $Date1.Substring(8)
-        $start = (Get-Date -Year $y -Month $m -Day $d)
-    }
-
-    $c2 = $Date2.Length
-    if ($c2 -eq 8) {
-        $y = $Date2.Substring(0,4)
-        $m = $Date2.Substring(4)
-        $m = $m.Substring(0,2)
-        $d = $Date2.Substring(6)
-        $end = (Get-Date -Year $y -Month $m -Day $d)
-    }
-    elseif ($c2 -eq 10) {
-        $y = $Date2.Substring(0,4)
-        $m = $Date2.Substring(5)
-        $m = $m.Substring(0,2)
-        $d = $Date2.Substring(8)
-        $end = (Get-Date -Year $y -Month $m -Day $d)
-    }
-
-    $ts = New-TimeSpan -Start $start -End $end
-    $ts.Days
-}
-
-
-function Convert-DaysToWorkDay {
-<#
-.EXAMPLE
-    C:\PS>Convert-DaysToWorkDay 1
-    Example of how to use this cmdlet
-.EXAMPLE
-    C:\PS>Convert-DaysToWorkDay -1
-    Another example of how to use this cmdlet.
-.NOTES
-    Author: Skyler Hart
-    Created: 2021-03-04 18:54:31
-    Last Edit: 2021-06-20 17:13:33
-    Keywords:
-.LINK
-    https://wstools.dev
-.LINK
-    https://www.skylerhart.com
-#>
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-        "PSAvoidGlobalVars",
-        "",
-        Justification = "Have tried other methods and they do not work consistently."
-    )]
-    [CmdletBinding()]
-    param(
-        [Parameter(
-            HelpMessage = "Enter the amount of days you want to convert. Must an a positive or negative integer (Ex: 1 or -1).",
-            Mandatory=$true,
-            Position=0
-        )]
-        [int32]$Days,
-
-        [Parameter(
-            HelpMessage = "Must be in the format yyyy-MM-dd.",
-            Mandatory=$false,
-            Position=1
-        )]
-        [datetime]$StartDay = (Get-Date).Date
-    )
-
-    $holidays = ($Global:WSToolsConfig).Holidays.Date
-
-    if ($Days -lt 0) {
-        $sub = "sub"
-    }
-    elseif ($Days -gt 0) {
-        $sub = "add"
-    }
-    else {$sub = "zero"}
-
-    if ($sub -eq "sub") {
-        $i = -1
-        do {
-            $StartDay = $StartDay.AddDays(-1)
-
-            if ($holidays -contains $StartDay) {
-                $StartDay = $StartDay.AddDays(-1)
-            }
-
-            if ($StartDay.DayOfWeek -match "Sunday") {
-                $StartDay = $StartDay.AddDays(-1)
-            }
-
-            if ($StartDay.DayOfWeek -match "Saturday") {
-                $StartDay = $StartDay.AddDays(-1)
-            }
-
-            if ($holidays -contains $StartDay) {
-                $StartDay = $StartDay.AddDays(-1)
-            }
-
-            $i--
-        } until ($i -lt $Days)
-
-        if ($holidays -contains $StartDay) {
-            $StartDay = $StartDay.AddDays(-1)
-        }
-
-        if ($StartDay.DayOfWeek -match "Sunday") {
-            $StartDay = $StartDay.AddDays(-1)
-        }
-
-        if ($StartDay.DayOfWeek -match "Saturday") {
-            $StartDay = $StartDay.AddDays(-1)
-        }
-
-        if ($holidays -contains $StartDay) {
-            $StartDay = $StartDay.AddDays(-1)
-        }
-        $StartDay
-    }
-    elseif ($sub -eq "add") {
-        $i = 1
-        do {
-            $StartDay = $StartDay.AddDays(1)
-
-            if ($holidays -contains $StartDay) {
-                $StartDay = $StartDay.AddDays(1)
-            }
-
-            if ($StartDay.DayOfWeek -match "Saturday") {
-                $StartDay = $StartDay.AddDays(1)
-            }
-
-            if ($StartDay.DayOfWeek -match "Sunday") {
-                $StartDay = $StartDay.AddDays(1)
-            }
-
-            if ($holidays -contains $StartDay) {
-                $StartDay = $StartDay.AddDays(1)
-            }
-
-            $i++
-        } until ($i -gt $Days)
-
-        if ($holidays -contains $StartDay) {
-            $StartDay = $StartDay.AddDays(1)
-        }
-
-        if ($StartDay.DayOfWeek -match "Saturday") {
-            $StartDay = $StartDay.AddDays(1)
-        }
-
-        if ($StartDay.DayOfWeek -match "Sunday") {
-            $StartDay = $StartDay.AddDays(1)
-        }
-
-        if ($holidays -contains $StartDay) {
-            $StartDay = $StartDay.AddDays(1)
-        }
-        $StartDay
-    }
-    else {$StartDay}
-}
-
-
-function Convert-ImageToBase64 {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2020-11-03 22:22:19
-    Last Edit: 2020-11-03 22:22:19
-    Keywords:
-.LINK
-    https://wstools.dev
-#>
-    [CmdletBinding()]
-    param(
-        [Parameter(
-            HelpMessage = "Enter the path of the image you want to convert. Ex: D:\temp\image.jpg",
-            Mandatory=$true
-        )]
-        [ValidateNotNullOrEmpty()]
-        [string]$ImagePath
-    )
-
-    $b64 = [convert]::ToBase64String((get-content $ImagePath -encoding byte))
-    $b64
-}
-New-Alias -Name "Convert-ICOtoBase64" -Value Convert-ImageToBase64
-
-
-function Convert-IPtoINT64 () {
-    param ($IP)
-    $octets = $IP.split(".")
-    return [int64]([int64]$octets[0]*16777216 +[int64]$octets[1]*65536 +[int64]$octets[2]*256 +[int64]$octets[3])
-}
-
-function Convert-INT64toIP() {
-    param ([int64]$int)
-    return (([math]::truncate($int/16777216)).tostring()+"."+([math]::truncate(($int%16777216)/65536)).tostring()+"."+([math]::truncate(($int%65536)/256)).tostring()+"."+([math]::truncate($int%256)).tostring())
-}
-
-
 function Copy-PowerShellJSON {
 <#
 .SYNOPSIS
@@ -907,93 +614,6 @@ function Enable-ServerManager {
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
     if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {Get-ScheduledTask -TaskName ServerManager | Enable-ScheduledTask}
     else {Write-Output "Must run this function as admin"}
-}
-
-
-function Repair-DuplicateSusClientID {
-<#
-.SYNOPSIS
-    Removes SusClientID registry key on the local or remote computer.
-.DESCRIPTION
-    When creating a computer from a template (virtual disc) the SusClientID isn't changed and will result in WSUS only having one object for all the computers created. This function clears the SusClientID from the registry on the local or remote computer(s) so when syncing with WSUS a new SusClientID will be created. The first initial sync with WSUS typically fails. It may take several minutes for the computer to sync appropriately with WSUS.
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.EXAMPLE
-    C:\PS>Repair-DuplicateSusClientID
-    Example of how to use this cmdlet to fix a duplicate SusClientID on the local computer.
-.EXAMPLE
-    C:\PS>Repair-DuplicateSusClientID -ComputerName Server1
-    Another example of how to use this cmdlet but with the ComputerName parameter. In this example, Server1 is a remote computer.
-.INPUTS
-    System.String
-.OUTPUTS
-    System.String
-.COMPONENT
-    WSTools
-.FUNCTIONALITY
-    WSUS, fix, repair, SusClientID
-.NOTES
-    Author: Skyler Hart
-    Created: 2022-07-15 21:05:27
-    Last Edit: 2022-07-15 21:05:27
-    Other:
-    Requires:
-        -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
-    [CmdletBinding()]
-    param(
-        [Parameter(
-            Mandatory=$false
-        )]
-        [Alias('Host','Name','Computer','CN')]
-        [string[]]$ComputerName = "$env:COMPUTERNAME"
-    )
-
-    if ($ComputerName -eq $env:COMPUTERNAME) {
-        Write-Output "$(Get-Date) - ${ComputerName}: Stoppping Services"
-        Get-Service -Name BITS | Stop-Service
-        Get-Service -Name wuauserv | Stop-Service
-        Write-Output "$(Get-Date) - ${ComputerName}: Removing registry keys"
-        Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate" -Name "AccountDomainSid" -Force | Out-Null
-        Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate" -Name "PingID" -Force | Out-Null
-        Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate" -Name "SusClientId" -Force | Out-Null
-        Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate" -Name "SusClientIdValidation" -Force | Out-Null
-        Write-Output "$(Get-Date) - ${ComputerName}: Removing SoftwareDistribution folder"
-        Remove-Item -Path C:\Windows\SoftwareDistribution -Force | Out-Null
-        Write-Output "$(Get-Date) - ${ComputerName}: Starting Services"
-        Get-Service -Name BITS | Start-Service
-        Get-Service -Name wuauserv | Start-Service
-        Write-Output "$(Get-Date) - ${ComputerName}: Reauthorizing client"
-        Start-Process -FilePath "C:\Windows\System32\wuauclt.exe" -ArgumentList "/resetauthorization /detectnow" -Wait
-        Start-Sleep -Seconds 10
-        Write-Output "$(Get-Date) - ${ComputerName}: Starting detection"
-        (New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
-    }
-    else{
-        Invoke-Command -ComputerName $ComputerName -ScriptBlock {#DevSkim: ignore DS104456
-            $comp = $env:COMPUTERNAME
-            Write-Output "$(Get-Date) - ${comp}: Stoppping Services"
-            Get-Service -Name BITS | Stop-Service
-            Get-Service -Name wuauserv | Stop-Service
-            Write-Output "$(Get-Date) - ${comp}: Removing registry keys"
-            Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate" -Name "AccountDomainSid" -Force | Out-Null
-            Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate" -Name "PingID" -Force | Out-Null
-            Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate" -Name "SusClientId" -Force | Out-Null
-            Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate" -Name "SusClientIdValidation" -Force | Out-Null
-            Write-Output "$(Get-Date) - ${comp}: Removing SoftwareDistribution folder"
-            Remove-Item -Path C:\Windows\SoftwareDistribution -Force | Out-Null
-            Write-Output "$(Get-Date) - ${comp}: Starting Services"
-            Get-Service -Name BITS | Start-Service
-            Get-Service -Name wuauserv | Start-Service
-            Write-Output "$(Get-Date) - ${comp}: Reauthorizing client"
-            Start-Process -FilePath "C:\Windows\System32\wuauclt.exe" -ArgumentList "/resetauthorization /detectnow" -Wait
-            Start-Sleep -Seconds 10
-            Write-Output "$(Get-Date) - ${comp}: Starting detection"
-            (New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
-        } -ThrottleLimit 5
-    }
 }
 
 
@@ -5024,6 +4644,93 @@ function Remove-OldPowerShellModule {
         }
         $RunspacePool.Close() | Out-Null
         $RunspacePool.Dispose() | Out-Null
+    }
+}
+
+
+function Repair-DuplicateSusClientID {
+<#
+.SYNOPSIS
+    Removes SusClientID registry key on the local or remote computer.
+.DESCRIPTION
+    When creating a computer from a template (virtual disc) the SusClientID isn't changed and will result in WSUS only having one object for all the computers created. This function clears the SusClientID from the registry on the local or remote computer(s) so when syncing with WSUS a new SusClientID will be created. The first initial sync with WSUS typically fails. It may take several minutes for the computer to sync appropriately with WSUS.
+.PARAMETER ComputerName
+    Specifies the name of one or more computers.
+.EXAMPLE
+    C:\PS>Repair-DuplicateSusClientID
+    Example of how to use this cmdlet to fix a duplicate SusClientID on the local computer.
+.EXAMPLE
+    C:\PS>Repair-DuplicateSusClientID -ComputerName Server1
+    Another example of how to use this cmdlet but with the ComputerName parameter. In this example, Server1 is a remote computer.
+.INPUTS
+    System.String
+.OUTPUTS
+    System.String
+.COMPONENT
+    WSTools
+.FUNCTIONALITY
+    WSUS, fix, repair, SusClientID
+.NOTES
+    Author: Skyler Hart
+    Created: 2022-07-15 21:05:27
+    Last Edit: 2022-07-15 21:05:27
+    Other:
+    Requires:
+        -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    param(
+        [Parameter(
+            Mandatory=$false
+        )]
+        [Alias('Host','Name','Computer','CN')]
+        [string[]]$ComputerName = "$env:COMPUTERNAME"
+    )
+
+    if ($ComputerName -eq $env:COMPUTERNAME) {
+        Write-Output "$(Get-Date) - ${ComputerName}: Stoppping Services"
+        Get-Service -Name BITS | Stop-Service
+        Get-Service -Name wuauserv | Stop-Service
+        Write-Output "$(Get-Date) - ${ComputerName}: Removing registry keys"
+        Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate" -Name "AccountDomainSid" -Force | Out-Null
+        Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate" -Name "PingID" -Force | Out-Null
+        Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate" -Name "SusClientId" -Force | Out-Null
+        Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate" -Name "SusClientIdValidation" -Force | Out-Null
+        Write-Output "$(Get-Date) - ${ComputerName}: Removing SoftwareDistribution folder"
+        Remove-Item -Path C:\Windows\SoftwareDistribution -Force | Out-Null
+        Write-Output "$(Get-Date) - ${ComputerName}: Starting Services"
+        Get-Service -Name BITS | Start-Service
+        Get-Service -Name wuauserv | Start-Service
+        Write-Output "$(Get-Date) - ${ComputerName}: Reauthorizing client"
+        Start-Process -FilePath "C:\Windows\System32\wuauclt.exe" -ArgumentList "/resetauthorization /detectnow" -Wait
+        Start-Sleep -Seconds 10
+        Write-Output "$(Get-Date) - ${ComputerName}: Starting detection"
+        (New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
+    }
+    else{
+        Invoke-Command -ComputerName $ComputerName -ScriptBlock {#DevSkim: ignore DS104456
+            $comp = $env:COMPUTERNAME
+            Write-Output "$(Get-Date) - ${comp}: Stoppping Services"
+            Get-Service -Name BITS | Stop-Service
+            Get-Service -Name wuauserv | Stop-Service
+            Write-Output "$(Get-Date) - ${comp}: Removing registry keys"
+            Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate" -Name "AccountDomainSid" -Force | Out-Null
+            Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate" -Name "PingID" -Force | Out-Null
+            Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate" -Name "SusClientId" -Force | Out-Null
+            Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate" -Name "SusClientIdValidation" -Force | Out-Null
+            Write-Output "$(Get-Date) - ${comp}: Removing SoftwareDistribution folder"
+            Remove-Item -Path C:\Windows\SoftwareDistribution -Force | Out-Null
+            Write-Output "$(Get-Date) - ${comp}: Starting Services"
+            Get-Service -Name BITS | Start-Service
+            Get-Service -Name wuauserv | Start-Service
+            Write-Output "$(Get-Date) - ${comp}: Reauthorizing client"
+            Start-Process -FilePath "C:\Windows\System32\wuauclt.exe" -ArgumentList "/resetauthorization /detectnow" -Wait
+            Start-Sleep -Seconds 10
+            Write-Output "$(Get-Date) - ${comp}: Starting detection"
+            (New-Object -ComObject Microsoft.Update.AutoUpdate).DetectNow()
+        } -ThrottleLimit 5
     }
 }
 
