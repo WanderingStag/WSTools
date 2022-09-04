@@ -446,7 +446,6 @@ Function Get-PrivilegedGroup {
             Write-Verbose "Parent groups: $parentgroupscount"
 
             $bgroups = $ParentGroups | Select-Object -Unique
-            $domaindn = Get-ADDomain | Select-Object DistinguishedName
             $PrivGroupsCoded = foreach ($group in $bgroups) {
                 Write-Verbose "Getting AD info of parent group: $group"
                 Get-ADGroup -Filter $group | Add-Member -NotePropertyName Why -NotePropertyValue Parent -Force -PassThru
