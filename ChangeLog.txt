@@ -15,6 +15,7 @@ New features and other changes:
 5. Removed excess code in Get-UserWithThumbnail that was duplicating/triplicating tasks.
 6. Added check on Open-HyperVmgmt to see if the Hyper-V tools are installed.
 7. Moved some functions from WSTools.psm1 to WS_PowerShell.psm1 and rearranged some functions.
+8. Added Install-GitSCM.
 
 ######################
 #                    #
