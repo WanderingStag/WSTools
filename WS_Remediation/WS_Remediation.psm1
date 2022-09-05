@@ -5378,7 +5378,7 @@ Function Install-GitSCM {
                 ComputerName = $comp
                 Status = "Install Initialized"
                 Time = $end
-            }#new object
+            }#pscustomobject
         }
         catch {
             $end = Get-Date
@@ -5386,7 +5386,7 @@ Function Install-GitSCM {
                 ComputerName = $comp
                 Status = "Unable to install"
                 Time = $end
-            }#new object
+            }#pscustomobject
         }
         $info
     }
