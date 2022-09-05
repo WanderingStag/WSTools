@@ -19,8 +19,15 @@ Then look at the _`Version`_ attribute.
 
 > Intended only for Windows computers at this time. Some functions may work on other OS's though.
 
+### Azure DevOps
+
 1. On the left side, click on the **Repos** menu item.
 2. On the right side next to the Clone button, click on the **More actions** (three dots) button and select **Download as Zip**.
+
+### GitHub
+
+1. Click on the Green Code button with the down arrow.
+2. Select Download ZIP
 
 ## After downloading  to computer
 
@@ -31,9 +38,9 @@ Then look at the _`Version`_ attribute.
 
 Copy the WSTools folder to **C:\Program Files\WindowsPowerShell\Modules**
 > Requires admin rights.
-  
+
 ### User only
-  
+
 Copy the WSTools folder to **C:\Users\\_USERNAME_\Documents\WindowsPowerShell\Modules**
 > If the folder already exists or you get a message saying _"The destination has # files with the same names."_ you can either delete the folder that already exists *(prefered)* or you can *Replace the files in the destination*
 
@@ -66,7 +73,7 @@ For adding the Visual Studio Code PowerShell Snippets do the following:
 
 **_or_**
 
-1. Open powershell.json (located in the WSTools module folder) and copy the text then in VSCode Command Palette (Ctrl + Shift + P)  
+1. Open powershell.json (located in the WSTools module folder) and copy the text then in VSCode Command Palette (Ctrl + Shift + P)
 2. Type **Snippet** and select **Preferences: Configure User Snippets**.
 3. Type **PowerShell** then press **Enter**.
 4. Select **powershell.json**.
