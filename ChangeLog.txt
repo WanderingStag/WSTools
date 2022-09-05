@@ -19,6 +19,7 @@ New features and other changes:
 9. Added EdgeVanilla config item, added Vanilla switch to Copy-Edge, moved Install-Edge back from another module and added Vanilla switch.
 10. Added Install-OneDrive.
 11. Added TLS1_1ServerDisabledByDefault config item, changed default value of TLS1_1ServerEnabled, and PCT1ServerDisabledByDefault config item.
+12. Added Get-SCHANNELSetting.
 
 ######################
 #                    #

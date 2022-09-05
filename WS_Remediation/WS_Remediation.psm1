@@ -9699,6 +9699,83 @@ function Enable-TLS1.2 { #DevSkim: ignore DS169125,DS440000
 }
 
 
+function Get-SCHANNELSetting {
+<#
+.SYNOPSIS
+    Short description
+.DESCRIPTION
+    Long description
+.PARAMETER ComputerName
+    Specifies the name of one or more computers.
+.PARAMETER Path
+    Specifies a path to one or more locations.
+.EXAMPLE
+    C:\PS>Get-SCHANNELSetting
+    Example of how to use this cmdlet
+.EXAMPLE
+    C:\PS>Get-SCHANNELSetting -PARAMETER
+    Another example of how to use this cmdlet but with a parameter or switch.
+.INPUTS
+    System.String
+.OUTPUTS
+    System.Management.Automation.PSCustomObject
+.COMPONENT
+    WSTools
+.FUNCTIONALITY
+    The functionality (keywords) that best describes this cmdlet
+.NOTES
+    Author: Skyler Hart
+    Created: 2022-09-05 00:24:25
+    Last Edit: 2022-09-05 00:56:53
+    Other:
+    Requires:
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    param(
+        [Parameter(
+            Mandatory=$false
+        )]
+        [Alias('Path')]
+        [string]$Name
+    )
+
+    $schannel = @()
+    if (Test-Path HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers) {
+        $schannel += Get-ChildItem HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers -Recurse | ForEach-Object {Get-ItemProperty Registry::$_}
+    }
+
+    if (Test-Path HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Hashes) {
+        $schannel += Get-ChildItem HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Hashes -Recurse | ForEach-Object {Get-ItemProperty Registry::$_}
+    }
+
+    if (Test-Path HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\KeyExchangeAlgorithms) {
+        $schannel += Get-ChildItem HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\KeyExchangeAlgorithms -Recurse | ForEach-Object {Get-ItemProperty Registry::$_}
+    }
+
+    if (Test-Path HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols) {
+        $schannel += Get-ChildItem HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols -Recurse | ForEach-Object {Get-ItemProperty Registry::$_}
+    }
+
+    $schannel = $schannel | Select-Object PSPath,DisabledByDefault,Enabled
+
+    $formattedschannel = foreach ($obj in $schannel) {
+        $path = $obj.PSPath -replace "Microsoft.PowerShell.Core\\Registry::HKEY_LOCAL_MACHINE","HKLM:"
+        [PSCustomObject]@{
+            Path = $path
+            DisabledByDefault = $obj.DisabledByDefault
+            Enabled = $obj.Enabled
+        }#new object
+    }
+
+    if (!([string]::IsNullOrWhiteSpace($Name))) {
+        $formattedschannel = $formattedschannel | Where-Object {$_.Path -match $Name}
+    }
+    $formattedschannel | Format-Table
+}
+
+
 function Initialize-GPUpdate {
 <#
 .NOTES
