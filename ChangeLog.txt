@@ -18,6 +18,7 @@ New features and other changes:
 8. Added Install-GitSCM.
 9. Added EdgeVanilla config item, added Vanilla switch to Copy-Edge, moved Install-Edge back from another module and added Vanilla switch.
 10. Added Install-OneDrive.
+11. Added TLS1_1ServerDisabledByDefault config item and changed default value of TLS1_1ServerEnabled.
 
 ######################
 #                    #

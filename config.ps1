@@ -262,7 +262,8 @@ $Global:WSToolsConfig = [PSCustomObject]@{
 
     TLS1_1ClientEnabled = 0 #DevSkim: ignore DS440000
     TLS1_1ClientDisabledByDefault = 1 #DevSkim: ignore DS440000
-    TLS1_1ServerEnabled = 1 #DevSkim: ignore DS440000
+    TLS1_1ServerEnabled = 0 #DevSkim: ignore DS440000
+    TLS1_1ServerDisabledByDefault = 1 #DevSkim: ignore DS440000
 
     TLS1_2ClientEnabled = 1 #DevSkim: ignore DS440000
     TLS1_2ClientDisabledByDefault = 0 #DevSkim: ignore DS440000
