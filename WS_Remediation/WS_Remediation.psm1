@@ -9715,7 +9715,7 @@ function Get-SCHANNELSetting {
     Will show all the Ciphers configured in the SCHANNEL registry settings.
 .EXAMPLE
     C:\PS>Get-SCHANNELSetting -Name "TLS 1.0"
-    Will show all the "TLS 1.0" SCHANNEL registry settings configured on the computer.
+    Will show all the TLS 1.0 SCHANNEL registry settings configured on the computer.
 .INPUTS
     System.String
 .OUTPUTS
