@@ -9761,18 +9761,20 @@ function Get-SCHANNELSetting {
     $schannel = $schannel | Select-Object PSPath,DisabledByDefault,Enabled
 
     $formattedschannel = foreach ($obj in $schannel) {
-        $path = $obj.PSPath -replace "Microsoft.PowerShell.Core\\Registry::HKEY_LOCAL_MACHINE","HKLM:"
+        $shortpath = $obj.PSPath -replace "Microsoft.PowerShell.Core\\Registry::HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\SecurityProviders\\SCHANNEL\\",""
+        $fullpath = $obj.PSPath -replace "Microsoft.PowerShell.Core\\Registry::HKEY_LOCAL_MACHINE","HKLM:"
         [PSCustomObject]@{
-            Path = $path
+            Name = $shortpath
             DisabledByDefault = $obj.DisabledByDefault
             Enabled = $obj.Enabled
+            FullPath = $fullpath
         }#new object
     }
 
     if (!([string]::IsNullOrWhiteSpace($Name))) {
-        $formattedschannel = $formattedschannel | Where-Object {$_.Path -match $Name}
+        $formattedschannel = $formattedschannel | Where-Object {$_.Name -match $Name}
     }
-    $formattedschannel | Format-Table
+    $formattedschannel
 }
 
 
