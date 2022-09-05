@@ -27,7 +27,8 @@ Then look at the _`Version`_ attribute.
 ### GitHub
 
 1. Click on the Green Code button with the down arrow.
-2. Select Download ZIP
+2. Select Download ZIP.
+3. Change the name of the file from WSTools-master.zip to WSTools.zip.
 
 ## After downloading  to computer
 
