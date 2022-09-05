@@ -246,6 +246,7 @@ $Global:WSToolsConfig = [PSCustomObject]@{
     PCT1ClientEnabled = 0
     PCT1ClientDisabledByDefault = 1
     PCT1ServerEnabled = 0
+    PCT1ServerDisabledByDefault = 1
 
     SSL2_0ClientEnabled = 0 #DevSkim: ignore DS440000
     SSL2_0ClientDisabledByDefault = 1 #DevSkim: ignore DS440000
