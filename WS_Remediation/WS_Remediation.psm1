@@ -9704,7 +9704,7 @@ function Get-SCHANNELSetting {
 .SYNOPSIS
     Gets the SCHANNEL settings on the current machine.
 .DESCRIPTION
-    Displays the name and value of SCHANNEL settings on the local computer.
+    Displays the name and value of SCHANNEL settings on the local computer. Blank entries means the value is not created.
 .PARAMETER Name
     Used to specify the name of a SCHANNEL setting to display. Uses matching.
 .EXAMPLE
