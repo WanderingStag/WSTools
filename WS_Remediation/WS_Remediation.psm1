@@ -9709,7 +9709,11 @@ function Get-SCHANNELSetting {
     Used to specify the name of a SCHANNEL setting to display. Uses matching.
 .EXAMPLE
     C:\PS>Get-SCHANNELSetting
-    Example of how to use this cmdlet. Will show all SCHANNEL settings on the computer.
+    Example of how to use this cmdlet. Will show all SCHANNEL settings on the computer. Will output something similar to this:
+    Name                                 DisabledByDefault    Enabled FullPath
+    ----                                 -----------------    ------- --------
+    Ciphers\DES 56/56                                               0 HKLM:\SYSTEM\CurrentControlSet\Control\SecurityPro...
+    Ciphers\NULL                                                    0 HKLM:\SYSTEM\CurrentControlSet\Control\SecurityPro.
 .EXAMPLE
     C:\PS>Get-SCHANNELSetting -Name Ciphers
     Will show all the Ciphers configured in the SCHANNEL registry settings.
