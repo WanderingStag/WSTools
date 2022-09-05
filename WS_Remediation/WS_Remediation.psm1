@@ -9702,19 +9702,20 @@ function Enable-TLS1.2 { #DevSkim: ignore DS169125,DS440000
 function Get-SCHANNELSetting {
 <#
 .SYNOPSIS
-    Short description
+    Gets the SCHANNEL settings on the current machine.
 .DESCRIPTION
-    Long description
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.PARAMETER Path
-    Specifies a path to one or more locations.
+    Displays the name and value of SCHANNEL settings on the local computer.
+.PARAMETER Name
+    Used to specify the name of a SCHANNEL setting to display. Uses matching.
 .EXAMPLE
     C:\PS>Get-SCHANNELSetting
-    Example of how to use this cmdlet
+    Example of how to use this cmdlet. Will show all SCHANNEL settings on the computer.
 .EXAMPLE
-    C:\PS>Get-SCHANNELSetting -PARAMETER
-    Another example of how to use this cmdlet but with a parameter or switch.
+    C:\PS>Get-SCHANNELSetting -Name Ciphers
+    Will show all the Ciphers configured in the SCHANNEL registry settings.
+.EXAMPLE
+    C:\PS>Get-SCHANNELSetting -Name "TLS 1.0"
+    Will show all the "TLS 1.0" SCHANNEL registry settings configured on the computer.
 .INPUTS
     System.String
 .OUTPUTS
@@ -9722,13 +9723,11 @@ function Get-SCHANNELSetting {
 .COMPONENT
     WSTools
 .FUNCTIONALITY
-    The functionality (keywords) that best describes this cmdlet
+    SCHANNEL, registry, remediation
 .NOTES
     Author: Skyler Hart
     Created: 2022-09-05 00:24:25
     Last Edit: 2022-09-05 00:56:53
-    Other:
-    Requires:
 .LINK
     https://wstools.dev
 #>
