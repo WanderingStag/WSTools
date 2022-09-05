@@ -1507,7 +1507,7 @@ Function Copy-Edge {
 .Notes
     AUTHOR: Skyler Hart
     CREATED: 2021-05-25 22:41:47
-    LASTEDIT: 2021-05-25 22:48:14
+    LASTEDIT: 2022-09-04 22:05:04
     KEYWORDS:
     REQUIRES:
         -RunAsAdministrator
@@ -1536,13 +1536,22 @@ Function Copy-Edge {
         $SleepTimer = 200,
 
         [Parameter()]
-        $MaxResultTime = 1200
+        $MaxResultTime = 1200,
+
+        [Parameter()]
+        [switch]$Vanilla
     )
 
     Begin {
         $config = $Global:WSToolsConfig
-        $app = $config.Edge
-        $appname = "Edge"
+        if ($Vanilla) {
+            $app = $config.EdgeVanilla
+            $appname = "EdgeVanilla"
+        }
+        else {
+            $app = $config.Edge
+            $appname = "Edge"
+        }
         $ScriptWD = $config.ScriptWD
         $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
         $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)

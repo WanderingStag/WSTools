@@ -5,7 +5,7 @@
 )]
 
 $Global:WSToolsConfig = [PSCustomObject]@{
-    # WSTools config v2022.7.0
+    # WSTools config v2022.9.0
     # Remove the # symbol infront of a line to enable it
     ###########################################################################################################################################
     #Application Service Names - used in Stop-AppService. Uses match to match the name of a service that is running and stops it.
@@ -170,7 +170,7 @@ $Global:WSToolsConfig = [PSCustomObject]@{
     ################################
     #Install file locations - for normal installation files.
     a7Zip = "\\192.168.201.10\apps\Tools\7zip" #64-bit only unless you change Copy-7Zip to use 32-bit
-    Edge = "\\192.168.201.10\apps\Patches\Edge"
+    EdgeVanilla = "\\192.168.201.10\apps\Patches\Edge"
     Git = "\\192.168.201.10\apps\Patches\GitSCM"
     IE11 = "\\192.168.201.10\apps\Patches\IE\IE11"
     MECM = "\\192.168.201.10\apps\Microsoft\SCCM"
@@ -196,6 +196,7 @@ $Global:WSToolsConfig = [PSCustomObject]@{
     AxwayClient = "\\192.168.201.10\apps\Patches\SDC-APPS\Axway\NIPR"
     Chrome = "\\192.168.201.10\apps\Patches\SDC-APPS\Chrome"
     DSET = "\\192.168.201.10\apps\Patches\SDC-APPS\DSET"
+    Edge = "\\192.168.201.10\apps\Patches\SDC-APPS\Edge"
     Encase = "\\192.168.201.10\apps\Patches\SDC-APPS\Encase\NIPR"
     Firefox = "\\192.168.201.10\apps\Patches\SDC-APPS\Firefox"
     InfoPath = "\\192.168.201.10\apps\Patches\SDC-APPS\InfoPath"
