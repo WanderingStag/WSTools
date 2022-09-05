@@ -17,6 +17,7 @@ New features and other changes:
 7. Moved some functions from WSTools.psm1 to WS_PowerShell.psm1 and rearranged some functions.
 8. Added Install-GitSCM.
 9. Added EdgeVanilla config item, added Vanilla switch to Copy-Edge, moved Install-Edge back from another module and added Vanilla switch.
+10. Added Install-OneDrive.
 
 ######################
 #                    #
