@@ -20,6 +20,7 @@ New features and other changes:
 10. Added Install-OneDrive.
 11. Added TLS1_1ServerDisabledByDefault config item, changed default value of TLS1_1ServerEnabled, and PCT1ServerDisabledByDefault config item.
 12. Added Get-SCHANNELSetting.
+13. Rewrote Start-CommandMultiThreaded and Update-BrokenInheritance.
 
 ######################
 #                    #
