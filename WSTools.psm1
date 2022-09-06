@@ -6740,135 +6740,95 @@ Function Test-RegistryValue {
 
 function Update-BrokenInheritance {
 <#
-Find and fix broken permissions inheritance.
-
-All envrionments perform differently. Please test this code before using it
-in production.
-
-THIS CODE AND ANY ASSOCIATED INFORMATION ARE PROVIDED “AS IS” WITHOUT WARRANTY
-OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
-PURPOSE. THE ENTIRE RISK OF USE, INABILITY TO USE, OR RESULTS FROM THE USE OF
-THIS CODE REMAINS WITH THE USER.
-
-Author: Aaron Guilmette
-		aaron.guilmette@microsoft.com
-#>
-
-<#
 .SYNOPSIS
-Find objects without permissions inheritance enabled and optionally
-update.
-
+    Finds and fixes users with broken inheritance.
 .DESCRIPTION
-This script will search Active Directory for objects with permissions
-inheritance disabled.
-
-.PARAMETER Confirm
-Confirm changes to Active Directory objects.
-
+    Will search Active Directory for users that do not have permissions inheritance enabled and then fix the inheritance.
 .PARAMETER Identity
-Optionally specify sAMAccountName or distinguishedDName of a user to check.
-
-.PARAMETER Logfile
-Specify logfile for operations.
-
+    Specify a user to fix the inheritance on. Can use sAMAccountName or distinguishedName. If no user is specified it will find all users with broken inheritance.
 .PARAMETER SearchBase
-Set the BaseDN for the search query.  Defaults to the DN of the current
-domain.
-
+    Specify the OU to search using the distinguishedName of the OU. If not specified it searches the whole domain.
 .EXAMPLE
-.\Fix-BrokenInheritance.ps1 -LogFile output.txt
-Find objects with disabled inheritance and output to logfile output.txt.
-
+    C:\PS>Update-BrokenInheritance -Identity "CN=Joe Snuffy,CN=Users,DC=wstools,DC=dev"
+    Will fix the broken inheritance on the user Joe Snuffy.
 .EXAMPLE
-.\Fix-BrokenInheritance.ps1 -Logfile output.txt -Confirm
-Find objects with disabled inheritance, update them, and log changes
-to output.txt.
-
-.EXAMPLE
-.\Fix-BrokenInheritance.ps1 -Identity "CN=Joe,CN=Users,DC=contoso,DC=com"
-Checks object CN=Joe for disabled inheritance.
-
+    C:\PS>Update-BrokenInheritance -SearchBase "CN=Users,DC=wstools,DC=dev"
+    Will fix the broken inheritance on all users in the Users OU.
+.INPUTS
+    System.String
+.OUTPUTS
+    System.String
+.COMPONENT
+    WSTools
+.FUNCTIONALITY
+    Permissions, Inheritance, Active Directory
+.NOTES
+    Author: Skyler Hart
+    Created: Sometime before 2017-08-07
+    Last Edit: 2022-09-05 23:40:29
+    Other:
+    Requires:
+        -Module ActiveDirectory
 .LINK
-https://gallery.technet.microsoft.com/Find-and-Fix-Broken-Object-5ae18ab1
-
+    https://wstools.dev
 #>
-Param(
-    [Parameter(Mandatory=$false,HelpMessage="Active Directory Base DN")]
-		[string]$SearchBase = (Get-ADDomain).DistinguishedName,
-	[Parameter(Mandatory=$false,HelpMessage="Log File")]
-		[string]$LogFile,
-	[Parameter(Mandatory=$false,HelpMessage="Enter User ID (sAMAccountName or DN)")]
-		[string]$Identity,
-    [Parameter(Mandatory=$false,HelpMessage="Confirm")]
-        [switch]$Confirm
+    Param (
+        [Parameter(
+            HelpMessage="Enter the distinguishedName of the OU that you want to search",
+            Mandatory=$false
+        )]
+    	[string]$SearchBase = (Get-ADDomain).DistinguishedName,
+
+        [Parameter(
+            HelpMessage="Enter User ID (sAMAccountName or distinguishedName)",
+            Mandatory=$false
+        )]
+		[string]$Identity
 	)
 
-If (!(Get-Module ActiveDirectory))
-	{
-	Import-Module ActiveDirectory
-	}
-
-# Start Logfile
-If ($LogFile)
-	{
-	$head = """" + "DistinguishedName" + """" + "," + """" + "UPN" + """" + "," + """" + "InheritanceDisabled-Before" + """" + "," + """" + "InheritanceDisabled-After" + """" + "," + """" + "adminSDHolderProtected" + """"
-	$head | Out-File $LogFile
-	}
-
-# Instantiate Directory Searcher
-If (!($Identity))
-	{
-	$DirectorySearcher = New-Object System.DirectoryServices.DirectorySearcher([ADSI]"LDAP://$SearchBase","(&(objectcategory=user)(objectclass=user))")
-	}
-Else
-	{
-        Write-Output "Searching for User $($Identity)"
-	If ($Identity -like "CN=*")
-        {
-        $DirectorySearcher = New-Object System.DirectoryServices.DirectorySearcher([ADSI]"LDAP://$Identity")
-	    }
-    Else
-        {
-        $DirectorySearcher = New-Object System.DirectoryServices.DirectorySearcher([ADSI]"LDAP://$SearchBase","(&(objectcategory=user)(objectclass=user)(samaccountname=$($Identity)))")
-	    }
-    }
-
-# Find All Matching Users
-$Users = $DirectorySearcher.FindAll()
-
-Foreach ($obj in $users) {
-    # Set 'objBefore' to the current object so we can track any changes
-    $objBefore = $obj.GetDirectoryEntry()
-
-    # Check to see if user has Inheritance Disabled; $True is inheritance disabled, $False is inheritance enabled
-    If ($objBefore.psBase.ObjectSecurity.AreAccessRulesProtected -eq $True) {
-        Write-Output "User: $($objBefore.sAMAccountName) Inheritance is disabled: $($objBefore.psBase.ObjectSecurity.AreAccessRulesProtected) ; adminSDHolder: $($objBefore.Properties.AdminCount)"
-        $objBeforeACL = $($objBefore.psBase.ObjectSecurity.AreAccessRulesProtected)
-        #$user.psBase.ObjectSecurity | GM "*get*access*"
-
-        # If Confirm switch was enabled to make changes
-        If ($Confirm) {
-            Write-Output "Updating $($objBefore.sAMAccountName)."
-            $objBefore.psbase.ObjectSecurity.SetAccessRuleProtection($false,$true)
-            $objBefore.psbase.CommitChanges()
+    if (Get-Module -ListAvailable -Name ActiveDirectory) {
+        #Start Directory Searcher
+        If (!($Identity)) {
+	        $DirectorySearcher = New-Object System.DirectoryServices.DirectorySearcher([ADSI]"LDAP://$SearchBase","(&(objectcategory=user)(objectclass=user))")
+    	}
+        Else {
+            Write-Output "Searching for User $($Identity)"
+    	    If ($Identity -like "CN=*") {
+                $DirectorySearcher = New-Object System.DirectoryServices.DirectorySearcher([ADSI]"LDAP://$Identity")
+	        }
+            Else {
+                $DirectorySearcher = New-Object System.DirectoryServices.DirectorySearcher([ADSI]"LDAP://$SearchBase","(&(objectcategory=user)(objectclass=user)(samaccountname=$($Identity)))")
+	        }
         }
 
-        # Set 'objAfter' so we can see the updated change
-        $objAfter = $obj.GetDirectoryEntry()
-        $objAfterACL = $($objAfter.psBase.ObjectSecurity.AreAccessRulesProtected)
+        #Find All Matching Users
+        $Users = $DirectorySearcher.FindAll()
 
-        # If logging is enabled, write a log file
-        If ($LogFile)
-		    {
-		    $LogData = """" + $objBefore.DistinguishedName + """" + "," + """" + $objBefore.UserPrincipalName + """" + "," + """" + $objBeforeACL + """" + "," + """" + $objAfterACL + """" + "," + """" + $objBefore.Properties.AdminCount + """"
-		    $LogData | Out-File $LogFile -Append
-		    }
-    }
-    Else {
-        # User has inheritance enabled, so do nothing
-    }
+        Foreach ($obj in $users) {
+            #Set 'objBefore' to the current object so we can track any changes
+            $objBefore = $obj.GetDirectoryEntry()
+
+            #Check to see if user has Inheritance Disabled; $True is inheritance disabled, $False is inheritance enabled
+            If ($objBefore.psBase.ObjectSecurity.AreAccessRulesProtected -eq $True) {
+                Write-Output "User: $($objBefore.sAMAccountName) Inheritance is disabled: $($objBefore.psBase.ObjectSecurity.AreAccessRulesProtected) ; adminSDHolder: $($objBefore.Properties.AdminCount)"
+                $objBeforeACL = $($objBefore.psBase.ObjectSecurity.AreAccessRulesProtected)
+
+                #Fix inheritance
+                Write-Output "Updating $($objBefore.sAMAccountName)."
+                $objBefore.psbase.ObjectSecurity.SetAccessRuleProtection($false,$true)
+                $objBefore.psbase.CommitChanges()
+
+                #Set 'objAfter' so we can see the updated change
+                $objAfter = $obj.GetDirectoryEntry()
+                $objAfterACL = $($objAfter.psBase.ObjectSecurity.AreAccessRulesProtected)
+            }
+            Else {
+                #User has inheritance enabled, so do nothing
+            }
+        }
+    }#if ad module exists
+    else {
+        Write-Warning "Active Directory module is not installed and is required to run this command."
     }
 }
 
