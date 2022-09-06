@@ -6162,153 +6162,152 @@ New-Alias -Name "Start-WSToolsTrayApp" -Value Start-WSToolsGUI
 
 
 function Start-CommandMultiThreaded {
-<#.Synopsis
-#    This is a quick and open-ended script multi-threader searcher
-#.Description
-#    This script will allow any general, external script to be multithreaded by providing a single
-#    argument to that script and opening it in a seperate thread.  It works as a filter in the
-#    pipeline, or as a standalone script.  It will read the argument either from the pipeline
-#    or from a filename provided.  It will send the results of the child script down the pipeline,
-#    so it is best to use a script that returns some sort of object.
-#
-#    Authored by Ryan Witschger - http://www.Get-Blog.com
-#.PARAMETER Command
-#    This is where you provide the PowerShell Cmdlet / Script file that you want to multithread.
-#    You can also choose a built in cmdlet.  Keep in mind that your script.  This script is read into
-#    a scriptblock, so any unforeseen errors are likely caused by the conversion to a script block.
-#.PARAMETER ObjectList
-#    The objectlist represents the arguments that are provided to the child script.  This is an open ended
-#    argument and can take a single object from the pipeline, an array, a collection, or a file name.  The
-#    multithreading script does it's best to find out which you have provided and handle it as such.
-#    If you would like to provide a file, then the file is read with one object on each line and will
-#    be provided as is to the script you are running as a string.  If this is not desired, then use an array.
-#
-#.PARAMETER InputParam
-#    This allows you to specify the parameter for which your input objects are to be evaluated.  As an example,
-#    if you were to provide a computer name to the Get-Process cmdlet as just an argument, it would attempt to
-#    find all processes where the name was the provided computername and fail.  You need to specify that the
-#    parameter that you are providing is the "ComputerName".
-#
-#.PARAMETER AddParam
-#    This allows you to specify additional parameters to the running command.  For instance, if you are trying
-#    to find the status of the "BITS" service on all servers in your list, you will need to specify the "Name"
-#    parameter.  This command takes a hash pair formatted as follows:
-#
-#    @{"ParameterName" = "Value"}
-#    @{"ParameterName" = "Value" ; "ParameterTwo" = "Value2"}
-#.PARAMETER AddSwitch
-#    This allows you to add additional switches to the command you are running.  For instance, you may want
-#    to include "RequiredServices" to the "Get-Service" cmdlet.  This parameter will take a single string, or
-#    an aray of strings as follows:
-#
-#    "RequiredServices"
-#    @("RequiredServices", "DependentServices")
-#.PARAMETER MaxThreads
-#    This is the maximum number of threads to run at any given time.  If resources are too congested try lowering
-#    this number.  The default value is 20.
-#
-#.PARAMETER SleepTimer
-#    This is the time between cycles of the child process detection cycle.  The default value is 200ms.  If CPU
-#    utilization is high then you can consider increasing this delay.  If the child script takes a long time to
-#    run, then you might increase this value to around 1000 (or 1 second in the detection cycle).
-#.EXAMPLE
-#    Both of these will execute the script named ServerInfo.ps1 and provide each of the server names in AllServers.txt
-#    while providing the results to the screen.  The results will be the output of the child script.
-#
-#    gc AllServers.txt | .\Start-CommandMultiThreaded.ps1 -Command .\ServerInfo.ps1
-#    .\Run-CommandMultiThreaded.ps1 -Command .\ServerInfo.ps1 -ObjectList (gc .\AllServers.txt)
-#.EXAMPLE
-#    The following demonstrates the use of the AddParam statement
-#    $ObjectList | .\Start-CommandMultiThreaded.ps1 -Command "Get-Service" -InputParam ComputerName -AddParam @{"Name" = "BITS"}
-#.EXAMPLE
-#    The following demonstrates the use of the AddSwitch statement
-#    $ObjectList | .\Start-CommandMultiThreaded.ps1 -Command "Get-Service" -AddSwitch @("RequiredServices", "DependentServices")
-#.EXAMPLE
-#    The following demonstrates the use of the script in the pipeline
-#    $ObjectList | .\Start-CommandMultiThreaded.ps1 -Command "Get-Service" -InputParam ComputerName -AddParam @{"Name" = "BITS"} | Select Status, MachineName
-#.Link
-#    http://www.get-blog.com/?p=189
+<#
+.SYNOPSIS
+    Takes a single command and multithreads it.
+.DESCRIPTION
+    Will multithread any command/cmdlet/function you specify.
+.PARAMETER Command
+    Where you specify the command you want to multithread.
+.PARAMETER Objects
+    The arguments that are provided to the command. Generally used for specifying the name of one or more computers. However, it can be used for specifying other arguments such as a list of users.
+.PARAMETER MaxThreads
+    The maximum threads to run. Can cause resource issues.
+.PARAMETER MaxTime
+    The amount of seconds to run the script after last job (object) is started.
+.PARAMETER SleepTimer
+    The amount of milliseconds between each time the script checks the status of jobs. For high resource utilization on the system or if the script is going to take longer to run, this should be increased.
+.PARAMETER AddParameter
+    Allows specifying additional parameters beyond what is used in Objects. Need to format in a hash table. Ex:
+    @{"ParameterName" = "Value"}
+    or
+    @{"ParameterName" = "Value";"AnotherParameter" = "AnotherValue"}
+.PARAMETER AddSwitch
+    Allows specifying additional switches to add to the command you run. Need to format in a single string or an array of strings. Ex:
+    "TotalCount"
+    or
+    @("TotalCount","All")
+.EXAMPLE
+    C:\PS>Start-CommandMultiThreaded Clear-Space (gc c:\Scripts\comps.txt)
+    Will run the Clear-Space command against nine of the computers in the comps.txt file at a time. This is because the -MaxThreads parameter isn't set so it runs at the default of 9 objects at a time.
+.EXAMPLE
+    C:\PS>gc c:\Scripts\comps.txt | Start-CommandMultiThreaded Clear-Space
+    Will run the Clear-Space command against nine of the computers in the comps.txt file at a time. This is because the -MaxThreads parameter isn't set so it runs at the default of 9 objects at a time.
+.EXAMPLE
+    C:\PS>Start-CommandMultiThreaded -Command Get-Service -Objects (gc c:\Scripts\comps.txt) -AddParameter @{"Name" = "wuauserv"} -AddSwitch @('RequiredServices','DependentServices')
+    Will get the service "wuauserv" and it's dependent/required services from the computers listed in comps.txt.
+.EXAMPLE
+    C:\PS>Start-CommandMultiThreaded -Command Set-AxwayConfig -Objects COMP1,COMP2 -AddParameter @{"ConfigFile" = "C:\PKI\MyOrgsAxwayConfig.txt"}
+    Will set the Axway config file on both the computer COMP1 and COMP2 at the same time using C:\PKI\MyOrgsAxwayConfig.txt on those computers as the file to import.
+.INPUTS
+    System.Management.Automation.PSObject,System.String
+.OUTPUTS
+    System.Management.Automation.PSCustomObject
+.COMPONENT
+    WSTools
+.FUNCTIONALITY
+    Multithread, multitask
+.NOTES
+    Author: Skyler Hart
+    Created: Sometime before 2017-08-07
+    Last Edit: 2022-09-05 22:19:49
+    Other:
+.LINK
+    https://wstools.dev
 #>
-Param($Command = $(Read-Host "Enter the script file"),
-    [Parameter(ValueFromPipeline=$true,ValueFromPipelineByPropertyName=$true)]$ObjectList,
-    $InputParam = $Null,
-    $MaxThreads = 20,
-    $SleepTimer = 200,
-    $MaxResultTime = 120,
-    [HashTable]$AddParam = @{},
-    [Array]$AddSwitch = @()
-)
-Begin{
-    $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
-    $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
-    $RunspacePool.Open()
-    If ($(Get-Command | Select-Object Name) -match $Command){
-        $Code = $Null
-    }Else{
-        $OFS = "`r`n"
-        $Code = [ScriptBlock]::Create($(Get-Content $Command))
-        Remove-Variable OFS
-    }
-    $Jobs = @()
-}
-Process{
-    Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
-    ForEach ($Object in $ObjectList){
-        If ($null -eq $Code){
-            $PowershellThread = [powershell]::Create().AddCommand($Command)
-        }Else{
-            $PowershellThread = [powershell]::Create().AddScript($Code)
-        }
-        If ($null -ne $InputParam){
-            $PowershellThread.AddParameter($InputParam, $Object.ToString()) | out-null
-        }Else{
-            $PowershellThread.AddArgument($Object.ToString()) | out-null
-        }
-        ForEach($Key in $AddParam.Keys){
-            $PowershellThread.AddParameter($Key, $AddParam.$key) | out-null
-        }
-        ForEach($Switch in $AddSwitch){
-            $Switch
-            $PowershellThread.AddParameter($Switch) | out-null
-        }
-        $PowershellThread.RunspacePool = $RunspacePool
-        $Handle = $PowershellThread.BeginInvoke()
-        $Job = "" | Select-Object Handle, Thread, object
-        $Job.Handle = $Handle
-        $Job.Thread = $PowershellThread
-        $Job.Object = $Object.ToString()
-        $Jobs += $Job
-    }
-}
-End{
-    $ResultTimer = Get-Date
-    While (@($Jobs | Where-Object {$null -ne $_.Handle}).count -gt 0)  {
-        $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
-        If ($Remaining.Length -gt 60){
-            $Remaining = $Remaining.Substring(0,60) + "..."
-        }
-        Write-Progress `
-            -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
-            -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
-            -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
-        ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
-            $Job.Thread.EndInvoke($Job.Handle)
-            $Job.Thread.Dispose()
-            $Job.Thread = $Null
-            $Job.Handle = $Null
-            $ResultTimer = Get-Date
-        }
-        If (($(Get-Date) - $ResultTimer).totalseconds -gt $MaxResultTime){
-            Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
-            Exit
-        }
-        Start-Sleep -Milliseconds $SleepTimer
-    }
-    $RunspacePool.Close() | Out-Null
-    $RunspacePool.Dispose() | Out-Null
-}
-}
+    [CmdletBinding()]
+    Param (
+        [Parameter()]
+        [string]$Command,
 
+        [Parameter(
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [string[]]$Objects,
+
+        [Parameter()]
+        [int32]$MaxThreads = 9,
+
+        [Parameter()]
+        [int32]$MaxTime = 300,
+
+        [Parameter()]
+        [int32]$SleepTimer = 500,
+
+        [Parameter()]
+        [HashTable]$AddParameter,
+
+        [Parameter()]
+        [Array]$AddSwitch
+    )
+
+    Begin {
+        $ISS = [System.Management.Automation.Runspaces.InitialSessionState]::CreateDefault()
+        $RunspacePool = [RunspaceFactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
+        $RunspacePool.Open()
+        If ($(Get-Command | Select-Object Name) -match $Command) {
+            $Code = $Null
+        }
+        Else {
+            $Code = [ScriptBlock]::Create($(Get-Content $Command))
+        }
+        $Jobs = @()
+    }
+    Process {
+        Write-Progress -Activity "Loading threads" -Status "Starting Job $($jobs.count)"
+        ForEach ($Object in $Objects){
+            If ([string]::IsNullOrWhiteSpace($Code)) {
+                $PowershellThread = [PowerShell]::Create().AddCommand($Command)
+            }
+            Else {
+                $PowershellThread = [PowerShell]::Create().AddScript($Code)
+            }
+
+            $PowershellThread.AddArgument($Object.ToString()) | Out-Null
+            ForEach ($Key in $AddParameter.Keys) {
+                $PowershellThread.AddParameter($Key, $AddParameter.$key) | Out-Null
+            }
+            ForEach ($Switch in $AddSwitch) {
+                $Switch
+                $PowershellThread.AddParameter($Switch) | Out-Null
+            }
+            $PowershellThread.RunspacePool = $RunspacePool
+            $Handle = $PowershellThread.BeginInvoke()
+            $Job = "" | Select-Object Handle, Thread, object
+            $Job.Handle = $Handle
+            $Job.Thread = $PowershellThread
+            $Job.Object = $Object.ToString()
+            $Jobs += $Job
+        }
+    }
+    End {
+        $ResultTimer = Get-Date
+        While (@($Jobs | Where-Object {$null -ne $_.Handle}).count -gt 0)  {
+            $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
+            If ($Remaining.Length -gt 60) {
+                $Remaining = $Remaining.Substring(0,60) + "..."
+            }
+            Write-Progress -Activity "Waiting for Jobs To Finish - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
+                -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
+            ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})) {
+                $Job.Thread.EndInvoke($Job.Handle)
+                $Job.Thread.Dispose()
+                $Job.Thread = $Null
+                $Job.Handle = $Null
+                $ResultTimer = Get-Date
+            }
+            If (($(Get-Date) - $ResultTimer).totalseconds -gt $MaxTime) {
+                Write-Error "Script appears to be frozen, try increasing MaxResultTime"
+                Exit
+            }
+            Start-Sleep -Milliseconds $SleepTimer
+        }
+        $RunspacePool.Close() | Out-Null
+        $RunspacePool.Dispose() | Out-Null
+    }
+}
 
 function Stop-AppService {
 <#
