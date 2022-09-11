@@ -1204,14 +1204,6 @@ Function Test-DynamicParameterSwitchCheck {
     Non-functional. For reference.
 .DESCRIPTION
     Shows how to create a function with dynamic parameters (Add and Modify) that only appear if the username parameter is populated and the Enable switch is added.
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.PARAMETER Path
-    Specifies a path to one or more locations.
-.INPUTS
-    System.String
-.OUTPUTS
-    System.Management.Automation.PSCustomObject
 .COMPONENT
     WSTools
 .FUNCTIONALITY
@@ -1219,7 +1211,7 @@ Function Test-DynamicParameterSwitchCheck {
 .NOTES
     Author: Skyler Hart
     Created: 2022-09-11 01:28:57
-    Last Edit: 2022-09-11 01:28:57
+    Last Edit: 2022-09-11 01:41:04
     Other:
 .LINK
     https://wstools.dev
@@ -1268,7 +1260,6 @@ Function Test-DynamicParameterSwitchCheck {
             return $paramDictionary
         }
     }#dynamic
-
     Process {
         $PSBoundParameters['Add'].IsPresent
     }
