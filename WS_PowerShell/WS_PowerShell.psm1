@@ -1198,4 +1198,59 @@ function Send-ToastNotification {
 }
 
 
+Function Test-DynamicParameterSwitchCheck {
+    Param (
+        [Parameter(
+            Mandatory = $false,
+            HelpMessage='Enter Workflow Name'
+        )]
+        [Alias('OrgBox','MailBox')]
+        [string]$Workflow,
+
+        [Parameter(Mandatory = $false)]
+        [Alias('EDIPI','DisplayName')]
+        [string[]]$UserName
+
+    )
+    DynamicParam {
+        if (![string]::IsNullOrWhiteSpace($Workflow) -and ![string]::IsNullOrWhiteSpace($Username)) {
+            #Parameter
+            $parameterAttribute = [System.Management.Automation.ParameterAttribute]@{
+                ParameterSetName = "AddingMembers"
+                Mandatory = $false
+            }
+
+            $attributeCollection = [System.Collections.ObjectModel.Collection[System.Attribute]]::new()
+            $attributeCollection.Add($parameterAttribute)
+
+            $dynParam1 = [System.Management.Automation.RuntimeDefinedParameter]::new(
+                'Add', [switch], $attributeCollection
+            )
+
+            $paramDictionary = [System.Management.Automation.RuntimeDefinedParameterDictionary]::new()
+            $paramDictionary.Add('Add', $dynParam1)
+
+            #Parameter2
+            $parameterAttribute2 = [System.Management.Automation.ParameterAttribute]@{
+                ParameterSetName = "RemovingMembers"
+                Mandatory = $false
+            }
+
+            $attributeCollection2 = [System.Collections.ObjectModel.Collection[System.Attribute]]::new()
+            $attributeCollection2.Add($parameterAttribute2)
+
+            $dynParam2 = [System.Management.Automation.RuntimeDefinedParameter]::new(
+                'Remove', [switch], $attributeCollection2
+            )
+
+            $paramDictionary.Add('Remove', $dynParam2)
+            return $paramDictionary
+        }
+    }#dynamic
+
+    Process {
+        $PSBoundParameters['Add'].IsPresent
+    }
+}
+
 Export-ModuleMember -Alias * -Function *
