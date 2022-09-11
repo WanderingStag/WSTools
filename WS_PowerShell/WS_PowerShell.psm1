@@ -1199,21 +1199,42 @@ function Send-ToastNotification {
 
 
 Function Test-DynamicParameterSwitchCheck {
+<#
+.SYNOPSIS
+    Non-functional. For reference.
+.DESCRIPTION
+    Shows how to create a function with dynamic parameters (Add and Modify) that only appear if the username parameter is populated and the Enable switch is added.
+.PARAMETER ComputerName
+    Specifies the name of one or more computers.
+.PARAMETER Path
+    Specifies a path to one or more locations.
+.INPUTS
+    System.String
+.OUTPUTS
+    System.Management.Automation.PSCustomObject
+.COMPONENT
+    WSTools
+.FUNCTIONALITY
+    Example, Reference
+.NOTES
+    Author: Skyler Hart
+    Created: 2022-09-11 01:28:57
+    Last Edit: 2022-09-11 01:28:57
+    Other:
+.LINK
+    https://wstools.dev
+#>
     Param (
-        [Parameter(
-            Mandatory = $false,
-            HelpMessage='Enter Workflow Name'
-        )]
-        [Alias('OrgBox','MailBox')]
-        [string]$Workflow,
-
         [Parameter(Mandatory = $false)]
         [Alias('EDIPI','DisplayName')]
-        [string[]]$UserName
+        [string[]]$UserName,
+
+        [Parameter(Mandatory = $false)]
+        [switch]$Enable
 
     )
     DynamicParam {
-        if (![string]::IsNullOrWhiteSpace($Workflow) -and ![string]::IsNullOrWhiteSpace($Username)) {
+        if (![string]::IsNullOrWhiteSpace($Username) -and $Enable -eq $true) {
             #Parameter
             $parameterAttribute = [System.Management.Automation.ParameterAttribute]@{
                 ParameterSetName = "AddingMembers"
@@ -1232,7 +1253,7 @@ Function Test-DynamicParameterSwitchCheck {
 
             #Parameter2
             $parameterAttribute2 = [System.Management.Automation.ParameterAttribute]@{
-                ParameterSetName = "RemovingMembers"
+                ParameterSetName = "ModifyingMembers"
                 Mandatory = $false
             }
 
@@ -1240,10 +1261,10 @@ Function Test-DynamicParameterSwitchCheck {
             $attributeCollection2.Add($parameterAttribute2)
 
             $dynParam2 = [System.Management.Automation.RuntimeDefinedParameter]::new(
-                'Remove', [switch], $attributeCollection2
+                'Modify', [switch], $attributeCollection2
             )
 
-            $paramDictionary.Add('Remove', $dynParam2)
+            $paramDictionary.Add('Modify', $dynParam2)
             return $paramDictionary
         }
     }#dynamic
