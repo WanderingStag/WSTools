@@ -22,6 +22,7 @@ New features and other changes:
 12. Added Get-SCHANNELSetting.
 13. Rewrote Start-CommandMultiThreaded and Update-BrokenInheritance.
 14. Added Test-DynamicParameterSwitchCheck as an example of a function to check if switches are populated.
+15. Changed Get-RecentUser so it now ignores all UMFD-* accounts.
 
 ######################
 #                    #

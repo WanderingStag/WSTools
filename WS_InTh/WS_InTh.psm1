@@ -513,7 +513,7 @@ function Get-RecentUser {
 .Notes
     AUTHOR: Skyler Hart
     CREATED: Sometime before 8/7/2017
-    LASTEDIT: 2022-03-22 15:41:58
+    LASTEDIT: 2022-09-14 22:48:05
     KEYWORDS:
     REQUIRES:
         #Requires -Version 3.0
@@ -581,8 +581,7 @@ Process Name:"
             #Filter by type of logon, username, and domain
             $events | Where-Object {$_.LogonType1 -eq "2" -or $_.LogonType1 -eq "3" -or $_.LogonType1 -eq "7" -or $_.LogonType1 -eq "10" -or $_.LogonType1 -eq "11" `
                 -and $_.Domain1 -ne "NT AUTHORITY" -and $_.Domain1 -ne "Window Manager" -and $_.Username1 -ne "$notcomp" -and $_.Username1 -notlike "$notcomp2" `
-                -and $_.Username1 -ne "UMFD-1" -and $_.Username1 -ne "UMFD-0" -and $_.Username1 -ne "UMFD-2" -and $_.Username1 -ne "UMFD-3" -and $_.Username1 -ne "UMFD-4" `
-                -and $_.Username1 -ne "UMFD-5"} | Select-Object Computer1,When1,LogonType1,Username1,ProcessName1 | ForEach-Object {
+                -and $_.Username1 -notlike "UMFD-*"} | Select-Object Computer1,When1,LogonType1,Username1,ProcessName1 | ForEach-Object {
                     if ($_.LogonType1 -eq 2) {$type2 = "Local"}#if 2
                     if ($_.LogonType1 -eq 3) {$type2 = "Remote"}#if 3
                     if ($_.LogonType1 -eq 7) {$type2 = "UnlockScreen"}#if 7
