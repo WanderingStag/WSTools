@@ -10367,6 +10367,12 @@ Function Set-RemediationValues {
         $SubKey.SetValue($v3, $d0, [Microsoft.Win32.RegistryValueKind]::DWORD)
         #endregion
 
+        #For local computer, properly set SHA and PKCS
+        if ($comp -eq $env:COMPUTERNAME) {
+            $filepath = $PSScriptRoot.Substring(0,($PSScriptRoot.Length-15)) + "\Resources\SHAandPKCS.reg"
+            reg import $filepath
+        }
+
         #regionSessionManager
         ([Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine, $comp)).CreateSubKey('SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management')
         $BaseKey = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine, $comp)
