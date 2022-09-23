@@ -885,19 +885,19 @@ function Get-PowerShellVariable {
         [string[]]$Name
     )
 
-    $variables = Get-ChildItem Env: | Add-Member -MemberType NoteProperty -Name "Type" -Value "`$env:" -PassThru
-    $variables += Get-Variable | Add-Member -MemberType NoteProperty -Name "Type" -Value "PowerShell" -PassThru
+    $variables = Get-ChildItem Env: | Add-Member -MemberType NoteProperty -Name "VariableType" -Value "`$env:" -PassThru
+    $variables += Get-Variable | Add-Member -MemberType NoteProperty -Name "VariableType" -Value "PowerShell" -PassThru
 
     if (!([string]::IsNullOrWhiteSpace($Name))) {
         $filtered = foreach ($obj in $Name) {
-            $variables | Where-Object {$_.Name -match $obj} | Select-Object Type,Name,Value
+            $variables | Where-Object {$_.Name -match $obj} | Select-Object VariableType,Name,Value
         }
     }
     else {
-        $filtered = $variables | Select-Object Type,Name,Value
+        $filtered = $variables | Select-Object VariableType,Name,Value
     }
 
-    $filtered | Select-Object -Unique | Sort-Object Name
+    $filtered | Select-Object | Sort-Object Name
 }
 
 
