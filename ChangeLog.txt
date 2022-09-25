@@ -26,6 +26,7 @@ New features and other changes:
 16. Changed Set-RemediationValues so it will now on the local computer import a registry file to set the SHA and PKCS values as a workaround to the Microsoft bug.
 17. Added function Set-ChromeDeveloperTools which has an alias of Set-DeveloperTools.
 18. Added function Get-PowerShellVariable.
+19. Added function Sync-InTune with alias Sync-MEM.
 
 ######################
 #                    #
