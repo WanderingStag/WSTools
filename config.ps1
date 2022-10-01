@@ -35,13 +35,13 @@ $Global:WSToolsConfig = [PSCustomObject]@{
     ShutdownTime = "0040"
 
     #Update computer. Used when you have a computer you modify the module on then push it out to the update path from that computers local repository (hardcoded to $env:ProgramFiles\WindowsPowerShell\Modules\WSTools).
-    UpdateComp = "snib1" #do not use the fqdn, only the shortname
+    UpdateComp = "sky" #do not use the fqdn, only the shortname
 
     #Path to where module files are stored on a central server. Used in Install-WSTools (aka Copy-WSTools) and Update-WSTools
-    UpdatePath = "\\snse\Temp\Modules\WSTools"
+    UpdatePath = "\\snse\Apps\Microsoft\PowerShell\Modules\WSTools"
 
     #Additional paths is used for pushing out to folders in addtion to UpdatePath.
-    AdditionalUpdatePaths = @('\\192.168.201.10\apps\Microsoft\PowerShell\Modules\WSTools','D:\OneDrive\Scripts\Modules\WSTools')
+    #AdditionalUpdatePaths = @('\\192.168.201.10\apps\Microsoft\PowerShell\Modules\WSTools','D:\OneDrive\Scripts\Modules\WSTools')
 
     #Old PowerShell Modules. Used in Remove-OldPowerShellModule.
     OldPSModule = @('SHTool','SHTools','SkysTool')
