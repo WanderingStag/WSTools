@@ -490,5 +490,12 @@
 			"}"
 		],
 		"description": "Adds Active Directory module check code."
+	},
+	"MyDocuments": {
+		"prefix": "MyDocuments",
+		"body": [
+			"\\$mydocuments = [environment]::getfolderpath('mydocuments')"
+		],
+		"description": "Adds MyDocuments variable/"
 	}
 }
