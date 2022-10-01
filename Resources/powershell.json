@@ -494,7 +494,7 @@
 	"MyDocuments": {
 		"prefix": "MyDocuments",
 		"body": [
-			"\\$mydocuments = [environment]::getfolderpath('mydocuments')"
+			"\\$MyDocuments = [System.Environment]::GetFolderPath('MyDocuments')"
 		],
 		"description": "Adds MyDocuments variable."
 	}
