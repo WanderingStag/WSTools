@@ -27,6 +27,7 @@ New features and other changes:
 17. Added function Set-ChromeDeveloperTools which has an alias of Set-DeveloperTools.
 18. Added function Get-PowerShellVariable.
 19. Added function Sync-InTune with alias Sync-MEM.
+20. Added MyDocuments snippet.
 
 ######################
 #                    #
