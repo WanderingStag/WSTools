@@ -496,6 +496,6 @@
 		"body": [
 			"\\$mydocuments = [environment]::getfolderpath('mydocuments')"
 		],
-		"description": "Adds MyDocuments variable/"
+		"description": "Adds MyDocuments variable."
 	}
 }
