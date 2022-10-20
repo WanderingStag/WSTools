@@ -1609,6 +1609,9 @@ function Get-HWInfo {
                         elseif ($Build -eq 19044 -or $Build -eq 22000 -or $Build -eq 20348) {#Win 10 Win 11 Srv 2022
                             $OS = $OS + " v21H2"
                         }
+                        elseif ($Build -eq 19045 -or $Build -eq 22621) {#Win 10 Win 11
+                            $OS = $OS + " v22H2"
+                        }
                     }#if os win 10, srv 2016, or srv 2019
 
                     #Get Processor Information
@@ -2764,8 +2767,11 @@ Function Get-OperatingSystem {
                     elseif ($Build -eq 19043) {
                         $OS = $OS + " v21H1"
                     }
-                    elseif ($Build -eq 19044 -or $Build -eq 22000 -or $Build -eq 20348) {
+                    elseif ($Build -eq 19044 -or $Build -eq 22000 -or $Build -eq 20348) {#Win 10 Win 11 Server 2022
                         $OS = $OS + " v21H2"
+                    }
+                    elseif ($Build -eq 19045 -or $Build -eq 22621) {#Win 10 Win 11
+                        $OS = $OS + " v22H2"
                     }
                 }#if os win 10, srv 2016, or srv 2019
             }#try
@@ -2830,6 +2836,9 @@ Function Get-OperatingSystem {
                         }
                         elseif ($Build -eq 19044 -or $Build -eq 22000 -or $Build -eq 20348) {
                             $OS = $OS + " v21H2"
+                        }
+                        elseif ($Build -eq 19045 -or $Build -eq 22621) {#Win 10 Win 11
+                            $OS = $OS + " v22H2"
                         }
                     }#if os win 10, srv 2016, or srv 2019
                     else {$OS = $value}
@@ -2951,6 +2960,9 @@ Function Get-OperatingSystem {
                 }
                 elseif ($Build -eq 19044 -or $Build -eq 22000 -or $Build -eq 20348) {
                     $OS = $OS + " v21H2"
+                }
+                elseif ($Build -eq 19045 -or $Build -eq 22621) {#Win 10 Win 11
+                    $OS = $OS + " v22H2"
                 }
             }#if os win 10, win 11, srv 2016, or srv 2019
             else {$OS = $value}

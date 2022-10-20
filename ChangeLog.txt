@@ -4,6 +4,14 @@ Known issues:
 
 ######################
 #                    #
+#      2022.10       #
+#                    #
+######################
+New features and other changes:
+1. Added support for Windows 10/11 version 22H2.
+
+######################
+#                    #
 #      2022.09       #
 #                    #
 ######################
