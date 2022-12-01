@@ -9,6 +9,7 @@ Known issues:
 ######################
 New features and other changes:
 1. Added Test-MTU.
+2. Added Get-HttpHeaderSetting.
 
 ######################
 #                    #

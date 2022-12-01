@@ -6686,7 +6686,7 @@ function Test-MTU {
             ComputerName = $env:COMPUTERNAME
             GoodMTUs = $GoodMTU -join ","
             BadMTUs = $BadMTU -join ","
-            MTU = $BufferSize
+            MTU = $BufferSize+28
             TestAddress = $TestAddress
         }#new object
     }
