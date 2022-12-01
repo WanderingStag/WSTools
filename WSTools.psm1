@@ -6682,11 +6682,15 @@ function Test-MTU {
         Write-Verbose "Bad MTUs: $BadMTU"
         Write-Verbose "Recommended MTU: $BufferSize"
 
+        if ($BufferSize -le 1472) {
+            $BufferSize = $BufferSize+28
+        }
+
         [PSCustomObject]@{
             ComputerName = $env:COMPUTERNAME
             GoodMTUs = $GoodMTU -join ","
             BadMTUs = $BadMTU -join ","
-            MTU = $BufferSize+28
+            MTU = $BufferSize
             TestAddress = $TestAddress
         }#new object
     }
