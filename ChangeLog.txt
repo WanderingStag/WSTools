@@ -4,6 +4,16 @@ Known issues:
 
 ######################
 #                    #
+#      2022.12       #
+#                    #
+######################
+New features and other changes:
+1. Added Merge-File alias to Join-File function based on feedback.
+2. Added function Install-VMwareTools.
+3. Added UTC date string to output of Install-Patches function (InstallRemote.ps1) so you can see when things were done.
+
+######################
+#                    #
 #      2022.11       #
 #                    #
 ######################

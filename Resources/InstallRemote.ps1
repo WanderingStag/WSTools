@@ -677,7 +677,8 @@ if ((Test-Path $90meter) -and $env:USERDNSDOMAIN -like "*.smil.mil") {
 
     #Install or not
     if ($install -eq $true) {
-        Write-Output "$cn`: Installing $pn."
+        $ds = (Get-Date).ToUniversalTime().ToString("yyyyMMdd HH:mm:ss UTC")
+        Write-Output "$ds - $cn`: Installing $pn."
         Start-Process $90meter\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 330
     }
@@ -733,7 +734,8 @@ if ((Test-Path $activclient) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
 
     #Install or not
     if ($install -eq $true) {
-        Write-Output "$cn`: Installing $pn."
+        $ds = (Get-Date).ToUniversalTime().ToString("yyyyMMdd HH:mm:ss UTC")
+        Write-Output "$ds - $cn`: Installing $pn."
         Start-Process $activclient\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 330
     }
@@ -806,7 +808,8 @@ if (Test-Path $acrobat) {
             Send-ToastNotification "Adobe Acrobat installation/update will begin in 5 minutes ($rn.) During this process it may close. Please save all open files." -Title "Adobe Acrobat Install"
             Start-Sleep -Seconds 300
         }
-        Write-Output "$cn`: Installing $pn."
+        $ds = (Get-Date).ToUniversalTime().ToString("yyyyMMdd HH:mm:ss UTC")
+        Write-Output "$ds - $cn`: Installing $pn."
         if ($install -eq $true) {
             Start-Process $acrobat\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         }
@@ -868,7 +871,8 @@ if (Test-Path $aem) {
 
     #Install or not
     if ($install -eq $true) {
-        Write-Output "$cn`: Installing $pn."
+        $ds = (Get-Date).ToUniversalTime().ToString("yyyyMMdd HH:mm:ss UTC")
+        Write-Output "$ds - $cn`: Installing $pn."
         Start-Process $aem\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 360
     }
@@ -938,7 +942,8 @@ if ((Test-Path $anyconnect) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
             Send-ToastNotification "Cisco AnyConnect installation/update will begin in 5 minutes ($rn.) During this process it may close. If you are using it to connect to VPN, your VPN connection will be disconnected. Please wait at least 5 minutes after it starts to reconnect. Please do not log off or shutdown your computer during this process." -Title "Cisco AnyConnect Install"
             Start-Sleep -Seconds 300
         }
-        Write-Output "$cn`: Installing $pn."
+        $ds = (Get-Date).ToUniversalTime().ToString("yyyyMMdd HH:mm:ss UTC")
+        Write-Output "$ds - $cn`: Installing $pn."
         Start-Process $anyconnect\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 300
     }
@@ -999,7 +1004,8 @@ if (Test-Path $axway) {
             Send-ToastNotification "Axway installation/update will begin in 5 minutes ($rn.) During this process it may close. You may need to reboot your computer after it finishes installing" -Title "Axway Install"
             Start-Sleep -Seconds 300
         }
-        Write-Output "$cn`: Installing $pn."
+        $ds = (Get-Date).ToUniversalTime().ToString("yyyyMMdd HH:mm:ss UTC")
+        Write-Output "$ds - $cn`: Installing $pn."
         Start-Process $axway\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 400
         $Reboot = $true
@@ -1072,7 +1078,8 @@ if ((Test-Path $BigIP) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
 
     #Install or not
     if ($install -eq $true) {
-        Write-Output "$cn`: Installing $pn."
+        $ds = (Get-Date).ToUniversalTime().ToString("yyyyMMdd HH:mm:ss UTC")
+        Write-Output "$ds - $cn`: Installing $pn."
         Start-Process $BigIP\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 300
     }
@@ -1149,7 +1156,8 @@ if (Test-Path $chrome) {
             Send-ToastNotification "Google Chrome installation/update will begin in 5 minutes ($rn.) During this process it may close. Please save all open files. It may take up to 10 minutes for Google Chrome to be reinstalled." -Title "Google Chrome Install"
             Start-Sleep -Seconds 300
         }
-        Write-Output "$cn`: Installing $pn."
+        $ds = (Get-Date).ToUniversalTime().ToString("yyyyMMdd HH:mm:ss UTC")
+        Write-Output "$ds - $cn`: Installing $pn."
         Start-Process $chrome\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 360
     }
@@ -1214,7 +1222,8 @@ if ((Test-Path $dset) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
 
     #Install or not
     if ($install -eq $true) {
-        Write-Output "$cn`: Installing $pn."
+        $ds = (Get-Date).ToUniversalTime().ToString("yyyyMMdd HH:mm:ss UTC")
+        Write-Output "$ds - $cn`: Installing $pn."
         Start-Process $dset\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 150
     }
@@ -1291,7 +1300,8 @@ if (Test-Path $edge) {
             Send-ToastNotification "Microsoft Edge installation/update will begin in 5 minutes ($rn.) During this process it may close. Please save all open files. It may take up to 10 minutes to be reinstalled." -Title "Microsoft Edge Install"
             Start-Sleep -Seconds 300
         }
-        Write-Output "$cn`: Installing $pn."
+        $ds = (Get-Date).ToUniversalTime().ToString("yyyyMMdd HH:mm:ss UTC")
+        Write-Output "$ds - $cn`: Installing $pn."
         Start-Process msiexec.exe -ArgumentList "/i $edge\MicrosoftEdgeEnterpriseX64.msi /qn /norestart" -NoNewWindow -Wait
         Start-Sleep 360
         $Reboot = $true
@@ -1364,7 +1374,8 @@ if (Test-Path $encase) {
 
     #Install or not
     if ($install -eq $true) {
-        Write-Output "$cn`: Installing $pn."
+        $ds = (Get-Date).ToUniversalTime().ToString("yyyyMMdd HH:mm:ss UTC")
+        Write-Output "$ds - $cn`: Installing $pn."
         Start-Process $encase\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 300
     }
@@ -1434,7 +1445,8 @@ if (Test-Path $firefox) {
             Send-ToastNotification "Mozilla Firefox installation/update will begin in 5 minutes ($rn.) During this process it may close. Please save all open files. It may take up to 10 minutes to be reinstalled" -Title "Firefox Install"
             Start-Sleep -Seconds 300
         }
-        Write-Output "$cn`: Installing $pn."
+        $ds = (Get-Date).ToUniversalTime().ToString("yyyyMMdd HH:mm:ss UTC")
+        Write-Output "$ds - $cn`: Installing $pn."
         Start-Process $firefox\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 350
     }
@@ -1506,7 +1518,8 @@ if (Test-Path $java) {
 
     #Install or not
     if ($install -eq $true) {
-        Write-Output "$cn`: Installing $pn."
+        $ds = (Get-Date).ToUniversalTime().ToString("yyyyMMdd HH:mm:ss UTC")
+        Write-Output "$ds - $cn`: Installing $pn."
         Start-Process $java\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 360
     }
@@ -1571,7 +1584,8 @@ if (Test-Path $netbanner) {
 
     #Install or not
     if ($install -eq $true) {
-        Write-Output "$cn`: Installing $pn."
+        $ds = (Get-Date).ToUniversalTime().ToString("yyyyMMdd HH:mm:ss UTC")
+        Write-Output "$ds - $cn`: Installing $pn."
         Start-Process $netbanner\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 200
     }
@@ -1632,7 +1646,8 @@ if (Test-Path $onedrive) {
             Send-ToastNotification "OneDrive installation/update will begin in 5 minutes ($rn.) During this process it may close. You may need to reboot your computer after it finishes installing" -Title "OneDrive Install"
             Start-Sleep -Seconds 300
         }
-        Write-Output "$cn`: Installing $pn."
+        $ds = (Get-Date).ToUniversalTime().ToString("yyyyMMdd HH:mm:ss UTC")
+        Write-Output "$ds - $cn`: Installing $pn."
         Start-Process $onedrive\OneDriveSetup.exe -ArgumentList "/AllUsers /Silent" -NoNewWindow -Wait
         Start-Sleep 400
         $Reboot = $true
@@ -1705,7 +1720,8 @@ if (Test-Path $project) {
 
     #Install or not
     if ($install -eq $true) {
-        Write-Output "$cn`: Installing $pn."
+        $ds = (Get-Date).ToUniversalTime().ToString("yyyyMMdd HH:mm:ss UTC")
+        Write-Output "$ds - $cn`: Installing $pn."
         Start-Process $project\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 400
     }
@@ -1715,7 +1731,8 @@ if (Test-Path $project) {
 }
 
 if (Test-Path $ssms) {
-    Write-Output "$cn`: Installing SQL Server Management Studio."
+    $ds = (Get-Date).ToUniversalTime().ToString("yyyyMMdd HH:mm:ss UTC")
+    Write-Output "$ds - $cn`: Installing SQL Server Management Studio."
     $ssmsexec = $ssms + "\SSMS-Setup-ENU.exe"
     Start-Process $ssmsexec -ArgumentList '/Quiet SSMSInstallRoot="C:\Program Files (x86)\Microsoft SQL Server Management Studio 18" DoNotInstallAzureDataStudio=1' -NoNewWindow -Wait
 }
@@ -1783,7 +1800,8 @@ if (Test-Path $tanium) {
 
     #Install or not
     if ($install -eq $true) {
-        Write-Output "$cn`: Installing $pn."
+        $ds = (Get-Date).ToUniversalTime().ToString("yyyyMMdd HH:mm:ss UTC")
+        Write-Output "$ds - $cn`: Installing $pn."
         Start-Process $tanium\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 300
         $Reboot = $true
@@ -1863,7 +1881,8 @@ if (Test-Path $teams) {
             Send-ToastNotification "Microsoft Teams installation/update will begin in 5 minutes ($rn.) During this process it may close. Please save all open files. If after 10 minutes it appears to be uninstalled, please log off then log back in" -Title "Microsoft Teams Install"
             Start-Sleep -Seconds 300
         }
-        Write-Output "$cn`: Installing $pn."
+        $ds = (Get-Date).ToUniversalTime().ToString("yyyyMMdd HH:mm:ss UTC")
+        Write-Output "$ds - $cn`: Installing $pn."
         Start-Process $teams\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 150
     }
@@ -1935,7 +1954,8 @@ if ((Test-Path $titus) -and $env:USERDNSDOMAIN -like "*.smil.mil") {
 
     #Install or not
     if ($install -eq $true) {
-        Write-Output "$cn`: Installing $pn."
+        $ds = (Get-Date).ToUniversalTime().ToString("yyyyMMdd HH:mm:ss UTC")
+        Write-Output "$ds - $cn`: Installing $pn."
         Start-Process $titus\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 300
     }
@@ -1952,7 +1972,8 @@ if (Test-Path $vESD) {
         #do nothing Write-Output "$cn`: vESD in patches folder same as installed version. Skipping install..."
     }
     else {
-        Write-Output "$cn`: Installing vESD."
+        $ds = (Get-Date).ToUniversalTime().ToString("yyyyMMdd HH:mm:ss UTC")
+        Write-Output "$ds - $cn`: Installing vESD."
         $installer = Get-ChildItem $vESD | Where-Object {$_.Name -like "*.msi"} | Select-Object Name -ExpandProperty Name -Last 1
         $inp = $vESD + "\" + $installer
         $iargs = $inp + " /quiet /norestart"
@@ -2024,7 +2045,8 @@ if (Test-Path $visio) {
 
     #Install or not
     if ($install -eq $true) {
-        Write-Output "$cn`: Installing $pn."
+        $ds = (Get-Date).ToUniversalTime().ToString("yyyyMMdd HH:mm:ss UTC")
+        Write-Output "$ds - $cn`: Installing $pn."
         Start-Process $visio\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 400
     }
@@ -2034,7 +2056,8 @@ if (Test-Path $visio) {
 }
 
 if (Test-Path $vlc) {
-    Write-Output "$cn`: Installing VLC."
+    $ds = (Get-Date).ToUniversalTime().ToString("yyyyMMdd HH:mm:ss UTC")
+    Write-Output "$ds - $cn`: Installing VLC."
     $vi = Get-ChildItem $vlc
     $vp = $vi.FullName[0]
     Start-Process $vp -ArgumentList "/L=1033 /S" -NoNewWindow -Wait
@@ -2103,7 +2126,8 @@ if (Test-Path $vscode) {
             Send-ToastNotification "Visual Studio Code installation/update will begin in 5 minutes ($rn.) During this process it may close. Please save all open files. If after 10 minutes it appears to be uninstalled, please log off then log back in" -Title "Visual Studio Code Install"
             Start-Sleep -Seconds 300
         }
-        Write-Output "$cn`: Installing $pn."
+        $ds = (Get-Date).ToUniversalTime().ToString("yyyyMMdd HH:mm:ss UTC")
+        Write-Output "$ds - $cn`: Installing $pn."
         Start-Process $vsp -ArgumentList "/SP- /VERYSILENT /SUPPRESSMSGBOXES /NOCANCEL /NORESTART /CLOSEAPPLICATIONS /NORESTARTAPPLICATIONS /TYPE=full" -NoNewWindow -Wait
         Start-Sleep 300
     }
@@ -2173,7 +2197,8 @@ if (Test-Path $zoom) {
             Send-ToastNotification "Zoom client installation/update will begin in 5 minutes ($rn.) During this process it may close. Please save all open files. If after 10 minutes it appears to be uninstalled, please log off then log back in" -Title "Zoom Install"
             Start-Sleep -Seconds 300
         }
-        Write-Output "$cn`: Installing $pn."
+        $ds = (Get-Date).ToUniversalTime().ToString("yyyyMMdd HH:mm:ss UTC")
+        Write-Output "$ds - $cn`: Installing $pn."
         Start-Process msiexec.exe -ArgumentList "$zoom\ZoomInstallerFull.msi /quiet /norestart" -NoNewWindow -Wait
         Start-Sleep 150
     }
@@ -2184,7 +2209,8 @@ if (Test-Path $zoom) {
 
 
 if ($datun -ge 1) {
-    Write-Output "$cn`: Installing McAfee DAT update."
+    $ds = (Get-Date).ToUniversalTime().ToString("yyyyMMdd HH:mm:ss UTC")
+    Write-Output "$ds - $cn`: Installing McAfee DAT update."
     foreach ($dat in $datu) {
         Start-Process $dat -ArgumentList "/silent" -NoNewWindow -Wait
     }

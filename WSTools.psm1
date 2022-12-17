@@ -3919,6 +3919,7 @@ Function Join-File {
     $WriteObj.Close()
     Set-Location $og
 }
+New-Alias -Name "Merge-File" -Value Join-File
 
 
 function Mount-HomeDrive {
