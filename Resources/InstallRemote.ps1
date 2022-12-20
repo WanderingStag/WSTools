@@ -598,7 +598,8 @@ if ($n -gt 0) {
         $i++
         $oname = $obj.FullName
         $obname = $obj.Name
-        Write-Output "$cn`: Installing $obname. Patch $i of $n."
+        $ds = (Get-Date).ToUniversalTime().ToString("yyyyMMdd HH:mm:ss UTC")
+        Write-Output "$ds - $cn`: Installing $obname. Patch $i of $n."
         dism.exe /online /add-package /PackagePath:$oname /NoRestart | Out-Null
         Start-Sleep 5
     }
@@ -607,7 +608,8 @@ if ($n -gt 0) {
 
 
 if (Test-Path $dn48path) {
-    Write-Output "$cn`: Installing .NET Framework 4.8."
+    $ds = (Get-Date).ToUniversalTime().ToString("yyyyMMdd HH:mm:ss UTC")
+    Write-Output "$ds - $cn`: Installing .NET Framework 4.8."
     Start-Process $dn48path -ArgumentList "/q /norestart" -NoNewWindow -Wait
     $Reboot = $true
 }
@@ -694,7 +696,7 @@ if ((Test-Path $activclient) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
     $pn = "ActivClient"
     $sv = Get-Content $activclient\SoftwareVersion.txt
     try {
-        $ipv = ($ip | Where-Object {$_.ProgramName -like "ActivClien*"} -ErrorAction Stop | Select-Object Version)[0].Version
+        $ipv = ($ip | Where-Object {$_.ProgramName -like "*ActivClien*"} -ErrorAction Stop | Select-Object Version)[0].Version
 
         if (!([string]::IsNullOrWhiteSpace($ipv))) {
             $ipv = $ipv.Split('.')
@@ -736,8 +738,10 @@ if ((Test-Path $activclient) -and $env:USERDNSDOMAIN -notlike "*.smil.mil") {
     if ($install -eq $true) {
         $ds = (Get-Date).ToUniversalTime().ToString("yyyyMMdd HH:mm:ss UTC")
         Write-Output "$ds - $cn`: Installing $pn."
+        Get-Service -Name "TumbleWeed Desktop Validator" | Stop-Service
         Start-Process $activclient\Deploy-application.exe -ArgumentList "-DeployMode 'NonInteractive'" -NoNewWindow -Wait
         Start-Sleep 330
+        Get-Service -Name "Tumbleweed Desktop Validator" | Start-Service
     }
     else {
         #do nothing Write-Output "$cn`: $pn same as installed version or older. Skipping..."

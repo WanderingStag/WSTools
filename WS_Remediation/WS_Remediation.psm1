@@ -5387,11 +5387,15 @@ Function Install-Edge {
 
         try {
             if ($Vanilla) {
-                robocopy $app \\$comp\c$\Patches\EdgeVanilla /mir /mt:2 /r:3 /w:15 /njh /njs
+                if ($host.Name -notmatch "ServerRemoteHost") {
+                    robocopy $app \\$comp\c$\Patches\EdgeVanilla /mir /mt:2 /r:3 /w:15 /njh /njs
+                }
                 $install = Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList "cmd /c msiexec.exe /i c:\Patches\EdgeVanilla\MicrosoftEdgeEnterpriseX64.msi /qn /norestart" -ErrorAction Stop #DevSkim: ignore DS104456
             }
             else {
-                robocopy $app \\$comp\c$\Patches\Edge /mir /mt:2 /r:3 /w:15 /njh /njs
+                if ($host.Name -notmatch "ServerRemoteHost") {
+                    robocopy $app \\$comp\c$\Patches\Edge /mir /mt:2 /r:3 /w:15 /njh /njs
+                }
                 $install = Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList "cmd /c c:\Patches\Edge\Deploy-application.exe -DeployMode 'NonInteractive'" -ErrorAction Stop #DevSkim: ignore DS104456
             }
 
@@ -5451,7 +5455,9 @@ Function Install-GitSCM {
         }
 
         try {
-            robocopy $app \\$comp\c$\Patches\GitSCM /mir /mt:2 /r:3 /w:15 /njh /njs
+            if ($host.Name -notmatch "ServerRemoteHost") {
+                robocopy $app \\$comp\c$\Patches\GitSCM /mir /mt:2 /r:3 /w:15 /njh /njs
+            }
             $install = Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList "cmd /c c:\Patches\GitSCM\Git-64-bit.exe /SP- /VERYSILENT /SUPPRESSMSGBOXES /NOCANCEL /NORESTART /CLOSEAPPLICATIONS /NORESTARTAPPLICATIONS /TYPE=full" -ErrorAction Stop #DevSkim: ignore DS104456
             $end = Get-Date
             $info = [PSCustomObject]@{
@@ -5506,7 +5512,9 @@ Function Install-MECM {
         }
 
         try {
-            robocopy $app \\$comp\c$\Patches\MECM ccmsetup.exe /r:3 /w:15 /njh /njs
+            if ($host.Name -notmatch "ServerRemoteHost") {
+                robocopy $app \\$comp\c$\Patches\MECM ccmsetup.exe /r:3 /w:15 /njh /njs
+            }
             $install = Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList "cmd /c c:\Patches\MECM\ccmsetup.exe" -ErrorAction Stop #DevSkim: ignore DS104456
             $install | Out-Null
             $end = Get-Date
@@ -5568,7 +5576,9 @@ Function Install-OneDrive {
             }
 
             try {
-                robocopy $app \\$comp\c$\Patches\OneDrive /mir /mt:2 /r:3 /w:15 /njh /njs
+                if ($host.Name -notmatch "ServerRemoteHost") {
+                    robocopy $app \\$comp\c$\Patches\OneDrive /mir /mt:2 /r:3 /w:15 /njh /njs
+                }
                 $install = Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList "cmd /c c:\Patches\OneDrive\OneDriveSetup.exe /silent /allusers" -ErrorAction Stop #DevSkim: ignore DS104456
                 $end = Get-Date
                 $info = [PSCustomObject]@{
@@ -5695,7 +5705,9 @@ Function Install-SQLServerManagementStudio {
         }
 
         try {
-            robocopy $app \\$comp\c$\Patches\SSMS SSMS-Setup*.exe /r:3 /w:15 /njh /njs
+            if ($host.Name -notmatch "ServerRemoteHost") {
+                robocopy $app \\$comp\c$\Patches\SSMS SSMS-Setup*.exe /r:3 /w:15 /njh /njs
+            }
             $install = Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList 'cmd /c c:\Patches\SSMS\SSMS-Setup-ENU.exe /Quiet SSMSInstallRoot="C:\Program Files (x86)\Microsoft SQL Server Management Studio 18" DoNotInstallAzureDataStudio=1' -ErrorAction Stop #DevSkim: ignore DS104456
             $end = Get-Date
             $info = [PSCustomObject]@{
@@ -5753,7 +5765,9 @@ Function Install-VisualStudioCode {
         }
 
         try {
-            robocopy $app \\$comp\c$\Patches\VSCode /mir /mt:2 /r:3 /w:15 /njh /njs
+            if ($host.Name -notmatch "ServerRemoteHost") {
+                robocopy $app \\$comp\c$\Patches\VSCode /mir /mt:2 /r:3 /w:15 /njh /njs
+            }
             $install = Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList "cmd /c c:\Patches\VSCode\VSCodeSetup-x64.exe /SP- /VERYSILENT /SUPPRESSMSGBOXES /NOCANCEL /NORESTART /CLOSEAPPLICATIONS /NORESTARTAPPLICATIONS /TYPE=full" -ErrorAction Stop #DevSkim: ignore DS104456
             $end = Get-Date
             $info = [PSCustomObject]@{
@@ -5826,7 +5840,9 @@ Function Install-VMwareTools {
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
     if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
         if ($ComputerName -eq $env:COMPUTERNAME) {
-            Copy-Item -Path $vmtsource -Destination "C:\Patches\VMwareTools"
+            if ($host.Name -notmatch "ServerRemoteHost") {
+                Copy-Item -Path $vmtsource -Destination "C:\Patches\VMwareTools"
+            }
             Start-Process C:\Patches\VMwareTools\vmware-tools.exe -ArgumentList "/S /v ""/qn REBOOT=R ADDLOCAL=ALL""" -Wait; $rn = (Get-Date).ToUniversalTime().ToString("yyyyMMdd HH:mm:ss UTC"); $string = $rn + " - " + $env:COMPUTERNAME + ":"; Write-Output "$string VMware tools install initiated."
         }
         else {
@@ -5876,7 +5892,9 @@ Function Install-Zoom {
         }
 
         try {
-            robocopy $app \\$comp\c$\Patches\Zoom /mir /xf *.exe /r:3 /w:15 /njh /njs
+            if ($host.Name -notmatch "ServerRemoteHost") {
+                robocopy $app \\$comp\c$\Patches\Zoom /mir /xf *.exe /r:3 /w:15 /njh /njs
+            }
             $install = Invoke-WMIMethod -Class Win32_Process -ComputerName $comp -Name Create -ArgumentList 'cmd /c msiexec.exe /i c:\Patches\Zoom\ZoomInstallerFull.msi /qn' -ErrorAction Stop #DevSkim: ignore DS104456
             $end = Get-Date
             $info = [PSCustomObject]@{
@@ -6087,6 +6105,117 @@ Function Uninstall-90Meter {
                 [PSCustomObject]@{
                     ComputerName = $comp
                     Program = "90Meter"
+                    Status = "Failed"
+                }#new object
+            }#catch
+        }#end code block
+        $Jobs = @()
+    }
+    Process{
+        Write-Progress -Activity "Preloading threads" -Status "Starting Job $($jobs.count)"
+        ForEach ($Object in $ObjectList){
+            $PowershellThread = [powershell]::Create().AddScript($Code)
+            $PowershellThread.AddArgument($Object.ToString()) | out-null
+            $PowershellThread.RunspacePool = $RunspacePool
+            $Handle = $PowershellThread.BeginInvoke()
+            $Job = "" | Select-Object Handle, Thread, object
+            $Job.Handle = $Handle
+            $Job.Thread = $PowershellThread
+            $Job.Object = $Object.ToString()
+            $Jobs += $Job
+        }
+    }
+    End{
+        $ResultTimer = Get-Date
+        While (@($Jobs | Where-Object {$null -ne $_.Handle}).count -gt 0)  {
+            $Remaining = "$($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).object)"
+            If ($Remaining.Length -gt 60){
+                $Remaining = $Remaining.Substring(0,60) + "..."
+            }
+            Write-Progress `
+                -Activity "Waiting for Jobs - $($MaxThreads - $($RunspacePool.GetAvailableRunspaces())) of $MaxThreads threads running" `
+                -PercentComplete (($Jobs.count - $($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False}).count)) / $Jobs.Count * 100) `
+                -Status "$(@($($Jobs | Where-Object {$_.Handle.IsCompleted -eq $False})).count) remaining - $remaining"
+            ForEach ($Job in $($Jobs | Where-Object {$_.Handle.IsCompleted -eq $True})){
+                $Job.Thread.EndInvoke($Job.Handle)
+                $Job.Thread.Dispose()
+                $Job.Thread = $Null
+                $Job.Handle = $Null
+                $ResultTimer = Get-Date
+            }
+            If (($(Get-Date) - $ResultTimer).totalseconds -gt $MaxResultTime){
+                Write-Error "Child script appears to be frozen, try increasing MaxResultTime"
+                Exit
+            }
+            Start-Sleep -Milliseconds $SleepTimer
+        }
+        $RunspacePool.Close() | Out-Null
+        $RunspacePool.Dispose() | Out-Null
+    }
+}
+
+
+Function Uninstall-ActivClient {
+<#
+.Notes
+    AUTHOR: Skyler Hart
+    CREATED: 2022-12-19 23:13:27
+    LASTEDIT: 2022-12-19 23:13:27
+    KEYWORDS:
+    REQUIRES:
+        #Requires -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    Param (
+        [Parameter(
+            HelpMessage = "Enter one or more computer names separated by commas.",
+            Mandatory=$false,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [Alias('Host','Name','Computer','CN','ComputerName')]
+        [string[]]$ObjectList,
+
+        [Parameter()]
+        [int32]$MaxThreads = 5,
+
+        [Parameter()]
+        $SleepTimer = 200,
+
+        [Parameter()]
+        $MaxResultTime = 1200
+    )
+
+    Begin {
+        if ([string]::IsNullOrWhiteSpace($ObjectList)) {
+            $ObjectList = $env:COMPUTERNAME
+        }
+        $ISS = [system.management.automation.runspaces.initialsessionstate]::CreateDefault()
+        $RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $ISS, $Host)
+        $RunspacePool.Open()
+        $Code = {
+            [CmdletBinding()]
+            Param (
+                [Parameter(
+                    Mandatory=$true,
+                    Position=0
+                )]
+                [string]$comp
+            )
+            try {
+                Get-WmiObject -Class Win32_Product -Filter "Name LIKE '%ActivClient%'" -ComputerName $Comp -ErrorAction Stop | Remove-WmiObject -ErrorAction Stop
+                [PSCustomObject]@{
+                    ComputerName = $comp
+                    Program = "ActivClient"
+                    Status = "Removed"
+                }#new object
+            }#try
+            catch {
+                [PSCustomObject]@{
+                    ComputerName = $comp
+                    Program = "ActivClient"
                     Status = "Failed"
                 }#new object
             }#catch

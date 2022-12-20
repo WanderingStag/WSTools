@@ -11,6 +11,9 @@ New features and other changes:
 1. Added Merge-File alias to Join-File function based on feedback.
 2. Added function Install-VMwareTools.
 3. Added UTC date string to output of Install-Patches function (InstallRemote.ps1) so you can see when things were done.
+4. Added check on install functions so if running remotely it doesn't try to copy the install files first since it will give an access denied error.
+5. Added function Uninstall-ActivClient.
+6. Fixed an issue in InstallRemote.ps1 that caused it to always trigger an install of ActivClient - which if already installed would cause it to uninstall. Also, if the install is triggered now it stops Axway before the install and starts it after to resolve conflicts with the install.
 
 ######################
 #                    #
