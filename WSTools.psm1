@@ -7033,23 +7033,37 @@ function Test-ResponseTime {
         Write-Verbose "Test Address not specified. Setting to logon server."
         $RemoteAddress = ($env:LOGONSERVER).Replace('\\','') + "." + $env:USERDNSDOMAIN
     }
-    Write-Verbose "RemoteAddress: $TestAddress"
+    Write-Verbose "RemoteAddress: $RemoteAddress"
 
     Write-Verbose "Testing connections"
     $responses = Test-Connection -ComputerName $RemoteAddress -ThrottleLimit $ThrottleLimit
     Write-Verbose "Responses: $responses"
 
     $testaddresses = $responses | Select-Object -ExpandProperty Address -Unique
-    for ($i = 0; $i -lt $testaddresses.Length; $i++) {
-        $j = $responses | Where-Object {$_.Address -eq $testaddresses[$i]}
-        $measuredinfo = $j.ResponseTime | Measure-Object -Average -Maximum -Minimum
+
+    if (($testaddresses.Count) -le 1) {
+        $j = $responses | Where-Object {$_.Address -eq $testaddresses[0]}
+        $measuredinfo = $responses.ResponseTime | Measure-Object -Average -Maximum -Minimum
         [PSCustomObject]@{
-            ComputerName = ($j[0].PSComputerName)
-            TestAddress = $testaddresses[$i]
+            ComputerName = ($responses[0].PSComputerName)
+            TestAddress = ($responses[0].Address)
             ResponseTime = ($measuredinfo | Select-Object -ExpandProperty Average)
             Minimum = ($measuredinfo | Select-Object -ExpandProperty Minimum)
             Maximum = ($measuredinfo | Select-Object -ExpandProperty Maximum)
         }#new object
+    }
+    else {
+        for ($i = 0; $i -lt $testaddresses.Length; $i++) {
+            $j = $responses | Where-Object {$_.Address -eq $testaddresses[$i]}
+            $measuredinfo = $j.ResponseTime | Measure-Object -Average -Maximum -Minimum
+            [PSCustomObject]@{
+                ComputerName = ($j[0].PSComputerName)
+                TestAddress = $testaddresses[$i]
+                ResponseTime = ($measuredinfo | Select-Object -ExpandProperty Average)
+                Minimum = ($measuredinfo | Select-Object -ExpandProperty Minimum)
+                Maximum = ($measuredinfo | Select-Object -ExpandProperty Maximum)
+            }#new object
+        }
     }
 }
 
