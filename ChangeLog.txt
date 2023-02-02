@@ -4,6 +4,16 @@ Known issues:
 
 ######################
 #                    #
+#      2023.02      #
+#                    #
+######################
+New features and other changes:
+1. Fixed Juneteenth dates in config file (after 2022 it was still listed as 2022.)
+2. Fixed Show-FederalHoliday so now if a year is not entered it defaults to current year. Was defaulting to year 0, which caused it to error out.
+3. Added function Test-ResponseTime.
+
+######################
+#                    #
 #      2022.12       #
 #                    #
 ######################

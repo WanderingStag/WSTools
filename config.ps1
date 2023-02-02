@@ -5,7 +5,7 @@
 )]
 
 $Global:WSToolsConfig = [PSCustomObject]@{
-    # WSTools config v2022.9.0
+    # WSTools config v2023.2
     # Remove the # symbol infront of a line to enable it
     ###########################################################################################################################################
     #Application Service Names - used in Stop-AppService. Uses match to match the name of a service that is running and stops it.
@@ -392,7 +392,7 @@ $Global:WSToolsConfig = [PSCustomObject]@{
         (New-Object -TypeName PSObject -Property @{Year = 2023; Date = (Get-Date -Date '2023-01-16'); DayOfWeek = ((Get-Date -Date '2023-01-16').DayOfWeek); Name = "Martin Luther King Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2023; Date = (Get-Date -Date '2023-02-20'); DayOfWeek = ((Get-Date -Date '2023-02-20').DayOfWeek); Name = "Washingtons Birthday"}),
         (New-Object -TypeName PSObject -Property @{Year = 2023; Date = (Get-Date -Date '2023-05-29'); DayOfWeek = ((Get-Date -Date '2023-05-29').DayOfWeek); Name = "Memorial Day"}),
-        (New-Object -TypeName PSObject -Property @{Year = 2022; Date = (Get-Date -Date '2023-06-19'); DayOfWeek = ((Get-Date -Date '2023-06-19').DayOfWeek); Name = "Juneteenth National Independence Day"}),
+        (New-Object -TypeName PSObject -Property @{Year = 2023; Date = (Get-Date -Date '2023-06-19'); DayOfWeek = ((Get-Date -Date '2023-06-19').DayOfWeek); Name = "Juneteenth National Independence Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2023; Date = (Get-Date -Date '2023-07-04'); DayOfWeek = ((Get-Date -Date '2023-07-04').DayOfWeek); Name = "Independence Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2023; Date = (Get-Date -Date '2023-09-04'); DayOfWeek = ((Get-Date -Date '2023-09-04').DayOfWeek); Name = "Labor Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2023; Date = (Get-Date -Date '2023-10-09'); DayOfWeek = ((Get-Date -Date '2023-10-09').DayOfWeek); Name = "Columbus Day"}),
@@ -404,7 +404,7 @@ $Global:WSToolsConfig = [PSCustomObject]@{
         (New-Object -TypeName PSObject -Property @{Year = 2024; Date = (Get-Date -Date '2024-01-15'); DayOfWeek = ((Get-Date -Date '2024-01-15').DayOfWeek); Name = "Martin Luther King Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2024; Date = (Get-Date -Date '2024-02-19'); DayOfWeek = ((Get-Date -Date '2024-02-19').DayOfWeek); Name = "Washingtons Birthday"}),
         (New-Object -TypeName PSObject -Property @{Year = 2024; Date = (Get-Date -Date '2024-05-27'); DayOfWeek = ((Get-Date -Date '2024-05-27').DayOfWeek); Name = "Memorial Day"}),
-        (New-Object -TypeName PSObject -Property @{Year = 2022; Date = (Get-Date -Date '2024-06-19'); DayOfWeek = ((Get-Date -Date '2024-06-19').DayOfWeek); Name = "Juneteenth National Independence Day"}),
+        (New-Object -TypeName PSObject -Property @{Year = 2024; Date = (Get-Date -Date '2024-06-19'); DayOfWeek = ((Get-Date -Date '2024-06-19').DayOfWeek); Name = "Juneteenth National Independence Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2024; Date = (Get-Date -Date '2024-07-04'); DayOfWeek = ((Get-Date -Date '2024-07-04').DayOfWeek); Name = "Independence Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2024; Date = (Get-Date -Date '2024-09-02'); DayOfWeek = ((Get-Date -Date '2024-09-02').DayOfWeek); Name = "Labor Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2024; Date = (Get-Date -Date '2024-10-14'); DayOfWeek = ((Get-Date -Date '2024-10-14').DayOfWeek); Name = "Columbus Day"}),
@@ -416,7 +416,7 @@ $Global:WSToolsConfig = [PSCustomObject]@{
         (New-Object -TypeName PSObject -Property @{Year = 2025; Date = (Get-Date -Date '2025-01-20'); DayOfWeek = ((Get-Date -Date '2025-01-20').DayOfWeek); Name = "Martin Luther King Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2025; Date = (Get-Date -Date '2025-02-17'); DayOfWeek = ((Get-Date -Date '2025-02-17').DayOfWeek); Name = "Washingtons Birthday"}),
         (New-Object -TypeName PSObject -Property @{Year = 2025; Date = (Get-Date -Date '2025-05-26'); DayOfWeek = ((Get-Date -Date '2025-05-26').DayOfWeek); Name = "Memorial Day"}),
-        (New-Object -TypeName PSObject -Property @{Year = 2022; Date = (Get-Date -Date '2025-06-19'); DayOfWeek = ((Get-Date -Date '2025-06-19').DayOfWeek); Name = "Juneteenth National Independence Day"}),
+        (New-Object -TypeName PSObject -Property @{Year = 2025; Date = (Get-Date -Date '2025-06-19'); DayOfWeek = ((Get-Date -Date '2025-06-19').DayOfWeek); Name = "Juneteenth National Independence Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2025; Date = (Get-Date -Date '2025-07-04'); DayOfWeek = ((Get-Date -Date '2025-07-04').DayOfWeek); Name = "Independence Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2025; Date = (Get-Date -Date '2025-09-01'); DayOfWeek = ((Get-Date -Date '2025-09-01').DayOfWeek); Name = "Labor Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2025; Date = (Get-Date -Date '2025-10-13'); DayOfWeek = ((Get-Date -Date '2025-10-13').DayOfWeek); Name = "Columbus Day"}),
@@ -428,7 +428,7 @@ $Global:WSToolsConfig = [PSCustomObject]@{
         (New-Object -TypeName PSObject -Property @{Year = 2026; Date = (Get-Date -Date '2026-01-19'); DayOfWeek = ((Get-Date -Date '2026-01-19').DayOfWeek); Name = "Martin Luther King Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2026; Date = (Get-Date -Date '2026-02-16'); DayOfWeek = ((Get-Date -Date '2026-02-16').DayOfWeek); Name = "Washingtons Birthday"}),
         (New-Object -TypeName PSObject -Property @{Year = 2026; Date = (Get-Date -Date '2026-05-25'); DayOfWeek = ((Get-Date -Date '2026-05-25').DayOfWeek); Name = "Memorial Day"}),
-        (New-Object -TypeName PSObject -Property @{Year = 2022; Date = (Get-Date -Date '2026-06-19'); DayOfWeek = ((Get-Date -Date '2026-06-19').DayOfWeek); Name = "Juneteenth National Independence Day"}),
+        (New-Object -TypeName PSObject -Property @{Year = 2026; Date = (Get-Date -Date '2026-06-19'); DayOfWeek = ((Get-Date -Date '2026-06-19').DayOfWeek); Name = "Juneteenth National Independence Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2026; Date = (Get-Date -Date '2026-07-03'); DayOfWeek = ((Get-Date -Date '2026-07-03').DayOfWeek); Name = "Independence Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2026; Date = (Get-Date -Date '2026-09-07'); DayOfWeek = ((Get-Date -Date '2026-09-07').DayOfWeek); Name = "Labor Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2026; Date = (Get-Date -Date '2026-10-12'); DayOfWeek = ((Get-Date -Date '2026-10-12').DayOfWeek); Name = "Columbus Day"}),
@@ -440,7 +440,7 @@ $Global:WSToolsConfig = [PSCustomObject]@{
         (New-Object -TypeName PSObject -Property @{Year = 2027; Date = (Get-Date -Date '2027-01-18'); DayOfWeek = ((Get-Date -Date '2027-01-18').DayOfWeek); Name = "Martin Luther King Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2027; Date = (Get-Date -Date '2027-02-15'); DayOfWeek = ((Get-Date -Date '2027-02-15').DayOfWeek); Name = "Washingtons Birthday"}),
         (New-Object -TypeName PSObject -Property @{Year = 2027; Date = (Get-Date -Date '2027-05-31'); DayOfWeek = ((Get-Date -Date '2027-05-31').DayOfWeek); Name = "Memorial Day"}),
-        (New-Object -TypeName PSObject -Property @{Year = 2022; Date = (Get-Date -Date '2027-06-18'); DayOfWeek = ((Get-Date -Date '2027-06-18').DayOfWeek); Name = "Juneteenth National Independence Day"}),
+        (New-Object -TypeName PSObject -Property @{Year = 2027; Date = (Get-Date -Date '2027-06-18'); DayOfWeek = ((Get-Date -Date '2027-06-18').DayOfWeek); Name = "Juneteenth National Independence Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2027; Date = (Get-Date -Date '2027-07-05'); DayOfWeek = ((Get-Date -Date '2027-07-05').DayOfWeek); Name = "Independence Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2027; Date = (Get-Date -Date '2027-09-06'); DayOfWeek = ((Get-Date -Date '2027-09-06').DayOfWeek); Name = "Labor Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2027; Date = (Get-Date -Date '2027-10-11'); DayOfWeek = ((Get-Date -Date '2027-10-11').DayOfWeek); Name = "Columbus Day"}),
@@ -452,7 +452,7 @@ $Global:WSToolsConfig = [PSCustomObject]@{
         (New-Object -TypeName PSObject -Property @{Year = 2028; Date = (Get-Date -Date '2028-01-17'); DayOfWeek = ((Get-Date -Date '2028-01-17').DayOfWeek); Name = "Martin Luther King Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2028; Date = (Get-Date -Date '2028-02-21'); DayOfWeek = ((Get-Date -Date '2028-02-21').DayOfWeek); Name = "Washingtons Birthday"}),
         (New-Object -TypeName PSObject -Property @{Year = 2028; Date = (Get-Date -Date '2028-05-29'); DayOfWeek = ((Get-Date -Date '2028-05-29').DayOfWeek); Name = "Memorial Day"}),
-        (New-Object -TypeName PSObject -Property @{Year = 2022; Date = (Get-Date -Date '2028-06-19'); DayOfWeek = ((Get-Date -Date '2028-06-19').DayOfWeek); Name = "Juneteenth National Independence Day"}),
+        (New-Object -TypeName PSObject -Property @{Year = 2028; Date = (Get-Date -Date '2028-06-19'); DayOfWeek = ((Get-Date -Date '2028-06-19').DayOfWeek); Name = "Juneteenth National Independence Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2028; Date = (Get-Date -Date '2028-07-04'); DayOfWeek = ((Get-Date -Date '2028-07-04').DayOfWeek); Name = "Independence Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2028; Date = (Get-Date -Date '2028-09-04'); DayOfWeek = ((Get-Date -Date '2028-09-04').DayOfWeek); Name = "Labor Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2028; Date = (Get-Date -Date '2028-10-09'); DayOfWeek = ((Get-Date -Date '2028-10-09').DayOfWeek); Name = "Columbus Day"}),
@@ -464,7 +464,7 @@ $Global:WSToolsConfig = [PSCustomObject]@{
         (New-Object -TypeName PSObject -Property @{Year = 2029; Date = (Get-Date -Date '2029-01-15'); DayOfWeek = ((Get-Date -Date '2029-01-15').DayOfWeek); Name = "Martin Luther King Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2029; Date = (Get-Date -Date '2029-02-19'); DayOfWeek = ((Get-Date -Date '2029-02-19').DayOfWeek); Name = "Washingtons Birthday"}),
         (New-Object -TypeName PSObject -Property @{Year = 2029; Date = (Get-Date -Date '2029-05-28'); DayOfWeek = ((Get-Date -Date '2029-05-28').DayOfWeek); Name = "Memorial Day"}),
-        (New-Object -TypeName PSObject -Property @{Year = 2022; Date = (Get-Date -Date '2029-06-19'); DayOfWeek = ((Get-Date -Date '2029-06-19').DayOfWeek); Name = "Juneteenth National Independence Day"}),
+        (New-Object -TypeName PSObject -Property @{Year = 2029; Date = (Get-Date -Date '2029-06-19'); DayOfWeek = ((Get-Date -Date '2029-06-19').DayOfWeek); Name = "Juneteenth National Independence Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2029; Date = (Get-Date -Date '2029-07-04'); DayOfWeek = ((Get-Date -Date '2029-07-04').DayOfWeek); Name = "Independence Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2029; Date = (Get-Date -Date '2029-09-03'); DayOfWeek = ((Get-Date -Date '2029-09-03').DayOfWeek); Name = "Labor Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2029; Date = (Get-Date -Date '2029-10-08'); DayOfWeek = ((Get-Date -Date '2029-10-08').DayOfWeek); Name = "Columbus Day"}),
@@ -476,7 +476,7 @@ $Global:WSToolsConfig = [PSCustomObject]@{
         (New-Object -TypeName PSObject -Property @{Year = 2030; Date = (Get-Date -Date '2030-01-21'); DayOfWeek = ((Get-Date -Date '2030-01-21').DayOfWeek); Name = "Martin Luther King Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2030; Date = (Get-Date -Date '2030-02-18'); DayOfWeek = ((Get-Date -Date '2030-02-18').DayOfWeek); Name = "Washingtons Birthday"}),
         (New-Object -TypeName PSObject -Property @{Year = 2030; Date = (Get-Date -Date '2030-05-27'); DayOfWeek = ((Get-Date -Date '2030-05-27').DayOfWeek); Name = "Memorial Day"}),
-        (New-Object -TypeName PSObject -Property @{Year = 2022; Date = (Get-Date -Date '2030-06-19'); DayOfWeek = ((Get-Date -Date '2030-06-19').DayOfWeek); Name = "Juneteenth National Independence Day"}),
+        (New-Object -TypeName PSObject -Property @{Year = 2030; Date = (Get-Date -Date '2030-06-19'); DayOfWeek = ((Get-Date -Date '2030-06-19').DayOfWeek); Name = "Juneteenth National Independence Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2030; Date = (Get-Date -Date '2030-07-04'); DayOfWeek = ((Get-Date -Date '2030-07-04').DayOfWeek); Name = "Independence Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2030; Date = (Get-Date -Date '2030-09-02'); DayOfWeek = ((Get-Date -Date '2030-09-02').DayOfWeek); Name = "Labor Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2030; Date = (Get-Date -Date '2030-10-14'); DayOfWeek = ((Get-Date -Date '2030-10-14').DayOfWeek); Name = "Columbus Day"}),
