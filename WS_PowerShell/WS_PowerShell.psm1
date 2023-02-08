@@ -735,6 +735,7 @@ function Convert-ImageToBase64 {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('Convert-ICOtoBase64')]
     param(
         [Parameter(
             HelpMessage = "Enter the path of the image you want to convert. Ex: D:\temp\image.jpg",
@@ -747,7 +748,6 @@ function Convert-ImageToBase64 {
     $b64 = [convert]::ToBase64String((get-content $ImagePath -encoding byte))
     $b64
 }
-New-Alias -Name "Convert-ICOtoBase64" -Value Convert-ImageToBase64
 
 
 function Convert-IPtoINT64 () {
@@ -773,10 +773,12 @@ Function Get-Accelerator {
 .LINK
     https://wstools.dev
 #>
+    [CmdletBinding()]
+    [Alias('Get-TypeAccelerators','accelerators')]
+    param()
+
     [psobject].Assembly.GetType(“System.Management.Automation.TypeAccelerators”)::get | Sort-Object Key
 }
-New-Alias -Name "Get-TypeAccelerators" -Value Get-Accelerators
-New-Alias -Name "accelerators" -Value Get-Accelerators
 
 
 Function Get-FilePath {
@@ -949,6 +951,10 @@ Function Set-Profile {
 .LINK
     https://wstools.dev
 #>
+    [CmdletBinding()]
+    [Alias('Edit-Profile','Profile')]
+    param()
+
     #If profile already exists, open for editing
     if (Test-Path $profile) {
         start-process "$env:windir\system32\WindowsPowerShell\v1.0\PowerShell_ISE.exe" $profile
@@ -975,8 +981,6 @@ Function Set-Profile {
         start-process "$env:windir\system32\WindowsPowerShell\v1.0\PowerShell_ISE.exe" $profile
     }
 }
-New-Alias -Name "Edit-Profile" -Value Set-Profile
-New-Alias -Name "Profile" -Value Set-Profile
 
 
 Function Set-Title {
@@ -989,13 +993,13 @@ Function Set-Title {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('title')]
     Param (
         [Parameter(Mandatory=$true, Position=0)]
         [string]$titleText
     )
     $Host.UI.RawUI.WindowTitle = $titleText
 }
-New-Alias -Name "title" -Value Set-Title
 
 
 Function Start-PowerShell {
@@ -1009,6 +1013,7 @@ Function Start-PowerShell {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('Open-PowerShell')]
     Param (
         [Parameter(Mandatory=$false)]
         [switch]$Console,
@@ -1049,7 +1054,6 @@ Function Start-PowerShell {
         }
     }
 }
-New-Alias -Name "Open-PowerShell" -Value Start-PowerShell
 
 
 #needs Get-NotificationApp

@@ -235,6 +235,7 @@ Function Get-FSMO {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('fsmo')]
     Param (
         [Parameter()]
         [Switch]$netdom
@@ -261,7 +262,6 @@ Function Get-FSMO {
         netdom /query FSMO
     }
 }
-New-Alias -Name "FSMO" -Value Get-FSMO
 
 
 Function Get-LockedOutStatus {
@@ -563,9 +563,11 @@ Function Get-ReplicationStatus {
 .LINK
     https://wstools.dev
 #>
+    [CmdletBinding()]
+    [Alias('replsum')]
+    param()
     repadmin /replsum
 }
-New-Alias -Name "replsum" -Value Get-ReplicationStatus
 
 
 Function Get-UserWithThumbnail {
@@ -607,6 +609,9 @@ Function Open-ADDomainsAndTrusts {
 .LINK
     https://wstools.dev
 #>
+    [CmdletBinding()]
+    [Alias('trusts')]
+    param()
     try {
         $ErrorActionPreference = "Stop"
         domain.msc
@@ -615,7 +620,6 @@ Function Open-ADDomainsAndTrusts {
         Write-Output "Active Directory snapins are not installed/enabled."
     }
 }
-New-Alias -Name "trusts" -Value Open-ADDomainsAndTrusts
 
 
 Function Open-ADSIEdit {
@@ -628,6 +632,9 @@ Function Open-ADSIEdit {
 .LINK
     https://wstools.dev
 #>
+    [CmdletBinding()]
+    [Alias('adsi')]
+    param()
     try {
         $ErrorActionPreference = "Stop"
         adsiedit.msc
@@ -643,7 +650,6 @@ Function Open-ADSIEdit {
         }
     }
 }
-New-Alias -Name "adsi" -Value Open-ADSIEdit
 
 
 Function Open-ADSitesAndServices {
@@ -676,6 +682,9 @@ Function Open-ADUsersAndComputers {
 .LINK
     https://wstools.dev
 #>
+    [CmdletBinding()]
+    [Alias('aduc','dsa')]
+    param()
     try {
         $ErrorActionPreference = "Stop"
         dsa.msc
@@ -684,7 +693,6 @@ Function Open-ADUsersAndComputers {
         Write-Output "Active Directory snapins are not installed/enabled."
     }
 }
-New-Alias -Name "aduc" -Value Open-ADUsersAndComputers
 
 
 function Open-CMLibrary {
@@ -740,6 +748,9 @@ Function Open-DHCPmgmt {
 .LINK
     https://wstools.dev
 #>
+    [CmdletBinding()]
+    [Alias('dhcp')]
+    param()
     try {
         $ErrorActionPreference = "Stop"
         dhcpmgmt.msc
@@ -748,7 +759,6 @@ Function Open-DHCPmgmt {
         Write-Output "Active Directory snapins are not installed/enabled."
     }
 }
-New-Alias -Name "dhcp" -Value Open-DHCPmgmt
 
 
 Function Open-DNSmgmt {
@@ -761,6 +771,9 @@ Function Open-DNSmgmt {
 .LINK
     https://wstools.dev
 #>
+    [CmdletBinding()]
+    [Alias('dns')]
+    param()
     try {
         $ErrorActionPreference = "Stop"
         dnsmgmt.msc
@@ -769,7 +782,6 @@ Function Open-DNSmgmt {
         Write-Output "Active Directory snapins are not installed/enabled."
     }
 }
-New-Alias -Name "dns" -Value Open-DNSmgmt
 
 
 function Open-EAC {
@@ -787,6 +799,7 @@ function Open-EAC {
         Justification = "Have tried other methods and they do not work consistently."
     )]
     [CmdletBinding()]
+    [Alias('Open-ECP','EAC','ECP')]
     Param (
         [Parameter(Mandatory=$false)]
         [Switch]$Chrome,
@@ -813,9 +826,6 @@ function Open-EAC {
         (New-Object -com Shell.Application).Open($URL)
     }
 }
-New-Alias -Name "Open-ECP" -Value Open-EAC
-New-Alias -Name "EAC" -Value Open-EAC
-New-Alias -Name "ECP" -Value Open-EAC
 
 
 Function Open-GroupPolicyMgmt {
@@ -828,6 +838,9 @@ Function Open-GroupPolicyMgmt {
 .LINK
     https://wstools.dev
 #>
+    [CmdletBinding()]
+    [Alias('gpo','gpmc','GroupPolicy')]
+    param()
     try {
         $ErrorActionPreference = "Stop"
         gpmc.msc
@@ -836,8 +849,6 @@ Function Open-GroupPolicyMgmt {
         Write-Output "Active Directory snapins are not installed/enabled."
     }
 }
-New-Alias -Name "gpo" -Value Open-GroupPolicyMgmt
-New-Alias -Name "GroupPolicy" -Value Open-GroupPolicyMgmt
 
 
 Function Open-HyperVmgmt {
@@ -850,6 +861,9 @@ Function Open-HyperVmgmt {
 .LINK
     https://wstools.dev
 #>
+    [CmdletBinding()]
+    [Alias('hyperv')]
+    param()
     try {
         $ErrorActionPreference = "Stop"
         virtmgmt.msc
@@ -858,7 +872,6 @@ Function Open-HyperVmgmt {
         Write-Output "Hyper-V management tools not installed/enabled."
     }
 }
-New-Alias -Name "hyperv" -Value Open-HyperVmgmt
 
 
 function Open-iLO {
@@ -876,6 +889,7 @@ function Open-iLO {
         Justification = "Have tried other methods and they do not work consistently."
     )]
     [CmdletBinding()]
+    [Alias('iLO')]
     Param (
         [Parameter(Mandatory=$false)]
         [Switch]$Chrome,
@@ -902,7 +916,6 @@ function Open-iLO {
         (New-Object -com Shell.Application).Open($URL)
     }
 }
-New-Alias -Name "iLO" -Value Open-iLO
 
 
 Function Open-LAPS {
@@ -917,6 +930,9 @@ Function Open-LAPS {
 .LINK
     https://wstools.dev
 #>
+    [CmdletBinding()]
+    [Alias('laps')]
+    param()
     try {
         Start-Process 'C:\Program Files\LAPS\AdmPwd.UI' -ErrorAction Stop
     }
@@ -933,7 +949,6 @@ Function Open-LAPS {
         Get-Error -HowMany 1
     }
 }
-New-Alias -Name "laps" -Value Open-LAPS
 
 
 function Open-LexmarkManagementConsole {
@@ -951,6 +966,7 @@ function Open-LexmarkManagementConsole {
         Justification = "Have tried other methods and they do not work consistently."
     )]
     [CmdletBinding()]
+    [Alias('lmc')]
     Param (
         [Parameter(Mandatory=$false)]
         [Switch]$Chrome,
@@ -977,7 +993,6 @@ function Open-LexmarkManagementConsole {
         (New-Object -com Shell.Application).Open($URL)
     }
 }
-New-Alias -Name "Open-LMC" -Value Open-LexmarkManagementConsole
 
 
 function Open-NetLogonLog {
@@ -1042,6 +1057,7 @@ function Open-NetworkDiagram {
         Justification = "Have tried other methods and they do not work consistently."
     )]
     [CmdletBinding()]
+    [Alias('NetDiagram','NetworkDiagram')]
     Param (
         [Parameter(Mandatory=$false)]
         [Switch]$Chrome,
@@ -1073,8 +1089,6 @@ function Open-NetworkDiagram {
         Invoke-Item $dpath
     }
 }
-New-Alias -Name "netdiagram" -Value Open-NetworkDiagram
-New-Alias -Name "networkdiagram" -Value Open-NetworkDiagram
 
 
 function Open-OWA {
@@ -1092,6 +1106,7 @@ function Open-OWA {
         Justification = "Have tried other methods and they do not work consistently."
     )]
     [CmdletBinding()]
+    [Alias('OWA')]
     Param (
         [Parameter(Mandatory=$false)]
         [Switch]$Chrome,
@@ -1118,7 +1133,6 @@ function Open-OWA {
         (New-Object -com Shell.Application).Open($URL)
     }
 }
-New-Alias -Name "OWA" -Value Open-OWA
 
 
 function Open-PrintRelease {
@@ -1180,6 +1194,7 @@ function Open-RackElevation {
         Justification = "Have tried other methods and they do not work consistently."
     )]
     [CmdletBinding()]
+    [Alias('RackEl','RackElevation')]
     Param (
         [Parameter(Mandatory=$false)]
         [Switch]$Chrome,
@@ -1211,8 +1226,6 @@ function Open-RackElevation {
         Invoke-Item $dpath
     }
 }
-New-Alias -Name "rackel" -Value Open-RackElevation
-New-Alias -Name "rackelevation" -Value Open-RackElevation
 
 
 function Open-SDN {
@@ -1230,6 +1243,7 @@ function Open-SDN {
         Justification = "Have tried other methods and they do not work consistently."
     )]
     [CmdletBinding()]
+    [Alias('Open-SDNMgmt','SDN','Open-Unifi','unifi')]
     Param (
         [Parameter(Mandatory=$false)]
         [Switch]$Chrome,
@@ -1256,10 +1270,6 @@ function Open-SDN {
         (New-Object -com Shell.Application).Open($URL)
     }
 }
-New-Alias -Name "Open-SDNMgmt" -Value Open-SDN
-New-Alias -Name "SDN" -Value Open-SDN
-New-Alias -Name "Open-Unifi" -Value Open-SDN
-New-Alias -Name "unifi" -Value Open-SDN
 
 
 function Open-SEIM {
@@ -1277,6 +1287,7 @@ function Open-SEIM {
         Justification = "Have tried other methods and they do not work consistently."
     )]
     [CmdletBinding()]
+    [Alias('Open-SIEM','Open-ArcSight','Open-Splunk','Open-SysLog')]
     Param (
         [Parameter(Mandatory=$false)]
         [Switch]$Chrome,
@@ -1303,9 +1314,6 @@ function Open-SEIM {
         (New-Object -com Shell.Application).Open($URL)
     }
 }
-New-Alias -Name "Open-SIEM" -Value Open-SEIM
-New-Alias -Name "Open-ArcSight" -Value Open-SEIM
-New-Alias -Name "Open-Splunk" -Value Open-SEIM
 
 
 Function Open-SharedFolders {
@@ -1321,6 +1329,7 @@ Function Open-SharedFolders {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('Shares','Get-Shares')]
     Param (
         [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
@@ -1328,8 +1337,6 @@ Function Open-SharedFolders {
     )
     fsmgmt.msc /computer=\\$ComputerName
 }
-New-Alias -Name "Shares" -Value Open-SharedFolders
-New-Alias -Name "Get-Shares" -Value Open-SharedFolders
 
 
 function Open-SharePoint {
@@ -1391,6 +1398,7 @@ Function Open-vCenter {
         Justification = "Have tried other methods and they do not work consistently."
     )]
     [CmdletBinding()]
+    [Alias('vCenter')]
     Param (
         [Parameter(Mandatory=$false)]
         [Switch]$Chrome,
@@ -1417,7 +1425,6 @@ Function Open-vCenter {
         (New-Object -com Shell.Application).Open($URL)
     }
 }
-New-Alias -Name "vCenter" -Value Open-vCenter
 
 
 function Register-ADSIEdit {
@@ -1430,6 +1437,10 @@ function Register-ADSIEdit {
 .LINK
     https://wstools.dev
 #>
+    [CmdletBinding()]
+    [Alias('Initialize-ADSIEdit','Enable-ADSIEdit')]
+    param()
+
     if (Test-Path $env:windir\System32\adsiedit.dll) {
         regsvr32.exe adsiedit.dll
     }
@@ -1437,8 +1448,6 @@ function Register-ADSIEdit {
         Write-Warning "adsiedit.dll not found. Please ensure Active Directory tools are installed."
     }
 }
-New-Alias -Name "Initialize-ADSIEdit" -Value Register-ADSIEdit
-New-Alias -Name "Enable-ADSIEdit" -Value Register-ADSIEdit
 
 
 Function Register-Schema {

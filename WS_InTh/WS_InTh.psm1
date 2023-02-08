@@ -653,6 +653,7 @@ function Get-USBDevice {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('usb')]
     Param (
         [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
@@ -666,7 +667,6 @@ function Get-USBDevice {
         Select-Object SystemName,Caption,DeviceID,Manufacturer,Name,Description | Sort-Object Caption
     }
 }
-New-Alias -Name "usb" -Value Get-USBDevice
 
 
 #Write help

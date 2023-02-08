@@ -733,6 +733,7 @@ Function Copy-AdobeAcrobat {
         Justification = "Have tried other methods and they do not work consistently."
     )]
     [CmdletBinding()]
+    [Alias('Copy-Acrobat')]
     Param (
         [Parameter(
             Mandatory = $false,
@@ -865,7 +866,6 @@ Function Copy-AdobeAcrobat {
         $RunspacePool.Dispose() | Out-Null
     }
 }
-New-Alias -Name "Copy-Acrobat" -Value Copy-AdobeAcrobat
 
 
 Function Copy-AdobeExperienceManager {
@@ -885,6 +885,7 @@ Function Copy-AdobeExperienceManager {
         Justification = "Have tried other methods and they do not work consistently."
     )]
     [CmdletBinding()]
+    [Alias('Copy-AdobeAEM','Copy-AEM')]
     Param (
         [Parameter(
             Mandatory = $false,
@@ -1017,8 +1018,6 @@ Function Copy-AdobeExperienceManager {
         $RunspacePool.Dispose() | Out-Null
     }
 }
-New-Alias -Name "Copy-AdobeAEM" -Value Copy-AdobeExperienceManager
-New-Alias -Name "Copy-AEM" -Value Copy-AdobeExperienceManager
 
 
 Function Copy-Axway {
@@ -2291,6 +2290,7 @@ Function Copy-MicrosoftInfoPath {
         Justification = "Have tried other methods and they do not work consistently."
     )]
     [CmdletBinding()]
+    [Alias('Copy-InfoPath')]
     Param (
         [Parameter(
             Mandatory = $false,
@@ -2423,7 +2423,6 @@ Function Copy-MicrosoftInfoPath {
         $RunspacePool.Dispose() | Out-Null
     }
 }
-New-Alias -Name "Copy-InfoPath" -Value Copy-MicrosoftInfoPath
 
 
 Function Copy-Java {
@@ -3209,6 +3208,7 @@ Function Copy-SQLServerManagementStudio {
         Justification = "Have tried other methods and they do not work consistently."
     )]
 [CmdletBinding()]
+[Alias('Copy-SSMS')]
 Param (
     [Parameter(
         Mandatory = $false,
@@ -3342,7 +3342,6 @@ Begin {
         $RunspacePool.Dispose() | Out-Null
     }
 }
-New-Alias -Name "Copy-SSMS" -Value Copy-SQLServerManagementStudio
 
 
 Function Copy-SplunkForwarder {
@@ -3985,6 +3984,7 @@ Function Copy-VisualStudioCode {
         Justification = "Have tried other methods and they do not work consistently."
     )]
 [CmdletBinding()]
+[Alias('Copy-VSCode')]
 Param (
     [Parameter(
         Mandatory = $false,
@@ -4118,7 +4118,6 @@ Begin {
         $RunspacePool.Dispose() | Out-Null
     }
 }
-New-Alias -Name "Copy-VSCode" -Value Copy-VisualStudioCode
 
 
 Function Copy-VMwareTools {
@@ -5492,6 +5491,7 @@ Function Install-MECM {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('Install-SCCM')]
     Param (
         [Parameter()]
         [Alias('Host','Name','Computer','CN')]
@@ -5536,7 +5536,6 @@ Function Install-MECM {
     }
     Write-Output "The MECM install can take over an install to fully complete. Please wait a minimum of 30 minutes before rebooting or installing another program."
 }
-New-Alias -Name "Install-SCCM" -Value Install-MECM
 
 
 Function Install-OneDrive {
@@ -5645,6 +5644,7 @@ Function Install-Patches {
         Justification = "Have tried other methods and they do not work consistently."
     )]
     [CmdletBinding()]
+    [Alias('Install-Updates')]
     Param (
         [Parameter(
             Mandatory=$false,
@@ -5667,7 +5667,6 @@ Function Install-Patches {
         Invoke-Command -ComputerName $ComputerName -FilePath $fp -ErrorAction Stop  #DevSkim: ignore DS104456
     }
 }#install patches
-New-Alias -Name "Install-Updates" -Value Install-Patches
 
 
 Function Install-SQLServerManagementStudio {
@@ -5685,6 +5684,7 @@ Function Install-SQLServerManagementStudio {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('Install-SSMS')]
     Param (
         [Parameter()]
         [Alias('Host','Name','Computer','CN')]
@@ -5727,7 +5727,6 @@ Function Install-SQLServerManagementStudio {
         $info
     }
 }
-New-Alias -Name "Install-SSMS" -Value Install-SQLServerManagementStudio
 
 
 Function Install-VisualStudioCode {
@@ -5745,6 +5744,7 @@ Function Install-VisualStudioCode {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('Install-VSCode')]
     Param (
         [Parameter()]
         [Alias('Host','Name','Computer','CN')]
@@ -5787,7 +5787,6 @@ Function Install-VisualStudioCode {
         $info
     }
 }
-New-Alias -Name "Install-VSCode" -Value Install-VisualStudioCode
 
 
 Function Install-VMwareTools {
@@ -6395,6 +6394,7 @@ Function Uninstall-AdobeExperienceManager {
     https://www.skylerhart.com
 #>
     [CmdletBinding()]
+    [Alias('Uninstall-AEM','Uninstall-AdobeAEM','Uninstall-Designer','Uninstall-Forms')]
     Param (
         [Parameter(
             HelpMessage = "Enter one or more computer names separated by commas.",
@@ -6492,10 +6492,6 @@ Function Uninstall-AdobeExperienceManager {
         $RunspacePool.Dispose() | Out-Null
     }
 }
-New-Alias -Name "Uninstall-AEM" -Value Uninstall-AdobeExperienceManager
-New-Alias -Name "Uninstall-AdobeAEM" -Value Uninstall-AdobeExperienceManager
-New-Alias -Name "Uninstall-Designer" -Value Uninstall-AdobeExperienceManager
-New-Alias -Name "Uninstall-Forms" -Value Uninstall-AdobeExperienceManager
 
 
 Function Uninstall-AdobeFlash {
@@ -6514,6 +6510,7 @@ Function Uninstall-AdobeFlash {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('Uninstall-Flash')]
     Param (
         [Parameter(
             HelpMessage = "Enter one or more computer names separated by commas.",
@@ -6610,7 +6607,6 @@ Function Uninstall-AdobeFlash {
         $RunspacePool.Dispose() | Out-Null
     }
 }
-New-Alias -Name "Uninstall-Flash" -Value Uninstall-AdobeFlash
 
 
 Function Uninstall-AdobePro {
@@ -6629,6 +6625,7 @@ Function Uninstall-AdobePro {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('Uninstall-AdobeAcrobat','Uninstall-Acrobat')]
     Param (
         [Parameter(
             HelpMessage = "Enter one or more computer names separated by commas.",
@@ -6725,8 +6722,6 @@ Function Uninstall-AdobePro {
         $RunspacePool.Dispose() | Out-Null
     }
 }
-New-Alias -Name "Uninstall-Acrobat" -Value Uninstall-AdobePro
-New-Alias -Name "Uninstall-AdobeAcrobat" -Value Uninstall-AdobePro
 
 
 Function Uninstall-AdobeLiveCycleFormsDesigner {
@@ -6970,6 +6965,7 @@ Function Uninstall-AdobeShockwave {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('Uninstall-Shockwave')]
     Param (
         [Parameter(
             HelpMessage = "Enter one or more computer names separated by commas.",
@@ -7066,7 +7062,6 @@ Function Uninstall-AdobeShockwave {
         $RunspacePool.Dispose() | Out-Null
     }
 }
-New-Alias -Name "Uninstall-Shockwave" -Value Uninstall-AdobeShockwave
 
 
 Function Uninstall-Axway {
@@ -7192,6 +7187,7 @@ Function Uninstall-CiscoAnyConnect {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('Uninstall-AnyConnect')]
     Param (
         [Parameter(
             HelpMessage = "Enter one or more computer names separated by commas.",
@@ -7288,7 +7284,6 @@ Function Uninstall-CiscoAnyConnect {
         $RunspacePool.Dispose() | Out-Null
     }
 }
-New-Alias -Name "Uninstall-AnyConnect" -Value Uninstall-CiscoAnyConnect
 
 
 Function Uninstall-DamewareMiniRemoteControl {
@@ -7413,6 +7408,7 @@ Function Uninstall-F5BigIPEdgeClient {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('Uninstall-BigIPEdgeClient')]
     Param (
         [Parameter(
             HelpMessage = "Enter one or more computer names separated by commas.",
@@ -7509,7 +7505,6 @@ Function Uninstall-F5BigIPEdgeClient {
         $RunspacePool.Dispose() | Out-Null
     }
 }
-New-Alias -Name "Uninstall-BigIPEdgeClient" -Value Uninstall-F5BigIPEdgeClient
 
 
 Function Uninstall-GoogleChrome {
@@ -7528,6 +7523,7 @@ Function Uninstall-GoogleChrome {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('Uninstall-Chrome')]
     Param (
         [Parameter(
             HelpMessage = "Enter one or more computer names separated by commas.",
@@ -7624,7 +7620,6 @@ Function Uninstall-GoogleChrome {
         $RunspacePool.Dispose() | Out-Null
     }
 }
-New-Alias -Name "Uninstall-Chrome" -Value Uninstall-GoogleChrome
 
 
 Function Uninstall-HPInsightAgent {
@@ -8105,6 +8100,7 @@ Function Uninstall-MicrosoftInfoPath {
         Justification = "Expresses exactly what the function does and is the name of the application."
     )]
     [CmdletBinding()]
+    [Alias('Uninstall-InfoPath')]
     Param (
         [Parameter(
             HelpMessage = "Enter one or more computer names separated by commas.",
@@ -8201,7 +8197,6 @@ Function Uninstall-MicrosoftInfoPath {
         $RunspacePool.Dispose() | Out-Null
     }
 }
-New-Alias -Name "Uninstall-InfoPath" -Value Uninstall-MicrosoftInfoPath
 
 
 Function Uninstall-MozillaFirefox {
@@ -8220,6 +8215,7 @@ Function Uninstall-MozillaFirefox {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('Uninstall-Firefox')]
     Param (
         [Parameter(
             HelpMessage = "Enter one or more computer names separated by commas.",
@@ -8321,7 +8317,6 @@ Function Uninstall-MozillaFirefox {
         $RunspacePool.Dispose() | Out-Null
     }
 }
-New-Alias -Name "Uninstall-Firefox" -Value Uninstall-MozillaFirefox
 
 
 Function Uninstall-MozillaMaintenanceService {
@@ -8340,6 +8335,7 @@ Function Uninstall-MozillaMaintenanceService {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('Uninstall-FirefoxMaintenanceService')]
     Param (
         [Parameter(
             HelpMessage = "Enter one or more computer names separated by commas.",
@@ -8439,7 +8435,6 @@ Function Uninstall-MozillaMaintenanceService {
         $RunspacePool.Dispose() | Out-Null
     }
 }
-New-Alias -Name "Uninstall-FirefoxMaintenanceService" -Value Uninstall-MozillaMaintenanceService
 
 
 Function Uninstall-OracleJava {
@@ -8458,6 +8453,7 @@ Function Uninstall-OracleJava {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('Uninstall-Java')]
     Param (
         [Parameter(
             HelpMessage = "Enter one or more computer names separated by commas.",
@@ -8554,7 +8550,6 @@ Function Uninstall-OracleJava {
         $RunspacePool.Dispose() | Out-Null
     }
 }
-New-Alias -Name "Uninstall-Java" -Value Uninstall-OracleJava
 
 
 Function Uninstall-TransVerse {
@@ -10790,6 +10785,7 @@ function Get-NetworkLevelAuthentication {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('Get-NLA')]
     param(
         [Parameter(
             Mandatory=$false
@@ -10834,7 +10830,6 @@ function Get-NetworkLevelAuthentication {
         }
     }
 }
-New-Alias -Name "Get-NLA" -Value Get-NetworkLevelAuthentication
 
 
 function Set-NetworkLevelAuthentication {
@@ -10861,6 +10856,7 @@ function Set-NetworkLevelAuthentication {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('Set-NLA')]
     param(
         [Parameter(
             Mandatory=$false,
@@ -10905,7 +10901,6 @@ function Set-NetworkLevelAuthentication {
         }
     }
 }
-New-Alias -Name "Set-NLA" -Value Set-NetworkLevelAuthentication
 
 
 ###########################################################################
@@ -10953,12 +10948,14 @@ function Open-ConfigurationManager {
 .LINK
     https://wstools.dev
 #>
+    [CmdletBinding()]
+    [Alias('configmgr')]
+    param()
     if (Test-Path "C:\Windows\CCM\SMSCFGRC.cpl") {Start-Process C:\Windows\CCM\SMSCFGRC.cpl}
     elseif (Test-Path "C:\Windows\SysWOW64\CCM\SMSCFGRC.cpl") {Start-Process C:\Windows\SysWOW64\CCM\SMSCFGRC.cpl}
     elseif (Test-Path "C:\Windows\System32\CCM\SMSCFGRC.cpl") {Start-Process C:\Windows\System32\CCM\SMSCFGRC.cpl}
     else {Throw "Configuration Manager not found"}
 }
-New-Alias -Name "configmgr" -Value Open-ConfigurationManager
 
 
 function Open-FileWithCMTrace {
@@ -10974,6 +10971,7 @@ function Open-FileWithCMTrace {
     https://www.skylerhart.com
 #>
     [CmdletBinding()]
+    [Alias('Open-Log')]
     param(
         [Parameter(
             Mandatory=$true
@@ -11006,7 +11004,6 @@ function Open-FileWithCMTrace {
         }
     }
 }
-New-Alias -Name "Open-Log" -Value Open-FileWithCMTrace
 
 
 function Open-RunAdvertisedPrograms {
@@ -11023,11 +11020,13 @@ function Open-RunAdvertisedPrograms {
 .LINK
     https://wstools.dev
 #>
+    [CmdletBinding()]
+    [Alias('rap')]
+    param()
     if (Test-Path "C:\Windows\SysWOW64\CCM\SMSRAP.cpl") {Start-Process C:\Windows\SysWOW64\CCM\SMSRAP.cpl}
     elseif (Test-Path "C:\Windows\System32\CCM\SMSRAP.cpl") {Start-Process C:\Windows\System32\CCM\SMSRAP.cpl}
     else {Throw "Run Advertised Programs not found"}
 }
-New-Alias -Name "rap" -Value Open-RunAdvertisedPrograms
 
 
 function Open-SoftwareCenter {
@@ -11041,6 +11040,7 @@ function Open-SoftwareCenter {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('SoftwareCenter','SCCM','MECM')]
     param(
         [Parameter(
             Mandatory=$false
@@ -11053,9 +11053,6 @@ function Open-SoftwareCenter {
 
     Start-Process softwarecenter:Page=$Page
 }
-New-Alias -Name "softwarecenter" -Value Open-SoftwareCenter
-New-Alias -Name "SCCM" -Value Open-SoftwareCenter
-New-Alias -Name "MECM" -Value Open-SoftwareCenter
 
 
 function Open-SCCMLogsFolder {
@@ -11258,6 +11255,7 @@ Function Get-ENSStatus {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('ENS','Get-ENSInfo','ESS','Get-ESSInfo')]
     Param (
         [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
@@ -11382,10 +11380,6 @@ Function Get-ENSStatus {
         }#else host version
     }#foreach computer
 }#get ensstatus
-New-Alias -Name "ENS" -Value Get-ENSStatus
-New-Alias -Name "Get-ENSInfo" -Value Get-ENSStatus
-New-Alias -Name "ESS" -Value Get-ENSStatus
-New-Alias -Name "Get-ESSInfo" -Value Get-ENSStatus
 
 
 # Working. To Do:
@@ -11623,6 +11617,9 @@ function Open-HBSSStatusMonitor {
 .LINK
     https://wstools.dev
 #>
+    [CmdletBinding()]
+    [Alias('HBSS')]
+    param()
     if (Test-Path "$env:ProgramFiles\McAfee\Agent\cmdagent.exe") {
         Start-Process "$env:ProgramFiles\McAfee\Agent\cmdagent.exe" /s
     }
@@ -11636,7 +11633,6 @@ function Open-HBSSStatusMonitor {
        Throw "HBSS Client Agent not found"
     }
 }
-New-Alias -Name "HBSS" -Value Open-HBSSStatusMonitor
 
 
 function Open-McAfeeVirusScanConsole {
@@ -11696,6 +11692,7 @@ Function Uninstall-HBSS {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('Uninstall-ENS','Uninstall-ESS')]
     Param (
         [Parameter(
             HelpMessage = "Enter one or more computer names separated by commas.",
@@ -11794,7 +11791,6 @@ Function Uninstall-HBSS {
         $RunspacePool.Dispose() | Out-Null
     }
 }
-New-Alias -Name "Uninstall-ENS" -Value Uninstall-HBSS
 
 
 function Update-McAfeeSecurity {
@@ -11829,6 +11825,7 @@ function Sync-HBSSWithServer {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('Sync-HBSS','Sync-ENS','Sync-ESS')]
     Param (
         [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
@@ -11881,9 +11878,6 @@ function Sync-HBSSWithServer {
         }#catch 32or64 bit
     }#foreach comp
 }
-New-Alias -Name "Sync-HBSS" -Value Sync-HBSSWithServer
-New-Alias -Name "Sync-ENS" -Value Sync-HBSSWithServer
-New-Alias -Name "Sync-ESS" -Value Sync-HBSSWithServer
 
 
 ###########################################################################

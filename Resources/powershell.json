@@ -96,6 +96,7 @@
 		"body": [
 			"function ${verb}-${noun} {",
 			"\t[CmdletBinding()]",
+			"\t[Alias()]",
 			"\tparam(",
 			"\t\t[Parameter(Mandatory=\\$true)]",
 			"\t\t[${string}]",
@@ -289,12 +290,12 @@
 			"\t\t-RunAsAdministrator",
 			"#>",
 			"\t[CmdletBinding()]",
+			"\t[Alias()]",
 			"\tparam(",
 			"\t\t[Parameter(",
 			"\t\t\t#HelpMessage = \"Enter one or more computer names separated by commas.\",",
 			"\t\t\tMandatory=\\$false#,",
 			"\t\t\t#Position=0,",
-			"\t\t\t#ValueFromPipelineByPropertyName = \\$true,",
 			"\t\t\t#ValueFromPipeline = \\$true",
 			"\t\t)]",
 			"\t\t[ValidateNotNullOrEmpty()]",
@@ -305,8 +306,12 @@
 			"\t\t[string[]]\\$ComputerName = \"\\$env:COMPUTERNAME\"",
 			"\t)",
 			"",
-			"\tforeach (\\$Comp in \\$ComputerName) {",
-			"\t\t$0",
+			"\tBegin {}",
+			"\tProcess {",
+			"\t\tforeach (\\$Comp in \\$ComputerName) {",
+			"\t\t\t$0",
+			"\t}",
+			"\tEnd {}",
 			"\t}",
 			"}"
 		],
@@ -352,12 +357,12 @@
 			"\thttps://wstools.dev",
 			"#>",
 			"\t[CmdletBinding()]",
+			"\t[Alias()]",
 			"\tparam(",
 			"\t\t[Parameter(",
 			"\t\t\t#HelpMessage = \"Enter one or more computer names separated by commas.\",",
 			"\t\t\tMandatory=\\$false#,",
 			"\t\t\t#Position=0,",
-			"\t\t\t#ValueFromPipelineByPropertyName = \\$true,",
 			"\t\t\t#ValueFromPipeline = \\$true",
 			"\t\t)]",
 			"\t\t[ValidateNotNullOrEmpty()]",
@@ -368,9 +373,13 @@
 			"\t\t[string[]]\\$ComputerName = \"\\$env:COMPUTERNAME\"",
 			"\t)",
 			"",
-			"\tforeach (\\$Comp in \\$ComputerName) {",
-			"\t\t$0",
+			"\tBegin {}",
+			"\tProcess {",
+			"\t\tforeach (\\$Comp in \\$ComputerName) {",
+			"\t\t\t$0",
+			"\t\t}",
 			"\t}",
+			"\tEnd {}",
 			"}"
 		],
 		"description": "Adds WSTools function format"
@@ -384,7 +393,6 @@
 			"\t\t\tMandatory=\\$false,",
 			"\t\t\tPosition=0,",
 			"\t\t\tValueFromPipeline = \\$true,",
-			"\t\t\tValueFromPipelineByPropertyName = \\$true",
 			"\t\t)]",
 			"\t\t[ValidateSet('Info','Error','Warning')]",
 			"\t\t[ValidateNotNullOrEmpty()]",
@@ -497,5 +505,12 @@
 			"\\$MyDocuments = [System.Environment]::GetFolderPath('MyDocuments')"
 		],
 		"description": "Adds MyDocuments variable."
+	},
+	"Alias": {
+		"prefix": "Alias",
+		"body": [
+			"[Alias('$0')]"
+		],
+		"description": "Adds Alias attribute."
 	}
 }

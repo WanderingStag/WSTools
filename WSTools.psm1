@@ -383,6 +383,7 @@ function Connect-RDP {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [alias('rdp')]
     Param (
         [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
@@ -396,7 +397,6 @@ function Connect-RDP {
         mstsc
     }
 }
-New-Alias -Name "rdp" -Value Connect-RDP
 
 
 function Copy-PowerShellJSON {
@@ -416,6 +416,10 @@ function Copy-PowerShellJSON {
 .LINK
     https://wstools.dev
 #>
+    [CmdletBinding()]
+    [Alias('Update-PowerShellJSON','Set-PowerShellJSON')]
+    param()
+
     if (!(Test-Path $env:APPDATA\Code\User)) {
         New-Item -Path $env:APPDATA\Code -ItemType Directory -Name User -Force
     }
@@ -424,8 +428,6 @@ function Copy-PowerShellJSON {
     }
     Copy-Item -Path $PSScriptRoot\Resources\powershell.json -Destination $env:APPDATA\Code\User\snippets\powershell.json
 }
-New-Alias -Name "Update-PowerShellJSON" -Value Copy-PowerShellJSON
-New-Alias -Name "Set-PowerShellJSON" -Value Copy-PowerShellJSON
 
 
 function Copy-UpdateHistory {
@@ -753,6 +755,10 @@ function Get-CertificateInventory {
 .LINK
     https://wstools.dev
 #>
+    [CmdletBinding()]
+    [Alias('Get-CertInv','Get-CertInfo')]
+    param()
+
     $cpath = @('Cert:\LocalMachine\My','Cert:\LocalMachine\Remote Desktop')
     $certinfo = @()
 
@@ -790,8 +796,6 @@ function Get-CertificateInventory {
     }
     $certs | Select-Object ComputerName,ProductType,Location,Subject,Issuer,SelfSigned,ValidFrom,ValidTo,DaysToExpiration,SerialNumber,Thumbprint | Sort-Object Subject
 }
-New-Alias -Name "Get-CertInv" -Value Get-CertificateInventory
-New-Alias -Name "Get-CertInfo" -Value Get-CertificateInventory
 
 
 function Get-CommandList {
@@ -965,6 +969,7 @@ Function Get-ComputerModel {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('Get-Model')]
     Param (
         [Parameter(
             Mandatory=$false,
@@ -1029,7 +1034,6 @@ Function Get-ComputerModel {
     }
     End {}
 }
-New-Alias -Name "Get-Model" -Value Get-ComputerModel
 
 
 function Get-DayOfYear {
@@ -1043,6 +1047,7 @@ function Get-DayOfYear {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('Get-JulianDay','Get-JulianDate')]
     param(
         [Parameter(
             Mandatory=$false,
@@ -1092,8 +1097,6 @@ function Get-DayOfYear {
         Write-Error "Not in the correct format. Format must be entered in the format x, xx, or xxx for a day of the year. Ex: 12. For a date, it must be entered in the format yyyyMMdd or yyyy-MM-dd. Ex: 2021-05-20" -Category SyntaxError
     }
 }
-New-Alias -Name "Get-JulianDay" -Value Get-DayOfYear
-New-Alias -Name "Get-JulianDate" -Value Get-DayOfYear
 
 
 Function Get-DefaultBrowserPath {
@@ -1196,9 +1199,11 @@ function Get-Drive {
 .LINK
     https://wstools.dev
 #>
+    [CmdletBinding()]
+    [Alias('drive')]
+    param()
     Get-PSDrive -Name *
 }
-New-Alias -Name "Drive" -Value Get-Drive
 
 
 function Get-Error {
@@ -1217,6 +1222,7 @@ function Get-Error {
         Justification = "Have tried other methods and they do not work consistently."
     )]
     [CmdletBinding()]
+    [Alias('Error')]
     Param (
         [Parameter(
             Mandatory=$false,
@@ -1251,7 +1257,6 @@ function Get-Error {
         }
     }
 }
-New-Alias -Name "Error" -Value Get-Error
 
 
 Function Get-ExpiredCertsComputer {
@@ -2562,6 +2567,10 @@ function Get-NotificationApp {
 .LINK
     https://wstools.dev
 #>
+    [CmdletBinding()]
+    [Alias('Get-ToastNotifierApp','Get-ToastNotificationApp')]
+    param()
+
     $info = @()
     $HKCR = Get-PSDrive -Name HKCR -ErrorAction SilentlyContinue
     if (!($HKCR)) {
@@ -2653,8 +2662,6 @@ function Get-NotificationApp {
     $info
     #Remove-PSDrive -Name HKCR -Force
 }
-New-Alias -Name "Get-ToastNotifierApp" -Value Get-NotificationApp
-New-Alias -Name "Get-ToastNotificationApp" -Value Get-NotificationApp
 
 
 Function Get-OperatingSystem {
@@ -3080,6 +3087,7 @@ Function Get-PSVersion {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('Get-PowerShellVersion')]
     Param (
         [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
             Mandatory=$false,
@@ -3159,7 +3167,6 @@ Function Get-PSVersion {
     }
     $compinfo
 }
-New-Alias -Name "Get-PowerShellVersion" -Value Get-PSVersion
 
 
 Function Get-SerialNumber {
@@ -3173,6 +3180,7 @@ Function Get-SerialNumber {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('Get-SN')]
     Param (
         [Parameter(HelpMessage = "Enter one or more computer names separated by commas.",
             Mandatory=$false,
@@ -3207,7 +3215,6 @@ Function Get-SerialNumber {
         }
     }
 }
-New-Alias -Name "Get-SN" -Value Get-SerialNumber
 
 
 Function Get-ShutdownLog {
@@ -3618,6 +3625,7 @@ function Get-WindowsSetupLog {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('Get-UpdateStatus','Get-UpdateLog')]
     Param (
         [Parameter(
             Mandatory=$false,
@@ -3706,8 +3714,6 @@ function Get-WindowsSetupLog {
         $info | Select-Object ComputerName,Update,Status,Time,Message -First $MostRecent
     }#foreach computer
 }
-New-Alias -Name "Get-UpdateStatus" -Value Get-WindowsSetupLog
-New-Alias -Name "Get-UpdateLog" -Value Get-WindowsSetupLog
 
 
 function Get-ZuluTime {
@@ -3775,6 +3781,7 @@ Function Import-MOF {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('Import-WMIFilter')]
     Param (
         [Parameter(
             HelpMessage = "Enter the path of the .mof file you want to import. Ex: C:\Example\examplewmi.mof",
@@ -3793,7 +3800,6 @@ Function Import-MOF {
     $content2 > $Path
     mofcomp -N:root\Policy $Path
 }
-New-Alias -Name "Import-WMIFilter" -Value Import-MOF
 
 
 Function Import-XML {
@@ -3833,6 +3839,7 @@ Function Join-File {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('Merge-File')]
     Param (
         [Parameter(HelpMessage = "Enter the path of the folder with the part files you want to join.",
             Mandatory=$true,
@@ -3919,7 +3926,6 @@ Function Join-File {
     $WriteObj.Close()
     Set-Location $og
 }
-New-Alias -Name "Merge-File" -Value Join-File
 
 
 function Mount-HomeDrive {
@@ -3932,9 +3938,11 @@ function Mount-HomeDrive {
 .LINK
     https://wstools.dev
 #>
+    [CmdletBinding()]
+    [Alias('Add-HomeDrive')]
+    param()
     net use $env:HOMEDRIVE $env:HOMESHARE /persistent:yes
 }
-New-Alias -Name "Add-HomeDrive" -Value Mount-HomeDrive
 
 
 #get more open commands here: https://sysadminstricks.com/tricks/most-useful-microsoft-management-console-snap-in-control-files-msc-files.html
@@ -3952,11 +3960,11 @@ function Open-AdminTools {
 .LINK
     https://wstools.dev
 #>
+    [CmdletBinding()]
+    [Alias('tools','admintools','admin')]
+    param()
     control.exe admintools
 }
-New-Alias -Name "tools" -Value Open-AdminTools
-New-Alias -Name "admintools" -Value Open-AdminTools
-New-Alias -Name "admin" -Value Open-AdminTools
 
 
 function Open-BitLocker {
@@ -3974,9 +3982,11 @@ function Open-BitLocker {
 .LINK
     https://wstools.dev
 #>
+    [CmdletBinding()]
+    [Alias('BitLocker')]
+    param()
     control.exe /name Microsoft.BitLockerDriveEncryption
 }
-New-Alias -Name "BitLocker" -Value Open-BitLocker
 
 
 function Open-CertificatesComputer {
@@ -4028,6 +4038,7 @@ function Open-CMTrace {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('Open-CCMTrace','CMTrace','CCMTrace')]
     param(
         [Parameter(
             Mandatory=$false
@@ -4048,9 +4059,7 @@ function Open-CMTrace {
         else {Start-Process $ncm -ArgumentList $Path}
     }
 }
-New-Alias -Name "Open-CCMTrace" -Value Open-CMTrace
-New-Alias -Name "CMTrace" -Value Open-CMTrace
-New-Alias -Name "CCMTrace" -Value Open-CMTrace
+
 
 function Open-ComputerManagement {
 <#
@@ -4116,7 +4125,6 @@ function Open-DevicesAndPrinters {
 #>
     control.exe printers
 }
-New-Alias -Name "printers" -Value Open-DevicesAndPrinters
 
 
 function Open-DiscDrive {
@@ -4133,10 +4141,12 @@ function Open-DiscDrive {
 .LINK
     https://wstools.dev
 #>
+    [CmdletBinding()]
+    [Alias('Eject-Disc')]
+    param()
     $sh = New-Object -ComObject "Shell.Application"
     $sh.Namespace(17).Items() | Where-Object {$_.Type -eq "CD Drive"} | ForEach-Object {$_.InvokeVerb("Eject")}
 }
-New-Alias -Name "Eject-Disc" -Value Open-DiscDrive
 
 
 function Open-DiskManagement {
@@ -4179,6 +4189,7 @@ function Open-EventViewer {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('events')]
     Param (
         [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
@@ -4186,7 +4197,6 @@ function Open-EventViewer {
     )
     eventvwr.msc /computer:\\$ComputerName
 }
-New-Alias -Name "events" -Value Open-EventViewer
 
 
 Function Open-FirewallLog {
@@ -4296,10 +4306,11 @@ function Open-LocalGPeditor {
 .LINK
     https://wstools.dev
 #>
+    [CmdletBinding()]
+    [Alias('Open-LocalPolicyEditor','LocalPolicy')]
+    param()
     gpedit.msc
 }
-New-Alias -Name "Open-LocalPolicyEditor" -Value Open-LocalGPeditor
-New-Alias -Name "LocalPolicy" -Value Open-LocalGPeditor
 
 
 Function Open-NetworkConnections {
@@ -4316,10 +4327,11 @@ Function Open-NetworkConnections {
 .LINK
     https://wstools.dev
 #>
+    [CmdletBinding()]
+    [Alias('network','connections')]
+    param()
     control.exe ncpa.cpl
 }
-New-Alias -Name "network" -Value Open-NetworkConnections
-New-Alias -Name "connections" -Value Open-NetworkConnections
 
 
 function Open-ProgramsAndFeatures {
@@ -4336,9 +4348,11 @@ function Open-ProgramsAndFeatures {
 .LINK
     https://wstools.dev
 #>
+    [CmdletBinding()]
+    [Alias('programs')]
+    param()
     Start-Process appwiz.cpl
 }
-New-Alias -Name "programs" -Value Open-ProgramsAndFeatures
 
 
 Function Open-Remedy {
@@ -4358,6 +4372,7 @@ Function Open-Remedy {
         Justification = "Have tried other methods and they do not work consistently."
     )]
     [CmdletBinding()]
+    [Alias('Remedy','EITSM','Open-EITSM')]
     Param (
         [Parameter(Mandatory=$false)]
         [Switch]$Chrome,
@@ -4384,9 +4399,6 @@ Function Open-Remedy {
         (New-Object -com Shell.Application).Open($URL)
     }
 }
-New-Alias -Name "Remedy" -Value Open-Remedy
-New-Alias -Name "EITSM" -Value Open-Remedy
-New-Alias -Name "Open-EITSM" -Value Open-Remedy
 
 
 Function Open-Services {
@@ -4405,6 +4417,7 @@ Function Open-Services {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('services')]
     Param (
         [Parameter(Mandatory=$false, Position=0)]
         [Alias('Host','Name','Computer','CN')]
@@ -4412,7 +4425,6 @@ Function Open-Services {
     )
     services.msc /computer=\\$ComputerName
 }
-New-Alias -Name "services" -Value Open-Services
 
 
 Function Open-SystemProperties {
@@ -4448,6 +4460,10 @@ function Open-VisualStudioCodeSettings {
         "",
         Justification = "Expresses exactly what the function does."
     )]
+    [CmdletBinding()]
+    [Alias('Open-VSCCodeSettings')]
+    param()
+
     $vssettings = "$env:APPDATA\Code\User\settings.json"
     if ($host.Name -match "Visual Studio Code") {
         code $vssettings
@@ -4456,7 +4472,6 @@ function Open-VisualStudioCodeSettings {
         powershell_ise $vssettings
     }
 }
-New-Alias -Name "Open-VSCodeSettings" -Value Open-VisualStudioCodeSettings
 
 
 function Register-NotificationApp {
@@ -4918,6 +4933,7 @@ function Set-AxwayConfig {
     https://www.skylerhart.com
 #>
     [CmdletBinding()]
+    [Alias('Import-AxwayConfig')]
     param(
         [Parameter(
             #HelpMessage = "Enter one or more computer names separated by commas.",
@@ -4977,7 +4993,6 @@ function Set-AxwayConfig {
         else {Write-Error "Must be ran as admin when running against remote computers"}#not admin
     }#else not local
 }
-New-Alias -Name "Import-AxwayConfig" -Value Set-AxwayConfig
 
 
 function Set-ChromeDeveloperTools {
@@ -5018,6 +5033,7 @@ function Set-ChromeDeveloperTools {
         Justification = "Developer Tools is the actual name of the setting so keeping it consistent."
     )]
     [CmdletBinding()]
+    [Alias('Set-DeveloperTools')]
     param(
         [Parameter()]
         [switch]$Disable
@@ -5051,7 +5067,6 @@ function Set-ChromeDeveloperTools {
         Write-Warning "Function must be ran as administrator."
     }
 }
-New-Alias -Name "Set-DeveloperTools" -Value Set-ChromeDeveloperTools
 
 
 Function Set-Explorer {
@@ -5099,6 +5114,7 @@ Function Set-JavaException {
         Justification = "Have tried other methods and they do not work consistently."
     )]
     [CmdletBinding()]
+    [Alias('Add-JavaException')]
     Param (
         [Parameter(
             Mandatory=$false
@@ -5280,7 +5296,6 @@ Function Set-JavaException {
         $RunspacePool.Dispose() | Out-Null
     }
 }
-New-Alias -Name "Add-JavaException" -Value Set-JavaException
 
 
 function Set-LAPSshortcut {
@@ -5601,6 +5616,7 @@ function Set-RemoteDesktopCert {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('Set-RDPCert')]
     param(
         [Parameter(
             HelpMessage = "Enter the thumbprint of the certificate.",
@@ -5617,7 +5633,6 @@ function Set-RemoteDesktopCert {
     }
     else {Write-Error "Must be ran as administrator."}
 }
-New-Alias -Name "Set-RDPCert" -Value Set-RemoteDesktopCert
 
 
 function Set-ServerConfig {
@@ -5818,6 +5833,7 @@ Function Set-SpeakerVolume {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('Volume')]
     Param (
         [switch]$min,
         [switch]$max,
@@ -5833,7 +5849,6 @@ Function Set-SpeakerVolume {
     elseif ($mute) {$wshShell.SendKeys([char]173)}#turns sound on or off dependent on what it was before
     elseif ($volume) {1..50 | ForEach-Object {$wshShell.SendKeys([char]174)};1..$Volume | ForEach-Object {$wshShell.SendKeys([char]175)}}
 }
-New-Alias -Name "Volume" -Value Set-SpeakerVolume
 
 
 Function Set-StoreLookup {
@@ -5913,6 +5928,7 @@ Function Show-BalloonTip {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('tip')]
     Param (
         [Parameter(Mandatory=$true)]
         [string]$Text,
@@ -5938,7 +5954,6 @@ Function Show-BalloonTip {
     $PopUp.Visible = $true
     $PopUp.ShowBalloonTip($Timeout)
 }
-New-Alias -Name "tip" -Value Show-BalloonTip
 
 
 function Show-FederalHoliday {
@@ -5957,6 +5972,7 @@ function Show-FederalHoliday {
         Justification = "Have tried other methods and they do not work consistently."
     )]
     [CmdletBinding()]
+    [Alias('Get-FederalHoliday')]
     param(
         [Parameter(Mandatory=$false)]
         [string[]]$Name,
@@ -6009,7 +6025,6 @@ function Show-FederalHoliday {
         }#for each name entered
     }#if a name is specified
 }
-New-Alias -Name "Get-FederalHoliday" -Value Show-FederalHoliday
 
 
 Function Show-FileExtensions {
@@ -6088,6 +6103,7 @@ Function Show-MessageBox {
 #>
 #info: https://msdn.microsoft.com/en-us/library/x83z1d9f(v=vs.84).aspx
     [CmdletBinding()]
+    [Alias('message')]
     Param (
         [Parameter(Mandatory=$true)]
         [string]$Text,
@@ -6129,7 +6145,6 @@ Function Show-MessageBox {
 #10 Try Again button
 #11 Continue button
 }
-New-Alias -Name "message" -Value Show-MessageBox
 
 
 Function Split-File {
@@ -6246,10 +6261,11 @@ function Start-WSToolsGUI {
 .LINK
     https://wstools.dev
 #>
+    [CmdletBinding()]
+    [Alias('wsgui','wstgui','Start-WSToolsTrayApp')]
+    param()
     Start-Process powershell.exe -ArgumentList "`$host.ui.RawUI.WindowTitle = 'WSTools Taskbar App'; & '$PSScriptRoot\Resources\WSTools_SystemTrayApp.ps1'"
 }
-New-Alias -Name wstgui -Value Start-WSToolsGUI
-New-Alias -Name "Start-WSToolsTrayApp" -Value Start-WSToolsGUI
 
 
 function Start-CommandMultiThreaded {
@@ -6467,7 +6483,7 @@ function Stop-Database {
 .NOTES
     Author: Skyler Hart
     Created: 2020-10-24 19:01:26
-    Last Edit: 2020-10-24 19:01:26
+    Last Edit: 2023-02-07 22:33:18
     Keywords:
     Requires:
         -RunAsAdministrator
@@ -6476,16 +6492,17 @@ function Stop-Database {
 .LINK
     https://www.skylerhart.com
 #>
+    [CmdletBinding()]
+    [Alias('Stop-Oracle','Stop-SQL','Stop-MongoDB')]
+    param()
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
     if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-        Get-Service -Name * | Where-Object {$_.DisplayName -match "Oracle" -or $_.DisplayName -match "SQL"} | Stop-Service -Force
+        Get-Service -Name * | Where-Object {$_.DisplayName -match "Oracle" -or $_.DisplayName -match "SQL" -or $_.DisplayName -match "MongoDB"} | Stop-Service -Force
     }
     else {
         Write-Output "Must run PowerShell as admin to run Stop-Database."
     }
 }
-New-Alias -Name "Stop-Oracle" -Value Stop-Database
-New-Alias -Name "Stop-SQL" -Value Stop-Database
 
 
 function Stop-Exchange {
@@ -6535,6 +6552,7 @@ function Sync-InTune {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('Sync-MEM')]
     param()
 
     try {
@@ -6544,7 +6562,6 @@ function Sync-InTune {
         Write-Warning "Device is not InTune/Microsoft Endpoint Manager (MEM) managed."
     }
 }
-New-Alias -Name "Sync-MEM" -Value Sync-InTune
 
 
 Function Test-EmailRelay {
@@ -6566,6 +6583,7 @@ Function Test-EmailRelay {
         Justification = "Have tried other methods and they do not work consistently."
     )]
     [CmdletBinding()]
+    [Alias('Test-SMTPRelay','Test-MailRelay')]
     Param (
         [Parameter(Mandatory=$true, Position=0, HelpMessage="Enter e-mail address of recipient")]
         [string]$Recipient
@@ -6581,8 +6599,6 @@ Function Test-EmailRelay {
 
     send-mailmessage -To $Recipient -From $from -Subject $subject -Body "Testing relay of SMTP messages.`nFrom: $from `nTo: $Recipient `n`nPlease delete this message." -smtpserver $smtpserver -Port $port
 }
-New-Alias -Name "Test-SMTPRelay" -Value Test-EmailRelay
-New-Alias -Name "Test-MailRelay" -Value Test-EmailRelay
 
 
 function Test-MTU {
@@ -7343,6 +7359,9 @@ function Update-VisioStencils {
         "",
         Justification = "Have tried other methods and they do not work consistently."
     )]
+    [CmdletBinding()]
+    [Alias('Copy-VisioStencils','Get-VisioStencils')]
+    param()
 
     $vspath = ($Global:WSToolsConfig).Stencils
     $rpath = [System.Environment]::GetFolderPath("MyDocuments") + "\My Shapes"
@@ -7357,8 +7376,6 @@ function Update-VisioStencils {
         robocopy $vspath $rpath /mir /mt:4 /r:3 /w:15 /njh /njs
     }
 }
-New-Alias -Name "Copy-VisioStencils" -Value Update-VisioStencils
-New-Alias -Name "Get-VisioStencils" -Value Update-VisioStencils
 
 
 #####################################
@@ -7376,9 +7393,11 @@ Function Get-WSToolsAlias {
 .LINK
     https://wstools.dev
 #>
+    [CmdletBinding()]
+    [Alias('WSToolsAliases')]
+    param()
     Get-Alias | Where-Object {$_.Source -eq "WSTools"}
 }
-New-Alias -Name "WSToolsAliases" -Value Get-WSToolsAlias
 
 
 Function Get-WSToolsCommand {
@@ -7391,10 +7410,12 @@ Function Get-WSToolsCommand {
 .LINK
     https://wstools.dev
 #>
+    [CmdletBinding()]
+    [Alias('WSToolsCommands')]
+    param()
     $commands = (Get-Module WSTools | Select-Object ExportedCommands).ExportedCommands
     $commands.Values | Select-Object CommandType,Name,Source
 }
-New-Alias -Name "WSToolsCommands" -Value Get-WSToolsCommand
 
 
 function Get-WSToolsConfig {
@@ -7412,10 +7433,11 @@ function Get-WSToolsConfig {
         "",
         Justification = "Have tried other methods and they do not work consistently."
     )]
+    [CmdletBinding()]
+    [Alias('Import-WSToolsConfig','WSToolsConfig')]
+    param()
     $Global:WSToolsConfig
 }
-New-Alias -Name "Import-WSToolsConfig" -Value Get-WSToolsConfig
-New-Alias -Name "WSToolsConfig" -Value Get-WSToolsConfig
 
 
 Function Get-WSToolsVersion {
@@ -7429,6 +7451,7 @@ Function Get-WSToolsVersion {
     https://wstools.dev
 #>
     [CmdletBinding()]
+    [Alias('WSToolsVersion')]
     Param (
         [Parameter(Mandatory=$false)]
         [Switch]$Remote,
@@ -7494,7 +7517,6 @@ Function Get-WSToolsVersion {
         $version | Select-Object ComputerName,WSToolsVersion,Date,Path
     }
 }
-New-Alias -Name "WSToolsVersion" -Value Get-WSToolsVersion
 
 
 Function Install-WSTools {
@@ -7530,6 +7552,7 @@ Function Install-WSTools {
         Justification = "Have tried other methods and they do not work consistently."
     )]
     [CmdletBinding()]
+    [Alias('Copy-WSTools','Push-WSTools')]
     Param (
         [Parameter(
             Mandatory = $false,
@@ -7630,8 +7653,6 @@ Function Install-WSTools {
         $RunspacePool.Dispose() | Out-Null
     }
 }
-New-Alias -Name "Copy-WSTools" -Value Install-WSTools
-New-Alias -Name "Push-WSTools" -Value Install-WSTools
 
 
 function Set-WSToolsConfig {
