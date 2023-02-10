@@ -1,4 +1,6 @@
-﻿Function Get-InstalledProgram {
+﻿$PatchFolderPath = "C:\Patches"
+
+Function Get-InstalledProgram {
 <#
 .SYNOPSIS
     Displays installed programs on a computer.
@@ -487,7 +489,6 @@ function Send-ToastNotification {
 }
 
 $cn = $env:COMPUTERNAME
-$PatchFolderPath = "C:\Patches"
 $cab = $PatchFolderPath + "\cab"
 $ip = Get-InstalledProgram | Select-Object ProgramName,Version,Comment
 $hf = (Get-HotFix | Select-Object HotFixID).HotFixID
