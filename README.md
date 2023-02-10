@@ -52,12 +52,12 @@ General Configuration
 1. Open PowerShell (after WSTools has been added to one of the locations above)
 2. Type the following command and then press Enter. In the file that opens you will need to update the values so they work on your network.
     **```Set-WSToolsConfig```**
-    > Recommend copying this file (config.ps1) to another location so if you download a newer version of WSTools you can just paste the config file back unless there are changes in the config file.
+    > Recommend copying this file (config.ps1) to another location after you modify it so if you download a newer version of WSTools you can just paste the config file back unless there are changes in the config file.
 
 Remote installation of .msu files and a select few other things:
 
 1. Open WSTools Module Path (typically _C:\Program Files\WindowsPowerShell\Modules\WSTools_ or _C:\Users\USERNAME\Documents\WindowsPowerShell\Modules\WSTools_) then edit InstallRemote.ps1.
-2. On Line 221 of InstallRemote.ps1 change the value of $PatchFolderPath to the directory on remote computers you store windows updates. This is predefined as "C:\Patches".
+2. On Line 1 of InstallRemote.ps1 change the value of $PatchFolderPath to the directory on remote computers you store windows updates. This is predefined as "C:\Patches".
 
 ## Visual Studio Code setup
 
