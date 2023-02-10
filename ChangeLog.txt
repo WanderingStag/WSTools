@@ -14,6 +14,7 @@ New features and other changes:
 4. In Stop-Database added MongoDB as a database product to stop. Also added Stop-MongoDB alias.
 5. Added snippet for Alias attribute in powershell.json.
 6. Removed New-Alias from all functions and replaced with Alias attribute.
+7. Added classes.ps1 file. Will define WSTools class and the variable $WSTools. Also beginning to define methods on the WSTools class.
 
 ######################
 #                    #
