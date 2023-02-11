@@ -4768,7 +4768,7 @@ function Save-MaintenanceReport {
 .NOTES
     Author: Skyler Hart
     Created: 2020-06-16 14:39:04
-    Last Edit: 2020-09-28 11:28:46
+    Last Edit: 2023-02-10 19:39:44
     Keywords:
 .LINK
     https://wstools.dev
@@ -4792,11 +4792,7 @@ function Save-MaintenanceReport {
     $sp = $UHPath + "\" + $dt + "_MaintenanceReport.csv"
     $stime = (Get-Date) - (New-TimeSpan -Day $Days)
     $info = Get-ChildItem $UHPath | Where-Object {$_.LastWriteTime -gt $stime -and $_.Name -notlike "*MaintenanceReport.csv"} | Select-Object FullName -ExpandProperty FullName
-    $finfo = @()
-    foreach ($file in $info) {
-        $fi = import-csv $file
-        $finfo += $fi
-    }
+    $finfo = Import-Csv ($info)
     $finfo | Select-Object Date,ComputerName,KB,Result,Title,Description,Category,ClientApplicationID,SupportUrl | Where-Object {$_.Date -gt $stime} | Sort-Object ComputerName | Export-Csv $sp -NoTypeInformation
 }
 
