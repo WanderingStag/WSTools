@@ -14,11 +14,11 @@ Class WSTools {
 		$this.LastUpdate = (Get-Item $root\WSTools.psd1).LastWriteTime
 	}
 
-	AddConfigItem ($Name, $Value) {
+	[void] AddUserConfigItem ($Name, $Value) {
 		$this.Config = $this.Config | Add-Member -NotePropertyName $Name -NotePropertyValue $Value -PassThru
 	}
 
-	SaveUserConfig () {
+	[void] SaveUserConfig () {
 		$ModuleConfig = "$PSScriptRoot\Config.ps1"
 
 		$items = $Global:WSToolsConfig | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name
@@ -64,10 +64,11 @@ Class WSTools {
 		}#file text
 
 		$content = $filetextstart + $filetext + $filetextend
-		$UserPowerShell = split-path $Global:Profile.CurrentUserCurrentHost
+		$UserPowerShell = "$env:USERPROFILE\.WSTools"
 
 		if (!(Test-Path $UserPowerShell)) {
 			New-Item -Path $UserPowerShell -ItemType Directory
+            Get-Item $UserPowerShell -Force | ForEach-Object {$_.Attributes = $_.Attributes -bor "Hidden"}
 		}
 
 		if (!(Test-Path $UserPowerShell\WSToolsConfig.ps1)) {
@@ -83,14 +84,15 @@ Class WSTools {
 			$result = $Global:Host.ui.PromptForChoice($title, $message, $options, 0)
 
 			switch ($result) {
-				0 {Set-Content -Path $UserPowerShell\WSToolsConfig.ps1 -Value $content}
-				1 {Write-Host 'Cancelled'}
+				0 {Set-Content -Path $UserPowerShell\WSToolsConfig.ps1 -Value $content; Write-Host "Overwrote user config file"}
+				1 {Write-Host "Cancelled"}
 			}
 		}
 	}#save user config
 
-	Update () {
-		Update-WSTools
+	[string] Update () {
+        Update-WSTools
+        return "Update complete"
 	}
 
 	#Constructors
