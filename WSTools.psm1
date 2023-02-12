@@ -378,7 +378,7 @@ function Connect-RDP {
    .Notes
     AUTHOR: Skyler Hart
     CREATED: 2017-08-18 20:48:07
-    LASTEDIT: 2021-01-25 18:06:26
+    LASTEDIT: 2023-02-11 13:48:55
 .LINK
     https://wstools.dev
 #>
@@ -390,7 +390,7 @@ function Connect-RDP {
         [string]$ComputerName
     )
 
-    if ($null -ne $ComputerName -or $ComputerName -ne "") {
+    if (!([string]::IsNullOrWhiteSpace($ComputerName))) {
         mstsc /v:$ComputerName /admin
     }
     else {
@@ -426,7 +426,7 @@ function Copy-PowerShellJSON {
     if (!(Test-Path $env:APPDATA\Code\User\snippets)) {
         New-Item -Path $env:APPDATA\Code\User -ItemType Directory -Name snippets -Force
     }
-    Copy-Item -Path $PSScriptRoot\Resources\powershell.json -Destination $env:APPDATA\Code\User\snippets\powershell.json
+    Copy-Item -Path $PSScriptRoot\Resources\powershell.json -Destination $env:APPDATA\Code\User\snippets\powershell.json -Force
 }
 
 
@@ -760,18 +760,16 @@ function Get-CertificateInventory {
     param()
 
     $cpath = @('Cert:\LocalMachine\My','Cert:\LocalMachine\Remote Desktop')
-    $certinfo = @()
 
     $os = (Get-WmiObject Win32_OperatingSystem).ProductType
 
     if ($os -eq 1) {$type = "Workstation"}
     elseif (($os -eq 2) -or ($os -eq 3)) {$type = "Server"}
 
-    foreach ($cp in $cpath) {
-        $certinfo += Get-ChildItem $cp | Select-Object *
+    $certinfo = foreach ($cp in $cpath) {
+        Get-ChildItem $cp | Select-Object *
     }
 
-    $certs = @()
     $certs = foreach ($cert in $certinfo) {
         $cp = $cert.PSParentPath -replace "Microsoft.PowerShell.Security\\Certificate\:\:",""
 
@@ -995,12 +993,8 @@ Function Get-ComputerModel {
                     5 {$dr = "Primary Domain Controller"}
                 }
 
-                switch ($csi.Model) {
-                    "Virtual Machine" {$PorV = "Virtual"}
-                    "VMware Virtual Platform" {$PorV = "Virtual"}
-                    "VirtualBox" {$PorV = "Virtual"}
-                    default {$PorV = "Physical"}
-                }
+                if ($csi.Model -contains "Virtual") {$PorV = "Virtual"}
+                else {$PorV = "Physical"}
 
                 switch ($csi.PCSystemType) {
                     2 {$type = "Laptop/Tablet"}
@@ -1494,12 +1488,9 @@ function Get-HWInfo {
                         5 {$dr = "Primary Domain Controller"}
                     }
 
-                    switch ($csi.Model) {
-                        "Virtual Machine" {$PorV = "Virtual"}
-                        "VMware Virtual Platform" {$PorV = "Virtual"}
-                        "VirtualBox" {$PorV = "Virtual"}
-                        default {$PorV = "Physical"}
-                    }
+
+                    if ($csi.Model -contains "Virtual") {$PorV = "Virtual"}
+                    else {$PorV = "Physical"}
 
                     switch ($csi.PCSystemType) {
                         2 {$type = "Laptop/Tablet"}
@@ -3802,27 +3793,6 @@ Function Import-MOF {
 }
 
 
-Function Import-XML {
-<#
-.Notes
-    AUTHOR: Skyler Hart
-    CREATED: 10/25/2017 17:03:54
-    LASTEDIT: 10/25/2017 17:03:54
-    KEYWORDS:
-.LINK
-    https://wstools.dev
-#>
-    [CmdletBinding()]
-    Param (
-        [Parameter(Mandatory=$true, Position=0)]
-        [string]$Path
-    )
-
-    [xml]$XmlFile = Get-Content -Path $Path
-    $XmlFile
-}
-
-
 Function Join-File {
 <#
    .Notes
@@ -5733,15 +5703,15 @@ Function Set-ShortcutText {
 .LINK
     https://wstools.dev
 #>
-        [CmdletBinding()]
-        Param (
-            [Switch]$Yes,
-            [Switch]$No
-        )
+    [CmdletBinding()]
+    Param (
+        [Switch]$Yes,
+        [Switch]$No
+    )
 
-        if ($Yes) {Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name Link -Value ([byte[]](00,00,00,00)) -Force}
-        elseif ($No) {Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name Link -Value ([byte[]](17,00,00,00)) -Force}
-        else {Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name NoUseStoreOpenWith -Value ([byte[]](00,00,00,00)) -Force}
+    if ($Yes) {Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name Link -Value ([byte[]](00,00,00,00)) -Force}
+    elseif ($No) {Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name Link -Value ([byte[]](17,00,00,00)) -Force}
+    else {Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name NoUseStoreOpenWith -Value ([byte[]](00,00,00,00)) -Force}
 }
 
 
@@ -5876,16 +5846,16 @@ Function Set-StoreLookup {
 
 function Set-WindowState {
 #source: https://gist.github.com/jakeballard/11240204
-param(
-    [Parameter()]
-    [ValidateSet('FORCEMINIMIZE','HIDE','MAXIMIZE','MINIMIZE','RESTORE',
-                 'SHOW','SHOWDEFAULT','SHOWMAXIMIZED','SHOWMINIMIZED',
-                 'SHOWMINNOACTIVE','SHOWNA','SHOWNOACTIVATE','SHOWNORMAL')]
-    $Style = 'SHOW',
+    param(
+        [Parameter()]
+        [ValidateSet('FORCEMINIMIZE','HIDE','MAXIMIZE','MINIMIZE','RESTORE',
+                    'SHOW','SHOWDEFAULT','SHOWMAXIMIZED','SHOWMINIMIZED',
+                    'SHOWMINNOACTIVE','SHOWNA','SHOWNOACTIVATE','SHOWNORMAL')]
+        $Style = 'SHOW',
 
-    [Parameter()]
-    $MainWindowHandle = (Get-Process –id $pid).MainWindowHandle
-)
+        [Parameter()]
+        $MainWindowHandle = (Get-Process –id $pid).MainWindowHandle
+    )
     $WindowStates = @{
         'FORCEMINIMIZE'   = 11
         'HIDE'            = 0
@@ -6152,9 +6122,6 @@ Function Split-File {
     KEYWORDS:
     REQUIRES:
         #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        #Requires -RunAsAdministrator
 .LINK
     https://wstools.dev
 #>
@@ -6240,8 +6207,6 @@ function Start-AxwayTrayApp {
         -RunAsAdministrator
 .LINK
     https://wstools.dev
-.LINK
-    https://www.skylerhart.com
 #>
     & 'C:\Program Files\Tumbleweed\Desktop Validator\DVTrayApp.exe'
 }
