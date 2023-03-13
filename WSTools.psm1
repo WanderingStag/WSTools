@@ -3380,7 +3380,7 @@ function Get-UpdateHistory {
 .NOTES
     Author: Skyler Hart
     Created: 2020-05-23 20:44:28
-    Last Edit: 2020-06-16 13:48:53
+    Last Edit: 2023-03-12 22:08:43
     Keywords:
 .LINK
     https://wstools.dev
@@ -3398,7 +3398,7 @@ function Get-UpdateHistory {
     $history = ($session.QueryHistory("",0,$ec) | Select-Object ResultCode,Date,Title,Description,ClientApplicationID,Categories,SupportUrl)
     $ef = $history | Where-Object {$_.Date -gt $stime}
 
-    foreach ($e in $ef | Where-Object {$null -ne ($e.Title) -or ($e.Title) -ne ""}) {
+    $wsusupdates = foreach ($e in $ef | Where-Object {$null -ne ($e.Title) -or ($e.Title) -ne ""}) {
         switch ($e.ResultCode) {
             0 {$Result = "Not Started"}
             1 {$Result = "Restart Required"}
@@ -3423,6 +3423,39 @@ function Get-UpdateHistory {
             SupportUrl = ($e.SupportUrl)
         }
     }#foreach event in history
+
+    $WSUSkbs = $wsusupdates | Where-Object {$_.Result -eq "Succeeded"} | Select-Object -ExpandProperty KB -Unique
+
+    $setuplogevents = Get-WinEvent -FilterHashtable @{logname = 'setup'} | Where-Object {($_.Id -eq 2 -or $_.Id -eq 3) -and $_.TimeCreated -gt $stime}
+    $manualupdates = foreach ($update in $setuplogevents) {
+        $updatekb = ($update.Message | Select-String -Pattern 'KB(\d+)' -AllMatches) | Select-Object -ExpandProperty Matches
+
+        if ($updatekb -in $WSUSkbs) {
+            #do nothing
+        }
+        else {
+            if ($update.Id -eq 2) {$status = "Succeeded"}
+            else {$status = "Failed"}
+
+            [PSCustomObject]@{
+                ComputerName = $env:computername
+                Date = $update.TimeCreated
+                Result = $status
+                KB = $updatekb
+                Title = $null
+                Category = $null
+                ClientApplicationID = "Manual or Remote Script"
+                Description = $null
+                SupportUrl = $null
+            }#new object
+        }
+    }
+
+    $allupdates = @()
+    $allupdates += $wsusupdates
+    $allupdates += $manualupdates
+
+    $allupdates | Sort-Object Date -Descending
 
 <#
     This remote piece requires a firewall change in order to get it to work...
@@ -4805,7 +4838,7 @@ function Save-UpdateHistory {
 .NOTES
     Author: Skyler Hart
     Created: 2020-06-15 13:03:22
-    Last Edit: 2022-08-27 22:06:46
+    Last Edit: 2023-03-12 22:08:57
     Keywords:
 .LINK
     https://wstools.dev
@@ -4838,7 +4871,7 @@ function Save-UpdateHistory {
         $history = ($session.QueryHistory("",0,$ec) | Select-Object ResultCode,Date,Title,Description,ClientApplicationID,Categories,SupportUrl)
         $ef = $history | Where-Object {$_.Date -gt $stime -and !([string]::IsNullOrWhiteSpace($_.Title))}
 
-        $info = foreach ($e in $ef) {
+        $wsusupdates = foreach ($e in $ef) {
             switch ($e.ResultCode) {
                 0 {$Result = "Not Started"}
                 1 {$Result = "Restart Required"}
@@ -4864,6 +4897,37 @@ function Save-UpdateHistory {
             }
         }#foreach event in history
 
+        $WSUSkbs = $wsusupdates | Where-Object {$_.Result -eq "Succeeded"} | Select-Object -ExpandProperty KB -Unique
+
+        $setuplogevents = Get-WinEvent -FilterHashtable @{logname = 'setup'} | Where-Object {($_.Id -eq 2 -or $_.Id -eq 3) -and $_.TimeCreated -gt $stime}
+        $manualupdates = foreach ($update in $setuplogevents) {
+            $updatekb = ($update.Message | Select-String -Pattern 'KB(\d+)' -AllMatches) | Select-Object -ExpandProperty Matches
+
+            if ($updatekb -in $WSUSkbs) {
+                #do nothing
+            }
+            else {
+                if ($update.Id -eq 2) {$status = "Succeeded"}
+                else {$status = "Failed"}
+
+                [PSCustomObject]@{
+                    ComputerName = $env:computername
+                    Date = $update.TimeCreated
+                    Result = $status
+                    KB = $updatekb
+                    Title = $null
+                    Category = $null
+                    ClientApplicationID = "Manual or Remote Script"
+                    Description = $null
+                    SupportUrl = $null
+                }#new object
+            }
+        }
+
+        $allupdates = @()
+        $allupdates += $wsusupdates
+        $allupdates += $manualupdates
+
         if (Test-Path $env:ProgramData\WSTools) {
             #do nothing
         }
@@ -4878,7 +4942,7 @@ function Save-UpdateHistory {
             New-Item -Path $env:ProgramData\WSTools -Name Reports -ItemType Directory
         }
 
-        $info | Export-Csv $lp -Force
+        $info | Sort-Object Date -Descending | Export-Csv $lp -Force
     } -ThrottleLimit $ThrottleLimit
 }
 
