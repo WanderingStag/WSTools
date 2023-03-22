@@ -4771,7 +4771,7 @@ function Save-MaintenanceReport {
 .NOTES
     Author: Skyler Hart
     Created: 2020-06-16 14:39:04
-    Last Edit: 2023-02-10 19:39:44
+    Last Edit: 2023-03-22 08:26:11
     Keywords:
 .LINK
     https://wstools.dev
@@ -4796,7 +4796,7 @@ function Save-MaintenanceReport {
     $stime = (Get-Date) - (New-TimeSpan -Day $Days)
     $info = Get-ChildItem $UHPath | Where-Object {$_.LastWriteTime -gt $stime -and $_.Name -notlike "*MaintenanceReport.csv"} | Select-Object FullName -ExpandProperty FullName
     $finfo = Import-Csv ($info)
-    $finfo | Select-Object Date,ComputerName,KB,Result,Title,Description,Category,ClientApplicationID,SupportUrl | Where-Object {$_.Date -gt $stime} | Sort-Object ComputerName | Export-Csv $sp -NoTypeInformation
+    $finfo | Select-Object Date,ComputerName,KB,Result,Title,Description,Category,ClientApplicationID,SupportUrl | Where-Object {$_.Date -gt $stime} | Sort-Object Date,ComputerName -Descending | Export-Csv $sp -NoTypeInformation
 }
 
 
@@ -4838,7 +4838,7 @@ function Save-UpdateHistory {
 .NOTES
     Author: Skyler Hart
     Created: 2020-06-15 13:03:22
-    Last Edit: 2023-03-12 22:08:57
+    Last Edit: 2023-03-22 08:26:33
     Keywords:
 .LINK
     https://wstools.dev
@@ -4942,7 +4942,7 @@ function Save-UpdateHistory {
             New-Item -Path $env:ProgramData\WSTools -Name Reports -ItemType Directory
         }
 
-        $info | Sort-Object Date -Descending | Export-Csv $lp -Force
+        $allupdates | Sort-Object Date -Descending | Export-Csv $lp -Force
     } -ThrottleLimit $ThrottleLimit
 }
 
