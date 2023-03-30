@@ -11,6 +11,7 @@ New features and other changes:
 1. Updated Get-UpdateHistory and Save-UpdateHistory so they now show updates that were manaully installed or installed using Install-Patches.
 2. Fixed issue with Save-UpdateHistory output and changed sorting.
 3. Changed sorting on Save-MaintenanceReport.
+4. Added functions Get-SCCMInstallStatus, Get-SCCMPendingUpdate, Install-SCCMUpdate, and Start-SCCMUpdateScan.
 
 ######################
 #                    #

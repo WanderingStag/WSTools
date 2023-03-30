@@ -10910,6 +10910,227 @@ function Set-NetworkLevelAuthentication {
 ##                                                                       ##
 ###########################################################################
 ###########################################################################
+
+function Get-SCCMInstallStatus {
+<#
+.SYNOPSIS
+    Short description
+.DESCRIPTION
+    Long description
+.PARAMETER ComputerName
+    Specifies the name of one or more computers.
+.PARAMETER Path
+    Specifies a path to one or more locations.
+.EXAMPLE
+    C:\PS>Get-SCCMInstallStatus
+    Example of how to use this cmdlet
+.EXAMPLE
+    C:\PS>Get-SCCMInstallStatus -PARAMETER
+    Another example of how to use this cmdlet but with a parameter or switch.
+.INPUTS
+    System.String
+.OUTPUTS
+    System.Management.Automation.PSCustomObject
+.COMPONENT
+    WSTools
+.FUNCTIONALITY
+    The functionality (keywords) that best describes this cmdlet
+.NOTES
+    Author: Skyler Hart
+    Created: 2023-03-29 23:01:59
+    Last Edit: 2023-03-29 23:01:59
+    Other:
+    Requires:
+        -Module ActiveDirectory
+        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    [Alias()]
+    param(
+        [Parameter(
+            #HelpMessage = "Enter one or more computer names separated by commas.",
+            Mandatory=$false#,
+            #Position=0,
+            #ValueFromPipeline = $true
+        )]
+        [ValidateNotNullOrEmpty()]
+        [ValidateCount(min,max)]
+        [ValidateLength(min,max)]
+        [ValidateSet('Info','Error','Warning','One','Two','Three')]
+        [Alias('Host','Name','Computer','CN')]
+        [string[]]$ComputerName = "$env:COMPUTERNAME"
+    )
+
+    $status = Invoke-Command -ComputerName $ComputerName -ScriptBlock {#DevSkim: ignore DS104456
+        try {
+            $CCMUpdate = get-wmiobject -query "SELECT * FROM CCM_SoftwareUpdate" -namespace "ROOT\ccm\ClientSDK" -ErrorAction stop
+            if (@($CCMUpdate | Where-Object {$_.EvaluationState -eq 2 -or $_.EvaluationState -eq 3 -or $_.EvaluationState -eq 4 -or $_.EvaluationState -eq 5 -or $_.EvaluationState -eq 6 -or $_.EvaluationState -eq 7 -or $_.EvaluationState -eq 11 }).length -ne 0) {
+                [pscustomobject]@{Computer = $env:computername; UpdateStatus = "3 - In Progress"}
+            } elseif(@($CCMUpdate | Where-Object {$_.EvaluationState -eq 13}).length -ne 0) {
+                [pscustomobject]@{Computer = $env:computername; UpdateStatus = "4 - Update Failed"}
+            } elseif(@($CCMUpdate | Where-Object { $_.EvaluationState -eq 8 -or $_.EvaluationState -eq 9 -or $_.EvaluationState -eq 10 }).length -ne 0) {
+                [pscustomobject]@{Computer = $env:computername; UpdateStatus = "2 - Requires Reboot"}
+            } elseif(@($CCMUpdate | Where-Object { $_.EvaluationState -eq 0 -or $_.EvaluationState -eq 1}).length -ne 0) {
+                [pscustomobject]@{Computer = $env:computername; UpdateStatus = "0 - Updates Available"}
+            } else {
+                [pscustomobject]@{Computer = $env:computername; UpdateStatus = "1 - Completed"}
+            }
+        } catch {
+            [pscustomobject]@{Computer = $env:computername; UpdateStatus = "5 - Error Reading Update History"}
+        }
+    } -ErrorAction SilentlyContinue
+    ForEach ($server in $servers) {
+        if ($status.computer -notcontains $server) {
+            $status += [pscustomobject]@{Computer = $server;UpdateStatus = "6 - Remote Connection Failure"}
+        }
+    }
+    $status | Select-Object Computer,UpdateStatus | Sort-Object -Property UpdateStatus,Computer
+}
+
+
+function Get-SCCMPendingUpdate {
+<#
+.SYNOPSIS
+    Short description
+.DESCRIPTION
+    Long description
+.PARAMETER ComputerName
+    Specifies the name of one or more computers.
+.PARAMETER Path
+    Specifies a path to one or more locations.
+.EXAMPLE
+    C:\PS>Get-SCCMPendingUpdate
+    Example of how to use this cmdlet
+.EXAMPLE
+    C:\PS>Get-SCCMPendingUpdate -PARAMETER
+    Another example of how to use this cmdlet but with a parameter or switch.
+.INPUTS
+    System.String
+.OUTPUTS
+    System.Management.Automation.PSCustomObject
+.COMPONENT
+    WSTools
+.FUNCTIONALITY
+    The functionality (keywords) that best describes this cmdlet
+.NOTES
+    Author: Skyler Hart
+    Created: 2023-03-29 22:31:19
+    Last Edit: 2023-03-29 22:31:19
+    Other:
+    Requires:
+        -Module ActiveDirectory
+        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    [Alias()]
+    param(
+        [Parameter(
+            #HelpMessage = "Enter one or more computer names separated by commas.",
+            Mandatory=$false#,
+            #Position=0,
+            #ValueFromPipeline = $true
+        )]
+        [Alias('Host','Name','Computer','CN')]
+        [string[]]$ComputerName = "$env:COMPUTERNAME"
+    )
+
+    Process {
+        foreach ($Comp in $ComputerName) {
+            if ($Comp -eq $env:COMPUTERNAME) {
+                $Updates = (Get-WmiObject -Query "SELECT * FROM CCM_SoftwareUpdate" -namespace "ROOT\ccm\ClientSDK")
+                foreach ($Update in $Updates) {
+                    [PSCustomObject]@{
+                        ComputerName = $Update.PSComputerName
+                        Update = $Update.Name
+                    }#new object
+                }
+            }
+            else {
+                Invoke-Command -ComputerName $Comp -ScriptBlock {#DevSkim: ignore DS104456
+                    $Updates = (Get-WmiObject -Query "SELECT * FROM CCM_SoftwareUpdate" -namespace "ROOT\ccm\ClientSDK")
+                    foreach ($Update in $Updates) {
+                        [PSCustomObject]@{
+                            ComputerName = $Update.PSComputerName
+                            Update = $Update.Name
+                        }#new object
+                    }
+                }
+            }#not local
+        }
+    }
+}
+
+function Install-SCCMUpdate {
+<#
+.SYNOPSIS
+    Short description
+.DESCRIPTION
+    Long description
+.PARAMETER ComputerName
+    Specifies the name of one or more computers.
+.PARAMETER Path
+    Specifies a path to one or more locations.
+.EXAMPLE
+    C:\PS>Install-SCCMUpdate
+    Example of how to use this cmdlet
+.EXAMPLE
+    C:\PS>Install-SCCMUpdate -PARAMETER
+    Another example of how to use this cmdlet but with a parameter or switch.
+.INPUTS
+    System.String
+.OUTPUTS
+    System.Management.Automation.PSCustomObject
+.COMPONENT
+    WSTools
+.FUNCTIONALITY
+    The functionality (keywords) that best describes this cmdlet
+.NOTES
+    Author: Skyler Hart
+    Created: 2023-03-29 22:42:28
+    Last Edit: 2023-03-29 22:42:28
+    Other:
+    Requires:
+        -Module ActiveDirectory
+        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    [Alias()]
+    param(
+        [Parameter(
+            #HelpMessage = "Enter one or more computer names separated by commas.",
+            Mandatory=$false#,
+            #Position=0,
+            #ValueFromPipeline = $true
+        )]
+        [Alias('Host','Name','Computer','CN')]
+        [string[]]$ComputerName = "$env:COMPUTERNAME"
+    )
+
+    Begin {}
+    Process {
+        foreach ($Comp in $ComputerName) {
+            if ($Comp -eq $env:COMPUTERNAME) {
+                ([wmiclass]'ROOT\ccm\ClientSDK:CCM_SoftwareUpdatesManager').InstallUpdates([System.Management.ManagementObject[]] (get-wmiobject -query 'SELECT * FROM CCM_SoftwareUpdate' -namespace 'ROOT\ccm\ClientSDK'))
+            }
+            else {
+                Invoke-Command -ComputerName $Comp -ScriptBlock {#DevSkim: ignore DS104456
+                    ([wmiclass]'ROOT\ccm\ClientSDK:CCM_SoftwareUpdatesManager').InstallUpdates([System.Management.ManagementObject[]] (get-wmiobject -query 'SELECT * FROM CCM_SoftwareUpdate' -namespace 'ROOT\ccm\ClientSDK'))
+                }
+            }#not local
+        }
+    }
+    End {}
+}
+
 function Open-CMTrace {
 <#
 .NOTES
@@ -11230,6 +11451,82 @@ Function Restore-WindowsUpdate {
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
     if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {dism.exe /Online /Cleanup-image /Restorehealth}
     else {Write-Error "Must be ran as admin"}
+}
+
+
+function Start-SCCMUpdateScan {
+<#
+.SYNOPSIS
+    Short description
+.DESCRIPTION
+    Long description
+.PARAMETER ComputerName
+    Specifies the name of one or more computers.
+.PARAMETER Path
+    Specifies a path to one or more locations.
+.EXAMPLE
+    C:\PS>Start-SCCMUpdateScan
+    Example of how to use this cmdlet
+.EXAMPLE
+    C:\PS>Start-SCCMUpdateScan -PARAMETER
+    Another example of how to use this cmdlet but with a parameter or switch.
+.INPUTS
+    System.String
+.OUTPUTS
+    System.Management.Automation.PSCustomObject
+.COMPONENT
+    WSTools
+.FUNCTIONALITY
+    The functionality (keywords) that best describes this cmdlet
+.NOTES
+    Author: Skyler Hart
+    Created: 2023-03-29 21:50:02
+    Last Edit: 2023-03-29 21:50:02
+    Other:
+    Requires:
+        -Module ActiveDirectory
+        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
+        -RunAsAdministrator
+.LINK
+    https://wstools.dev
+#>
+    [CmdletBinding()]
+    [Alias()]
+    param(
+        [Parameter(
+            #HelpMessage = "Enter one or more computer names separated by commas.",
+            Mandatory=$false#,
+            #Position=0,
+            #ValueFromPipeline = $true
+        )]
+        [Alias('Host','Name','Computer','CN')]
+        [string[]]$ComputerName = "$env:COMPUTERNAME"
+    )
+
+    Process {
+        foreach ($Comp in $ComputerName) {
+            if ($Comp -eq $env:COMPUTERNAME) {
+                Get-WmiObject -Query "SELECT * FROM CCM_UpdateStatus" -Namespace "root\ccm\SoftwareUpdates\UpdatesStore" | ForEach-Object {
+                    if($_.ScanTime -gt $ScanTime) { $ScanTime = $_.ScanTime }
+                }; $LastScan = ([System.Management.ManagementDateTimeConverter]::ToDateTime($ScanTime)); $LastScan;
+	            if(((get-date) - $LastScan).minutes -ge 10) {
+		            [void]([wmiclass]'ROOT\ccm:SMS_Client').TriggerSchedule('{00000000-0000-0000-0000-000000000113}');
+		            ([wmiclass]'ROOT\ccm:SMS_Client').TriggerSchedule('{00000000-0000-0000-0000-000000000108}'); "Update scan and evaluation"
+	            }
+            }
+            else {
+                Invoke-Command -ComputerName $Comp -ScriptBlock {#DevSkim: ignore DS104456
+                    Get-WmiObject -Query "SELECT * FROM CCM_UpdateStatus" -Namespace "root\ccm\SoftwareUpdates\UpdatesStore" | ForEach-Object {
+                        if($_.ScanTime -gt $ScanTime) { $ScanTime = $_.ScanTime }
+                    }; $LastScan = ([System.Management.ManagementDateTimeConverter]::ToDateTime($ScanTime)); $LastScan;
+                    if(((get-date) - $LastScan).minutes -ge 10) {
+                        [void]([wmiclass]'ROOT\ccm:SMS_Client').TriggerSchedule('{00000000-0000-0000-0000-000000000113}');
+                        ([wmiclass]'ROOT\ccm:SMS_Client').TriggerSchedule('{00000000-0000-0000-0000-000000000108}'); "Update scan and evaluation"
+                    }
+                }
+            }#not local
+        }#foreach comp
+    }
 }
 
 ###########################################################################
