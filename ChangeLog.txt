@@ -1,6 +1,6 @@
 Known issues:
 1. Get-NICInfo doesn't always run.
-2. There is a Microsoft bug that prevents setting some SCHANNEL values to 0xFFFFFFFF (enabled). The known items that are used at this time are SHA and PKCS. This causes some functions to throw errors and those values have to be manually set through the user interface. Bug has existed since at least 2006.
+2. There is a Microsoft bug that prevents setting some SCHANNEL values to 0xFFFFFFFF (enabled). The known items that are used at this time are SHA and PKCS. This causes some functions to throw errors and those values have to be manually set through the user interface. Bug has existed since at least 2006. The workaround for this is to import a .reg file (which has been implemented in this module).
 
 ######################
 #                    #
@@ -11,7 +11,7 @@ New features and other changes:
 1. Updated Get-UpdateHistory and Save-UpdateHistory so they now show updates that were manaully installed or installed using Install-Patches.
 2. Fixed issue with Save-UpdateHistory output and changed sorting.
 3. Changed sorting on Save-MaintenanceReport.
-4. Added functions Get-SCCMInstallStatus, Get-SCCMPendingUpdate, Install-SCCMUpdate, and Start-SCCMUpdateScan.
+4. Added functions Get-SCCMInstallStatus, Get-SCCMPendingUpdate, Install-SCCMUpdate, and Start-SCCMUpdateScan. FOR TESTING - MAY NOT FULLY WORK.
 
 ######################
 #                    #
