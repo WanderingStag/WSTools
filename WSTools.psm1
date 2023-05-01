@@ -1,31 +1,39 @@
 ﻿function Add-UserJavaException {
-<#
-.SYNOPSIS
-    Adds Java exception.
-.DESCRIPTION
-    Will add a website entry to $env:USERPROFILE\AppData\LocalLow\Sun\Java\Deployment\security\exception.sites.
-.PARAMETER URI
-    Specifies the URI of the website you want to add to the exception.sites file. Must be in the format https://wstools.dev.
-.EXAMPLE
-    C:\PS>Add-UserJavaException https://wstools.dev
-    Example of how to use this cmdlet
-.INPUTS
-    System.String
-.OUTPUTS
-    No output
-.COMPONENT
-    WSTools
-.FUNCTIONALITY
-    java, exception
-.NOTES
-    Author: Skyler Hart
-    Created: 2019-03-20 10:40:11
-    Last Edit: 2021-12-20 00:15:00
-.LINK
-    https://wstools.dev
-.LINK
-    Add-Content
-#>
+    <#
+    .SYNOPSIS
+        Adds Java exception.
+
+    .DESCRIPTION
+        Will add a website entry to $env:USERPROFILE\AppData\LocalLow\Sun\Java\Deployment\security\exception.sites.
+
+    .PARAMETER URI
+        Specifies the URI of the website you want to add to the exception.sites file. Must be in the
+        format https://wstools.dev.
+
+    .EXAMPLE
+        C:\PS>Add-UserJavaException https://wstools.dev
+        Example of how to use this cmdlet
+
+    .INPUTS
+        System.String
+
+    .OUTPUTS
+        No output
+
+    .COMPONENT
+        WSTools
+
+    .FUNCTIONALITY
+        java, exception
+
+    .NOTES
+        Author: Skyler Hart
+        Created: 2019-03-20 10:40:11
+        Last Edit: 2021-12-20 00:15:00
+
+    .LINK
+        https://wstools.dev
+    #>
     [CmdletBinding()]
     param(
         [Parameter(
@@ -41,35 +49,46 @@
 
 
 function Clear-DirtyShutdown {
-<#
-.SYNOPSIS
-    Clears dirty shutdown registry key.
-.DESCRIPTION
-    Clears the registry key that prompts you to enter a reason the computer/server was shutdown, even after a clean shutdown.
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.EXAMPLE
-    C:\PS>Clear-DirtyShutdown
-    Will clear a dirty shutdown that causes the shutdown tracker to appear.
-.EXAMPLE
-    C:\PS>Clear-DirtyShutdown -ComputerName COMP1
-    Will clear the dirty shutdown on COMP1. You must have admin rights on the remote computer.
-.INPUTS
-    System.String
-.OUTPUTS
-    No output
-.COMPONENT
-    WSTools
-.FUNCTIONALITY
-    registry, dirty shutdown, computer management, server
-.NOTES
-    Author: Skyler Hart
-    Created: 2020-05-08 17:54:09
-    Last Edit: 2021-12-19 23:58:28
-    Requires -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .SYNOPSIS
+        Clears dirty shutdown registry key.
+
+    .DESCRIPTION
+        Clears the registry key that prompts you to enter a reason the computer/server was shutdown, even after a
+        clean shutdown.
+
+    .PARAMETER ComputerName
+        Specifies the name of one or more computers.
+
+    .EXAMPLE
+        C:\PS>Clear-DirtyShutdown
+        Will clear a dirty shutdown that causes the shutdown tracker to appear.
+
+    .EXAMPLE
+        C:\PS>Clear-DirtyShutdown -ComputerName COMP1
+        Will clear the dirty shutdown on COMP1. You must have admin rights on the remote computer.
+
+    .INPUTS
+        System.String
+
+    .OUTPUTS
+        No output
+
+    .COMPONENT
+        WSTools
+
+    .FUNCTIONALITY
+        registry, dirty shutdown, computer management, server
+
+    .NOTES
+        Author: Skyler Hart
+        Created: 2020-05-08 17:54:09
+        Last Edit: 2021-12-19 23:58:28
+        Requires -RunAsAdministrator
+
+    .LINK
+        https://wstools.dev
+    #>
     [CmdletBinding()]
     param(
         [Parameter(
@@ -100,29 +119,37 @@ function Clear-DirtyShutdown {
 
 
 function Clear-ImproperProfileCopy {
-<#
-   .Synopsis
-    Clears Application Data folder that was improperly copied which happens when copy and pasting a profile.
-   .Description
-    Copies nested Application Data folders to a higher level (by default to C:\f2) and deletes them.
-   .Example
-    Clear-ImproperProfileCopy -Source \\fileserver\example\user -Destination E:\f2
-    Clears nested Application Data folders from \\fileserver\example\user. Uses E:\f2 as the folder for clearing.
-   .Example
-    Clear-ImproperProfileCopy E:\temp\Profile E:\f2
-    Clears nested Application Data folders from E:\temp\Profile. Uses E:\f2 as the folder for clearing.
-   .Parameter Source
-    Specifies the folder that contains the Application Data folder causing issues.
-   .Parameter Destination
-    Specifies the folder that is used to copy the nested folders to and deletes them.
-   .Notes
-    AUTHOR: Skyler Hart
-    CREATED: 06/11/2016 20:37:14
-    LASTEDIT: 2020-04-15 21:54:21
-    KEYWORDS: user, profile, app data, application data, cleanup, clear, improper
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .Synopsis
+        Clears Application Data folder that was improperly copied which happens when copy and pasting a profile.
+
+    .Description
+        Copies nested Application Data folders to a higher level (by default to C:\f2) and deletes them.
+
+    .Example
+        Clear-ImproperProfileCopy -Source \\fileserver\example\user -Destination E:\f2
+        Clears nested Application Data folders from \\fileserver\example\user. Uses E:\f2 as the folder for
+        clearing.
+
+    .Example
+        Clear-ImproperProfileCopy E:\temp\Profile E:\f2
+        Clears nested Application Data folders from E:\temp\Profile. Uses E:\f2 as the folder for clearing.
+
+    .Parameter Source
+        Specifies the folder that contains the Application Data folder causing issues.
+
+    .Parameter Destination
+        Specifies the folder that is used to copy the nested folders to and deletes them.
+
+    .Notes
+        AUTHOR: Skyler Hart
+        CREATED: 06/11/2016 20:37:14
+        LASTEDIT: 2020-04-15 21:54:21
+        KEYWORDS: user, profile, app data, application data, cleanup, clear, improper
+
+    .LINK
+        https://wstools.dev
+    #>
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory=$true, Position=0)]
@@ -168,36 +195,46 @@ function Clear-ImproperProfileCopy {
 
 
 Function Clear-Space {
-<#
-   .Synopsis
-    Clears harddrive space
-   .Description
-    Clears harddrive space by clearing temp files and caches. Invoke method does not clear as many locations. #DevSkim: ignore DS104456
-   .Example
-    Clear-Space
-    Clears temp and cache data on the local computer
-   .Example
-    Clear-Space -ComputerName COMP1
-    Clears temp and cache data on the computer COMP1
-   .Example
-    Clear-Space -ComputerName (gc c:\complist.txt)
-    Clears temp and cache data on the computers listed in the file c:\complist.txt
-   .Example
-    Clear-Space -ComputerName (gc c:\complist.txt) -InvokeMethod
-    Clears temp and cache data on the computers listed in the file c:\complist.txt using the Invoke-WMIMethod command. #DevSkim: ignore DS104456
-   .Parameter ComputerName
-    Specifies the computer or computers to clear space on
-   .Parameter InvokeMethod
-    Specifies the computer or computers to clear space on using the Invoke-WMIMethod command #DevSkim: ignore DS104456
-   .Notes
-    AUTHOR: Skyler Hart
-    CREATED: 05/19/2017 20:16:47
-    LASTEDIT: 07/22/2019 14:21:15
-    KEYWORDS: Delete, temp, patches, cache, prefetch, SCCM
-    REMARKS: Needs to be ran as a user that has administrator rights
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .Synopsis
+        Clears harddrive space
+
+    .Description
+        Clears harddrive space by clearing temp files and caches. Invoke method does not clear as many locations.       #DevSkim: ignore DS104456
+
+    .Example
+        Clear-Space
+        Clears temp and cache data on the local computer
+
+    .Example
+        Clear-Space -ComputerName COMP1
+        Clears temp and cache data on the computer COMP1
+
+    .Example
+        Clear-Space -ComputerName (gc c:\complist.txt)
+        Clears temp and cache data on the computers listed in the file c:\complist.txt
+
+    .Example
+        Clear-Space -ComputerName (gc c:\complist.txt) -InvokeMethod
+        Clears temp and cache data on the computers listed in the file c:\complist.txt using the Invoke-WMIMethod
+        command.                                                                                                        #DevSkim: ignore DS104456
+
+    .Parameter ComputerName
+        Specifies the computer or computers to clear space on
+
+    .Parameter InvokeMethod
+        Specifies the computer or computers to clear space on using the Invoke-WMIMethod command                        #DevSkim: ignore DS104456
+
+    .Notes
+        AUTHOR: Skyler Hart
+        CREATED: 05/19/2017 20:16:47
+        LASTEDIT: 07/22/2019 14:21:15
+        KEYWORDS: Delete, temp, patches, cache, prefetch, SCCM
+        REMARKS: Needs to be ran as a user that has administrator rights
+
+    .LINK
+        https://wstools.dev
+    #>
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory=$false, Position=0)]
@@ -211,7 +248,7 @@ Function Clear-Space {
     $path = (Get-Location).Path
 
     foreach ($Comp in $ComputerName) {
-#region PSDrive Method
+        #region PSDrive Method
         $psdpath = "\\$comp\c$"
         if (!($InvokeMethod)) {
             try {
@@ -308,9 +345,9 @@ Function Clear-Space {
                 Write-Output "Unable to connect to computer: $Comp" -ForegroundColor Red
             }
         }#if Invoke False
-#endregion PSDrive Method
+        #endregion PSDrive Method
 
-#region Invoke Method
+        #region Invoke Method
         else {
             try {
                 $wmiq = Get-WmiObject win32_operatingsystem -ComputerName $Comp -ErrorAction Stop | Select-Object OSArchitecture
@@ -367,21 +404,22 @@ Function Clear-Space {
                 Write-Output "Unable to connect to computer: $Comp" -ForegroundColor Red
             }
         }#invoke method
-#endregion Invoke Method
+        #endregion Invoke Method
     }#foreach computer
     Set-Location $path
 }
 
 
 function Connect-RDP {
-<#
-   .Notes
-    AUTHOR: Skyler Hart
-    CREATED: 2017-08-18 20:48:07
-    LASTEDIT: 2023-02-11 13:48:55
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .Notes
+        AUTHOR: Skyler Hart
+        CREATED: 2017-08-18 20:48:07
+        LASTEDIT: 2023-02-11 13:48:55
+
+    .LINK
+        https://wstools.dev
+    #>
     [CmdletBinding()]
     [alias('rdp')]
     Param (
@@ -400,22 +438,28 @@ function Connect-RDP {
 
 
 function Copy-PowerShellJSON {
-<#
-.SYNOPSIS
-    Enables PowerShell Snippets in Visual Studio Code.
-.DESCRIPTION
-    Copies the powershell.json file from the WSTools module folder to %AppData%\Roaming\Code\User\snippets for the currently logged on user.
-.EXAMPLE
-    C:\PS>Copy-PowerShellJSON
-    Copies the powershell.json file from the WSTools module folder to %AppData%\Roaming\Code\User\snippets for the currently logged on user.
-.NOTES
-    Author: Skyler Hart
-    Created: 2020-04-13 22:44:11
-    Last Edit: 2021-10-19 16:59:47
-    Keywords: WSTools, Visual Studio Code, PowerShell, JSON, Preferences, snippets, code blocks
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .SYNOPSIS
+        Enables PowerShell Snippets in Visual Studio Code.
+
+    .DESCRIPTION
+        Copies the powershell.json file from the WSTools module folder to %AppData%\Roaming\Code\User\snippets for
+        the currently logged on user.
+
+    .EXAMPLE
+        C:\PS>Copy-PowerShellJSON
+        Copies the powershell.json file from the WSTools module folder to %AppData%\Roaming\Code\User\snippets for
+        the currently logged on user.
+
+    .NOTES
+        Author: Skyler Hart
+        Created: 2020-04-13 22:44:11
+        Last Edit: 2021-10-19 16:59:47
+        Keywords: WSTools, Visual Studio Code, PowerShell, JSON, Preferences, snippets, code blocks
+
+    .LINK
+        https://wstools.dev
+    #>
     [CmdletBinding()]
     [Alias('Update-PowerShellJSON','Set-PowerShellJSON')]
     param()
@@ -431,37 +475,50 @@ function Copy-PowerShellJSON {
 
 
 function Copy-UpdateHistory {
-<#
-.SYNOPSIS
-    Copies the UpdateHistory.csv report to the UHPath config item path.
-.DESCRIPTION
-    Copies the UpdateHistory.csv report created with Save-UpdateHistory to the UHPath config item path for the local computer or remote computers.
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.EXAMPLE
-    C:\PS>Copy-UpdateHistory
-    Example of how to use this cmdlet to copy the UpdateHistory.csv file for the local computer to the UHPath location.
-.EXAMPLE
-    C:\PS>Copy-UpdateHistory -ComputerName Server1
-    Example of how to use this cmdlet to copy the UpdateHistory.csv file for the remote computer Server1 to the UHPath location.
-.INPUTS
-    System.String
-.OUTPUTS
-    System.String
-.COMPONENT
-    WSTools
-.FUNCTIONALITY
-    UpdateHistory, update history
-.NOTES
-    Author: Skyler Hart
-    Created: 2022-07-15 22:54:09
-    Last Edit: 2022-07-15 22:54:09
-    Other:
-    Requires:
-        -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .SYNOPSIS
+        Copies the UpdateHistory.csv report to the UHPath config item path.
+
+    .DESCRIPTION
+        Copies the UpdateHistory.csv report created with Save-UpdateHistory to the UHPath config item path for the
+        local computer or remote computers.
+
+    .PARAMETER ComputerName
+        Specifies the name of one or more computers.
+
+    .EXAMPLE
+        C:\PS>Copy-UpdateHistory
+        Example of how to use this cmdlet to copy the UpdateHistory.csv file for the local computer to the UHPath
+        location.
+
+    .EXAMPLE
+        C:\PS>Copy-UpdateHistory -ComputerName Server1
+        Example of how to use this cmdlet to copy the UpdateHistory.csv file for the remote computer Server1 to the
+        UHPath location.
+
+    .INPUTS
+        System.String
+
+    .OUTPUTS
+        System.String
+
+    .COMPONENT
+        WSTools
+
+    .FUNCTIONALITY
+        UpdateHistory, update history
+
+    .NOTES
+        Author: Skyler Hart
+        Created: 2022-07-15 22:54:09
+        Last Edit: 2022-07-15 22:54:09
+        Other:
+        Requires:
+            -RunAsAdministrator
+
+    .LINK
+        https://wstools.dev
+    #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
         "",
@@ -480,13 +537,13 @@ function Copy-UpdateHistory {
     $i = 0
     $number = $ComputerName.length
     foreach ($Comp in $ComputerName) {
-        #Progress Bar
+        # Progress Bar
         if ($number -gt "1") {
             $i++
             $amount = ($i / $number)
             $perc1 = $amount.ToString("P")
             Write-Progress -activity "Copying Update Reports. Current computer: $Comp" -status "Computer $i of $number. Percent complete:  $perc1" -PercentComplete (($i / $ComputerName.length)  * 100)
-        }#if length
+        }# if length
 
         if ($Comp -eq $env:COMPUTERNAME) {
             if (Test-Path C:\ProgramData\WSTools\Reports\$Comp`_UpdateHistory.csv) {
@@ -504,15 +561,16 @@ function Copy-UpdateHistory {
 
 
 function Copy-VSCodeExtensions {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2021-11-01 23:18:30
-    Last Edit: 2021-11-01 23:18:30
-    Keywords:
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .NOTES
+        Author: Skyler Hart
+        Created: 2021-11-01 23:18:30
+        Last Edit: 2021-11-01 23:18:30
+        Keywords:
+
+    .LINK
+        https://wstools.dev
+    #>
 
     $repo = ($Global:WSToolsConfig).VSCodeExtRepo
     $dst = "$env:userprofile\.vscode\extensions"
@@ -526,15 +584,16 @@ function Copy-VSCodeExtensions {
 
 
 function Copy-VSCodeSettingsToProfile {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2021-11-01 22:14:14
-    Last Edit: 2021-11-01 22:14:14
-    Keywords: WSTools, Visual Studio Code, Preferences
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .NOTES
+        Author: Skyler Hart
+        Created: 2021-11-01 22:14:14
+        Last Edit: 2021-11-01 22:14:14
+        Keywords: WSTools, Visual Studio Code, Preferences
+
+    .LINK
+        https://wstools.dev
+    #>
     $vscs = ($Global:WSToolsConfig).VSCodeSettingsPath
     if (!(Test-Path $env:APPDATA\Code\User)) {
         New-Item -Path $env:APPDATA\Code -ItemType Directory -Name User -Force
@@ -552,17 +611,18 @@ function Copy-VSCodeSettingsToProfile {
 
 
 function Disable-RDP {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2021-02-27 11:44:34
-    Last Edit: 2021-02-27 11:47:07
-    Keywords:
-    Requires:
-        -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .NOTES
+        Author: Skyler Hart
+        Created: 2021-02-27 11:44:34
+        Last Edit: 2021-02-27 11:47:07
+        Keywords:
+        Requires:
+            -RunAsAdministrator
+
+    .LINK
+        https://wstools.dev
+    #>
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
     if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -value 1}
     else {throw {"Must be ran as admin"}}
@@ -570,15 +630,16 @@ function Disable-RDP {
 
 
 function Disable-ServerManager {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2020-05-08 23:18:39
-    Last Edit: 2020-10-06 13:25:11
-    Keywords:
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .NOTES
+        Author: Skyler Hart
+        Created: 2020-05-08 23:18:39
+        Last Edit: 2020-10-06 13:25:11
+        Keywords:
+
+    .LINK
+        https://wstools.dev
+    #>
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
     if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {Get-ScheduledTask -TaskName ServerManager | Disable-ScheduledTask}
     else {Write-Output "Must run this function as admin"}
@@ -586,17 +647,18 @@ function Disable-ServerManager {
 
 
 function Enable-RDP {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2020-05-08 23:21:17
-    Last Edit: 2021-02-27 11:47:20
-    Keywords:
-    Requires:
-        -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .NOTES
+        Author: Skyler Hart
+        Created: 2020-05-08 23:21:17
+        Last Edit: 2021-02-27 11:47:20
+        Keywords:
+        Requires:
+            -RunAsAdministrator
+
+    .LINK
+        https://wstools.dev
+    #>
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
     if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -value 0}
     else {throw {"Must be ran as admin"}}
@@ -604,15 +666,16 @@ function Enable-RDP {
 
 
 function Enable-ServerManager {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2021-12-16 21:29:35
-    Last Edit: 2021-12-16 21:29:35
-    Keywords:
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .NOTES
+        Author: Skyler Hart
+        Created: 2021-12-16 21:29:35
+        Last Edit: 2021-12-16 21:29:35
+        Keywords:
+
+    .LINK
+        https://wstools.dev
+    #>
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
     if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {Get-ScheduledTask -TaskName ServerManager | Enable-ScheduledTask}
     else {Write-Output "Must run this function as admin"}
@@ -620,17 +683,18 @@ function Enable-ServerManager {
 
 
 function Get-BitLockerStatus {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2020-04-22 22:10:27
-    Last Edit: 2020-04-22 22:10:27
-    Keywords: BitLocker, Local, Remote, manage, manage-bde, bde
-    Requires:
-        -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .NOTES
+        Author: Skyler Hart
+        Created: 2020-04-22 22:10:27
+        Last Edit: 2020-04-22 22:10:27
+        Keywords: BitLocker, Local, Remote, manage, manage-bde, bde
+        Requires:
+            -RunAsAdministrator
+
+    .LINK
+        https://wstools.dev
+    #>
     [CmdletBinding()]
     param(
         [Parameter(
@@ -647,76 +711,76 @@ function Get-BitLockerStatus {
             $ErrorActionPreference = "Stop"
             $bi = manage-bde.exe -ComputerName $Comp -status
 
-            #Get Drives
+            # Get Drives
             $drives = @()
             $d = $bi | Select-String -Pattern 'Volume '
             $drives += $d | ForEach-Object {
                 $_.ToString().Trim().Substring(0,8) -replace "Volume ",""
-            }#foreach drive
+            }# foreach drive
 
-            #Get Size
+            # Get Size
             $size = @()
             $si = $bi | Select-String -Pattern 'Size'
             $size += $si | ForEach-Object {
                 $_.ToString().Trim().Substring(22)
-            }#foreach size
+            }# foreach size
 
-            #Get BitLocker Version
+            # Get BitLocker Version
             $ver = @()
             $v = $bi | Select-String -Pattern 'BitLocker Version'
             $ver += $v | ForEach-Object {
                 $_.ToString().Trim().Substring(22)
-            }#foreach version
+            }# foreach version
 
-            #Get Status
+            # Get Status
             $status = @()
             $s = $bi | Select-String -Pattern 'Conversion Status'
             $status += $s | ForEach-Object {
                 $_.ToString().Trim().Substring(22)
-            }#foreach status
+            }# foreach status
 
-            #Get Percent Encrypted
+            # Get Percent Encrypted
             $per = @()
             $p = $bi | Select-String -Pattern 'Percentage Encrypt'
             $per += $p | ForEach-Object {
                 $_.ToString().Trim().Substring(22)
-            }#foreach percentage
+            }# foreach percentage
 
-            #Get Encryption Method
+            # Get Encryption Method
             $em = @()
             $e = $bi | Select-String -Pattern 'Encryption Method'
             $em += $e | ForEach-Object {
                 $_.ToString().Trim().Substring(22)
-            }#foreach encryption method
+            }# foreach encryption method
 
-            #Get Protection Status
+            # Get Protection Status
             $ps = @()
             $pi = $bi | Select-String -Pattern 'Protection Status'
             $ps += $pi | ForEach-Object {
                 $_.ToString().Trim().Substring(22)
-            }#foreach pro status
+            }# foreach pro status
 
-            #Get Lock Status
+            # Get Lock Status
             $ls = @()
             $li = $bi | Select-String -Pattern 'Lock Status'
             $ls += $li | ForEach-Object {
                 $_.ToString().Trim().Substring(22)
-            }#foreach Lock Status
+            }# foreach Lock Status
 
-            #Get ID Field
+            # Get ID Field
             $id = @()
             $ii = $bi | Select-String -Pattern 'Identification Field'
             $id += $ii | ForEach-Object {
                 $_.ToString().Trim().Substring(22)
-            }#foreach ID
+            }# foreach ID
 
-            #Get Key Protectors
+            # Get Key Protectors
             $key = @()
             $k = $bi | Select-String -Pattern 'Key Protect'
             $key += $k | ForEach-Object {
                 $_.ToString().Trim().Substring(22)
-            }#foreach
-        }#try
+            }# foreach
+        }# try
         catch {
             Write-Output "Unable to connect to $Comp"
             $status = "Insuffiect permissions or unable to connect"
@@ -740,21 +804,22 @@ function Get-BitLockerStatus {
             $i++
         }#do
         while ($i -lt $num)
-    }#foreach comp
+    }# foreach comp
     $overall | Select-Object ComputerName,Drive,Size,BitLockerVersion,Status,PercentEncrypted,EncryptionMethod,ProtectionStatus,LockStatus,ID_Field,KeyProtectors | Sort-Object ComputerName,Drive
 }
 
 
 function Get-CertificateInventory {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2021-11-18 22:44:53
-    Last Edit: 2021-11-18 22:44:53
-    Keywords:
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .NOTES
+        Author: Skyler Hart
+        Created: 2021-11-18 22:44:53
+        Last Edit: 2021-11-18 22:44:53
+        Keywords:
+
+    .LINK
+        https://wstools.dev
+    #>
     [CmdletBinding()]
     [Alias('Get-CertInv','Get-CertInfo')]
     param()
@@ -790,23 +855,24 @@ function Get-CertificateInventory {
             DaysToExpiration = $daystoexpire
             SerialNumber = ($cert.SerialNumber)
             Thumbprint = ($cert.Thumbprint)
-        }#new object
+        }# new object
     }
     $certs | Select-Object ComputerName,ProductType,Location,Subject,Issuer,SelfSigned,ValidFrom,ValidTo,DaysToExpiration,SerialNumber,Thumbprint | Sort-Object Subject
 }
 
 
 function Get-CommandList {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2021-08-06 23:09:24
-    Last Edit: 2021-12-16 21:41:15
-    Keywords:
-    Other:
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .NOTES
+        Author: Skyler Hart
+        Created: 2021-08-06 23:09:24
+        Last Edit: 2021-12-16 21:41:15
+        Keywords:
+        Other:
+
+    .LINK
+        https://wstools.dev
+    #>
     [CmdletBinding()]
     Param (
         [Parameter(
@@ -830,13 +896,13 @@ function Get-CommandList {
     $number = $commands.length
     $info = @()
     $info = foreach ($c in $commands) {
-        #Progress Bar
+        # Progress Bar
         if ($number -gt "1") {
             $i++
             $amount = ($i / $number)
             $perc1 = $amount.ToString("P")
             Write-Progress -activity "Generating information for each command." -status "Command $i of $number. Percent complete:  $perc1" -PercentComplete (($i / $commands.length)  * 100)
-        }#if length
+        }# if length
 
         $rn = $c.ResolvedCommandName
         if ($c.CommandType -eq "Alias") {
@@ -863,7 +929,7 @@ function Get-CommandList {
                 Purpose = $null
                 Reference = $null
                 HelpUri = ($c.HelpUri)
-            }#new object
+            }# new object
         }
         else {
             [PSCustomObject]@{
@@ -879,7 +945,7 @@ function Get-CommandList {
                 Purpose = ($sli.Purpose)
                 Reference = ($sli.Reference)
                 HelpUri = ($c.HelpUri)
-            }#new object
+            }# new object
         }
     }
 
@@ -893,29 +959,36 @@ function Get-CommandList {
 
 
 Function Get-ComputerHWInfo {
-<#
-   .Synopsis
-    Gets hardware information of local or remote computer(s.)
-   .Description
-    Get Manufacturer, Model, Model Version, BIOS vendor, BIOS version, and release date of BIOS update on local or remote computer.
-   .Example
-    Get-ComputerHWInfo
-    Get hardware information for local computer
-   .Example
-    Get-ComputerHWInfo COMP1
-    Get hardware information for computer COMP1
-   .Parameter ComputerName
-    Used to specify the computer or computers to get hardware information for.
-   .Notes
-    AUTHOR: Skyler Hart
-    CREATED: 3/15/2015 08:49:13
-    LASTEDIT: 09/21/2017 13:03:30
-    KEYWORDS: hardware, information, computer
-    REQUIRES:
-        -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .Synopsis
+        Gets hardware information of local or remote computer(s).
+
+    .Description
+        Get Manufacturer, Model, Model Version, BIOS vendor, BIOS version, and release date of BIOS update on local
+        or remote computer.
+
+    .Example
+        Get-ComputerHWInfo
+        Get hardware information for local computer
+
+    .Example
+        Get-ComputerHWInfo COMP1
+        Get hardware information for computer COMP1
+
+    .Parameter ComputerName
+        Used to specify the computer or computers to get hardware information for.
+
+    .Notes
+        AUTHOR: Skyler Hart
+        CREATED: 3/15/2015 08:49:13
+        LASTEDIT: 09/21/2017 13:03:30
+        KEYWORDS: hardware, information, computer
+        REQUIRES:
+            -RunAsAdministrator
+
+    .LINK
+        https://wstools.dev
+    #>
     [CmdletBinding()]
     Param (
         [Parameter(
@@ -947,25 +1020,27 @@ Function Get-ComputerHWInfo {
             BIOSVendor = $BV
             BIOSVersion = $Bver
             BIOSReleaseDate = $BRD
-        }#new object
-    }#foreach computer
+        }# new object
+    }# foreach computer
 }
 
 
 Function Get-ComputerModel {
-<#
-   .Parameter ComputerName
-    Specifies the computer or computers
-   .Notes
-    AUTHOR: Skyler Hart
-    CREATED: 2018-06-20 13:05:09
-    LASTEDIT: 2020-08-31 21:40:19
-    KEYWORDS:
-    REQUIRES:
-        -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .Parameter ComputerName
+        Specifies the computer or computers
+
+    .Notes
+        AUTHOR: Skyler Hart
+        CREATED: 2018-06-20 13:05:09
+        LASTEDIT: 2020-08-31 21:40:19
+        KEYWORDS:
+        REQUIRES:
+            -RunAsAdministrator
+
+    .LINK
+        https://wstools.dev
+    #>
     [CmdletBinding()]
     [Alias('Get-Model')]
     Param (
@@ -4868,7 +4943,8 @@ function Save-UpdateHistory {
         $stime = (Get-Date) - (New-TimeSpan -Day $Days)
         $session = New-Object -ComObject 'Microsoft.Update.Session'
         $ec = ($session.CreateUpdateSearcher()).GetTotalHistoryCount()
-        $history = ($session.QueryHistory("",0,$ec) | Select-Object ResultCode,Date,Title,Description,ClientApplicationID,Categories,SupportUrl)
+        $history = ($session.QueryHistory("",0,$ec) |
+            Select-Object ResultCode,Date,Title,Description,ClientApplicationID,Categories,SupportUrl)
         $ef = $history | Where-Object {$_.Date -gt $stime -and !([string]::IsNullOrWhiteSpace($_.Title))}
 
         $wsusupdates = foreach ($e in $ef) {
