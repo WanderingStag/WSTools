@@ -4,6 +4,14 @@ Known issues:
 
 ######################
 #                    #
+#      2023.05      #
+#                    #
+######################
+New features and other changes:
+1. Added function Get-NonSmartCardRequiredUser. Meant for smaller environments. Larger environments will cause timeouts.
+
+######################
+#                    #
 #      2023.03      #
 #                    #
 ######################
