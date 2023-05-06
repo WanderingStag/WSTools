@@ -1,6 +1,6 @@
 # WSTools Download, Install, and Configuration
 
-![alt text](https://wstools.dev/wp-content/uploads/2020/08/20200821-WSTools-Logo-small.jpg "WSTools PowerShell Module logo")
+![alt text](https://github.com/WanderingStag/WSTools/blob/master/Resources/WSTools_PowerShell_Module.png "WSTools PowerShell Module logo")
 
 ## Issues
 
