@@ -2,9 +2,9 @@
 
 ![alt text](https://wstools.dev/wp-content/uploads/2020/08/20200821-WSTools-Logo-small.jpg "WSTools PowerShell Module logo")
 
-## Feedback
+## Issues
 
-Please **_[submit feedback](https://wstools.dev/contact "WSTools Feedback")_** about any issues here. Also, submit feedback if you have comments, suggestions, or would like to contribute to the development of WSTools.
+Please **_[Open an issue](https://github.com/WanderingStag/WSTools/issues "WSTools Issues")_** if there are any problems or requests.
 
 ## Prerequisites
 
