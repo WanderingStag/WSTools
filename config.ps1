@@ -5,7 +5,7 @@
 )]
 
 $Global:WSToolsConfig = [PSCustomObject]@{
-    # WSTools config v2023.2
+    # WSTools config v2023.5
     # Remove the # symbol infront of a line to enable it
     ###########################################################################################################################################
     #Application Service Names - used in Stop-AppService. Uses match to match the name of a service that is running and stops it.
@@ -48,6 +48,19 @@ $Global:WSToolsConfig = [PSCustomObject]@{
 
     #Help folder location used by Update-HelpFromFile
     HelpFolder = "\\192.168.201.10\apps\Microsoft\PowerShell\OfflineHelp"
+
+    # Used in Get-ADComplianceReport. OU's must be entered in distinguishedName format.
+    # Ex for single OU: UserOUs = 'OU=Users,DC=wstools,DC=dev'
+    # Ex for multiple OUs: UserOUs = @('OU=Users,OU=TestLab,DC=wstools,DC=dev','OU=Users,DC=wstools,DC=dev')
+    AdminOUs = @()
+    AdminGroupOUs = @()
+    ComputerOUs = @()           # regular computers/workstations. Can exclude ServerOUs value and just use this if you want.
+    MSAOUs = @()                # standalone/group Managed Service Accounts (sMSA/gMSA respectively)
+    OrgAccountOUs = @()         # organizational/shared accounts
+    ServerOUs = @()             # member servers and domain controllers
+    ServiceAccountOUs = @()     # regular service accounts NOT group managed service accounts
+    UserOUs = @()
+    UserGroupOUs = @()
 
 
     ################################

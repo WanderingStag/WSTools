@@ -9,6 +9,7 @@ Known issues:
 ######################
 New features and other changes:
 1. Added function Get-NonSmartCardRequiredUser. Meant for smaller environments. Larger environments will cause timeouts.
+2. Added function Get-ADComplianceReport and associated config items.
 
 ######################
 #                    #
