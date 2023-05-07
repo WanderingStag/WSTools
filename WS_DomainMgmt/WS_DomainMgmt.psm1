@@ -301,7 +301,7 @@ function Get-ADComplianceReport {
 
         if (!($AdminSearchBase -or $AdminGroupSearchBase -or $ComputerSearchBase -or $MSASearchBase -or $OrganizationalSearchBase -or
             $ServerSearchBase -or $ServiceAccountSearchBase -or $UserSearchBase -or $UserGroupSearchBase)) {
-            $config = $Global:TestModuleConfig
+            $config = $Global:WSToolsConfig
             if (!([string]::IsNullOrWhiteSpace($config))) {
                 Write-Verbose "Config file is setup. Using values in config file."
                 $AdminSearchBase = $config.AdminOUs
@@ -384,6 +384,10 @@ function Get-ADComplianceReport {
             $Servers | Export-Csv $ReportFolder\$dateformatted`_ComplianceRAW_Servers.csv
             $ServiceAccounts | Export-Csv $ReportFolder\$dateformatted`_ComplianceRAW_ServiceAccount.csv
             $Users | Export-Csv $ReportFolder\$dateformatted`_ComplianceRAW_User.csv
+        }
+
+        if ($SaveReport) {
+            if (!(Test-Path $ReportFolder)) {New-Item $ReportFolder -ItemType Directory}
         }
 
         Write-Verbose "Combining Objects"
@@ -471,8 +475,8 @@ function Get-ADComplianceReport {
 
             switch ($obj.ObjectClass) {
                 {'Group' -contains $_} {
-                    $GroupCategory = $obj.$GroupCategory
-                    $GroupScope = $obj.$GroupScope
+                    $GroupCategory = $obj.GroupCategory
+                    $GroupScope = $obj.GroupScope
                     $LastLogonDate = $null
                     $members = $obj.Members
                     $manager = $obj.ManagedBy
@@ -567,7 +571,7 @@ function Get-ADComplianceReport {
                         $issues = "Inactive (never logged in)"
                         $DaysInactive = $DaysSinceCreation
                     }
-                    else {$issues = "Inactive ($($DaysInactive) days)"}
+                    else {$issues = "Inactive"}
                 }
                 else {# if logon times ARE empty
                     Write-Verbose " --- NOT inactive"
@@ -706,6 +710,22 @@ function Get-ADComplianceReport {
                         $issues = $issues + ", description blank"
                     }
                 }
+                if ([string]::IsNullOrWhiteSpace($obj.extensionAttribute3) -or $obj.extensionAttribute3 -notmatch "SVC") {
+                    if ([string]::IsNullOrWhiteSpace($issues)) {
+                        $issues = "extensionAttribute3 missing SVC exemption"
+                    }
+                    else {
+                        $issues = $issues + ", extensionAttribute3 missing SVC exemption"
+                    }
+                }
+                if ([string]::IsNullOrWhiteSpace($obj.l)) {
+                    if ([string]::IsNullOrWhiteSpace($issues)) {
+                        $issues = "l (City) missing"
+                    }
+                    else {
+                        $issues = $issues + ", l (City) missing"
+                    }
+                }
                 if ([string]::IsNullOrWhiteSpace($obj.msExchExtensionAttribute18)) {
                     if ($obj.WhenCreated -ge $crqcheckdate) {
                         if ([string]::IsNullOrWhiteSpace($issues)) {
@@ -722,6 +742,30 @@ function Get-ADComplianceReport {
                     }
                     else {
                         $issues = $issues + ", owner/manager has to be an Org Box"
+                    }
+                }
+                if ([string]::IsNullOrWhiteSpace($obj.Organization)) {
+                    if ([string]::IsNullOrWhiteSpace($issues)) {
+                        $issues = "Organization attribute empty"
+                    }
+                    else {
+                        $issues = $issues + ", Organization attribute empty"
+                    }
+                }
+                if ([string]::IsNullOrWhiteSpace($obj.physicalDeliveryOfficeName)) {
+                    if ([string]::IsNullOrWhiteSpace($issues)) {
+                        $issues = "Office (physicalDeliveryOfficeName) missing"
+                    }
+                    else {
+                        $issues = $issues + ", Office (physicalDeliveryOfficeName) missing"
+                    }
+                }
+                if ([string]::IsNullOrWhiteSpace($obj.telephoneNumber)) {
+                    if ([string]::IsNullOrWhiteSpace($issues)) {
+                        $issues = "telephoneNumber missing"
+                    }
+                    else {
+                        $issues = $issues + ", telephoneNumber missing"
                     }
                 }
             }
@@ -744,6 +788,15 @@ function Get-ADComplianceReport {
                         $issues = $issues + ", no members"
                     }
                 }
+
+                if ($members.Count -gt 3) {
+                    $members = "Membership list has 3+ users"
+                }
+            }
+
+            $memberof = $obj.MemberOf
+            if (($memberof).Count -gt 3) {
+                $memberof = "MemberOf more than 3 groups"
             }
 
             if ([string]::IsNullOrWhiteSpace($issues)) {$compliant = $true}
@@ -759,7 +812,8 @@ function Get-ADComplianceReport {
                 ManagerEmail                = $ManagerEmail
                 Description                 = $obj.Description
                 Enabled                     = $obj.Enabled
-                Organization                = $org
+                o                           = $org
+                Organization                = $obj.Organization
                 ProtectedObject             = $ProtectedObject
                 Inactive                    = $inactive
                 DaysInactive                = if ($obj.ObjectType -notmatch "Group") {$DaysInactive} else {$null}
@@ -781,9 +835,10 @@ function Get-ADComplianceReport {
                 Validated                   = $Validated
                 ValidationDate              = $ValidationDate
                 DaysSinceValidation         = $ValidationDays
-                ExtensionAttribute7         = $obj.extensionAttribute7 -join ", "          # for checking validation
-                ExtensionAttribute13        = $obj.extensionAttribute13 -join ", "         # for checking POC email address
-                ExtensionAttribute18        = $obj.msExchExtensionAttribute18 -join ", "   # for checking CRQ
+                ExtensionAttribute3         = $obj.extensionAttribute3 -join ", "          # for checking smartcard exemption in the context of this script, your oganization may do something different
+                ExtensionAttribute7         = $obj.extensionAttribute7 -join ", "          # for checking validation in the context of this script, your oganization may do something different
+                ExtensionAttribute13        = $obj.extensionAttribute13 -join ", "         # for checking POC email address in the context of this script, your oganization may do something different
+                ExtensionAttribute18        = $obj.msExchExtensionAttribute18 -join ", "   # for checking CRQ in the context of this script, your oganization may do something different
                 CanonicalName               = $obj.CanonicalName
                 distinguishedName           = $obj.distinguishedName
                 MembersCount                = $members.Count
@@ -793,7 +848,7 @@ function Get-ADComplianceReport {
                 DisplayName                 = $obj.DisplayName
                 EmployeeID                  = $obj.EmployeeID
                 EmployeeType                = $obj.EmployeeType
-                MemberOf                    = $obj.MemberOf -join ", "
+                MemberOf                    = $memberof -join ", "
                 Modified                    = $obj.Modified
                 DaysSinceModified           = $DaysSinceModified
                 ObjectClass                 = $obj.ObjectClass
