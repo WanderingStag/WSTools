@@ -1,25 +1,30 @@
 ﻿#get more open commands here: https://sysadminstricks.com/tricks/most-useful-microsoft-management-console-snap-in-control-files-msc-files.html
 Function Find-EmptyGroup {
-<#
-.Synopsis
-    This function will show empty groups.
-.Description
-    This function will show empty groups in your domain.
-.Example
-    Find-EmptyGroups -SearchBase "OU=test,dc=yourdomain,dc=com"
-    This function searches the test OU under the yourdomain.com domain and saves a csv with empty groups to c:\test\emptygroups.csv.
-.Parameter SearchBase
-    Specific OU to search. If not included, the entire domain will be searched.
-.Notes
-    AUTHOR: Skyler Hart
-    CREATED: 01/18/2014 11:50:00
-    LASTEDIT: 2022-09-01 21:59:13
-    KEYWORDS: Groups, empty groups, group management
-    REQUIRES:
-        #Requires -Modules ActiveDirectory
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .Synopsis
+        This function will show empty groups.
+
+    .Description
+        This function will show empty groups in your domain.
+
+    .Example
+        Find-EmptyGroups -SearchBase "OU=test,dc=yourdomain,dc=com"
+        This function searches the test OU under the yourdomain.com domain and saves a csv with empty groups to c:\test\emptygroups.csv.
+
+    .Parameter SearchBase
+        Specific OU to search. If not included, the entire domain will be searched.
+
+    .Notes
+        AUTHOR: Skyler Hart
+        CREATED: 2014-01-18 11:50:00
+        LASTEDIT: 2022-09-01 21:59:13
+        KEYWORDS: Groups, empty groups, group management
+        REQUIRES:
+            ActiveDirectory
+
+    .LINK
+        https://wstools.dev
+    #>
     [CmdletBinding()]
     Param (
         [Parameter(
@@ -47,26 +52,31 @@ Function Find-EmptyGroup {
 
 
 Function Find-HiddenGALUser {
-<#
-   .Synopsis
-    This function gets all users that are hidden from the GAL.
-   .Description
-    This function gets all users that are hidden from the Global Address List (GAL) in a domain or you can specify an OU to search.
-   .Example
-    Find-HiddenGALUsers -SearchBase "OU=Test,DC=mydomain,DC=com"
-    This function gets all users that are hidden from the GAL in a domain or you can specify an OU to search.
-   .Parameter SearchBase
-    Specific OU to search. If not included, the entire domain will be searched.
-   .Notes
-    AUTHOR: Skyler Hart
-    CREATED: 01/18/2014 02:50:00
-    LASTEDIT: 2022-09-01 22:30:56
-    KEYWORDS: Hidden Users, User, Exchange, GAL, Global Address List
-    REQUIRES:
-        #Requires -Modules ActiveDirectory
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .Synopsis
+        This function gets all users that are hidden from the GAL.
+
+    .Description
+        This function gets all users that are hidden from the Global Address List (GAL) in a domain or you can specify an OU to search.
+
+    .Example
+        Find-HiddenGALUsers -SearchBase "OU=Test,DC=mydomain,DC=com"
+        This function gets all users that are hidden from the GAL in a domain or you can specify an OU to search.
+
+    .Parameter SearchBase
+        Specific OU to search. If not included, the entire domain will be searched.
+
+    .Notes
+        AUTHOR: Skyler Hart
+        CREATED: 2014-01-18 02:50:00
+        LASTEDIT: 2022-09-01 22:30:56
+        KEYWORDS: Hidden Users, User, Exchange, GAL, Global Address List
+        REQUIRES:
+            ActiveDirectory
+
+    .LINK
+        https://wstools.dev
+    #>
     [CmdletBinding()]
     Param (
         [Parameter(
@@ -94,24 +104,29 @@ Function Find-HiddenGALUser {
 
 
 function Find-SID {
-<#
+    <#
     .Synopsis
         This function finds what Active Directory object the specified SID belongs to.
+
     .Description
         This function finds what Active Directory object the specified SID belongs to.
+
     .Example
         Find-SID "S-1-5-21-1454471165-1004335555-1606985555-5555"
         Finds what Active Directory object the specified SID belongs to.
+
     .Parameter SID
         Mandatory parameter. Specify the SID you want to search for.
+
     .Notes
         AUTHOR: Skyler Hart
-        CREATED: 01/19/2014 01:45:00
+        CREATED: 2014-01-19 01:45:00
         LASTEDIT: 08/15/2018 22:47:26
         KEYWORDS: SID
-.LINK
-    https://wstools.dev
-#>
+
+    .LINK
+        https://wstools.dev
+    #>
     [CmdletBinding()]
     Param (
         [Parameter(
@@ -140,28 +155,28 @@ function Get-ADComplianceReport {
         Specify the distinguishedName(s) of organizational units (OUs) to search for user objects.
 
     .PARAMETER UserGroupSearchBase
-        Specify the distinguishedName(s) of organizational units (OUs) to search for user objects.
+        Specify the distinguishedName(s) of organizational units (OUs) to search for group objects that have users.
 
     .PARAMETER AdminSearchBase
-        Specify the distinguishedName(s) of organizational units (OUs) to search for user objects.
+        Specify the distinguishedName(s) of organizational units (OUs) to search for admin objects.
 
     .PARAMETER AdminGroupSearchBase
-        Specify the distinguishedName(s) of organizational units (OUs) to search for user objects.
+        Specify the distinguishedName(s) of organizational units (OUs) to search for group objects that have admins.
 
     .PARAMETER ComputerSearchBase
-        Specify the distinguishedName(s) of organizational units (OUs) to search for user objects.
+        Specify the distinguishedName(s) of organizational units (OUs) to search for computer objects.
 
     .PARAMETER MSASearchBase
-        Specify the distinguishedName(s) of organizational units (OUs) to search for user objects.
+        Specify the distinguishedName(s) of organizational units (OUs) to search for Managed Service Account objects.
 
     .PARAMETER OrganizationalSearchBase
-        Specify the distinguishedName(s) of organizational units (OUs) to search for user objects.
+        Specify the distinguishedName(s) of organizational units (OUs) to search for org boxes or shared account objects.
 
     .PARAMETER ServerSearchBase
-        Specify the distinguishedName(s) of organizational units (OUs) to search for user objects.
+        Specify the distinguishedName(s) of organizational units (OUs) to search for server objects.
 
     .PARAMETER ServiceAccountSearchBase
-        Specify the distinguishedName(s) of organizational units (OUs) to search for user objects.
+        Specify the distinguishedName(s) of organizational units (OUs) to search for Service Account objects.
 
     .PARAMETER SaveADReports
         Will save data pulled from Active Directory to reports for each object matching their type to path in
@@ -866,17 +881,19 @@ function Get-ADComplianceReport {
 
 
 Function Get-ComputerADSite {
-<#
-   .Parameter ComputerName
-    Specifies the computer or computers
-   .Notes
-    AUTHOR: Skyler Hart
-    CREATED: 02/09/2018 00:11:18
-    LASTEDIT: 02/09/2018 00:11:18
-    KEYWORDS:
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .Parameter ComputerName
+        Specifies the computer or computers
+
+    .Notes
+        AUTHOR: Skyler Hart
+        CREATED: 02/09/2018 00:11:18
+        LASTEDIT: 02/09/2018 00:11:18
+        KEYWORDS:
+
+    .LINK
+        https://wstools.dev
+    #>
     [CmdletBinding()]
     Param (
         [Parameter(
@@ -909,17 +926,18 @@ Function Get-ComputerADSite {
 
 
 Function Get-DaysSinceLastLogon {
-<#
-   .Notes
-    AUTHOR: Skyler Hart
-    CREATED: 02/01/2018 10:31:35
-    LASTEDIT: 02/01/2018 10:31:35
-    KEYWORDS:
-    REQUIRES:
-        -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .Notes
+        AUTHOR: Skyler Hart
+        CREATED: 02/01/2018 10:31:35
+        LASTEDIT: 02/01/2018 10:31:35
+        KEYWORDS:
+        REQUIRES:
+            -RunAsAdministrator
+
+    .LINK
+        https://wstools.dev
+    #>
     [CmdletBinding()]
     Param (
         [Parameter(
@@ -963,15 +981,16 @@ Function Get-DaysSinceLastLogon {
 
 
 Function Get-FSMO {
-<#
-.Notes
-    AUTHOR: Skyler Hart
-    CREATED: Sometime before 2017-08-07
-    LASTEDIT: 2022-09-01 22:47:51
-    KEYWORDS:
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .Notes
+        AUTHOR: Skyler Hart
+        CREATED: Sometime before 2017-08-07
+        LASTEDIT: 2022-09-01 22:47:51
+        KEYWORDS:
+
+    .LINK
+        https://wstools.dev
+    #>
     [CmdletBinding()]
     [Alias('fsmo')]
     Param (
