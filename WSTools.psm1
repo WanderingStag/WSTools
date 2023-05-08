@@ -253,7 +253,7 @@ Function Clear-Space {
         if (!($InvokeMethod)) {
             try {
                 New-PSDrive -Name CS -PSProvider FileSystem -root "$psdpath" -ErrorAction Stop | Out-Null
-                #Remove C:\Temp files
+                # Remove C:\Temp files
                 if (Test-Path CS:\Temp) {
                     Set-Location "CS:\Temp"
                     if ((Get-Location).Path -eq "CS:\Temp") {
@@ -262,7 +262,7 @@ Function Clear-Space {
                     }
                 }
 
-                #Remove Windows Temp file
+                # Remove Windows Temp file
                 if (Test-Path CS:\Windows\Temp) {
                     Set-Location "CS:\Windows\Temp"
                     if ((Get-Location).Path -eq "CS:\Windows\Temp") {
@@ -271,7 +271,7 @@ Function Clear-Space {
                     }
                 }
 
-                #Remove Prefetch files
+                # Remove Prefetch files
                 if (Test-Path CS:\Windows\Prefetch) {
                     Set-Location "CS:\Windows\Prefetch"
                     if ((Get-Location).Path -eq "CS:\Windows\Prefetch") {
@@ -280,7 +280,7 @@ Function Clear-Space {
                     }
                 }
 
-                #Remove temp files from user profiles
+                # Remove temp files from user profiles
                 if (Test-Path CS:\Users) {
                     Set-Location "CS:\Users"
                     if ((Get-Location).Path -eq "CS:\Users") {
@@ -289,7 +289,7 @@ Function Clear-Space {
                     }
                 }
 
-                #Remove cached SCCM files
+                # Remove cached SCCM files
                 if (Test-Path CS:\Windows\SysWOW64\ccm\cache) {
                     Set-Location "CS:\Windows\SysWOW64\ccm\cache"
                     if ((Get-Location).Path -eq "CS:\Windows\SysWOW64\ccm\cache") {
@@ -312,7 +312,7 @@ Function Clear-Space {
                     }
                 }
 
-                #Remove Windows update cache
+                # Remove Windows update cache
                 if (Test-Path CS:\Windows\SoftwareDistribution\Download) {
                     Set-Location "CS:\Windows\SoftwareDistribution\Download"
                     if ((Get-Location).Path -eq "CS:\Windows\SoftwareDistribution\Download") {
@@ -321,7 +321,7 @@ Function Clear-Space {
                     }
                 }
 
-                #Remove old patches. This is more of something local to where Skyler works. If you don't need it, remove it or comment it out.
+                # Remove old patches. This is more of something local to where Skyler works. If you don't need it, remove it or comment it out.
                 if (Test-Path CS:\Patches) {
                     Set-Location "CS:\Patches"
                     if ((Get-Location).Path -eq "CS:\Patches") {
@@ -340,7 +340,7 @@ Function Clear-Space {
                     }
                 }
                 Remove-PSDrive -Name CS -ErrorAction SilentlyContinue -Force | Out-Null
-            }#try
+            }# try
             catch {
                 Write-Output "Unable to connect to computer: $Comp" -ForegroundColor Red
             }
@@ -351,49 +351,49 @@ Function Clear-Space {
         else {
             try {
                 $wmiq = Get-WmiObject win32_operatingsystem -ComputerName $Comp -ErrorAction Stop | Select-Object OSArchitecture
-                #Clear SCCM cache
+                # Clear SCCM cache
                 if ($wmiq -like "*64-bit*") {
                     $invoke = Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c del "C:\Windows\SysWOW64\ccm\cache\*.*" /f /q && FOR /D %p IN ("C:\Windows\SysWOW64\ccm\cache\*") DO rmdir "%p" /q' -ErrorAction SilentlyContinue #DevSkim: ignore DS104456
                     $id32 = $invoke.ProcessId
                     Write-Output "Waiting for deletion of files in C:\Windows\SysWOW64\ccm\cache to complete"
                     do {(Start-Sleep -Seconds 10)}
                     until ((Get-WMIobject -Class Win32_process -ComputerName $Comp) | Where-Object {$_.ProcessID -eq $id32})
-                }#if64bit
+                }# if 64bit
                 else {
                     $invoke = Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c del "C:\Windows\System32\ccm\cache\*.*" /f /q && FOR /D %p IN ("C:\Windows\System32\ccm\cache\*") DO rmdir "%p" /q' -ErrorAction SilentlyContinue #DevSkim: ignore DS104456
                     $id32 = $invoke.ProcessId
                     Write-Output "Waiting for deletion of files in C:\Windows\System32\ccm\cache to complete"
                     do {(Start-Sleep -Seconds 10)}
                     until ((Get-WMIobject -Class Win32_process -ComputerName $Comp) | Where-Object {$_.ProcessID -eq $id32})
-                }#elseif32bit
+                }# else if 32bit
                 $invoke = Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c del "C:\Windows\ccmcache\*.*" /f /q && FOR /D %p IN ("C:\Windows\ccmcache\*") DO rmdir "%p" /q' -ErrorAction SilentlyContinue #DevSkim: ignore DS104456
                 $id32 = $invoke.ProcessId
                 Write-Output "Waiting for deletion of files in C:\Windows\ccmcache to complete"
                 do {(Start-Sleep -Seconds 10)}
                 until ((Get-WMIobject -Class Win32_process -ComputerName $Comp) | Where-Object {$_.ProcessID -eq $id32})
 
-                #Remove C:\Temp files
+                # Remove C:\Temp files
                 $invoke = Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c del "C:\Temp\*.*" /f /q && FOR /D %p IN ("C:\Temp\*") DO rmdir "%p" /q' -ErrorAction SilentlyContinue #DevSkim: ignore DS104456
                 $id32 = $invoke.ProcessId
                 Write-Output "Waiting for deletion of files in C:\Temp to complete"
                 do {(Start-Sleep -Seconds 10)}
                 until ((Get-WMIobject -Class Win32_process -ComputerName $Comp) | Where-Object {$_.ProcessID -eq $id32})
 
-                #Remove Windows Temp files
+                # Remove Windows Temp files
                 $invoke = Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c del "C:\Windows\Temp\*.*" /f /q && FOR /D %p IN ("C:\Windows\Temp\*") DO rmdir "%p" /q' -ErrorAction SilentlyContinue #DevSkim: ignore DS104456
                 $id32 = $invoke.ProcessId
                 Write-Output "Waiting for deletion of files in C:\Windows\Temp to complete"
                 do {(Start-Sleep -Seconds 10)}
                 until ((Get-WMIobject -Class Win32_process -ComputerName $Comp) | Where-Object {$_.ProcessID -eq $id32})
 
-                #Remove Prefetch files
+                # Remove Prefetch files
                 $invoke = Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c del "C:\Windows\Prefetch\*.*" /f /q && FOR /D %p IN ("C:\Windows\Prefetch\*") DO rmdir "%p" /q' -ErrorAction SilentlyContinue #DevSkim: ignore DS104456
                 $id32 = $invoke.ProcessId
                 Write-Output "Waiting for deletion of files in C:\Windows\Prefetch to complete"
                 do {(Start-Sleep -Seconds 10)}
                 until ((Get-WMIobject -Class Win32_process -ComputerName $Comp) | Where-Object {$_.ProcessID -eq $id32})
 
-                #Remove Windows Update cache
+                # Remove Windows Update cache
                 $invoke = Invoke-WMIMethod -Class Win32_Process -Name Create -Computername $Comp -ArgumentList 'cmd /c del "C:\Windows\SoftwareDistribution\Download\*.*" /f /q && FOR /D %p IN ("C:\Windows\SoftwareDistribution\Download\*") DO rmdir "%p" /q' -ErrorAction SilentlyContinue #DevSkim: ignore DS104456
                 $id32 = $invoke.ProcessId
                 Write-Output "Waiting for deletion of files in C:\Windows\SoftwareDistribution\Download to complete"
@@ -403,9 +403,9 @@ Function Clear-Space {
             catch {
                 Write-Output "Unable to connect to computer: $Comp" -ForegroundColor Red
             }
-        }#invoke method
+        }# invoke method
         #endregion Invoke Method
-    }#foreach computer
+    }# foreach computer
     Set-Location $path
 }
 
@@ -616,7 +616,6 @@ function Disable-RDP {
         Author: Skyler Hart
         Created: 2021-02-27 11:44:34
         Last Edit: 2021-02-27 11:47:07
-        Keywords:
         Requires:
             -RunAsAdministrator
 
@@ -635,7 +634,6 @@ function Disable-ServerManager {
         Author: Skyler Hart
         Created: 2020-05-08 23:18:39
         Last Edit: 2020-10-06 13:25:11
-        Keywords:
 
     .LINK
         https://wstools.dev
@@ -652,7 +650,6 @@ function Enable-RDP {
         Author: Skyler Hart
         Created: 2020-05-08 23:21:17
         Last Edit: 2021-02-27 11:47:20
-        Keywords:
         Requires:
             -RunAsAdministrator
 
@@ -671,7 +668,6 @@ function Enable-ServerManager {
         Author: Skyler Hart
         Created: 2021-12-16 21:29:35
         Last Edit: 2021-12-16 21:29:35
-        Keywords:
 
     .LINK
         https://wstools.dev
@@ -867,8 +863,6 @@ function Get-CommandList {
         Author: Skyler Hart
         Created: 2021-08-06 23:09:24
         Last Edit: 2021-12-16 21:41:15
-        Keywords:
-        Other:
 
     .LINK
         https://wstools.dev
@@ -1034,7 +1028,6 @@ Function Get-ComputerModel {
         AUTHOR: Skyler Hart
         CREATED: 2018-06-20 13:05:09
         LASTEDIT: 2020-08-31 21:40:19
-        KEYWORDS:
         REQUIRES:
             -RunAsAdministrator
 
@@ -1053,7 +1046,6 @@ Function Get-ComputerModel {
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
-    Begin {}
     Process {
         foreach ($comp in $ComputerName) {
             try {
@@ -1101,20 +1093,20 @@ Function Get-ComputerModel {
             }
         }
     }
-    End {}
 }
 
 
 function Get-DayOfYear {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2021-05-20 20:48:46
-    Last Edit: 2021-05-20 21:48:24
-    Keywords: Day of year, Julian
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .NOTES
+        Author: Skyler Hart
+        Created: 2021-05-20 20:48:46
+        Last Edit: 2021-05-20 21:48:24
+        Keywords: Day of year, Julian
+
+    .LINK
+        https://wstools.dev
+    #>
     [CmdletBinding()]
     [Alias('Get-JulianDay','Get-JulianDate')]
     param(
@@ -1169,19 +1161,15 @@ function Get-DayOfYear {
 
 
 Function Get-DefaultBrowserPath {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: Sometime before 2017-08-07
-    Last Edit: 2020-08-20 15:09:53
-    Keywords:
-    Requires:
-        -Module ActiveDirectory
-        -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
-        -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .NOTES
+        Author: Skyler Hart
+        Created: Sometime before 2017-08-07
+        Last Edit: 2020-08-20 15:09:53
+
+    .LINK
+        https://wstools.dev
+    #>
     New-PSDrive -Name HKCR -PSProvider Registry -Root Hkey_Classes_Root | Out-Null
     $BrowserPath = ((Get-ItemProperty 'HKCR:\http\shell\open\command').'(default)').Split('"')[1]
     return $BrowserPath
@@ -1190,15 +1178,15 @@ Function Get-DefaultBrowserPath {
 
 
 function Get-DirectoryStat {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2020-08-09 10:07:49
-    Last Edit: 2020-08-09 21:35:14
-    Keywords:
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .NOTES
+        Author: Skyler Hart
+        Created: 2020-08-09 10:07:49
+        Last Edit: 2020-08-09 21:35:14
+
+    .LINK
+        https://wstools.dev
+    #>
     [CmdletBinding()]
     param(
         [Parameter(
@@ -1259,15 +1247,15 @@ function Get-DirectoryStat {
 
 
 function Get-Drive {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2020-04-19 20:29:58
-    Last Edit: 2020-04-19 20:29:58
-    Keywords:
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .NOTES
+        Author: Skyler Hart
+        Created: 2020-04-19 20:29:58
+        Last Edit: 2020-04-19 20:29:58
+
+    .LINK
+        https://wstools.dev
+    #>
     [CmdletBinding()]
     [Alias('drive')]
     param()
@@ -1276,15 +1264,15 @@ function Get-Drive {
 
 
 function Get-Error {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2020-04-18 16:42:46
-    Last Edit: 2020-04-18 19:08:44
-    Keywords:
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .NOTES
+        Author: Skyler Hart
+        Created: 2020-04-18 16:42:46
+        Last Edit: 2020-04-18 19:08:44
+
+    .LINK
+        https://wstools.dev
+    #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
         "",
@@ -1329,15 +1317,15 @@ function Get-Error {
 
 
 Function Get-ExpiredCertsComputer {
-<#
-.Notes
-    AUTHOR: Skyler Hart
-    CREATED: 10/04/2018 20:46:38
-    LASTEDIT: 10/04/2018 21:08:31
-    KEYWORDS:
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .Notes
+        AUTHOR: Skyler Hart
+        CREATED: 10/04/2018 20:46:38
+        LASTEDIT: 10/04/2018 21:08:31
+
+    .LINK
+        https://wstools.dev
+    #>
     $cd = Get-Date
     $certs = Get-ChildItem -Path Cert:\LocalMachine -Recurse | Select-Object *
 
@@ -1353,15 +1341,15 @@ Function Get-ExpiredCertsComputer {
 
 
 Function Get-ExpiredCertsUser {
-<#
-.Notes
-    AUTHOR: Skyler Hart
-    CREATED: 10/04/2018 21:08:39
-    LASTEDIT: 10/04/2018 21:09:34
-    KEYWORDS:
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .Notes
+        AUTHOR: Skyler Hart
+        CREATED: 10/04/2018 21:08:39
+        LASTEDIT: 10/04/2018 21:09:34
+
+    .LINK
+        https://wstools.dev
+    #>
     $cd = Get-Date
     $certs = Get-ChildItem -Path Cert:\CurrentUser -Recurse | Select-Object *
 
@@ -1377,17 +1365,17 @@ Function Get-ExpiredCertsUser {
 
 
 Function Get-FeaturesOnDemand {
-<#
-.Notes
-    AUTHOR: Skyler Hart
-    CREATED: 09/25/2019 14:13:50
-    LASTEDIT: 2020-08-31 21:44:37
-    KEYWORDS:
-    REQUIRES:
-        Requires -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .Notes
+        AUTHOR: Skyler Hart
+        CREATED: 09/25/2019 14:13:50
+        LASTEDIT: 2020-08-31 21:44:37
+        REQUIRES:
+            Requires -RunAsAdministrator
+
+    .LINK
+        https://wstools.dev
+    #>
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
     if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {$Role = 'Admin'}
     else {$Role = 'User'}
@@ -1413,45 +1401,52 @@ Function Get-FeaturesOnDemand {
 
 
 Function Get-FileMetaData {
-<#
-.Synopsis
-    This function gets file metadata and returns it as a custom PS Object
-.Description
-    This function gets file metadata using the Shell.Application object and
-    returns a custom PSObject object that can be sorted, filtered or otherwise
-    manipulated.
-.Example
-    Get-FileMetaData -Path "e:\music"
-    Gets file metadata for all files in the e:\music directory
-.Example
-    Get-FileMetaData -Path (gci e:\music -Recurse -Directory).FullName
-    This example uses the Get-ChildItem cmdlet to do a recursive lookup of
-    all directories in the e:\music folder and then it goes through and gets
-    all of the file metada for all the files in the directories and in the
-    subdirectories.
-.Example
-    Get-FileMetaData -Path "c:\fso","E:\music\Big Boi"
-    Gets file metadata from files in both the c:\fso directory and the
-    e:\music\big boi directory.
-.Example
-    $meta = Get-FileMetaData -Path "E:\music"
-    This example gets file metadata from all files in the root of the
-    e:\music directory and stores the returned custom objects in a $meta
-    variable for later processing and manipulation.
-.Parameter Path
-    The path that is parsed for files
-.Notes
-    NAME:  Get-FileMetaData
-    AUTHOR: ed wilson, msft
-    Edited By: Skyler Hart
-    Original: 01/24/2014 14:08:24
-    Last Edit: 2021-12-19 18:54:58
-    KEYWORDS: Storage, Files, Metadata
-    HSG: HSG-2-5-14
-.Link
-    https://devblogs.microsoft.com/scripting/
-#Requires -Version 2.0
-#>
+    <#
+    .Synopsis
+        This function gets file metadata and returns it as a custom PS Object.
+
+    .Description
+        This function gets file metadata using the Shell.Application object and
+        returns a custom PSObject object that can be sorted, filtered or otherwise
+        manipulated.
+
+    .Example
+        Get-FileMetaData -Path "e:\music"
+        Gets file metadata for all files in the e:\music directory
+
+    .Example
+        Get-FileMetaData -Path (gci e:\music -Recurse -Directory).FullName
+        This example uses the Get-ChildItem cmdlet to do a recursive lookup of
+        all directories in the e:\music folder and then it goes through and gets
+        all of the file metada for all the files in the directories and in the
+        subdirectories.
+
+    .Example
+        Get-FileMetaData -Path "c:\fso","E:\music\Big Boi"
+        Gets file metadata from files in both the c:\fso directory and the
+        e:\music\big boi directory.
+
+    .Example
+        $meta = Get-FileMetaData -Path "E:\music"
+        This example gets file metadata from all files in the root of the
+        e:\music directory and stores the returned custom objects in a $meta
+        variable for later processing and manipulation.
+
+    .Parameter Path
+        The path that is parsed for files
+
+    .Notes
+        NAME:  Get-FileMetaData
+        AUTHOR: ed wilson, msft
+        Edited By: Skyler Hart
+        Original: 01/24/2014 14:08:24
+        Last Edit: 2021-12-19 18:54:58
+        KEYWORDS: Storage, Files, Metadata
+
+    .Link
+        https://devblogs.microsoft.com/scripting/
+    #Requires -Version 2.0
+    #>
     Param([string[]]$Path)
     foreach($sFolder in $Path) {
         $ItemInfo = Get-Item $sFolder | Select-Object *
@@ -1486,35 +1481,35 @@ Function Get-FileMetaData {
             $Metadata
         }
     } #end foreach $sfolder
-} #end Get-FileMetaData
+}
 
 
 function Get-HomeDrive {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2020-11-03 15:02:09
-    Last Edit: 2020-11-03 15:02:09
-    Keywords:
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .NOTES
+        Author: Skyler Hart
+        Created: 2020-11-03 15:02:09
+        Last Edit: 2020-11-03 15:02:09
+
+    .LINK
+        https://wstools.dev
+    #>
     $env:HOMESHARE
 }
 
 
 function Get-HWInfo {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2021-05-11 18:29:12
-    Last Edit: 2021-05-11 23:48:31
-    Keywords:
-    Requires:
-        -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .NOTES
+        Author: Skyler Hart
+        Created: 2021-05-11 18:29:12
+        Last Edit: 2021-05-11 23:48:31
+        Requires:
+            -RunAsAdministrator
+
+    .LINK
+        https://wstools.dev
+    #>
     [CmdletBinding()]
     param(
         [Parameter(
@@ -1531,18 +1526,18 @@ function Get-HWInfo {
         $j = 0
         $number = $ComputerName.length
         foreach ($Comp in $ComputerName) {
-            #Progress Bar
+            # Progress Bar
             if ($number -gt "1") {
                 $j++
                 $amount = ($j / $number)
                 $perc1 = $amount.ToString("P")
                 Write-Progress -activity "Getting hardware information" -status "Computer $j of $number. Percent complete:  $perc1" -PercentComplete (($j / $ComputerName.length)  * 100)
-            }#if length
+            }# if length
 
             if ((Test-Connection -BufferSize 32 -Count 1 -ComputerName $Comp -Quiet) -eq $true) {
                 $status = "Online"
 
-                #Get WMI Values
+                # Get WMI Values
                 try {
                     $csi = Get-WmiObject -Class Win32_ComputerSystem -ComputerName $Comp -ErrorAction Stop
                     $ldi = Get-WmiObject -Class Win32_LogicalDisk -ComputerName $Comp -ErrorAction Stop | Where-Object {$_.DriveType -eq 3}
@@ -1552,7 +1547,7 @@ function Get-HWInfo {
                     $pmai = Get-WmiObject -Class Win32_PhysicalMemoryArray -ComputerName $Comp -ErrorAction Stop
                     $pri = Get-WmiObject -Class Win32_Processor -ComputerName $Comp -ErrorAction Stop
 
-                    #Get Computer System Information
+                    # Get Computer System Information
                     $sn = (Get-WmiObject -Class Win32_BIOS -ComputerName $Comp -ErrorAction Stop | Select-Object SerialNumber).SerialNumber
                     switch ($csi.DomainRole) {
                         0 {$dr = "Standalone Workstation"}
@@ -1607,7 +1602,7 @@ function Get-HWInfo {
                         $l++
                     }
 
-                    #Get Network Adapter Configuration Information
+                    # Get Network Adapter Configuration Information
                     $naie = $nai | Where-Object {$_.IPEnabled -eq $true -and $null -ne $_.IPAddress} | Select-Object Description,IPAddress,IPSubnet,MACAddress,DefaultIPGateway,DNSServerSearchOrder
                     $i = 1
                     $NetAdapterName = $null
@@ -1640,9 +1635,9 @@ function Get-HWInfo {
                             $MACAddress += ($na.MACAddress)
                         }
                         $i++
-                    }#foreach network adapter
+                    }# foreach network adapter
 
-                    #Get Operating System Information
+                    # Get Operating System Information
                     $OS = $osi.Caption -replace "Microsoft ",""
                     $Build = $osi.BuildNumber
 
@@ -1677,15 +1672,15 @@ function Get-HWInfo {
                         elseif ($Build -eq 19043) {
                             $OS = $OS + " v21H1"
                         }
-                        elseif ($Build -eq 19044 -or $Build -eq 22000 -or $Build -eq 20348) {#Win 10 Win 11 Srv 2022
+                        elseif ($Build -eq 19044 -or $Build -eq 22000 -or $Build -eq 20348) {# Win 10 Win 11 Srv 2022
                             $OS = $OS + " v21H2"
                         }
-                        elseif ($Build -eq 19045 -or $Build -eq 22621) {#Win 10 Win 11
+                        elseif ($Build -eq 19045 -or $Build -eq 22621) {# Win 10 Win 11
                             $OS = $OS + " v22H2"
                         }
-                    }#if os win 10, srv 2016, or srv 2019
+                    }# if os win 10, srv 2016, or srv 2019
 
-                    #Get Processor Information
+                    # Get Processor Information
                     switch ($pri.Architecture) {
                         0 {$Architecture = "x86"}
                         1 {$Architecture = "MIPS"}
@@ -1703,7 +1698,7 @@ function Get-HWInfo {
                         $ProcName = $ProcName[0]
                     }
 
-                    #Get RAM Information
+                    # Get RAM Information
                     $iris = $pmi.Capacity
                     $ri = 0
                     foreach ($iri in $iris) {
@@ -1746,14 +1741,14 @@ function Get-HWInfo {
                     $CoresPerProc = $null
                 }
 
-                #Get BitLocker status
+                # Get BitLocker status
                 try {
                     $bi = manage-bde.exe -ComputerName $Comp -status
                     $ps = @()
                     $pi = $bi | Select-String -Pattern 'Protection Status'
                     $ps += $pi | ForEach-Object {
                         $_.ToString().Trim().Substring(22)
-                    }#foreach pro status
+                    }# foreach pro status
                     if ($ps[0] -eq "Protection On") {$bl = "Enabled"}
                     else {$bl = "Not Enabled"}
                 }
@@ -1793,8 +1788,8 @@ function Get-HWInfo {
                     LogicalDiskSize = $LogicalDiskSize
                     LogicalDiskFree = $LogicalDiskFree
                     LogicalDiskUsed = $LogicalDiskUsed
-                }#new object
-            }#if online
+                }# new object
+            }# if online
             else {
                 $status = "Offline"
                 [PSCustomObject]@{
@@ -1829,25 +1824,25 @@ function Get-HWInfo {
                     LogicalDiskSize = $null
                     LogicalDiskFree = $null
                     LogicalDiskUsed = $null
-                }#new object
-            }#if offline
-        }#foreach computer
-    }#if admin
+                }# new object
+            }# if offline
+        }# foreach computer
+    }# if admin
     else {Write-Error "Not admin. Please run PowerShell as admin."}
 }
 
 function Get-HWPerformanceScore {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2022-06-04 22:43:29
-    Last Edit: 2022-06-04 22:43:29
-    Other:
-    Requires:
-        -RunAsAdministrator
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .NOTES
+        Author: Skyler Hart
+        Created: 2022-06-04 22:43:29
+        Last Edit: 2022-06-04 22:43:29
+        Requires:
+            -RunAsAdministrator
+
+    .LINK
+        https://wstools.dev
+    #>
     [CmdletBinding()]
     Param (
         [Parameter(
@@ -1886,7 +1881,7 @@ function Get-HWPerformanceScore {
             else {
                 Get-CimInstance -ClassName Win32_WinSAT -ComputerName $comp -ErrorAction Stop
             }
-        }#end code block
+        }# end code block
         $Jobs = @()
     }
     Process {
@@ -1934,15 +1929,15 @@ function Get-HWPerformanceScore {
 
 
 Function Get-IEVersion {
-<#
-.Notes
-    AUTHOR: Skyler Hart
-    CREATED: 09/21/2017 13:06:15
-    LASTEDIT: 09/21/2017 13:06:15
-    KEYWORDS:
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .Notes
+        AUTHOR: Skyler Hart
+        CREATED: 09/21/2017 13:06:15
+        LASTEDIT: 09/21/2017 13:06:15
+
+    .LINK
+        https://wstools.dev
+    #>
     [CmdletBinding()]
     Param (
         [Parameter(
@@ -1964,47 +1959,58 @@ Function Get-IEVersion {
         [PSCustomObject]@{
             ComputerName = $comp
             IEVersion = $value
-        }#new object
-    }#foreach computer
+        }# new object
+    }# foreach computer
 }
 
 
 Function Get-InstalledProgram {
-<#
-.SYNOPSIS
-    Displays installed programs on a computer.
-.DESCRIPTION
-    Displays a list of installed programs on a local or remote computer by querying the registry.
-.PARAMETER ComputerName
-    Specifies the name of one or more computers.
-.PARAMETER Path
-    Specifies a path to one or more locations.
-.EXAMPLE
-    C:\PS>Get-InstalledProgram
-    Shows the installed programs on the local computer.
-.EXAMPLE
-    C:\PS>Get-InstalledProgram -ComputerName COMPUTER1
-    Shows the installed programs on the remote computer COMPUTER1.
-.EXAMPLE
-    C:\PS>Get-InstalledProgram -ComputerName COMPUTER1,COMPUTER2
-    Shows the installed programs on the remote computers COMPUTER1 and COMPUTER2.
-.EXAMPLE
-    C:\PS>Get-InstalledProgram (gc C:\Temp\computers.txt)
-    Shows the installed programs on the remote computers listed in the computers.txt file (each computer name on a new line.)
-.EXAMPLE
-    C:\PS>Get-InstalledProgram COMPUTER1 -Property InstallSource
-    Shows the installed programs on the remote computer COMPUTER1 and also shows the additional property InstallSource from the registry.
-.EXAMPLE
-    C:\PS>Get-InstalledProgram COMPUTER1,COMPUTER2 -Property InstallSource,Comments
-    Shows the installed programs on the remote computers COMPUTER1 and COMPUTER2. Also shows the additional properties InstallSource and Comments from the registry.
-.NOTES
-    Author: Skyler Hart
-    Created: Sometime prior to 2017-08
-    Last Edit: 2020-08-19 23:03:32
-    Keywords:
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .SYNOPSIS
+        Displays installed programs on a computer.
+
+    .DESCRIPTION
+        Displays a list of installed programs on a local or remote computer by querying the registry.
+
+    .PARAMETER ComputerName
+        Specifies the name of one or more computers.
+
+    .PARAMETER Property
+        Will add additional properties to pull from the Uninstall key in the registry.
+
+    .EXAMPLE
+        C:\PS>Get-InstalledProgram
+        Shows the installed programs on the local computer.
+
+    .EXAMPLE
+        C:\PS>Get-InstalledProgram -ComputerName COMPUTER1
+        Shows the installed programs on the remote computer COMPUTER1.
+
+    .EXAMPLE
+        C:\PS>Get-InstalledProgram -ComputerName COMPUTER1,COMPUTER2
+        Shows the installed programs on the remote computers COMPUTER1 and COMPUTER2.
+
+    .EXAMPLE
+        C:\PS>Get-InstalledProgram (gc C:\Temp\computers.txt)
+        Shows the installed programs on the remote computers listed in the computers.txt file (each computer name on a new line.)
+
+    .EXAMPLE
+        C:\PS>Get-InstalledProgram COMPUTER1 -Property InstallSource
+        Shows the installed programs on the remote computer COMPUTER1 and also shows the additional property InstallSource from the registry.
+
+    .EXAMPLE
+        C:\PS>Get-InstalledProgram COMPUTER1,COMPUTER2 -Property InstallSource,Comments
+        Shows the installed programs on the remote computers COMPUTER1 and COMPUTER2. Also shows the additional properties InstallSource and Comments from the registry.
+
+    .NOTES
+        Author: Skyler Hart
+        Created: Sometime prior to 2017-08
+        Last Edit: 2020-08-19 23:03:32
+        Keywords: Software, Programs, management
+
+    .LINK
+        https://wstools.dev
+    #>
     [CmdletBinding(SupportsShouldProcess=$true)]
     param(
         [Parameter(ValueFromPipeline=$true,
@@ -2069,35 +2075,44 @@ Function Get-InstalledProgram {
 
 
 function Get-IPrange {
-<#
-.SYNOPSIS
-    Lists IPs within a range, subnet, or CIDR block.
-.DESCRIPTION
-    Lists IPs within a range, subnet, or CIDR block.
-.PARAMETER CIDR
-    Specifies what CIDR block notation you want to list IPs from.
-.PARAMETER End
-    The ending IP in a range.
-.PARAMETER IP
-    An IP from the subnet mask or CIDR block you want a range for.
-.PARAMETER Start
-    Specifies a path to one or more locations.
-.PARAMETER Subnet
-    The subnet mask you want a range for.
-.EXAMPLE
-    C:\PS>Get-IPrange -ip 192.168.0.3 -subnet 255.255.255.192
-    Will show all IPs within the 192.168.0.0 space with a subnet mask of 255.255.255.192 (CIDR 26.)
-.EXAMPLE
-    C:\PS>Get-IPrange -PARAMETER
-    Another example of how to use this cmdlet but with a parameter or switch.
-.NOTES
-    Author: Skyler Hart
-    Created: Sometime before 8/7/2017
-    Last Edit: 2020-08-20 09:11:46
-    Keywords:
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .SYNOPSIS
+        Lists IPs within a range, subnet, or CIDR block.
+
+    .DESCRIPTION
+        Lists IPs within a range, subnet, or CIDR block.
+
+    .PARAMETER CIDR
+        Specifies what CIDR block notation you want to list IPs from.
+
+    .PARAMETER End
+        The ending IP in a range.
+
+    .PARAMETER IP
+        An IP from the subnet mask or CIDR block you want a range for.
+
+    .PARAMETER Start
+        Specifies a path to one or more locations.
+
+    .PARAMETER Subnet
+        The subnet mask you want a range for.
+
+    .EXAMPLE
+        C:\PS>Get-IPrange -ip 192.168.0.3 -subnet 255.255.255.192
+        Will show all IPs within the 192.168.0.0 space with a subnet mask of 255.255.255.192 (CIDR 26.)
+
+    .EXAMPLE
+        C:\PS>Get-IPrange -PARAMETER
+        Another example of how to use this cmdlet but with a parameter or switch.
+
+    .NOTES
+        Author: Skyler Hart
+        Created: Sometime before 8/7/2017
+        Last Edit: 2020-08-20 09:11:46
+
+    .LINK
+        https://wstools.dev
+    #>
     [CmdletBinding()]
     Param (
         [Parameter(
@@ -2152,16 +2167,17 @@ function Get-IPrange {
 
 
 function Get-LinesOfCode {
-<#
-.NOTES
-    Author: Skyler Hart
-    Created: 2021-10-19 19:10:36
-    Last Edit: 2021-10-19 19:10:36
-    Keywords:
-    Other: Excludes blank lines
-.LINK
-    https://wstools.dev
-#>
+    <#
+    .NOTES
+        Author: Skyler Hart
+        Created: 2021-10-19 19:10:36
+        Last Edit: 2021-10-19 19:10:36
+        Keywords:
+        Other: Excludes blank lines
+
+    .LINK
+        https://wstools.dev
+    #>
     [CmdletBinding()]
     param(
         [Parameter(
@@ -2177,22 +2193,25 @@ function Get-LinesOfCode {
 
 
 Function Get-LockedOutLocation {
-<#
-.SYNOPSIS
-    This function will locate the computer that processed a failed user logon attempt which caused the user account to become locked out.
-.DESCRIPTION
-    This function will locate the computer that processed a failed user logon attempt which caused the user account to become locked out.
-    The locked out location is found by querying the PDC Emulator for locked out events (4740).
-    The function will display the BadPasswordTime attribute on all of the domain controllers to add in further troubleshooting.
-.EXAMPLE
-    PS C:\>Get-LockedOutLocation -Identity Joe.Davis
-    This example will find the locked out location for Joe Davis.
-.NOTES
-    This function is only compatible with an environment where the domain controller with the PDCe role to be running Windows Server 2008 SP2 and up.
-    The script is also dependent the ActiveDirectory PowerShell module, which requires the AD Web services to be running on at least one domain controller.
-    Author:Jason Walker
-    Last Modified: 3/20/2013
-#>
+    <#
+    .SYNOPSIS
+        This function will locate the computer that processed a failed user logon attempt which caused the user account to become locked out.
+
+    .DESCRIPTION
+        This function will locate the computer that processed a failed user logon attempt which caused the user account to become locked out.
+        The locked out location is found by querying the PDC Emulator for locked out events (4740).
+        The function will display the BadPasswordTime attribute on all of the domain controllers to add in further troubleshooting.
+
+    .EXAMPLE
+        PS C:\>Get-LockedOutLocation -Identity Joe.Davis
+        This example will find the locked out location for Joe Davis.
+
+    .NOTES
+        This function is only compatible with an environment where the domain controller with the PDCe role to be running Windows Server 2008 SP2 and up.
+        The script is also dependent the ActiveDirectory PowerShell module, which requires the AD Web services to be running on at least one domain controller.
+        Author:Jason Walker
+        Last Modified: 3/20/2013
+    #>
     [CmdletBinding()]
     Param(
       [Parameter(Mandatory=$True)]
@@ -2209,9 +2228,9 @@ Function Get-LockedOutLocation {
            Write-Warning $_
            Break
         }
-    }#end begin
+    }# end begin
     Process {
-        #Get all domain controllers in domain
+        # Get all domain controllers in domain
         $DomainControllers = Get-ADDomainController -Filter *
         $PDCEmulator = ($DomainControllers | Where-Object {$_.OperationMasterRoles -contains "PDCEmulator"})
 
@@ -2237,11 +2256,11 @@ Function Get-LockedOutLocation {
                         AccountLockoutTime     = $UserInfo.AccountLockoutTime
                         LastBadPasswordAttempt = ($UserInfo.LastBadPasswordAttempt).ToLocalTime()
                     }
-            }#end if
-        }#end foreach DCs
+            }# end if
+        }# end foreach DCs
         $LockedOutStats | Format-Table -Property Name,LockedOut,DomainController,BadPwdCount,AccountLockoutTime,LastBadPasswordAttempt -AutoSize
 
-        #Get User Info
+        # Get User Info
         Try {
            Write-Verbose "Querying event log on $($PDCEmulator.HostName)"
             $LockedOutEvents = Get-WinEvent -ComputerName $PDCEmulator.HostName -FilterHashtable @{LogName='Security';Id=4740} -ErrorAction Stop | Sort-Object -Property TimeCreated -Descending
@@ -2249,7 +2268,7 @@ Function Get-LockedOutLocation {
         Catch {
            Write-Warning $_
             Continue
-        }#end catch
+        }# end catch
         Foreach($Event in $LockedOutEvents) {
             If($Event | Where-Object {$_.Properties[2].value -match $UserInfo.SID.Value}) {
                 $Event | Select-Object -Property @(
@@ -2260,10 +2279,10 @@ Function Get-LockedOutLocation {
                     @{Label = 'Message';            Expression = {$_.Message -split "`r" | Select-Object -First 1}}
                     @{Label = 'LockedOutLocation';  Expression = {$_.Properties[1].Value}}
                 )
-            }#end ifevent
-        }#end foreach lockedout event
-    }#end process
-}#end function
+            }# end ifevent
+        }# end foreach lockedout event
+    }# end process
+}
 
 
 function Get-ModuleCommandCount {
