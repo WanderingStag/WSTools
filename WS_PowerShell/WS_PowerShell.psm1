@@ -839,7 +839,7 @@ Function Get-Accelerator {
     [Alias('Get-TypeAccelerators','accelerators')]
     param()
 
-    [psobject].Assembly.GetType(“System.Management.Automation.TypeAccelerators”)::get | Sort-Object Key
+    [psobject].Assembly.GetType("System.Management.Automation.TypeAccelerators")::get | Sort-Object Key
 }
 
 
