@@ -6031,10 +6031,10 @@ function Set-WindowState {
         'SHOWNORMAL'      = 1
     }
 
-    $Win32ShowWindowAsync = Add-Type –memberDefinition @”
+    $Win32ShowWindowAsync = Add-Type –memberDefinition @"
     [DllImport("user32.dll")]
     public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
-“@ -name “Win32ShowWindowAsync” -namespace Win32Functions –passThru
+"@ -name "Win32ShowWindowAsync" -namespace Win32Functions –passThru
 
     $Win32ShowWindowAsync::ShowWindowAsync($MainWindowHandle, $WindowStates[$Style]) | Out-Null
     Write-Verbose ("Set Window Style '{1} on '{0}'" -f $MainWindowHandle, $Style)
@@ -6427,7 +6427,7 @@ function Start-CommandMultiThreaded {
     C:\PS>Start-CommandMultiThreaded -Command Set-AxwayConfig -Objects COMP1,COMP2 -AddParameter @{"ConfigFile" = "C:\PKI\MyOrgsAxwayConfig.txt"}
     Will set the Axway config file on both the computer COMP1 and COMP2 at the same time using C:\PKI\MyOrgsAxwayConfig.txt on those computers as the file to import.
 .INPUTS
-    System.Management.Automation.PSObject,System.String
+    System.Management.Automation.PSObject.System.String
 .OUTPUTS
     System.Management.Automation.PSCustomObject
 .COMPONENT
