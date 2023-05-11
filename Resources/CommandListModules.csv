@@ -9,7 +9,7 @@ AppBackgroundTask,Yes,No,"Management of background tasks. Allows starting, stopp
 AppLocker,Yes,Yes,"Used to help author, test, maintain, and troubleshoot application control policies.",https://docs.microsoft.com/en-us/powershell/module/applocker
 AppvClient,No,No,Management of Application Virtualization (App-V) client.,https://docs.microsoft.com/en-us/powershell/module/appvclient
 Appx,Yes,Yes,Management of MSIX (Windows app packages) and AppX packages (Microsoft Store apps.),https://docs.microsoft.com/en-us/powershell/module/appx
-AssignedAccess,No,No,Administration of restricted app access to specific user accounts. ,https://docs.microsoft.com/en-us/powershell/module/assignedaccess
+AssignedAccess,No,No,Administration of restricted app access to specific user accounts.ï¿½,https://docs.microsoft.com/en-us/powershell/module/assignedaccess
 AuditPolicyDsc,Yes,Yes,Configure and manage the advanced audit policy,https://github.com/dsccommunity/AuditPolicyDsc
 AuditSystemDsc,Yes,Yes,Audit system settings and verify compliance,https://github.com/jcwalker/AuditSystemDsc
 Azure,No,Yes,Old version of Az module. Used for management of Azure.,https://docs.microsoft.com/en-us/powershell/azure
@@ -114,7 +114,7 @@ iSCSI,Yes,No,Management of iSCSI initiators,https://docs.microsoft.com/en-us/pow
 IscsiTarget,No,No,Management of iSCSI targets,https://docs.microsoft.com/en-us/powershell/module/iscsitarget
 ISE,Yes,No,Management of Integrated Scripting Environment (ISE) snippets,https://docs.microsoft.com/en-us/powershell/module/ise
 Kds,Yes,No,Management of Key Distribution Services (KDS) that are required for group managed service accounts,https://docs.microsoft.com/en-us/powershell/module/kds
-Microsoft.MonitoringAgent.PowerShell,No,Yes,"Locally monitor IIS-hosted ASP.NET web apps and SharePoint 2010 or 2013 applications for errors, performance issues, or other problems by using Microsoft Monitoring Agent.",https://docs.microsoft.com/en-us/visualstudio/debugger/using-the-microsoft-monitoring-agent
+Microsoft.MonitoringAgent.PowerShell,No,Yes,"Locally monitor IIS-hosted ASP.NET web apps and SharePoint 2010 or 2013 applications for errors, performance issues, or other problems by usingï¿½Microsoft Monitoring Agent.",https://docs.microsoft.com/en-us/visualstudio/debugger/using-the-microsoft-monitoring-agent
 Microsoft.PowerShell.Archive,Yes,Yes,For compressing files into a zipped file or expanding a zipped file,https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.archive
 Microsoft.PowerShell.Core,Yes,Yes,Numerous built-in core cmdlets and providers that manage the basic features of PowerShell,https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core
 Microsoft.PowerShell.Diagnostics,Yes,Yes,Manage data from event logs,https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.diagnostics

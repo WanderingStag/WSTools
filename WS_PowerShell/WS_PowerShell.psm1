@@ -1,4 +1,4 @@
-﻿Function Add-DateTime {
+Function Add-DateTime {
 <#
    .Synopsis
     This function adds the date and time at current insertion point.

@@ -1,4 +1,4 @@
-﻿$PatchFolderPath = "C:\Patches"
+$PatchFolderPath = "C:\Patches"
 
 Function Get-InstalledProgram {
 <#

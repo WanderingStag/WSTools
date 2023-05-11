@@ -1,4 +1,4 @@
-﻿Function Clear-Patches {
+Function Clear-Patches {
 <#
 .SYNOPSIS
     Clears the C:\Patches folder.

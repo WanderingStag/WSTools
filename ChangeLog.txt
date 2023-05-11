@@ -12,6 +12,7 @@ New features and other changes:
 2. Added function Get-ADComplianceReport and associated config items.
 3. Added WSTools.code-snippets file so that WSTools specific snippets are available automatically when opening repository in VS Code.
 4. Removed duplicates of built-in snippets from powershell.json, renamed some things, and ordered them alphabetically. Duplicates were removed to help remove excess code. While built-in snippets don't work as well, they do work. Some exceptions apply. help, function, and switch are still duplicate snippets that I cannot live without my version of.
+5. Changed files to utf8NoBOM for better interoperability. This may cause problems on older PowerShell versions. https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_character_encoding?view=powershell-5.1
 
 ######################
 #                    #

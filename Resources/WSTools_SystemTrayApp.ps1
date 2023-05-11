@@ -1,4 +1,4 @@
-﻿Import-Module WSTools
+Import-Module WSTools
 $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
 
 # Declare assemblies

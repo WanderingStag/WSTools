@@ -1,4 +1,4 @@
-﻿function Add-UserJavaException {
+function Add-UserJavaException {
     <#
     .SYNOPSIS
         Adds Java exception.

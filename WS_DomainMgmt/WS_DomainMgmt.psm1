@@ -1,4 +1,4 @@
-﻿#get more open commands here: https://sysadminstricks.com/tricks/most-useful-microsoft-management-console-snap-in-control-files-msc-files.html
+#get more open commands here: https://sysadminstricks.com/tricks/most-useful-microsoft-management-console-snap-in-control-files-msc-files.html
 Function Find-EmptyGroup {
     <#
     .Synopsis

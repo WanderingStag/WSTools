@@ -1,4 +1,4 @@
-﻿Function Copy-UserProfile {
+Function Copy-UserProfile {
 <#
 .Notes
     AUTHOR: Skyler Hart

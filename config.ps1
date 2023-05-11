@@ -1,4 +1,4 @@
-﻿[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
     "PSAvoidGlobalVars",
     "",
     Justification = "Have tried other methods and they do not work consistently."
