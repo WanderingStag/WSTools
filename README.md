@@ -1,12 +1,28 @@
-# WSTools Download, Install, and Configuration
+# WSTools
 
-![alt text](https://github.com/WanderingStag/WSTools/blob/master/Resources/WSTools_PowerShell_Module.png "WSTools PowerShell Module logo")
+![WSTools Logo](https://github.com/WanderingStag/WSTools/blob/master/Resources/WSTools_PowerShell_Module.png)
 
 ## Issues
 
 Please **_[Open an issue](https://github.com/WanderingStag/WSTools/issues "WSTools Issues")_** if there are any problems or requests.
 
-## Prerequisites
+## Introduction
+
+Are we Windows System Tools? Windows Security Tools? Windows Server Tools? Yes and no. WSTools are all those things and more. Whatever you decide you want to call WSTools is up to you! However, officially, we are Wandering Stag Tools (WSTools). WSTools was written for System Administrators, Help Desk Technicians, and other Network Operations personnel to automate tasks and provide valuable tools. As of May 2023 there are over 330 functions in this module. Some functionality includes:
+
+- Active Directory functions, reports, and shortcuts allowing for easier domain management and awareness
+- Computer/Server Management
+  - Install/uninstall software
+  - Remediation tasks such as disabling vulnerable SCHANNEL settings
+  - Set network and system settings
+  - Reports
+- PowerShell snippets in PowerShell ISE and VS Code for easier coding
+- Conversions such as image files to base64, int64 to/from IP, uint16 to string
+
+
+## Download, Install, and Configuration
+
+### Prerequisites
 
 1. **PowerShell:** version 2 for most functions but some individual functions require version 3 or version 5. Some plans have been made to add some functions that require version 7. Check your version of PowerShell by entering the following command: **`$host`**
 Then look at the _`Version`_ attribute.
@@ -15,37 +31,32 @@ Then look at the _`Version`_ attribute.
 4. **Local Admin Password Solution (LAPS):** Actual module name: AdmPwd.PS. There are a handful of functions that require the full install of LAPS to get the module and not just the basic install. However, if you are not using LAPS on your network then there are no worries.
 5. **Microsoft.Exchange.Management.PowerShell.Admin PSSnapin:** Required for the very few Exchange server related functions.
 
-## Download WSTools
+### Download
 
 > Intended only for Windows computers at this time. Some functions may work on other OS's though.
 
-### Azure DevOps
-
-1. On the left side, click on the **Repos** menu item.
-2. On the right side next to the Clone button, click on the **More actions** (three dots) button and select **Download as Zip**.
-
-### GitHub
+#### From GitHub
 
 1. Click on the Green Code button with the down arrow.
 2. Select Download ZIP.
 3. Change the name of the file from WSTools-master.zip to WSTools.zip.
 
-## After downloading  to computer
+### Install
 
 1. Uncompress the WSTools.zip file.
 2. Make available globally or just for single user.
 
-### Global
+#### Global
 
 Copy the WSTools folder to **C:\Program Files\WindowsPowerShell\Modules**
 > Requires admin rights.
 
-### User only
+#### User only
 
-Copy the WSTools folder to **C:\Users\\_USERNAME_\Documents\WindowsPowerShell\Modules**
-> If the folder already exists or you get a message saying _"The destination has # files with the same names."_ you can either delete the folder that already exists *(prefered)* or you can *Replace the files in the destination*
+Copy the WSTools folder to **C:\Users\\_\<USERNAME>_\Documents\WindowsPowerShell\Modules**
+> If the folder already exists or you get a message saying _"The destination has # files with the same names."_ you can either delete the folder that already exists _(prefered)_ or you can _Replace the files in the destination_
 
-## Initial changes to make after copying to computer
+### Initial changes to make after copying to computer
 
 General Configuration
 
@@ -56,7 +67,8 @@ General Configuration
 
 Remote installation of .msu files and a select few other things:
 
-1. Open WSTools Module Path (typically _C:\Program Files\WindowsPowerShell\Modules\WSTools_ or _C:\Users\USERNAME\Documents\WindowsPowerShell\Modules\WSTools_) then edit InstallRemote.ps1.
+1. Open WSTools Module Path then edit InstallRemote.ps1
+    > Typically _C:\Program Files\WindowsPowerShell\Modules\WSTools_ or _C:\Users\\<USERNAME\>\Documents\WindowsPowerShell\Modules\WSTools_
 2. On Line 1 of InstallRemote.ps1 change the value of $PatchFolderPath to the directory on remote computers you store windows updates. This is predefined as "C:\Patches".
 
 ## Visual Studio Code setup
@@ -69,7 +81,8 @@ For adding the Visual Studio Code PowerShell Snippets do the following:
 
 **_or_**
 
-1. Open the WSTools folder (typically _C:\Program Files\WindowsPowerShell\Modules\WSTools_ or _C:\Users\USERNAME\Documents\WindowsPowerShell\Modules\WSTools_).
+1. Open the WSTools folder
+    > Typically _C:\Program Files\WindowsPowerShell\Modules\WSTools_ or _C:\Users\\<USERNAME\>\Documents\WindowsPowerShell\Modules\WSTools_).
 2. Cut and paste powershell.json to **%AppData%\Roaming\Code\User\Snippets** directory.
 
 **_or_**
