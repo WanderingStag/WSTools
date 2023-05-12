@@ -19,7 +19,6 @@ Are we Windows System Tools? Windows Security Tools? Windows Server Tools? Yes a
 - PowerShell snippets in PowerShell ISE and VS Code for easier coding
 - Conversions such as image files to base64, int64 to/from IP, uint16 to string
 
-
 ## Download, Install, and Configuration
 
 ### Prerequisites
