@@ -1030,8 +1030,6 @@ function Get-WSLocalGroup {
         -RunAsAdministrator
 .LINK
     https://wanderingstag.github.io
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     param(
@@ -1188,8 +1186,6 @@ function Get-WSLocalUser {
         -RunAsAdministrator
 .LINK
     https://wanderingstag.github.io
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     param(

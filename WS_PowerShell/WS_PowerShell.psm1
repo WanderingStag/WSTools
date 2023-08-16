@@ -497,8 +497,6 @@ function Convert-AppIconToBase64 {
         -RunAsAdministrator
 .LINK
     https://wanderingstag.github.io
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     param(
@@ -603,8 +601,6 @@ function Convert-DaysToWorkDay {
     Keywords:
 .LINK
     https://wanderingstag.github.io
-.LINK
-    https://www.skylerhart.com
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -1294,8 +1290,6 @@ function Send-ToastNotification {
         -RunAsAdministrator
 .LINK
     https://wanderingstag.github.io
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     param(

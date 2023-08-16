@@ -2341,8 +2341,6 @@ function Get-ModuleList {
         -RunAsAdministrator
 .LINK
     https://wanderingstag.github.io
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     param(
@@ -4657,8 +4655,6 @@ function Restart-AxwayTrayApp {
         -RunAsAdministrator
 .LINK
     https://wanderingstag.github.io
-.LINK
-    https://www.skylerhart.com
 #>
     Get-Process | Where-Object {$_.Name -match "dvtray"} | Stop-Process -Force | Out-Null
     & 'C:\Program Files\Tumbleweed\Desktop Validator\DVTrayApp.exe'
@@ -4677,8 +4673,6 @@ function Remove-OldPowerShellModule {
         -RunAsAdministrator
 .LINK
     https://wanderingstag.github.io
-.LINK
-    https://www.skylerhart.com
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -5054,8 +5048,6 @@ function Set-AxwayConfig {
         -RunAsAdministrator
 .LINK
     https://wanderingstag.github.io
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     [Alias('Import-AxwayConfig')]
@@ -5771,8 +5763,6 @@ function Set-ServerConfig {
         -RunAsAdministrator
 .LINK
     https://wanderingstag.github.io
-.LINK
-    https://www.skylerhart.com
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -6442,8 +6432,6 @@ function Stop-AxwayTrayApp {
         -RunAsAdministrator
 .LINK
     https://wanderingstag.github.io
-.LINK
-    https://www.skylerhart.com
 #>
     Get-Process | Where-Object {$_.Name -match "dvtray"} | Stop-Process -Force
 }
@@ -6460,8 +6448,6 @@ function Stop-Database {
         -RunAsAdministrator
 .LINK
     https://wanderingstag.github.io
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     [Alias('Stop-Oracle','Stop-SQL','Stop-MongoDB')]
@@ -6487,8 +6473,6 @@ function Stop-Exchange {
         -RunAsAdministrator
 .LINK
     https://wanderingstag.github.io
-.LINK
-    https://www.skylerhart.com
 #>
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
     if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {

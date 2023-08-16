@@ -314,8 +314,6 @@ function Send-ToastNotification {
         -RunAsAdministrator
 .LINK
     https://wanderingstag.github.io
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     param(

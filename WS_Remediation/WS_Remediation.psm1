@@ -6390,8 +6390,6 @@ Function Uninstall-AdobeExperienceManager {
         -RunAsAdministrator
 .LINK
     https://wanderingstag.github.io
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     [Alias('Uninstall-AEM','Uninstall-AdobeAEM','Uninstall-Designer','Uninstall-Forms')]
@@ -8562,8 +8560,6 @@ Function Uninstall-TransVerse {
         -RunAsAdministrator
 .LINK
     https://wanderingstag.github.io
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (
@@ -8797,8 +8793,6 @@ Function Uninstall-Wireshark {
         -RunAsAdministrator
 .LINK
     https://wanderingstag.github.io
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     Param (
@@ -10037,8 +10031,6 @@ function Initialize-GPUpdate {
         -RunAsAdministrator
 .LINK
     https://wanderingstag.github.io
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     param(
@@ -10252,8 +10244,6 @@ function Set-HiveNightmareFix {
         -RunAsAdministrator
 .LINK
     https://wanderingstag.github.io
-.LINK
-    https://www.skylerhart.com
 #>
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
     if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
@@ -10274,8 +10264,6 @@ function Set-PrintNightmareFix {
         -RunAsAdministrator
 .LINK
     https://wanderingstag.github.io
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     param(
@@ -11140,8 +11128,6 @@ function Open-CMTrace {
     Keywords:
 .LINK
     https://wanderingstag.github.io
-.LINK
-    https://www.skylerhart.com
 #>
     if (Test-Path "c:\Windows\ccm\CMTrace.exe") {
         Start-Process "c:\Windows\ccm\CMTrace.exe"
@@ -11188,8 +11174,6 @@ function Open-FileWithCMTrace {
     Keywords:
 .LINK
     https://wanderingstag.github.io
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     [Alias('Open-Log')]
@@ -12195,8 +12179,6 @@ function Get-SplunkStatus {
         -RunAsAdministrator
 .LINK
     https://wanderingstag.github.io
-.LINK
-    https://www.skylerhart.com
 #>
     [CmdletBinding()]
     param(
