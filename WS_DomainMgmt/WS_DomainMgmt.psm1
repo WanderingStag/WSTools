@@ -23,7 +23,7 @@ Function Find-EmptyGroup {
             ActiveDirectory
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     [CmdletBinding()]
     Param (
@@ -75,7 +75,7 @@ Function Find-HiddenGALUser {
             ActiveDirectory
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     [CmdletBinding()]
     Param (
@@ -125,7 +125,7 @@ function Find-SID {
         KEYWORDS: SID
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     [CmdletBinding()]
     Param (
@@ -223,7 +223,7 @@ function Get-ADComplianceReport {
             -Module ActiveDirectory
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     [CmdletBinding()]
     param(
@@ -892,7 +892,7 @@ Function Get-ComputerADSite {
         KEYWORDS:
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     [CmdletBinding()]
     Param (
@@ -936,7 +936,7 @@ Function Get-DaysSinceLastLogon {
             -RunAsAdministrator
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     [CmdletBinding()]
     Param (
@@ -989,7 +989,7 @@ Function Get-FSMO {
         KEYWORDS:
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     [CmdletBinding()]
     [Alias('fsmo')]
@@ -1031,7 +1031,7 @@ Function Get-LockedOutStatus {
     REQUIRES:
         -Modules ActiveDirectory
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -1091,7 +1091,7 @@ Function Get-NewADUser {
     REQUIRES:
         -Modules ActiveDirectory
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -1119,7 +1119,7 @@ Function Get-NewADGroup {
     REQUIRES:
         -Modules ActiveDirectory
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -1172,7 +1172,7 @@ function Get-NonSmartCardRequiredUser {
             -Module ActiveDirectory
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     [CmdletBinding()]
     Param (
@@ -1209,7 +1209,7 @@ Function Get-PrivilegedGroup {
     REQUIRES:
         -Modules ActiveDirectory
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -1338,7 +1338,7 @@ Function Get-ProtectedGroup {
     REQUIRES:
         -Modules ActiveDirectory
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     if (Get-Module -ListAvailable -Name ActiveDirectory) {
         $groups = (Get-ADGroup -filter {admincount -eq "1"}).Name | Sort-Object
@@ -1360,7 +1360,7 @@ Function Get-ProtectedUser {
     REQUIRES:
         -Modules ActiveDirectory
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     if (Get-Module -ListAvailable -Name ActiveDirectory) {
         $users = (Get-ADUser -filter {admincount -eq "1"}).Name | Sort-Object
@@ -1380,7 +1380,7 @@ Function Get-ReplicationStatus {
     LASTEDIT: 08/18/2017 20:48:21
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('replsum')]
@@ -1399,7 +1399,7 @@ Function Get-UserWithThumbnail {
     REQUIRES:
         -Modules ActiveDirectory
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     if (Get-Module -ListAvailable -Name ActiveDirectory) {
         Write-Output "Getting OU names . . ."
@@ -1426,7 +1426,7 @@ Function Open-ADDomainsAndTrusts {
     LASTEDIT: 2022-09-04 12:04:10
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('trusts')]
@@ -1449,7 +1449,7 @@ Function Open-ADSIEdit {
     LASTEDIT: 2020-04-19 20:07:02
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('adsi')]
@@ -1479,7 +1479,7 @@ Function Open-ADSitesAndServices {
     LASTEDIT: 2022-09-04 12:06:04
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     try {
         $ErrorActionPreference = "Stop"
@@ -1499,7 +1499,7 @@ Function Open-ADUsersAndComputers {
     LASTEDIT: 2022-09-04 12:07:24
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('aduc','dsa')]
@@ -1521,7 +1521,7 @@ function Open-CMLibrary {
     CREATED: 2021-10-18 22:49:11
     LASTEDIT: 2021-10-18 22:51:31
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -1565,7 +1565,7 @@ Function Open-DHCPmgmt {
     LASTEDIT: 2022-09-04 12:09:18
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('dhcp')]
@@ -1588,7 +1588,7 @@ Function Open-DNSmgmt {
     LASTEDIT: 2022-09-04 12:10:54
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('dns')]
@@ -1610,7 +1610,7 @@ function Open-EAC {
     CREATED: 2021-10-18 22:55:39
     LASTEDIT: 2021-10-18 22:56:47
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -1655,7 +1655,7 @@ Function Open-GroupPolicyMgmt {
     LASTEDIT: 2022-09-04 12:12:07
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('gpo','gpmc','GroupPolicy')]
@@ -1678,7 +1678,7 @@ Function Open-HyperVmgmt {
     LASTEDIT: 2022-09-04 12:13:29
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('hyperv')]
@@ -1700,7 +1700,7 @@ function Open-iLO {
     CREATED: 02/02/2018 12:00:33
     LASTEDIT: 2020-04-17 15:36:02
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -1747,7 +1747,7 @@ Function Open-LAPS {
     REQUIRES:
         -Modules AdmPwd.PS
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('laps')]
@@ -1777,7 +1777,7 @@ function Open-LexmarkManagementConsole {
     CREATED: 2022-03-08 22:02:21
     LASTEDIT: 2022-03-08 22:02:21
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -1822,7 +1822,7 @@ function Open-NetLogonLog {
     Last Edit: 2021-06-22 17:50:31
     Keywords:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     $Continue = $false
     $file = "$env:windir\debug\netlogon.log"
@@ -1868,7 +1868,7 @@ function Open-NetworkDiagram {
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -1917,7 +1917,7 @@ function Open-OWA {
     CREATED: 2021-10-18 22:54:07
     LASTEDIT: 2021-10-18 22:54:48
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -1961,7 +1961,7 @@ function Open-PrintRelease {
     CREATED: 2022-03-08 22:02:21
     LASTEDIT: 2022-03-08 22:02:21
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -2005,7 +2005,7 @@ function Open-RackElevation {
     Last Edit: 2022-07-07 21:22:25
     Other:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -2054,7 +2054,7 @@ function Open-SDN {
     CREATED: 2021-10-18 22:38:19
     LASTEDIT: 2021-10-18 22:39:28
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -2098,7 +2098,7 @@ function Open-SEIM {
     CREATED: 2021-10-18 23:03:53
     LASTEDIT: 2021-10-18 23:04:54
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -2145,7 +2145,7 @@ Function Open-SharedFolders {
     REQUIRES:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Shares','Get-Shares')]
@@ -2165,7 +2165,7 @@ function Open-SharePoint {
     CREATED: 2021-10-18 22:51:47
     LASTEDIT: 2021-10-18 22:52:18
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -2209,7 +2209,7 @@ Function Open-vCenter {
     LASTEDIT: 02/13/2018 11:05:06
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -2254,7 +2254,7 @@ function Register-ADSIEdit {
     Last Edit: 2022-09-04 12:18:51
     Keywords:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Initialize-ADSIEdit','Enable-ADSIEdit')]
@@ -2279,7 +2279,7 @@ Function Register-Schema {
     REQUIRES:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     if (Test-Path $env:windir\System32\schmmgmt.dll) {
         regsvr32.exe schmmgmt.dll
@@ -2301,7 +2301,7 @@ Function Restart-ActiveDirectory {
         -Modules ActiveDirectory
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -2343,7 +2343,7 @@ Function Restart-DNS {
         -Modules ActiveDirectory
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -2385,7 +2385,7 @@ Function Restart-KDC {
         -Modules ActiveDirectory
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -2426,7 +2426,7 @@ function Set-ADProfilePicture {
     Requires:
         -Module ActiveDirectory
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -2496,7 +2496,7 @@ function Test-MTU {
     Other:
     Requires:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     param(
@@ -2619,7 +2619,7 @@ function Test-NetworkSpeed {
     Created: 2022-06-24 18:21:40
     Last Edit: 2022-06-24 18:21:40
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     param(

@@ -9,7 +9,7 @@ Function Copy-UserProfile {
         -Version 3.0
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -74,7 +74,7 @@ function Find-UserProfile {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -178,7 +178,7 @@ function Find-UserProfileWithPSTSearch {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -329,7 +329,7 @@ function Export-MessagesToPST {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -373,7 +373,7 @@ function Get-ExchangeLastLoggedOnUser {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
  #Get-ADUser -Filter {EmailAddress -like "*"} -properties * | select EmailAddress | Export-Csv .\users.csv -NoTypeInformation
     $userfile = ".\users.csv"
@@ -396,7 +396,7 @@ function Get-CurrentUser {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -449,7 +449,7 @@ function Get-LoggedOnUser {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -521,7 +521,7 @@ function Get-RecentUser {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -650,7 +650,7 @@ function Get-USBDevice {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('usb')]
@@ -690,7 +690,7 @@ function Get-USBStorageDevice {
     Last Edit: 2021-06-28 22:46:02
     Keywords:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -909,7 +909,7 @@ function Get-UserLogonLogoffTime {
     REQUIRES:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -1029,7 +1029,7 @@ function Get-WSLocalGroup {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 .LINK
     https://www.skylerhart.com
 #>
@@ -1187,7 +1187,7 @@ function Get-WSLocalUser {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 .LINK
     https://www.skylerhart.com
 #>

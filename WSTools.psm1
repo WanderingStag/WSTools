@@ -8,10 +8,10 @@ function Add-UserJavaException {
 
     .PARAMETER URI
         Specifies the URI of the website you want to add to the exception.sites file. Must be in the
-        format https://wstools.dev.
+        format https://wanderingstag.github.io.
 
     .EXAMPLE
-        C:\PS>Add-UserJavaException https://wstools.dev
+        C:\PS>Add-UserJavaException https://wanderingstag.github.io
         Example of how to use this cmdlet
 
     .INPUTS
@@ -32,7 +32,7 @@ function Add-UserJavaException {
         Last Edit: 2021-12-20 00:15:00
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     [CmdletBinding()]
     param(
@@ -87,7 +87,7 @@ function Clear-DirtyShutdown {
         Requires -RunAsAdministrator
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     [CmdletBinding()]
     param(
@@ -148,7 +148,7 @@ function Clear-ImproperProfileCopy {
         KEYWORDS: user, profile, app data, application data, cleanup, clear, improper
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     [CmdletBinding()]
     Param (
@@ -233,7 +233,7 @@ Function Clear-Space {
         REMARKS: Needs to be ran as a user that has administrator rights
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     [CmdletBinding()]
     Param (
@@ -418,7 +418,7 @@ function Connect-RDP {
         LASTEDIT: 2023-02-11 13:48:55
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     [CmdletBinding()]
     [alias('rdp')]
@@ -458,7 +458,7 @@ function Copy-PowerShellJSON {
         Keywords: WSTools, Visual Studio Code, PowerShell, JSON, Preferences, snippets, code blocks
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     [CmdletBinding()]
     [Alias('Update-PowerShellJSON','Set-PowerShellJSON')]
@@ -517,7 +517,7 @@ function Copy-UpdateHistory {
             -RunAsAdministrator
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -569,7 +569,7 @@ function Copy-VSCodeExtensions {
         Keywords:
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
 
     $repo = ($Global:WSToolsConfig).VSCodeExtRepo
@@ -592,7 +592,7 @@ function Copy-VSCodeSettingsToProfile {
         Keywords: WSTools, Visual Studio Code, Preferences
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     $vscs = ($Global:WSToolsConfig).VSCodeSettingsPath
     if (!(Test-Path $env:APPDATA\Code\User)) {
@@ -620,7 +620,7 @@ function Disable-RDP {
             -RunAsAdministrator
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
     if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -value 1}
@@ -636,7 +636,7 @@ function Disable-ServerManager {
         Last Edit: 2020-10-06 13:25:11
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
     if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {Get-ScheduledTask -TaskName ServerManager | Disable-ScheduledTask}
@@ -654,7 +654,7 @@ function Enable-RDP {
             -RunAsAdministrator
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
     if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -value 0}
@@ -670,7 +670,7 @@ function Enable-ServerManager {
         Last Edit: 2021-12-16 21:29:35
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
     if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {Get-ScheduledTask -TaskName ServerManager | Enable-ScheduledTask}
@@ -689,7 +689,7 @@ function Get-BitLockerStatus {
             -RunAsAdministrator
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     [CmdletBinding()]
     param(
@@ -814,7 +814,7 @@ function Get-CertificateInventory {
         Keywords:
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     [CmdletBinding()]
     [Alias('Get-CertInv','Get-CertInfo')]
@@ -865,7 +865,7 @@ function Get-CommandList {
         Last Edit: 2021-12-16 21:41:15
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     [CmdletBinding()]
     Param (
@@ -981,7 +981,7 @@ Function Get-ComputerHWInfo {
             -RunAsAdministrator
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     [CmdletBinding()]
     Param (
@@ -1032,7 +1032,7 @@ Function Get-ComputerModel {
             -RunAsAdministrator
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     [CmdletBinding()]
     [Alias('Get-Model')]
@@ -1105,7 +1105,7 @@ function Get-DayOfYear {
         Keywords: Day of year, Julian
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     [CmdletBinding()]
     [Alias('Get-JulianDay','Get-JulianDate')]
@@ -1168,7 +1168,7 @@ Function Get-DefaultBrowserPath {
         Last Edit: 2020-08-20 15:09:53
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     New-PSDrive -Name HKCR -PSProvider Registry -Root Hkey_Classes_Root | Out-Null
     $BrowserPath = ((Get-ItemProperty 'HKCR:\http\shell\open\command').'(default)').Split('"')[1]
@@ -1185,7 +1185,7 @@ function Get-DirectoryStat {
         Last Edit: 2020-08-09 21:35:14
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     [CmdletBinding()]
     param(
@@ -1254,7 +1254,7 @@ function Get-Drive {
         Last Edit: 2020-04-19 20:29:58
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     [CmdletBinding()]
     [Alias('drive')]
@@ -1271,7 +1271,7 @@ function Get-Error {
         Last Edit: 2020-04-18 19:08:44
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -1324,7 +1324,7 @@ Function Get-ExpiredCertsComputer {
         LASTEDIT: 10/04/2018 21:08:31
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     $cd = Get-Date
     $certs = Get-ChildItem -Path Cert:\LocalMachine -Recurse | Select-Object *
@@ -1348,7 +1348,7 @@ Function Get-ExpiredCertsUser {
         LASTEDIT: 10/04/2018 21:09:34
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     $cd = Get-Date
     $certs = Get-ChildItem -Path Cert:\CurrentUser -Recurse | Select-Object *
@@ -1374,7 +1374,7 @@ Function Get-FeaturesOnDemand {
             Requires -RunAsAdministrator
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
     if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {$Role = 'Admin'}
@@ -1492,7 +1492,7 @@ function Get-HomeDrive {
         Last Edit: 2020-11-03 15:02:09
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     $env:HOMESHARE
 }
@@ -1508,7 +1508,7 @@ function Get-HWInfo {
             -RunAsAdministrator
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     [CmdletBinding()]
     param(
@@ -1841,7 +1841,7 @@ function Get-HWPerformanceScore {
             -RunAsAdministrator
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     [CmdletBinding()]
     Param (
@@ -1936,7 +1936,7 @@ Function Get-IEVersion {
         LASTEDIT: 09/21/2017 13:06:15
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     [CmdletBinding()]
     Param (
@@ -2009,7 +2009,7 @@ Function Get-InstalledProgram {
         Keywords: Software, Programs, management
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     [CmdletBinding(SupportsShouldProcess=$true)]
     param(
@@ -2111,7 +2111,7 @@ function Get-IPrange {
         Last Edit: 2020-08-20 09:11:46
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     [CmdletBinding()]
     Param (
@@ -2176,7 +2176,7 @@ function Get-LinesOfCode {
         Other: Excludes blank lines
 
     .LINK
-        https://wstools.dev
+        https://wanderingstag.github.io
     #>
     [CmdletBinding()]
     param(
@@ -2293,7 +2293,7 @@ function Get-ModuleCommandCount {
     Last Edit: 2021-10-19 19:50:28
     Keywords:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     param(
@@ -2340,7 +2340,7 @@ function Get-ModuleList {
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 .LINK
     https://www.skylerhart.com
 #>
@@ -2380,7 +2380,7 @@ Function Get-MTU {
     LASTEDIT: 2020-05-23 17:39:06
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -2456,7 +2456,7 @@ Function Get-NICInfo {
     LASTEDIT: 09/21/2017 13:06:33
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -2650,7 +2650,7 @@ function Get-NotificationApp {
     Keywords:
     Requires:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Get-ToastNotifierApp','Get-ToastNotificationApp')]
@@ -2778,7 +2778,7 @@ Function Get-OperatingSystem {
     KEYWORDS: Operating System, OS
     REMARKS: For local computer it can be ran as user. For remote computers, it needs to be ran as a user who has administrative rights on the remote computer.
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -3088,7 +3088,7 @@ Function Get-ProcessorCapability {
     Last Edit: 2020-04-18 22:46:31
     Keywords:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -3169,7 +3169,7 @@ Function Get-PSVersion {
     LASTEDIT: 02/27/2019 12:35:00
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Get-PowerShellVersion')]
@@ -3262,7 +3262,7 @@ Function Get-SerialNumber {
     LASTEDIT: 11/02/2018 12:20:44
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Get-SN')]
@@ -3310,7 +3310,7 @@ Function Get-ShutdownLog {
     LASTEDIT: 08/29/2019 00:17:09
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -3425,7 +3425,7 @@ Function Get-UpTime {
     Last Edit: 2020-07-07 15:29:12
     Keywords:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -3477,7 +3477,7 @@ function Get-UpdateHistory {
     Last Edit: 2023-03-12 22:08:43
     Keywords:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     param(
@@ -3606,7 +3606,7 @@ function Get-User {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     param(
@@ -3673,7 +3673,7 @@ function Get-UserGroup {
     Last Edit: 2020-11-03 11:14:26
     Keywords:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     $id = [Security.Principal.WindowsIdentity]::GetCurrent()
     $groups = $id.Groups | foreach-object {$_.Translate([Security.Principal.NTAccount])}
@@ -3690,7 +3690,7 @@ Function Get-WMIClass {
     LASTEDIT: 09/21/2017 13:05:10
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -3714,7 +3714,7 @@ Function Get-WMINameSpace {
     LASTEDIT: 09/21/2017 13:05:21
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -3740,7 +3740,7 @@ function Get-WindowsSetupLog {
     LASTEDIT: 08/28/2019 22:06:44
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Get-UpdateStatus','Get-UpdateLog')]
@@ -3841,7 +3841,7 @@ function Get-ZuluTime {
     Created: 2021-06-10 22:28:39
     Last Edit: 2021-06-10 22:28:39
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     (Get-Date).ToUniversalTime()
 }
@@ -3855,7 +3855,7 @@ Function Import-DRAModule {
     LASTEDIT: 2020-08-20 14:42:59
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -3896,7 +3896,7 @@ Function Import-MOF {
     Requires:
         -Module ActiveDirectory
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Import-WMIFilter')]
@@ -3933,7 +3933,7 @@ Function Join-File {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Merge-File')]
@@ -4033,7 +4033,7 @@ function Mount-HomeDrive {
     Last Edit: 2020-11-03 14:58:38
     Keywords:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Add-HomeDrive')]
@@ -4055,7 +4055,7 @@ function Open-AdminTools {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('tools','admintools','admin')]
@@ -4077,7 +4077,7 @@ function Open-BitLocker {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('BitLocker')]
@@ -4099,7 +4099,7 @@ function Open-CertificatesComputer {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     certlm.msc
 }
@@ -4118,7 +4118,7 @@ function Open-CertificatesUser {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     certmgr.msc
 }
@@ -4132,7 +4132,7 @@ function Open-CMTrace {
     Last Edit: 2021-10-19 15:15:48
     Keywords:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Open-CCMTrace','CMTrace','CCMTrace')]
@@ -4170,7 +4170,7 @@ function Open-ComputerManagement {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -4194,7 +4194,7 @@ function Open-DeviceManager {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -4218,7 +4218,7 @@ function Open-DevicesAndPrinters {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     control.exe printers
 }
@@ -4236,7 +4236,7 @@ function Open-DiscDrive {
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Eject-Disc')]
@@ -4259,7 +4259,7 @@ function Open-DiskManagement {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -4283,7 +4283,7 @@ function Open-EventViewer {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('events')]
@@ -4309,7 +4309,7 @@ Function Open-FirewallLog {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -4338,7 +4338,7 @@ Function Open-HomeAssistant {
         KEYWORDS:
         REQUIRES:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -4382,7 +4382,7 @@ function Open-HomeDrive {
     Last Edit: 2020-11-03 15:03:52
     Keywords:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     explorer.exe $env:HOMESHARE
 }
@@ -4401,7 +4401,7 @@ function Open-LocalGPeditor {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Open-LocalPolicyEditor','LocalPolicy')]
@@ -4422,7 +4422,7 @@ Function Open-NetworkConnections {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('network','connections')]
@@ -4443,7 +4443,7 @@ function Open-ProgramsAndFeatures {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('programs')]
@@ -4461,7 +4461,7 @@ Function Open-Remedy {
         KEYWORDS:
         REQUIRES:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -4511,7 +4511,7 @@ Function Open-Services {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('services')]
@@ -4536,7 +4536,7 @@ Function Open-SystemProperties {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     control.exe sysdm.cpl
 }
@@ -4550,7 +4550,7 @@ function Open-VisualStudioCodeSettings {
     Last Edit: 2021-05-18 21:27:47
     Keywords:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSUseSingularNouns",
@@ -4581,7 +4581,7 @@ function Register-NotificationApp {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     param(
@@ -4656,7 +4656,7 @@ function Restart-AxwayTrayApp {
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 .LINK
     https://www.skylerhart.com
 #>
@@ -4676,7 +4676,7 @@ function Remove-OldPowerShellModule {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 .LINK
     https://www.skylerhart.com
 #>
@@ -4803,7 +4803,7 @@ function Repair-DuplicateSusClientID {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     param(
@@ -4868,7 +4868,7 @@ function Save-MaintenanceReport {
     Last Edit: 2023-03-22 08:26:11
     Keywords:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -4905,7 +4905,7 @@ function Save-HelpToFile {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     param(
@@ -4935,7 +4935,7 @@ function Save-UpdateHistory {
     Last Edit: 2023-03-22 08:26:33
     Keywords:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -5053,7 +5053,7 @@ function Set-AxwayConfig {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 .LINK
     https://www.skylerhart.com
 #>
@@ -5150,7 +5150,7 @@ function Set-ChromeDeveloperTools {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSUseSingularNouns",
@@ -5207,7 +5207,7 @@ Function Set-Explorer {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -5231,7 +5231,7 @@ Function Set-JavaException {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -5444,7 +5444,7 @@ function Set-LAPSshortcut {
     Created: 2020-05-08 22:34:49
     Last Edit: 2021-10-13 20:48:50
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     param(
@@ -5485,7 +5485,7 @@ function Set-MTU {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
 	[CmdletBinding()]
     Param (
@@ -5509,7 +5509,7 @@ function Set-NetworkConnectionsShortcut {
     Requires:
         -RunAsAdministrator if placing in Public Desktop.
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     param(
@@ -5550,7 +5550,7 @@ function Set-Preferences {
     Keywords:
     Requires:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -5667,7 +5667,7 @@ function Set-Reboot {
     Requires:
         -RunAsAdministrator for remote computers
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -5738,7 +5738,7 @@ function Set-RemoteDesktopCert {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Set-RDPCert')]
@@ -5770,7 +5770,7 @@ function Set-ServerConfig {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 .LINK
     https://www.skylerhart.com
 #>
@@ -5860,7 +5860,7 @@ Function Set-ShortcutText {
     Last Edit: 2020-04-18 20:44:39
     Keywords:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -5884,7 +5884,7 @@ function Set-Shutdown {
     Requires:
         -RunAsAdministrator for remote computers
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -5955,7 +5955,7 @@ Function Set-SpeakerVolume {
     LASTEDIT: 08/18/2017 20:47:06
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Volume')]
@@ -5989,7 +5989,7 @@ Function Set-StoreLookup {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -6049,7 +6049,7 @@ Function Show-BalloonTip {
     LASTEDIT: 08/18/2017 20:47:33
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('tip')]
@@ -6088,7 +6088,7 @@ function Show-FederalHoliday {
     Last Edit: 2023-02-01 21:24:05
     Keywords:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -6164,7 +6164,7 @@ Function Show-FileExtensions {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSUseSingularNouns",
@@ -6196,7 +6196,7 @@ Function Show-HiddenFiles {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSUseSingularNouns",
@@ -6223,7 +6223,7 @@ Function Show-MessageBox {
     LASTEDIT: 08/18/2017 20:47:49
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
 #info: https://msdn.microsoft.com/en-us/library/x83z1d9f(v=vs.84).aspx
     [CmdletBinding()]
@@ -6281,7 +6281,7 @@ Function Split-File {
     REQUIRES:
         #Requires -Version 3.0
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -6364,7 +6364,7 @@ function Start-AxwayTrayApp {
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     & 'C:\Program Files\Tumbleweed\Desktop Validator\DVTrayApp.exe'
 }
@@ -6378,7 +6378,7 @@ function Start-WSToolsGUI {
     Last Edit: 2021-10-30 00:55:48
     Keywords:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('wsgui','wstgui','Start-WSToolsTrayApp')]
@@ -6397,7 +6397,7 @@ function Stop-AppService {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     $AppNames = ($Global:WSToolsConfig).AppNames
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
@@ -6441,7 +6441,7 @@ function Stop-AxwayTrayApp {
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 .LINK
     https://www.skylerhart.com
 #>
@@ -6459,7 +6459,7 @@ function Stop-Database {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 .LINK
     https://www.skylerhart.com
 #>
@@ -6486,7 +6486,7 @@ function Stop-Exchange {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 .LINK
     https://www.skylerhart.com
 #>
@@ -6520,7 +6520,7 @@ function Sync-InTune {
     Other:
     Requires:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Sync-MEM')]
@@ -6544,7 +6544,7 @@ Function Test-EmailRelay {
         KEYWORDS: E-mail, email, relay, smtp
         REMARKS: On secure networks, port 25 has to be open
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -6583,7 +6583,7 @@ Function Test-Online {
     and have it convert it. Or 192.168.0.0-255 and check all computers. Write help. Add aliases and fix pipeline.
 
     .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -6640,7 +6640,7 @@ Function Test-RegistryValue {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -6699,7 +6699,7 @@ function Test-ResponseTime {
     Other:
     Requires:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     param (
@@ -6781,7 +6781,7 @@ function Update-BrokenInheritance {
     Requires:
         -Module ActiveDirectory
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     Param (
         [Parameter(
@@ -6855,7 +6855,7 @@ function Update-HelpFromFile {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     param(
@@ -6885,7 +6885,7 @@ function Update-ModulesFromLocalRepo {
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -7012,7 +7012,7 @@ function Update-VisioStencils {
     Last Edit: 2021-10-13 20:33:20
     Keywords: Visio, Stencils
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSUseSingularNouns",
@@ -7056,7 +7056,7 @@ Function Get-WSToolsAlias {
     LASTEDIT: 01/31/2018 23:42:55
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('WSToolsAliases')]
@@ -7073,7 +7073,7 @@ Function Get-WSToolsCommand {
     LASTEDIT: 01/31/2018 23:52:54
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('WSToolsCommands')]
@@ -7091,7 +7091,7 @@ function Get-WSToolsConfig {
     Last Edit: 2020-08-20 11:18:58
     Keywords:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -7113,7 +7113,7 @@ Function Get-WSToolsVersion {
     LASTEDIT: 02/14/2018 11:05:37
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('WSToolsVersion')]
@@ -7204,7 +7204,7 @@ Function Install-WSTools {
     Last Edit: 2022-02-19 22:56:29
     Keywords:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSUseSingularNouns",
@@ -7327,7 +7327,7 @@ function Set-WSToolsConfig {
     Created: 2020-04-17 15:00:06
     Last Edit: 2020-04-17 15:00:06
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     PowerShell_Ise "$PSScriptRoot\config.ps1"
 }
@@ -7349,7 +7349,7 @@ Function Update-WSTools {
     KEYWORDS: PowerShell, module, WSTools, personal
     REMARKS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSUseSingularNouns",

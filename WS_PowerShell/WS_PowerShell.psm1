@@ -11,7 +11,7 @@ Function Add-DateTime {
     LASTEDIT: 10/26/2017 09:48:00
     KEYWORDS: Scripting Techniques, Windows PowerShell ISE
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #Requires -Version 2.0
 #>
     $timeText = @"
@@ -34,7 +34,7 @@ Function Add-DomainCheck {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
 
     $domainText = @"
@@ -75,7 +75,7 @@ Function Add-Function {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -194,7 +194,7 @@ Function {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
    .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -238,7 +238,7 @@ Function Add-Help {
     REQUIRES:
         #Requires -Version 2.0
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     $helpText = @"
 <#
@@ -262,7 +262,7 @@ Function Add-Help {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
    .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
 "@
     $psise.CurrentFile.Editor.InsertText($helpText)
@@ -282,7 +282,7 @@ Function Add-InternetBrowsersBlock {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     $browserblockText = @"
     if (`$Chrome) {Start-Process "chrome.exe" `$URL}
@@ -306,7 +306,7 @@ Function Add-ParamBlock {
     LASTEDIT: 12/20/2019 22:15:51
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     $paramblockText = @"
     [CmdletBinding()]
@@ -338,7 +338,7 @@ Function Add-ParamInternetBrowser {
     LASTEDIT: 10/18/2017 14:37:37
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     $paramIBText = @"
         [Parameter(Mandatory=`$false)]
@@ -365,7 +365,7 @@ Function Add-ParamSwitchWithOption {
     LASTEDIT: 12/20/2019 22:14:54
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
 
     $switchText = @"
@@ -389,7 +389,7 @@ Function Add-ProgressBar {
     LASTEDIT: 04/23/2018 10:53:40
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     $objectText = @"
 `$i = 0
@@ -415,7 +415,7 @@ Function Add-PSObject {
     LASTEDIT: 12/21/2019 23:35:03
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -453,7 +453,7 @@ Function Add-Switch {
     LASTEDIT: 07/31/2019 22:17:04
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     $objectText = @"
 switch (`$variable) {
@@ -496,7 +496,7 @@ function Convert-AppIconToBase64 {
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 .LINK
     https://www.skylerhart.com
 #>
@@ -530,7 +530,7 @@ function Convert-DatesToDays {
     Last Edit: 2021-06-03 09:23:27
     Keywords: date, converter
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     param(
@@ -602,7 +602,7 @@ function Convert-DaysToWorkDay {
     Last Edit: 2021-06-20 17:13:33
     Keywords:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 .LINK
     https://www.skylerhart.com
 #>
@@ -732,7 +732,7 @@ function Convert-ImageToBase64 {
     Last Edit: 2020-11-03 22:22:19
     Keywords:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Convert-ICOtoBase64')]
@@ -770,7 +770,7 @@ Function Import-XML {
     LASTEDIT: 10/25/2017 17:03:54
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -810,7 +810,7 @@ function Convert-Uint16ToString {
     Created: 2023-02-11 01:02:00
     Last Edit: 2023-02-11 01:02:00
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     param(
@@ -833,7 +833,7 @@ Function Get-Accelerator {
     LASTEDIT: 12/21/2019 23:28:57
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Get-TypeAccelerators','accelerators')]
@@ -851,7 +851,7 @@ Function Get-FilePath {
     LASTEDIT: 09/21/2017 13:05:42
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [System.Reflection.Assembly]::LoadWithPartialName("System.windows.forms") | Out-Null
     $OpenFileDialog = New-Object System.Windows.Forms.OpenFileDialog
@@ -871,7 +871,7 @@ Function Get-FolderPath {
     LASTEDIT: 09/21/2017 13:05:51
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     Write-Output "The folder selection window is open. It may be hidden behind windows."
     Add-Type -AssemblyName System.Windows.Forms
@@ -896,7 +896,7 @@ Function Get-FunctionsInModule {
     LASTEDIT: 08/21/2017 13:06:27
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -941,7 +941,7 @@ function Get-PowerShellVariable {
     Other:
     Requires:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     param(
@@ -973,7 +973,7 @@ Function Get-Role {
     LASTEDIT: 10/20/2017 16:30:43
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
     if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {$Role = "Admin"}
@@ -992,7 +992,7 @@ Function Set-AutoLoadPreference {
     REQUIRES:
         -Version 2.0 only doesn't apply to Version 3.0 or newer
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -1011,7 +1011,7 @@ Function Set-Profile {
     LASTEDIT: 08/18/2017 21:07:03
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Edit-Profile','Profile')]
@@ -1052,7 +1052,7 @@ Function Set-Title {
     LASTEDIT: 08/18/2017 20:47:14
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('title')]
@@ -1116,7 +1116,7 @@ function Start-CommandMultiThreaded {
     Last Edit: 2022-09-05 22:19:49
     Other:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -1221,7 +1221,7 @@ Function Start-PowerShell {
     LASTEDIT: 10/24/2017 16:41:21
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Open-PowerShell')]
@@ -1293,7 +1293,7 @@ function Send-ToastNotification {
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 .LINK
     https://www.skylerhart.com
 #>
@@ -1485,7 +1485,7 @@ Function Test-DynamicParameterSwitchCheck {
     Last Edit: 2022-09-11 01:41:04
     Other:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     Param (
         [Parameter(Mandatory = $false)]

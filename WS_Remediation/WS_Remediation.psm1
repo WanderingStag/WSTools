@@ -31,7 +31,7 @@ Function Clear-Patches {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSUseSingularNouns",
@@ -261,7 +261,7 @@ Function Copy-7Zip {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -420,7 +420,7 @@ Function Copy-90Meter {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -573,7 +573,7 @@ Function Copy-ActivClient {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -725,7 +725,7 @@ Function Copy-AdobeAcrobat {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -877,7 +877,7 @@ Function Copy-AdobeExperienceManager {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -1030,7 +1030,7 @@ Function Copy-Axway {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -1206,7 +1206,7 @@ Function Copy-Chrome {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -1358,7 +1358,7 @@ Function Copy-DSET {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -1511,7 +1511,7 @@ Function Copy-Edge {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -1672,7 +1672,7 @@ Function Copy-Encase {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -1824,7 +1824,7 @@ Function Copy-Firefox {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -1977,7 +1977,7 @@ Function Copy-Git {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -2130,7 +2130,7 @@ Function Copy-IE11 {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -2282,7 +2282,7 @@ Function Copy-MicrosoftInfoPath {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -2435,7 +2435,7 @@ Function Copy-Java {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -2588,7 +2588,7 @@ Function Copy-NetBanner {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -2741,7 +2741,7 @@ Function Copy-Office2016 {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -2894,7 +2894,7 @@ Function Copy-OneDrive {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -3047,7 +3047,7 @@ Function Copy-Silverlight {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -3200,7 +3200,7 @@ Function Copy-SQLServerManagementStudio {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -3354,7 +3354,7 @@ Function Copy-SplunkForwarder {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -3507,7 +3507,7 @@ Function Copy-Tanium {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -3660,7 +3660,7 @@ Function Copy-Teams {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSUseSingularNouns",
@@ -3818,7 +3818,7 @@ Function Copy-Titus {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSUseSingularNouns",
@@ -3976,7 +3976,7 @@ Function Copy-VisualStudioCode {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -4130,7 +4130,7 @@ Function Copy-VMwareTools {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -4283,7 +4283,7 @@ Function Copy-VPN {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -4436,7 +4436,7 @@ Function Copy-VLC {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -4589,7 +4589,7 @@ Function Copy-Wireshark {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -4742,7 +4742,7 @@ Function Copy-WMF3 {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -4895,7 +4895,7 @@ Function Copy-WMF4 {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -5048,7 +5048,7 @@ Function Copy-WMF5 {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -5201,7 +5201,7 @@ Function Copy-Zoom {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSAvoidGlobalVars",
@@ -5354,7 +5354,7 @@ Function Install-Edge {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -5431,7 +5431,7 @@ Function Install-GitSCM {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -5488,7 +5488,7 @@ Function Install-MECM {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Install-SCCM')]
@@ -5550,7 +5550,7 @@ Function Install-OneDrive {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -5631,7 +5631,7 @@ Function Install-Patches {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSUseSingularNouns",
@@ -5681,7 +5681,7 @@ Function Install-SQLServerManagementStudio {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Install-SSMS')]
@@ -5741,7 +5741,7 @@ Function Install-VisualStudioCode {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Install-VSCode')]
@@ -5811,7 +5811,7 @@ Function Install-VMwareTools {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSUseSingularNouns",
@@ -5868,7 +5868,7 @@ Function Install-Zoom {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -5935,7 +5935,7 @@ Function Uninstall-7Zip {
     REQUIRES:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -6048,7 +6048,7 @@ Function Uninstall-90Meter {
     REQUIRES:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -6164,7 +6164,7 @@ Function Uninstall-ActivClient {
     REQUIRES:
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -6278,7 +6278,7 @@ Function Uninstall-AdobeAir {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -6389,7 +6389,7 @@ Function Uninstall-AdobeExperienceManager {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 .LINK
     https://www.skylerhart.com
 #>
@@ -6507,7 +6507,7 @@ Function Uninstall-AdobeFlash {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Uninstall-Flash')]
@@ -6622,7 +6622,7 @@ Function Uninstall-AdobePro {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Uninstall-AdobeAcrobat','Uninstall-Acrobat')]
@@ -6734,7 +6734,7 @@ Function Uninstall-AdobeLiveCycleFormsDesigner {
     REQUIRES:
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -6848,7 +6848,7 @@ Function Uninstall-AdobeReader {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -6962,7 +6962,7 @@ Function Uninstall-AdobeShockwave {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Uninstall-Shockwave')]
@@ -7074,7 +7074,7 @@ Function Uninstall-Axway {
     REQUIRES:
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -7184,7 +7184,7 @@ Function Uninstall-CiscoAnyConnect {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Uninstall-AnyConnect')]
@@ -7295,7 +7295,7 @@ Function Uninstall-DamewareMiniRemoteControl {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -7405,7 +7405,7 @@ Function Uninstall-F5BigIPEdgeClient {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Uninstall-BigIPEdgeClient')]
@@ -7520,7 +7520,7 @@ Function Uninstall-GoogleChrome {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Uninstall-Chrome')]
@@ -7635,7 +7635,7 @@ Function Uninstall-HPInsightAgent {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -7749,7 +7749,7 @@ Function Uninstall-HPVersionControlAgent {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -7863,7 +7863,7 @@ Function Uninstall-IBMForms {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSUseSingularNouns",
@@ -7982,7 +7982,7 @@ Function Uninstall-McAfeeVSE {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -8092,7 +8092,7 @@ Function Uninstall-MicrosoftInfoPath {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
         "PSUseSingularNouns",
@@ -8212,7 +8212,7 @@ Function Uninstall-MozillaFirefox {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Uninstall-Firefox')]
@@ -8332,7 +8332,7 @@ Function Uninstall-MozillaMaintenanceService {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Uninstall-FirefoxMaintenanceService')]
@@ -8450,7 +8450,7 @@ Function Uninstall-OracleJava {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Uninstall-Java')]
@@ -8561,7 +8561,7 @@ Function Uninstall-TransVerse {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 .LINK
     https://www.skylerhart.com
 #>
@@ -8686,7 +8686,7 @@ Function Uninstall-VLC {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -8796,7 +8796,7 @@ Function Uninstall-Wireshark {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 .LINK
     https://www.skylerhart.com
 #>
@@ -8908,7 +8908,7 @@ Function Uninstall-WinRAR {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -9022,7 +9022,7 @@ Function Uninstall-WinSCP {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -9132,7 +9132,7 @@ Function Uninstall-WinZip {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -9242,7 +9242,7 @@ Function Uninstall-Zoom {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -9367,7 +9367,7 @@ Function Disable-3DES {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -9416,7 +9416,7 @@ Function Enable-3DES {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -9465,7 +9465,7 @@ Function Disable-DiffieHellman {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -9505,7 +9505,7 @@ Function Enable-DiffieHellman {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -9545,7 +9545,7 @@ Function Disable-RC4 {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -9596,7 +9596,7 @@ Function Enable-RC4 {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -9644,7 +9644,7 @@ function Disable-TLS1.0 { #DevSkim: ignore DS169125,DS440000
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     param(
@@ -9687,7 +9687,7 @@ function Enable-TLS1.0 { #DevSkim: ignore DS169125,DS440000
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     param(
@@ -9730,7 +9730,7 @@ function Disable-TLS1.1 { #DevSkim: ignore DS169125,DS440000
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     param(
@@ -9772,7 +9772,7 @@ function Enable-TLS1.1 { #DevSkim: ignore DS169125,DS440000
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     param(
@@ -9814,7 +9814,7 @@ function Disable-TLS1.2 { #DevSkim: ignore DS169125,DS440000
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     param(
@@ -9856,7 +9856,7 @@ function Enable-TLS1.2 { #DevSkim: ignore DS169125,DS440000
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     param(
@@ -9913,7 +9913,7 @@ function Get-HttpHeaderSetting {
     Created: 2022-11-30 23:43:58
     Last Edit: 2022-11-30 23:43:58
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     param()
@@ -9974,7 +9974,7 @@ function Get-SCHANNELSetting {
     Created: 2022-09-05 00:24:25
     Last Edit: 2022-09-05 00:56:53
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     param(
@@ -10036,7 +10036,7 @@ function Initialize-GPUpdate {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 .LINK
     https://www.skylerhart.com
 #>
@@ -10098,7 +10098,7 @@ Function Set-FeatureSettingsOverride {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -10160,7 +10160,7 @@ Function Set-FirefoxAutoUpdate {
     REQUIRES:
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -10216,7 +10216,7 @@ function Set-MS15124 {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -10251,7 +10251,7 @@ function Set-HiveNightmareFix {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 .LINK
     https://www.skylerhart.com
 #>
@@ -10273,7 +10273,7 @@ function Set-PrintNightmareFix {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 .LINK
     https://www.skylerhart.com
 #>
@@ -10335,7 +10335,7 @@ Function Set-RemediationValues {
         #Requires -Version 3.0
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -10686,7 +10686,7 @@ Function Set-SMBv1 {
     REQUIRES:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -10738,7 +10738,7 @@ Function Set-SMBv1Fix {
     REQUIRES:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -10782,7 +10782,7 @@ function Get-NetworkLevelAuthentication {
     Last Edit: 2020-04-18 15:28:10
     Keywords: Network, NLA, Network Level Authentication, RDP, Remote Desktop
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Get-NLA')]
@@ -10853,7 +10853,7 @@ function Set-NetworkLevelAuthentication {
     Requires:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Set-NLA')]
@@ -10945,7 +10945,7 @@ function Get-SCCMInstallStatus {
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias()]
@@ -11025,7 +11025,7 @@ function Get-SCCMPendingUpdate {
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias()]
@@ -11100,7 +11100,7 @@ function Install-SCCMUpdate {
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias()]
@@ -11139,7 +11139,7 @@ function Open-CMTrace {
     Last Edit: 2021-06-22 17:29:32
     Keywords:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 .LINK
     https://www.skylerhart.com
 #>
@@ -11167,7 +11167,7 @@ function Open-ConfigurationManager {
     REQUIRES:
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('configmgr')]
@@ -11187,7 +11187,7 @@ function Open-FileWithCMTrace {
     Last Edit: 2021-06-22 17:35:23
     Keywords:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 .LINK
     https://www.skylerhart.com
 #>
@@ -11239,7 +11239,7 @@ function Open-RunAdvertisedPrograms {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('rap')]
@@ -11258,7 +11258,7 @@ function Open-SoftwareCenter {
     Last Edit: 2020-09-28 09:36:19
     Keywords:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('SoftwareCenter','SCCM','MECM')]
@@ -11286,7 +11286,7 @@ function Open-SCCMLogsFolder {
     REQUIRES:
         -RunAsAdministrator on remote computers
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
 <#--
 CAS.log
@@ -11388,7 +11388,7 @@ function Open-WindowsUpdateLog {
     KEYWORDS:
     REQUIRES:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
 <#--
 Found on the Configuration Manager Client computer, by default, in %windir%.
@@ -11446,7 +11446,7 @@ Function Restore-WindowsUpdate {
     REQUIRES:
         -RunAsAdministrator
 .Link
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
     if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {dism.exe /Online /Cleanup-image /Restorehealth}
@@ -11488,7 +11488,7 @@ function Start-SCCMUpdateScan {
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias()]
@@ -11549,7 +11549,7 @@ Function Get-ENSStatus {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('ENS','Get-ENSInfo','ESS','Get-ESSInfo')]
@@ -11695,7 +11695,7 @@ function Get-HBSSStatus {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -11912,7 +11912,7 @@ function Open-HBSSStatusMonitor {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('HBSS')]
@@ -11945,7 +11945,7 @@ function Open-McAfeeVirusScanConsole {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     if (Test-Path "$env:ProgramFiles\McAfee\VirusScan Enterprise\mcconsol.exe") {
         Start-Process "$env:ProgramFiles\McAfee\VirusScan Enterprise\mcconsol.exe"
@@ -11967,7 +11967,7 @@ function Open-HIPSLog {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     explorer "$env:ProgramData\McAfee\Host Intrusion Prevention"
 }
@@ -11986,7 +11986,7 @@ Function Uninstall-HBSS {
         #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Uninstall-ENS','Uninstall-ESS')]
@@ -12098,7 +12098,7 @@ function Update-McAfeeSecurity {
     Last Edit: 2021-10-30 03:14:47
     Keywords:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     $fpath = "${env:ProgramFiles(x86)}\McAfee\Endpoint Security\Threat Prevention\amcfg.exe"
     if (Test-Path $fpath) {
@@ -12119,7 +12119,7 @@ function Sync-HBSSWithServer {
     Last Edit: 2020-04-13 20:37:25
     Keywords: HBSS
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     [Alias('Sync-HBSS','Sync-ENS','Sync-ESS')]
@@ -12194,7 +12194,7 @@ function Get-SplunkStatus {
     Other:
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 .LINK
     https://www.skylerhart.com
 #>

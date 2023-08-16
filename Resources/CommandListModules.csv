@@ -252,6 +252,6 @@ WindowsUpdate,No,No,Merges Windows Update .etl files into a single log,https://d
 WindowsUpdateProvider,No,No,Manage Windows Update,
 WssCmdlets,No,No,Management of Windows Server Solutions on a Windows Server Essentials server.,https://docs.microsoft.com/en-us/powershell/module/wsscmdlets
 WssSetupCmdlets,No,No,Management of Windows Server Solutions on a Windows Server Essentials server.,https://docs.microsoft.com/en-us/powershell/module/wsssetup
-WSTools,Yes,Yes,"Automation of tasks, workstation/server management, Insider Threat information gathering, domain management, reporting, and vulnerability remediation.",https://wstools.dev
+WSTools,Yes,Yes,"Automation of tasks, workstation/server management, Insider Threat information gathering, domain management, reporting, and vulnerability remediation.",https://wanderingstag.github.io
 xDnsServer,Yes,Yes,Management and configuration of Windows DNS servers,https://github.com/dsccommunity/DnsServerDsc
 xWebAdministration,Yes,Yes,Management and configuration of Windows Web Servers,https://github.com/dsccommunity/xWebAdministration

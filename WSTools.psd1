@@ -100,10 +100,10 @@
             LicenseUri = 'https://dev.azure.com/wanderingstag/_git/WSTools?path=%2FLICENSE'
 
             # A URL to the main website for this project.
-            ProjectUri = 'https://wstools.dev'
+            ProjectUri = 'https://wanderingstag.github.io'
 
             # A URL to an icon representing this module.
-            IconUri = 'https://wstools.dev/wp-content/uploads/2020/08/WSToolsLogo.png'
+            IconUri = 'https://wanderingstag.github.io/wp-content/uploads/2020/08/WSToolsLogo.png'
 
             # ReleaseNotes of this module
             ReleaseNotes = 'https://dev.azure.com/wanderingstag/_git/WSTools?path=%2FChangeLog.txt'

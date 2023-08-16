@@ -34,7 +34,7 @@ Function Get-InstalledProgram {
     Last Edit: 2020-08-19 23:03:32
     Keywords:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding(SupportsShouldProcess=$true)]
     param(
@@ -104,7 +104,7 @@ Function Join-File {
     LASTEDIT: 04/30/2019 17:17:50
     KEYWORDS:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     [CmdletBinding()]
     Param (
@@ -194,7 +194,7 @@ function Get-NotificationApp {
     Keywords:
     Requires:
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 #>
     $info = @()
     $HKCR = Get-PSDrive -Name HKCR -ErrorAction SilentlyContinue
@@ -313,7 +313,7 @@ function Send-ToastNotification {
         -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         -RunAsAdministrator
 .LINK
-    https://wstools.dev
+    https://wanderingstag.github.io
 .LINK
     https://www.skylerhart.com
 #>

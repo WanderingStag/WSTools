@@ -73,7 +73,7 @@
 		"prefix": ["link","wstools-link"],
 		"body": [
 			".LINK",
-			"\thttps://wstools.dev"
+			"\thttps://wanderingstag.github.io"
 		],
 		"description": "Link section for help block"
 	},
@@ -172,7 +172,7 @@
 			"\t\t\t-RunAsAdministrator",
 			"",
 			"\t.LINK",
-			"\t\thttps://wstools.dev",
+			"\t\thttps://wanderingstag.github.io",
 			"\t#>",
 			"\t[CmdletBinding()]",
 			"\t[Alias()]",
@@ -245,7 +245,7 @@
 			"\t\t\t-RunAsAdministrator",
 			"",
 			"\t.LINK",
-			"\t\tSpecify a URI to a help page, this will show when Get-Help -Online is used. Ex: https://wstools.dev/CommentBasedHelp.html",
+			"\t\tSpecify a URI to a help page, this will show when Get-Help -Online is used. Ex: https://wanderingstag.github.io/CommentBasedHelp.html",
 			"\t#>"
 		],
 		"description": "Generic Help comment block"

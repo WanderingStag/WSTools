@@ -459,7 +459,7 @@ New features and other changes:
 20. Added help to Get-DefaultBrowserPath and added command to remove the PSDrive that is created.
 21. Updated wsconfig snippet.
 22. Added AdminCheck snippet.
-23. Changed links to https://wstools.dev
+23. Changed links to https://wanderingstag.github.io
 24. Added some extra validation text to the wsfunction snippet.
 25. Changed Get-WSToolsVersion so that it is no longer hardcoded.
 26. Updated comment text, tags, and Uri's in module manifest based on Microsoft's PowerShell Gallery publishing guidelines.
