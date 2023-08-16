@@ -10707,9 +10707,9 @@ Function Set-SMBv1 {
 Function Set-SMBv1Fix {
 <#
    .Synopsis
-    This fix action is purpose built for the issues seen accessing the NetApp from OSI computers on Windows 10.
+    Enables SMB v1.
    .Description
-    Turns SMBv1 on. This fix action is purpose built for the issues seen accessing the NetApp from OSI computers on Windows 10. While this fix action turns SMBv1 on, group policy specifically turns SMBv1 off, which is counted on.
+    Turns SMBv1 on. While this fix action turns SMBv1 on, group policy can turn SMBv1 off, which is counted on.
    .Example
     Set-SMBv1Fix COMP1
     Sets the fix action on COMP1. After the fix action is applied, COMP1 will need to be rebooted.
