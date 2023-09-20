@@ -513,12 +513,9 @@ function Get-RecentUser {
 .Notes
     AUTHOR: Skyler Hart
     CREATED: Sometime before 8/7/2017
-    LASTEDIT: 2022-09-14 22:48:05
+    LASTEDIT: 2023-09-20 17:47:45
     KEYWORDS:
     REQUIRES:
-        #Requires -Version 3.0
-        #Requires -Modules ActiveDirectory
-        #Requires -PSSnapin Microsoft.Exchange.Management.PowerShell.Admin
         #Requires -RunAsAdministrator
 .LINK
     https://wanderingstag.github.io
@@ -529,10 +526,7 @@ function Get-RecentUser {
         [Alias('Host','Name','Computer','CN')]
         [string[]]$ComputerName = "$env:COMPUTERNAME"
     )
-    Begin {
-    $i = 0
-    $number = $ComputerName.length
-    }
+
     Process {
         foreach ($Comp in $ComputerName) {
 
@@ -543,66 +537,45 @@ function Get-RecentUser {
                 Write-Progress -activity "Getting recent users on computers. Currently checking $comp" -status "Computer $i of $number. Percent complete:  $perc1" -PercentComplete (($i / $ComputerName.length)  * 100)
             }#if length
 
-            #Event ID to search for
-            $ID = "4624"
-
-            #Strings to search for
-            $filecontent = "MachineName
-TimeCreated
-Account Name:
-Account Domain:
-Logon Type:
-Process Name:"
-
-            #Other Variables
-            $dnsdomain = "." + $env:USERDNSDOMAIN
-            $csvcontent = "When1,Computer1,AccountName,Domain2,LogonType1,Username1,Domain1,ProcessName1
-            "
-
-            #Create new files used during processing
-            New-Item $env:Temp\searchlist.lst -ItemType File -Force -Value $filecontent | Out-Null
-            New-Item $env:Temp\events.csv -ItemType File -Force -Value $csvcontent | Out-Null
-
             #Gather events
-            $winevent = Get-WinEvent -ComputerName $Comp -FilterHashtable @{Logname='security';ID="$ID"} -MaxEvents 500
+            $eventlogSplat = @{
+                'LogName' = 'Security'
+                'ComputerName' = "$Comp"
+                'FilterXPath' = '*[System[EventID=4624]] and (*[EventData[Data[@Name="LogonType"] = "2"]] or *[EventData[Data[@Name="LogonType"] = "3"]] or *[EventData[Data[@Name="LogonType"] = "7"]] or *[EventData[Data[@Name="LogonType"] = "10"]] or *[EventData[Data[@Name="LogonType"] = "11"]]) and (*[EventData[Data[@Name="TargetDomainName"] != "NT Authority"]] and *[EventData[Data[@Name="TargetDomainName"] != "Window Manager"]])'
+                'MaxEvents' = 1000
+            }
+            $winevents = Get-WinEvent @eventlogSplat
 
-            foreach ($event in $winevent) {
-                ($event | Select-Object TimeCreated,MachineName,Message | Format-List * | findstr /G:"$env:TEMP\searchlist.lst") -replace "  ","" `
-                -replace "TimeCreated : ","" -replace "MachineName : ","" -replace "Security ID:","" -replace "Account Name:","" `
-                -replace "Account Domain:","" -replace "Logon ID:","" -replace "Logon Type:","" -replace "Security ID:","" `
-                -replace "Account Name:","" -replace "Account Domain:","" -replace "Logon ID:","" -replace "Logon GUID:","" `
-                -replace "Process Name:","" -replace "$dnsdomain","" -join "," | Out-File "$env:Temp\events.csv" -Append utf8
+            $events = foreach ($event in $winevents) {
+                $event | Select-Object @{label='Time';expression={$_.TimeCreated}},
+                    @{label='ComputerName';expression={$Comp}},
+                    @{label='Username';expression={$_.Properties[5].Value}},
+                    @{label='LogonType';expression={$_.Properties[8].Value}} |
+                    Where-Object {$_.Username -notmatch "$Comp" -and $_.Username -notlike "UMFD-*"}
             }#foreach event in winevent
 
-            #Process information on all events for the computer
-            $events = Import-Csv "$env:Temp\events.csv"
-            $notcomp = $comp + "$"
-            $notcomp2 = "*$*"
             #Filter by type of logon, username, and domain
-            $events | Where-Object {$_.LogonType1 -eq "2" -or $_.LogonType1 -eq "3" -or $_.LogonType1 -eq "7" -or $_.LogonType1 -eq "10" -or $_.LogonType1 -eq "11" `
-                -and $_.Domain1 -ne "NT AUTHORITY" -and $_.Domain1 -ne "Window Manager" -and $_.Username1 -ne "$notcomp" -and $_.Username1 -notlike "$notcomp2" `
-                -and $_.Username1 -notlike "UMFD-*"} | Select-Object Computer1,When1,LogonType1,Username1,ProcessName1 | ForEach-Object {
-                    if ($_.LogonType1 -eq 2) {$type2 = "Local"}#if 2
-                    if ($_.LogonType1 -eq 3) {$type2 = "Remote"}#if 3
-                    if ($_.LogonType1 -eq 7) {$type2 = "UnlockScreen"}#if 7
-                    if ($_.LogonType1 -eq 11) {$type2 = "CachedLocal"}#if 11
+            $events2 = $events | Select-Object Time,ComputerName,Username,LogonType | ForEach-Object {
+                    if ($_.LogonType -eq 2) {$type2 = "Local"}#if 2
+                    if ($_.LogonType -eq 3) {$type2 = "Remote"}#if 3
+                    if ($_.LogonType -eq 7) {$type2 = "UnlockScreen"}#if 7
+                    if ($_.LogonType -eq 10) {$type2 = "Remote"}#if 10
+                    if ($_.LogonType -eq 11) {$type2 = "CachedLocal"}#if 11
                     [PSCustomObject]@{
-                        When = $_.When1
-                        Computer = $_.Computer1
+                        When = $_.Time
+                        Computer = $_.ComputerName
                         Type = $type2
-                        User = $_.Username1
-                        #ProcessName = $_.ProcessName1
-                    } | Select-Object Computer,When,Type,User #,ProcessName
-                } | Select-Object Computer,When,Type,User | Export-Csv "$env:Temp\events2.csv" -Force -NoTypeInformation
+                        User = $_.Username
+                    }
+                }
 
             #Get 2nd and 3rd most recent users
             #$users = $null
             Clear-Variable -Name notuser1,notuser2,user2,user3 -ErrorAction SilentlyContinue | Out-Null
 
-            $events2 = Import-Csv "$env:Temp\events2.csv"
             if ($null -ne $($events2).User) {$user1 = ($events2).User[0]}
 
-            ($events2) | Select-Object Computer,When,Type,User | ForEach-Object {
+            $events2 | ForEach-Object {
                 if ($_.User -ne $user1) {[string[]]$notuser1 += $_.User}
             }#get unique users
 
@@ -619,20 +592,15 @@ Process Name:"
             #Get most recent logon event for each of the 3 users
             Clear-Variable -Name user1events,user2events,user3events -ErrorAction SilentlyContinue | Out-Null
 
-            $user1events = $events2 | Where-Object {$_.User -eq $user1} | Select-Object Computer,When,Type,User
-            $user2events = $events2 | Where-Object {$_.User -eq $user2} | Select-Object Computer,When,Type,User
-            $user3events = $events2 | Where-Object {$_.User -eq $user3} | Select-Object Computer,When,Type,User
+            $user1events = $events2 | Where-Object {$_.User -eq $user1}
+            $user2events = $events2 | Where-Object {$_.User -eq $user2}
+            $user3events = $events2 | Where-Object {$_.User -eq $user3}
 
             if ($null -ne $user1events) {$user1events[0]}
             if ($null -ne $user2events) {$user2events[0]}
             if ($null -ne $user3events) {$user3events[0]}
-
-            Remove-Item "$env:TEMP\searchlist.lst" -Force
-            Remove-Item "$env:Temp\events.csv" -Force
-            Remove-Item "$env:Temp\events2.csv" -Force
         }#foreach computer
     }
-    End {}
 }#get recent users
 
 
