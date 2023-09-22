@@ -9,6 +9,7 @@ Known issues:
 ######################
 New features and other changes:
 1. Re-worked Get-RecentUser to not save files to any computer and to limit results of event log query more so it runs more efficiently.
+2. Added ConvertFrom-BuildNumber to convert from Microsoft build numbers to OS and version (Windows 8/Server 2012 and newer)
 
 ######################
 #                    #
