@@ -597,7 +597,7 @@ function ConvertFrom-BuildNumber {
                     Version ="22H2 (2209)"
                 }
             }
-            elseif ($BuildNumber -eq 19045) {
+            elseif ($BuildNumber -eq 19046) {
                 [PSCustomObject]@{
                     OS = "Windows 10"
                     Build = $BuildNumber
@@ -1864,6 +1864,9 @@ function Get-HWInfo {
                         elseif ($Build -eq 19045 -or $Build -eq 22621) {# Win 10 Win 11
                             $OS = $OS + " v22H2"
                         }
+                        elseif ($Build -eq 19046 -or $Build -eq 22631) {# Win 10 Win 11
+                            $OS = $OS + " v23H2"
+                        }
                     }# if os win 10, srv 2016, or srv 2019
 
                     # Get Processor Information
@@ -3049,6 +3052,9 @@ Function Get-OperatingSystem {
                     elseif ($Build -eq 19045 -or $Build -eq 22621) {#Win 10 Win 11
                         $OS = $OS + " v22H2"
                     }
+                    elseif ($Build -eq 19046 -or $Build -eq 22631) {#Win 10 Win 11
+                        $OS = $OS + " v23H2"
+                    }
                 }#if os win 10, srv 2016, or srv 2019
             }#try
             catch {
@@ -3115,6 +3121,9 @@ Function Get-OperatingSystem {
                         }
                         elseif ($Build -eq 19045 -or $Build -eq 22621) {#Win 10 Win 11
                             $OS = $OS + " v22H2"
+                        }
+                        elseif ($Build -eq 19046 -or $Build -eq 22631) {#Win 10 Win 11
+                            $OS = $OS + " v23H2"
                         }
                     }#if os win 10, srv 2016, or srv 2019
                     else {$OS = $value}
@@ -3239,6 +3248,9 @@ Function Get-OperatingSystem {
                 }
                 elseif ($Build -eq 19045 -or $Build -eq 22621) {#Win 10 Win 11
                     $OS = $OS + " v22H2"
+                }
+                elseif ($Build -eq 19046 -or $Build -eq 22631) {#Win 10 Win 11
+                    $OS = $OS + " v23H2"
                 }
             }#if os win 10, win 11, srv 2016, or srv 2019
             else {$OS = $value}
