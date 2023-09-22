@@ -1,5 +1,5 @@
 #
-# Generated on: 20 SEPTEMBER 2023
+# Generated on: 22 SEPTEMBER 2023
 #
 
 @{
@@ -7,7 +7,7 @@
     RootModule = 'WSTools.psm1'
 
     # Version number of this module.
-    ModuleVersion = '2023.9.0'
+    ModuleVersion = '2023.9.1'
 
     # Author of this module
     Author = 'Skyler Hart'
