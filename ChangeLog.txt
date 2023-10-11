@@ -4,7 +4,15 @@ Known issues:
 
 ######################
 #                    #
-#      2023.09      #
+#      2023.10       #
+#                    #
+######################
+New features and other changes:
+1. Added Format-IPList.
+
+######################
+#                    #
+#      2023.09       #
 #                    #
 ######################
 New features and other changes:
@@ -14,7 +22,7 @@ New features and other changes:
 
 ######################
 #                    #
-#      2023.05      #
+#      2023.05       #
 #                    #
 ######################
 New features and other changes:
@@ -27,7 +35,7 @@ New features and other changes:
 
 ######################
 #                    #
-#      2023.03      #
+#      2023.03       #
 #                    #
 ######################
 New features and other changes:
@@ -38,7 +46,7 @@ New features and other changes:
 
 ######################
 #                    #
-#      2023.02      #
+#      2023.02       #
 #                    #
 ######################
 New features and other changes:

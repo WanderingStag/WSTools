@@ -864,6 +864,74 @@ function Enable-ServerManager {
 }
 
 
+function Format-IPList {
+    <#
+    .SYNOPSIS
+        Takes a list of IPs and sorts them.
+
+    .DESCRIPTION
+        Enter two or more IPs and it will sort them in the appropriate order.
+
+    .PARAMETER IPs
+        Used to specify the IP Addresses that you wish to sort.
+
+    .EXAMPLE
+        C:\PS>Format-IPList 127.0.0.5,127.0.0.100,10.0.1.5,10.0.1.1,10.0.1.100
+        Example of how to use this cmdlet
+
+    .EXAMPLE
+        C:\PS>Format-IPList -IPs 127.0.0.5, 127.0.0.100, 10.0.1.5, 10.0.1.1, 10.0.1.100
+        Another example of how to use this cmdlet but with a parameter or switch.
+
+    .EXAMPLE
+        C:\PS>Sort-IPs 127.0.0.5, 127.0.0.100, 10.0.1.5, 10.0.1.1, 10.0.1.100
+        Using the alias Sort-IPs we can format the list of IPs.
+
+    .INPUTS
+        System.Net.IPAddress
+
+    .OUTPUTS
+        System.Array
+
+    .COMPONENT
+        WSTools
+
+    .FUNCTIONALITY
+        IPAddress, IPv4, Sort, List, Format
+
+    .NOTES
+        Author: Skyler Hart
+        Created: 2023-10-11 10:58:24
+        Last Edit: 2023-10-11 11:14:45
+
+    .LINK
+        https://wanderingstag.github.io
+    #>
+    [CmdletBinding()]
+    [Alias('Sort-IPList','Sort-IPs')]
+    param(
+        [Parameter(
+            HelpMessage = "Enter one or more IPs separated by commas.",
+            Mandatory=$true,
+            ValueFromPipeline = $true
+        )]
+        [ValidateNotNullOrEmpty()]
+        [Alias('IPAddresses')]
+        [IPAddress[]]$IPs
+    )
+
+    Process {
+        $IPs.IPAddressToString | Sort-Object {
+            # Extract the first 4 numbers from the current line
+            [int[]] $octets = [regex]::Matches( $_, '\d+' )[ 0..3 ].Value
+
+            # Create tuple that consists of the octets
+            [Tuple]::Create( $octets[0], $octets[1], $octets[2], $octets[3] )
+        }
+    }
+}
+
+
 function Get-BitLockerStatus {
     <#
     .NOTES
