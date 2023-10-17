@@ -178,6 +178,10 @@ $Global:WSToolsConfig = [PSCustomObject]@{
     #Doesn't always work
     StoreLookup = $false
 
+    # PSReadline Options
+    # Valid prediction sources: None, History, Plugin, HistoryAndPlugin. For older systems HistoryAndPlugin is not available. If any option fails, will default to History. Note: Version 2.0.0 does not support this setting
+    PSRLPredictionSource = "HistoryAndPlugin"
+
     ################################
     ##         Remediation        ##
     ################################

@@ -5910,6 +5910,13 @@ function Set-Preferences {
             New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name Link -PropertyType Binary -Value ([byte[]](17,00,00,00)) -Force -ErrorAction SilentlyContinue
         }
     }
+
+    try {
+        Set-PSReadLineOption -PredictionSource $predictionsource -ErrorAction Stop
+    }
+    catch {
+        Set-PSReadLineOption -PredictionSource History -ErrorAction SilentlyContinue
+    }
     Write-Output "Some settings will not apply until after you log off and then log back on."
 }
 
