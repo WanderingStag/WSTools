@@ -10317,7 +10317,7 @@ Function Set-RemediationValues {
 .Notes
     AUTHOR: Skyler Hart
     CREATED: 02/08/2018 22:10:17
-    LASTEDIT: 2022-02-18 19:37:37
+    LASTEDIT: 2023-11-17 16:58:54
     KEYWORDS:
     REQUIRES:
         #Requires -Version 3.0
@@ -10347,6 +10347,9 @@ Function Set-RemediationValues {
     $v8 = 'NoWarningNoElevationOnInstall'
     $v9 = 'UpdatePromptSettings'
     $v10 = 'RestrictDriverInstallationToAdministrators'
+
+    # EnableCertPadding
+    $CertPadding = 'EnableCertPaddingCheck'
 
     $d0 = 0
     $d1 = 1
@@ -10644,7 +10647,7 @@ Function Set-RemediationValues {
         }
         #endregion
 
-        #PrintNightmare
+        # PrintNightmare
         ([Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine, $comp)).CreateSubKey('SOFTWARE\Policies\Microsoft\Windows NT\Printers\PointAndPrint')
         $BaseKey = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine, $comp)
         $SubKey = $BaseKey.OpenSubKey('SOFTWARE\Policies\Microsoft\Windows NT\Printers\PointAndPrint',$true)
@@ -10658,6 +10661,18 @@ Function Set-RemediationValues {
         $SubKey = $BaseKey.OpenSubKey('SOFTWARE\Policies\Microsoft\Windows NT\Printers\PointAndPrint',$true)
         $SubKey.SetValue($v10, $d1, [Microsoft.Win32.RegistryValueKind]::DWORD)
 
+        # Enable Cert Padding Check
+        ([Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine, $comp)).CreateSubKey('SOFTWARE\Microsoft\Cryptography\Wintrust\Config')
+        $BaseKey = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine, $comp)
+        $SubKey = $BaseKey.OpenSubKey('SOFTWARE\Microsoft\Cryptography\Wintrust\Config',$true)
+        $SubKey.SetValue($CertPadding, $d1, [Microsoft.Win32.RegistryValueKind]::DWORD)
+
+        ([Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine, $comp)).CreateSubKey('SOFTWARE\Wow6432Node\Microsoft\Cryptography\Wintrust\Config')
+        $BaseKey = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine, $comp)
+        $SubKey = $BaseKey.OpenSubKey('SOFTWARE\Wow6432Node\Microsoft\Cryptography\Wintrust\Config',$true)
+        $SubKey.SetValue($CertPadding, $d1, [Microsoft.Win32.RegistryValueKind]::DWORD)
+
+        # Network Level Authentication
         Set-NLA -ComputerName $comp
     }#foreach computer
 }
