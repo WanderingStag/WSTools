@@ -4628,7 +4628,7 @@ Function Open-HomeAssistant {
     $URL = $config.HomeAssistant
 
     if ($Chrome) {Start-Process "chrome.exe" $URL}
-    elseif ($Edge) {Start-Process shell:AppsFolder\Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge $URL}
+    elseif ($Edge) {Start-Process Microsoft-Edge:$URL}
     elseif ($Firefox) {Start-Process "firefox.exe" $URL}
     elseif ($InternetExplorer) {Start-Process "iexplore.exe" $URL}
     else {
@@ -4752,7 +4752,7 @@ Function Open-Remedy {
     $URL = $config.Remedy
 
     if ($Chrome) {Start-Process "chrome.exe" $URL}
-    elseif ($Edge) {Start-Process shell:AppsFolder\Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge $URL}
+    elseif ($Edge) {Start-Process Microsoft-Edge:$URL}
     elseif ($Firefox) {Start-Process "firefox.exe" $URL}
     elseif ($InternetExplorer) {Start-Process "iexplore.exe" $URL}
     else {

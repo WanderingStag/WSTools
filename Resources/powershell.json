@@ -24,7 +24,7 @@
 		"prefix": ["browserblock","wstools-browserblock"],
 		"body": [
 			"if ($${name:Chrome}) {Start-Process \"chrome.exe\" $${name:URL}}",
-			"elseif ($${name:Edge}) {Start-Process shell:AppsFolder\\Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge $${name:URL}}",
+			"elseif ($${name:Edge}) {Start-Process Microsoft-Edge:$${name:URL}}",
 			"elseif ($${name:Firefox}) {Start-Process \"firefox.exe\" $${name:URL}}",
 			"else {",
 			"\t#open in default browser",

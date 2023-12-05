@@ -120,7 +120,7 @@ if ($Browsers) {
     $browserText2 = @"
     `$URL = "https://......."
     if (`$Chrome) {Start-Process "chrome.exe" `$URL}
-    elseif (`$Edge) {Start-Process shell:AppsFolder\Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge `$URL}
+    elseif (`$Edge) {Start-Process Microsoft-Edge:`$URL}
     elseif (`$Firefox) {Start-Process "firefox.exe" `$URL}
     elseif (`$InternetExplorer) {Start-Process "iexplore.exe" `$URL}
     else {
@@ -286,7 +286,7 @@ Function Add-InternetBrowsersBlock {
 #>
     $browserblockText = @"
     if (`$Chrome) {Start-Process "chrome.exe" `$URL}
-    elseif (`$Edge) {Start-Process shell:AppsFolder\Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge `$URL}
+    elseif (`$Edge) {Start-Process Microsoft-Edge:`$URL}
     elseif (`$Firefox) {Start-Process "firefox.exe" `$URL}
     elseif (`$InternetExplorer) {Start-Process "iexplore.exe" `$URL}
     else {

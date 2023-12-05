@@ -1547,7 +1547,7 @@ function Open-CMLibrary {
     $URL = $config.CMLibrary
 
     if ($Chrome) {Start-Process "chrome.exe" $URL}
-    elseif ($Edge) {Start-Process shell:AppsFolder\Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge $URL}
+    elseif ($Edge) {Start-Process Microsoft-Edge:$URL}
     elseif ($Firefox) {Start-Process "firefox.exe" $URL}
     elseif ($InternetExplorer) {Start-Process "iexplore.exe" $URL}
     else {
@@ -1637,7 +1637,7 @@ function Open-EAC {
     $URL = $config.EAC
 
     if ($Chrome) {Start-Process "chrome.exe" $URL}
-    elseif ($Edge) {Start-Process shell:AppsFolder\Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge $URL}
+    elseif ($Edge) {Start-Process Microsoft-Edge:$URL}
     elseif ($Firefox) {Start-Process "firefox.exe" $URL}
     elseif ($InternetExplorer) {Start-Process "iexplore.exe" $URL}
     else {
@@ -1727,7 +1727,7 @@ function Open-iLO {
     $URL = $config.iLO
 
     if ($Chrome) {Start-Process "chrome.exe" $URL}
-    elseif ($Edge) {Start-Process shell:AppsFolder\Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge $URL}
+    elseif ($Edge) {Start-Process Microsoft-Edge:$URL}
     elseif ($Firefox) {Start-Process "firefox.exe" $URL}
     elseif ($InternetExplorer) {Start-Process "iexplore.exe" $URL}
     else {
@@ -1804,7 +1804,7 @@ function Open-LexmarkManagementConsole {
     $URL = $config.LMC
 
     if ($Chrome) {Start-Process "chrome.exe" $URL}
-    elseif ($Edge) {Start-Process shell:AppsFolder\Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge $URL}
+    elseif ($Edge) {Start-Process Microsoft-Edge:$URL}
     elseif ($Firefox) {Start-Process "firefox.exe" $URL}
     elseif ($InternetExplorer) {Start-Process "iexplore.exe" $URL}
     else {
@@ -1896,7 +1896,7 @@ function Open-NetworkDiagram {
 
     if ($dpath -like "http*") {
         if ($Chrome) {Start-Process "chrome.exe" $dpath}
-        elseif ($Edge) {Start-Process shell:AppsFolder\Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge $dpath}
+        elseif ($Edge) {Start-Process Microsoft-Edge:$dpath}
         elseif ($Firefox) {Start-Process "firefox.exe" $dpath}
         elseif ($InternetExplorer) {Start-Process "iexplore.exe" $dpath}
         else {
@@ -1944,7 +1944,7 @@ function Open-OWA {
     $URL = $config.OWA
 
     if ($Chrome) {Start-Process "chrome.exe" $URL}
-    elseif ($Edge) {Start-Process shell:AppsFolder\Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge $URL}
+    elseif ($Edge) {Start-Process Microsoft-Edge:$URL}
     elseif ($Firefox) {Start-Process "firefox.exe" $URL}
     elseif ($InternetExplorer) {Start-Process "iexplore.exe" $URL}
     else {
@@ -1987,7 +1987,7 @@ function Open-PrintRelease {
     $URL = $config.PrintRelease
 
     if ($Chrome) {Start-Process "chrome.exe" $URL}
-    elseif ($Edge) {Start-Process shell:AppsFolder\Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge $URL}
+    elseif ($Edge) {Start-Process Microsoft-Edge:$URL}
     elseif ($Firefox) {Start-Process "firefox.exe" $URL}
     elseif ($InternetExplorer) {Start-Process "iexplore.exe" $URL}
     else {
@@ -2033,7 +2033,7 @@ function Open-RackElevation {
 
     if ($dpath -like "http*") {
         if ($Chrome) {Start-Process "chrome.exe" $dpath}
-        elseif ($Edge) {Start-Process shell:AppsFolder\Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge $dpath}
+        elseif ($Edge) {Start-Process Microsoft-Edge:$dpath}
         elseif ($Firefox) {Start-Process "firefox.exe" $dpath}
         elseif ($InternetExplorer) {Start-Process "iexplore.exe" $dpath}
         else {
@@ -2081,7 +2081,7 @@ function Open-SDN {
     $URL = $config.SDNMgmt
 
     if ($Chrome) {Start-Process "chrome.exe" $URL}
-    elseif ($Edge) {Start-Process shell:AppsFolder\Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge $URL}
+    elseif ($Edge) {Start-Process Microsoft-Edge:$URL}
     elseif ($Firefox) {Start-Process "firefox.exe" $URL}
     elseif ($InternetExplorer) {Start-Process "iexplore.exe" $URL}
     else {
@@ -2125,7 +2125,7 @@ function Open-SEIM {
     $URL = $config.SEIM
 
     if ($Chrome) {Start-Process "chrome.exe" $URL}
-    elseif ($Edge) {Start-Process shell:AppsFolder\Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge $URL}
+    elseif ($Edge) {Start-Process Microsoft-Edge:$URL}
     elseif ($Firefox) {Start-Process "firefox.exe" $URL}
     elseif ($InternetExplorer) {Start-Process "iexplore.exe" $URL}
     else {
@@ -2191,7 +2191,7 @@ function Open-SharePoint {
     $URL = $config.SharePoint
 
     if ($Chrome) {Start-Process "chrome.exe" $URL}
-    elseif ($Edge) {Start-Process shell:AppsFolder\Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge $URL}
+    elseif ($Edge) {Start-Process Microsoft-Edge:$URL}
     elseif ($Firefox) {Start-Process "firefox.exe" $URL}
     elseif ($InternetExplorer) {Start-Process "iexplore.exe" $URL}
     else {
@@ -2236,7 +2236,7 @@ Function Open-vCenter {
     $URL = $config.vCenter
 
     if ($Chrome) {Start-Process "chrome.exe" $URL}
-    elseif ($Edge) {Start-Process shell:AppsFolder\Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge $URL}
+    elseif ($Edge) {Start-Process Microsoft-Edge:$URL}
     elseif ($Firefox) {Start-Process "firefox.exe" $URL}
     elseif ($InternetExplorer) {Start-Process "iexplore.exe" $URL}
     else {
