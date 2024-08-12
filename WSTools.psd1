@@ -1,5 +1,5 @@
 #
-# Generated on: 5 December 2023
+# Generated on: 12 July 2024
 #
 
 @{
@@ -19,7 +19,7 @@
     GUID = 'ceb3bb6b-dfdc-4f41-bab0-43624ff14605'
 
     # Copyright statement for this module
-    Copyright = '2023 Wandering Stag, LLC'
+    Copyright = '2024 Wandering Stag, LLC'
 
     # Description of the functionality provided by this module
     Description = 'Provides ability to perform a lot of tasks in an automated manner, Insider Threat detection, remediations, and enhancements to PowerShell. Also provides numerous shortcuts.'
