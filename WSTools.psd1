@@ -1,5 +1,5 @@
 #
-# Generated on: 5 December 2023
+# Generated on: 9 October 2024
 #
 
 @{
@@ -7,19 +7,19 @@
     RootModule = 'WSTools.psm1'
 
     # Version number of this module.
-    ModuleVersion = '2023.12.0'
+    ModuleVersion = '2024.10.0'
 
     # Author of this module
     Author = 'Skyler Hart'
 
     # Company or vendor of this module
-    CompanyName = 'Wandering Stag, LLC'
+    # CompanyName = ''
 
     # ID used to uniquely identify this module
     GUID = 'ceb3bb6b-dfdc-4f41-bab0-43624ff14605'
 
     # Copyright statement for this module
-    Copyright = '2023 Wandering Stag, LLC'
+    Copyright = '2024 Skyler Hart'
 
     # Description of the functionality provided by this module
     Description = 'Provides ability to perform a lot of tasks in an automated manner, Insider Threat detection, remediations, and enhancements to PowerShell. Also provides numerous shortcuts.'
@@ -97,7 +97,7 @@
                 'Logging','Network','Reporting','Monitoring','Configuration','GroupPolicy'
 
             # A URL to the license for this module.
-            LicenseUri = 'https://dev.azure.com/wanderingstag/_git/WSTools?path=%2FLICENSE'
+            LicenseUri = 'https://github.com/WanderingStag/WSTools/blob/master/LICENSE'
 
             # A URL to the main website for this project.
             ProjectUri = 'https://wanderingstag.github.io'
@@ -106,7 +106,7 @@
             IconUri = 'https://wanderingstag.github.io/wp-content/uploads/2020/08/WSToolsLogo.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'https://dev.azure.com/wanderingstag/_git/WSTools?path=%2FChangeLog.txt'
+            ReleaseNotes = 'https://github.com/WanderingStag/WSTools/blob/master/ChangeLog.txt'
 
             # Prerelease string of this module
             # Prerelease = ''

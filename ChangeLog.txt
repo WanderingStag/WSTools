@@ -4,6 +4,15 @@ Known issues:
 
 ######################
 #                    #
+#      2024.10       #
+#                    #
+######################
+New features and other changes:
+1. Added support for Windows 11 version 24H2.
+2. Changed some links in the module manifest and copyright information.
+
+######################
+#                    #
 #      2023.12       #
 #                    #
 ######################

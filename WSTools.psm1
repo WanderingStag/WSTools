@@ -618,6 +618,13 @@ function ConvertFrom-BuildNumber {
                     Version ="23H2 (2309)"
                 }
             }
+            elseif ($BuildNumber -eq 26100) {
+                [PSCustomObject]@{
+                    OS = "Windows 11"
+                    Build = $BuildNumber
+                    Version ="24H2 (2409)"
+                }
+            }
         }
     }
 }
@@ -1935,6 +1942,9 @@ function Get-HWInfo {
                         elseif ($Build -eq 19046 -or $Build -eq 22631) {# Win 10 Win 11
                             $OS = $OS + " v23H2"
                         }
+                        elseif ($Build -eq 26100) {#Win 11
+                            $OS = $OS + " v24H2"
+                        }
                     }# if os win 10, srv 2016, or srv 2019
 
                     # Get Processor Information
@@ -3123,6 +3133,9 @@ Function Get-OperatingSystem {
                     elseif ($Build -eq 19046 -or $Build -eq 22631) {#Win 10 Win 11
                         $OS = $OS + " v23H2"
                     }
+                    elseif ($Build -eq 26100) {#Win 11
+                        $OS = $OS + " v24H2"
+                    }
                 }#if os win 10, srv 2016, or srv 2019
             }#try
             catch {
@@ -3192,6 +3205,9 @@ Function Get-OperatingSystem {
                         }
                         elseif ($Build -eq 19046 -or $Build -eq 22631) {#Win 10 Win 11
                             $OS = $OS + " v23H2"
+                        }
+                        elseif ($Build -eq 26100) {#Win 11
+                            $OS = $OS + " v24H2"
                         }
                     }#if os win 10, srv 2016, or srv 2019
                     else {$OS = $value}
@@ -3319,6 +3335,9 @@ Function Get-OperatingSystem {
                 }
                 elseif ($Build -eq 19046 -or $Build -eq 22631) {#Win 10 Win 11
                     $OS = $OS + " v23H2"
+                }
+                elseif ($Build -eq 26100) {#Win 11
+                    $OS = $OS + " v24H2"
                 }
             }#if os win 10, win 11, srv 2016, or srv 2019
             else {$OS = $value}
