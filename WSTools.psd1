@@ -1,5 +1,5 @@
 #
-# Generated on: 12 July 2024
+# Generated on: 26 November 2024
 #
 
 @{
@@ -7,19 +7,19 @@
     RootModule = 'WSTools.psm1'
 
     # Version number of this module.
-    ModuleVersion = '2023.12.0'
+    ModuleVersion = '2024.11.0'
 
     # Author of this module
     Author = 'Skyler Hart'
 
     # Company or vendor of this module
-    CompanyName = 'Wandering Stag, LLC'
+    CompanyName = 'Skyler Hart'
 
     # ID used to uniquely identify this module
     GUID = 'ceb3bb6b-dfdc-4f41-bab0-43624ff14605'
 
     # Copyright statement for this module
-    Copyright = '2024 Wandering Stag, LLC'
+    Copyright = '2024 Skyler Hart'
 
     # Description of the functionality provided by this module
     Description = 'Provides ability to perform a lot of tasks in an automated manner, Insider Threat detection, remediations, and enhancements to PowerShell. Also provides numerous shortcuts.'
@@ -61,10 +61,7 @@
     # FormatsToProcess = @()
 
     # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
-    NestedModules = @('WS_DomainMgmt\WS_DomainMgmt.psm1',
-        'WS_InTh\WS_InTh.psm1',
-        'WS_PowerShell\WS_PowerShell.psm1',
-        'WS_Remediation\WS_Remediation.psm1')
+    # NestedModules = @('')
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
     FunctionsToExport = '*'
@@ -106,7 +103,7 @@
             IconUri = 'https://wanderingstag.github.io/wp-content/uploads/2020/08/WSToolsLogo.png'
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'https://dev.azure.com/wanderingstag/_git/WSTools?path=%2FChangeLog.txt'
+            # ReleaseNotes = 'https://dev.azure.com/wanderingstag/_git/WSTools?path=%2FChangeLog.txt'
 
             # Prerelease string of this module
             # Prerelease = ''

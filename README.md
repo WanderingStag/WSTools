@@ -90,3 +90,5 @@ For adding the Visual Studio Code PowerShell Snippets do the following:
 3. Type **PowerShell** then press **Enter**.
 4. Select **powershell.json**.
 5. Paste the copied text between the { } brackets and save the file.
+
+get more open commands here: <https://sysadminstricks.com/tricks/most-useful-microsoft-management-console-snap-in-control-files-msc-files.html>
