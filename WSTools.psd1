@@ -20,6 +20,7 @@
 
     # Copyright statement for this module
     Copyright = '2024 Skyler Hart'
+    Copyright = '2024 Skyler Hart'
 
     # Description of the functionality provided by this module
     Description = 'Provides ability to perform a lot of tasks in an automated manner, Insider Threat detection, remediations, and enhancements to PowerShell. Also provides numerous shortcuts.'
@@ -94,7 +95,7 @@
                 'Logging','Network','Reporting','Monitoring','Configuration','GroupPolicy'
 
             # A URL to the license for this module.
-            LicenseUri = 'https://dev.azure.com/wanderingstag/_git/WSTools?path=%2FLICENSE'
+            LicenseUri = 'https://github.com/WanderingStag/WSTools/blob/master/LICENSE'
 
             # A URL to the main website for this project.
             ProjectUri = 'https://wanderingstag.github.io'
