@@ -412,10 +412,27 @@ Function Clear-Space {
 
 function Connect-RDP {
     <#
-    .Notes
+    .SYNOPSIS
+        Establishes a Remote Desktop Protocol (RDP) connection to a specified computer.
+
+    .DESCRIPTION
+        This function allows the user to connect to a remote computer via RDP. If a computer name is provided, it connects to that specific computer. If no computer name is provided, it will open the RDP client without specifying a target.
+
+    .PARAMETER ComputerName
+        Specifies the name of the computer to which you want to connect. This parameter is optional. If omitted, the RDP client will open without a specified target.
+
+    .EXAMPLE
+        Connect-RDP -ComputerName "Server01"
+        Connects to the computer named "Server01" using RDP.
+
+    .EXAMPLE
+        Connect-RDP
+        Opens the RDP client without specifying a target computer.
+
+    .NOTES
         AUTHOR: Skyler Hart
         CREATED: 2017-08-18 20:48:07
-        LASTEDIT: 2023-02-11 13:48:55
+        LASTEDIT: 2024-11-27 10:59:28
 
     .LINK
         https://wanderingstag.github.io
@@ -755,161 +772,242 @@ function Copy-UpdateHistory {
 
 function Copy-VSCodeExtensions {
     <#
+    .SYNOPSIS
+        Copies Visual Studio Code extensions from a specified repository to the user's local VSCode extensions directory.
+
+    .DESCRIPTION
+        This function copies all VSCode extensions from a defined repository to the user's local extensions directory, maintaining mirror consistency using robocopy.
+
+    .PARAMETER RepoPath
+        Specifies the path to the repository that contains the VSCode extensions. This path should be pre-configured in the WSTools configuration.
+
+    .EXAMPLE
+        Copy-VSCodeExtensions
+        Copies VSCode extensions from the configured repository to the user's local extensions directory.
+
     .NOTES
-        Author: Skyler Hart
-        Created: 2021-11-01 23:18:30
-        Last Edit: 2021-11-01 23:18:30
-        Keywords:
+        AUTHOR: Skyler Hart
+        CREATED: 2021-11-01 23:18:30
+        LASTEDIT: 2024-11-27 13:00:00
 
     .LINK
         https://wanderingstag.github.io
     #>
+    [CmdletBinding()]
+    param ()
 
     $repo = ($Global:WSToolsConfig).VSCodeExtRepo
-    $dst = "$env:userprofile\.vscode\extensions"
+    $dst = "$env:USERPROFILE\.vscode\extensions"
 
-    if (!(Test-Path $dst)) {
-        New-Item -Path $env:userprofile\.vscode -ItemType Directory -Name extensions -Force
+    if (-not (Test-Path -Path $dst)) {
+        New-Item -Path $dst -ItemType Directory -Force | Out-Null
     }
 
     robocopy $repo $dst /mir /mt:4 /r:4 /w:15 /njh /njs
 }
 
 
-function Copy-VSCodeSettingsToProfile {
+unction Copy-VSCodeSettingsToProfile {
     <#
+    .SYNOPSIS
+        Copies Visual Studio Code settings to the user's profile.
+
+    .DESCRIPTION
+        This function copies Visual Studio Code settings from a configured repository path to the user's profile, ensuring the settings are up-to-date.
+
+    .PARAMETER VSCodeSettingsPath
+        Specifies the path to the Visual Studio Code settings file. This path should be pre-configured in the WSTools configuration.
+
+    .EXAMPLE
+        Copy-VSCodeSettingsToProfile
+        Copies the VSCode settings from the configured repository path to the user's profile settings.
+
     .NOTES
-        Author: Skyler Hart
-        Created: 2021-11-01 22:14:14
-        Last Edit: 2021-11-01 22:14:14
-        Keywords: WSTools, Visual Studio Code, Preferences
+        AUTHOR: Skyler Hart
+        CREATED: 2021-11-01 22:14:14
+        LASTEDIT: 2024-11-27 13:00:00
 
     .LINK
         https://wanderingstag.github.io
     #>
+    [CmdletBinding()]
+    param ()
+
     $vscs = ($Global:WSToolsConfig).VSCodeSettingsPath
-    if (!(Test-Path $env:APPDATA\Code\User)) {
-        New-Item -Path $env:APPDATA\Code -ItemType Directory -Name User -Force
+    $userSettingsPath = "$env:APPDATA\Code\User\settings.json"
+
+    if (-not (Test-Path -Path "$env:APPDATA\Code\User")) {
+        New-Item -Path "$env:APPDATA\Code" -ItemType Directory -Name "User" -Force | Out-Null
     }
 
-    $i = Get-Content $vscs
+    $settingsContent = Get-Content -Path $vscs -Raw
 
-    if (Test-Path "$env:APPDATA\Code\User\settings.json") {
-        Set-Content -Path "$env:APPDATA\Code\User\settings.json" -Value $i -Force
-    }
-    else {
-        Add-Content -Path "$env:APPDATA\Code\User\settings.json" -Value $i -Force
+    if (Test-Path -Path $userSettingsPath) {
+        Set-Content -Path $userSettingsPath -Value $settingsContent -Force
+    } else {
+        Add-Content -Path $userSettingsPath -Value $settingsContent -Force
     }
 }
 
 
 function Disable-RDP {
     <#
+    .SYNOPSIS
+        Disables Remote Desktop Protocol (RDP) on the local computer.
+
+    .DESCRIPTION
+        This function disables RDP on the local computer by modifying the appropriate registry key to deny RDP connections.
+        It requires administrative privileges to execute.
+
+    .EXAMPLE
+        Disable-RDP
+        Disables RDP on the local computer.
+
     .NOTES
-        Author: Skyler Hart
-        Created: 2021-02-27 11:44:34
-        Last Edit: 2021-02-27 11:47:07
-        Requires:
-            -RunAsAdministrator
+        AUTHOR: Skyler Hart
+        CREATED: 2021-02-27 11:44:34
+        LASTEDIT: 2024-11-27 13:00:00
+        REQUIRES: RunAsAdministrator
 
     .LINK
         https://wanderingstag.github.io
     #>
+    [CmdletBinding()]
+    param ()
+
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
-    if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -value 1}
-    else {throw {"Must be ran as admin"}}
+    if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+        Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name "fDenyTSConnections" -Value 1
+    } else {
+        throw "Must be run as administrator."
+    }
 }
 
 
 function Disable-ServerManager {
     <#
+    .SYNOPSIS
+        Disables the Server Manager from launching automatically on the local computer.
+
+    .DESCRIPTION
+        This function disables the Server Manager from launching automatically on the local computer by disabling the related scheduled task.
+        It requires administrative privileges to execute.
+
+    .EXAMPLE
+        Disable-ServerManager
+        Disables the Server Manager from launching automatically on the local computer.
+
     .NOTES
-        Author: Skyler Hart
-        Created: 2020-05-08 23:18:39
-        Last Edit: 2020-10-06 13:25:11
+        AUTHOR: Skyler Hart
+        CREATED: 2020-05-08 23:18:39
+        LASTEDIT: 2024-11-27 13:00:00
+        REQUIRES: RunAsAdministrator
 
     .LINK
         https://wanderingstag.github.io
     #>
+    [CmdletBinding()]
+    param ()
+
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
-    if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {Get-ScheduledTask -TaskName ServerManager | Disable-ScheduledTask}
-    else {Write-Output "Must run this function as admin"}
+    if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+        Get-ScheduledTask -TaskName "ServerManager" | Disable-ScheduledTask
+    } else {
+        throw "Must be run as administrator."
+    }
 }
 
 
 function Enable-RDP {
     <#
+    .SYNOPSIS
+        Enables Remote Desktop Protocol (RDP) on the local computer.
+
+    .DESCRIPTION
+        This function enables RDP on the local computer by modifying the appropriate registry key to allow RDP connections.
+        It requires administrative privileges to execute.
+
+    .EXAMPLE
+        Enable-RDP
+        Enables RDP on the local computer.
+
     .NOTES
-        Author: Skyler Hart
-        Created: 2020-05-08 23:21:17
-        Last Edit: 2021-02-27 11:47:20
-        Requires:
-            -RunAsAdministrator
+        AUTHOR: Skyler Hart
+        CREATED: 2020-05-08 23:21:17
+        LASTEDIT: 2024-11-27 13:00:00
+        REQUIRES: RunAsAdministrator
 
     .LINK
         https://wanderingstag.github.io
     #>
-    $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
-    if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -value 0}
-    else {throw {"Must be ran as admin"}}
-}
+    [CmdletBinding()]
+    param ()
 
+    $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+    if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+        Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name "fDenyTSConnections" -Value 0
+    } else {
+        throw "Must be run as administrator."
+    }
+}
 
 function Enable-ServerManager {
     <#
+    .SYNOPSIS
+        Enables the Server Manager to launch automatically on the local computer.
+
+    .DESCRIPTION
+        This function enables the Server Manager to launch automatically on the local computer by enabling the related scheduled task.
+        It requires administrative privileges to execute.
+
+    .EXAMPLE
+        Enable-ServerManager
+        Enables the Server Manager to launch automatically on the local computer.
+
     .NOTES
-        Author: Skyler Hart
-        Created: 2021-12-16 21:29:35
-        Last Edit: 2021-12-16 21:29:35
+        AUTHOR: Skyler Hart
+        CREATED: 2021-12-16 21:29:35
+        LASTEDIT: 2024-11-27 13:00:00
+        REQUIRES: RunAsAdministrator
 
     .LINK
         https://wanderingstag.github.io
     #>
+    [CmdletBinding()]
+    param ()
+
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
-    if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {Get-ScheduledTask -TaskName ServerManager | Enable-ScheduledTask}
-    else {Write-Output "Must run this function as admin"}
+    if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+        Get-ScheduledTask -TaskName "ServerManager" | Enable-ScheduledTask
+    } else {
+        throw "Must be run as administrator."
+    }
 }
 
 
 function Format-IPList {
     <#
     .SYNOPSIS
-        Takes a list of IPs and sorts them.
+        Takes a list of IP addresses and sorts them.
 
     .DESCRIPTION
-        Enter two or more IPs and it will sort them in the appropriate order.
+        This function takes a list of IP addresses and sorts them in the appropriate order.
 
     .PARAMETER IPs
-        Used to specify the IP Addresses that you wish to sort.
+        Used to specify the IP addresses that you wish to sort.
 
     .EXAMPLE
-        C:\PS>Format-IPList 127.0.0.5,127.0.0.100,10.0.1.5,10.0.1.1,10.0.1.100
-        Example of how to use this cmdlet
+        Format-IPList -IPs 127.0.0.5, 127.0.0.100, 10.0.1.5, 10.0.1.1, 10.0.1.100
+        Sorts the given list of IP addresses in the correct order.
 
     .EXAMPLE
-        C:\PS>Format-IPList -IPs 127.0.0.5, 127.0.0.100, 10.0.1.5, 10.0.1.1, 10.0.1.100
-        Another example of how to use this cmdlet but with a parameter or switch.
-
-    .EXAMPLE
-        C:\PS>Sort-IPs 127.0.0.5, 127.0.0.100, 10.0.1.5, 10.0.1.1, 10.0.1.100
-        Using the alias Sort-IPs we can format the list of IPs.
-
-    .INPUTS
-        System.Net.IPAddress
-
-    .OUTPUTS
-        System.Array
-
-    .COMPONENT
-        WSTools
-
-    .FUNCTIONALITY
-        IPAddress, IPv4, Sort, List, Format
+        Sort-IPs 127.0.0.5, 127.0.0.100, 10.0.1.5, 10.0.1.1, 10.0.1.100
+        Uses the alias Sort-IPs to sort the list of IP addresses.
 
     .NOTES
-        Author: Skyler Hart
-        Created: 2023-10-11 10:58:24
-        Last Edit: 2023-10-11 11:14:45
+        AUTHOR: Skyler Hart
+        CREATED: 2023-10-11 10:58:24
+        LASTEDIT: 2024-11-27 13:00:00
 
     .LINK
         https://wanderingstag.github.io
@@ -917,23 +1015,15 @@ function Format-IPList {
     [CmdletBinding()]
     [Alias('Sort-IPList','Sort-IPs')]
     param(
-        [Parameter(
-            HelpMessage = "Enter one or more IPs separated by commas.",
-            Mandatory=$true,
-            ValueFromPipeline = $true
-        )]
+        [Parameter(Mandatory=$true, ValueFromPipeline=$true)]
         [ValidateNotNullOrEmpty()]
         [Alias('IPAddresses')]
-        [IPAddress[]]$IPs
+        [System.Net.IPAddress[]]$IPs
     )
 
     Process {
-        $IPs.IPAddressToString | Sort-Object {
-            # Extract the first 4 numbers from the current line
-            [int[]] $octets = [regex]::Matches( $_, '\d+' )[ 0..3 ].Value
-
-            # Create tuple that consists of the octets
-            [Tuple]::Create( $octets[0], $octets[1], $octets[2], $octets[3] )
+        $IPs | Sort-Object {
+            $_.GetAddressBytes() -as [System.Collections.IComparer]
         }
     }
 }
