@@ -1,6 +1,6 @@
 # WSTools
 
-![WSTools Logo](https://github.com/WanderingStag/WSTools/blob/master/Resources/WSTools_PowerShell_Module.png)
+![WSTools Logo](https://github.com/WanderingStag/WSTools/blob/master/WSTools_PowerShell_Module.png)
 
 ## Issues
 

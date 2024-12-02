@@ -680,7 +680,7 @@ function Copy-PowerShellJSON {
     if (!(Test-Path $env:APPDATA\Code\User\snippets)) {
         New-Item -Path $env:APPDATA\Code\User -ItemType Directory -Name snippets -Force
     }
-    Copy-Item -Path $PSScriptRoot\Resources\powershell.json -Destination $env:APPDATA\Code\User\snippets\powershell.json -Force
+    Copy-Item -Path $PSScriptRoot\powershell.json -Destination $env:APPDATA\Code\User\snippets\powershell.json -Force
 }
 
 
@@ -1235,7 +1235,7 @@ function Get-CommandList {
     }
     else {$commands = Get-Command -All | Select-Object HelpUri,ResolvedCommandName,Definition,Name,CommandType,ModuleName,RemotingCapability,Path,FileVersionInfo}
     $commands = $commands | Select-Object HelpUri,ResolvedCommandName,Definition,Name,CommandType,ModuleName,RemotingCapability,Path,FileVersionInfo -Unique
-    $slist = Import-Csv $PSScriptRoot\Resources\CommandListModules.csv
+    $slist = Import-Csv $PSScriptRoot\CommandListModules.csv
 
     $i = 0
     $number = $commands.length
@@ -2707,7 +2707,7 @@ function Get-ModuleList {
     $modules = Get-Module -ListAvailable | Select-Object -Unique
     if ($NotInCommandListModules) {
         $nil = @()
-        $clm = Import-Csv $PSScriptRoot\Resources\CommandListModules.csv
+        $clm = Import-Csv $PSScriptRoot\CommandListModules.csv
         $cm = $clm.Module
         foreach ($m in $modules) {
             $mn = $m.Name
@@ -6755,7 +6755,7 @@ function Start-WSToolsGUI {
     [CmdletBinding()]
     [Alias('wsgui','wstgui','Start-WSToolsTrayApp')]
     param()
-    Start-Process powershell.exe -ArgumentList "`$host.ui.RawUI.WindowTitle = 'WSTools Taskbar App'; & '$PSScriptRoot\Resources\WSTools_SystemTrayApp.ps1'"
+    Start-Process powershell.exe -ArgumentList "`$host.ui.RawUI.WindowTitle = 'WSTools Taskbar App'; & '$PSScriptRoot\WSTools_SystemTrayApp.ps1'"
 }
 
 
@@ -15172,7 +15172,7 @@ Function Install-Patches {
     $config = $Global:WSToolsConfig
     $Patches = $config.LocalPatches
 
-    $fp = $PSScriptRoot.Substring(0,($PSScriptRoot.Length-15)) + "\Resources\InstallRemote.ps1"
+    $fp = $PSScriptRoot.Substring(0,($PSScriptRoot.Length-15)) + "\InstallRemote.ps1"
 
     if ($ComputerName -eq $env:COMPUTERNAME) {
         Copy-Item -Path $fp -Destination $Patches
@@ -20057,7 +20057,7 @@ Function Set-RemediationValues {
 
         #For local computer, properly set SHA and PKCS
         if ($comp -eq $env:COMPUTERNAME) {
-            $filepath = $PSScriptRoot.Substring(0,($PSScriptRoot.Length-15)) + "\Resources\SHAandPKCS.reg"
+            $filepath = $PSScriptRoot.Substring(0,($PSScriptRoot.Length-15)) + "\SHAandPKCS.reg"
             reg import $filepath
         }
 
