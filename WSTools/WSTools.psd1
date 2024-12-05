@@ -7,7 +7,7 @@
     RootModule = 'WSTools.psm1'
 
     # Version number of this module.
-    ModuleVersion = '2024.11.0'
+    ModuleVersion = '2024.12.0'
 
     # Author of this module
     Author = 'Skyler Hart'
