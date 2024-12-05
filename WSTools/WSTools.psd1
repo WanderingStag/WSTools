@@ -1,5 +1,5 @@
 #
-# Generated on: 26 November 2024
+# Generated on: 5 December 2024
 #
 
 @{
@@ -19,7 +19,6 @@
     GUID = 'ceb3bb6b-dfdc-4f41-bab0-43624ff14605'
 
     # Copyright statement for this module
-    Copyright = '2024 Skyler Hart'
     Copyright = '2024 Skyler Hart'
 
     # Description of the functionality provided by this module
