@@ -10,8 +10,8 @@ Class WSTools {
         $root = $PSScriptRoot.Substring(0,($PSScriptRoot.Length-10))
 		$this.ScriptRoot = $root
 		$this.Config = $Global:WSToolsConfig
-		$this.Version = (Test-ModuleManifest $root\WSTools.psd1).Version
-		$this.LastUpdate = (Get-Item $root\WSTools.psd1).LastWriteTime
+		$this.Version = (Test-ModuleManifest $root\2024.12.1\WSTools.psd1).Version
+		$this.LastUpdate = (Get-Item $root\2024.12.1\WSTools.psd1).LastWriteTime
 	}
 
 	[void] AddUserConfigItem ($Name, $Value) {
@@ -19,7 +19,7 @@ Class WSTools {
 	}
 
 	[void] SaveUserConfig () {
-		$ModuleConfig = "$PSScriptRoot\Config.ps1"
+		$ModuleConfig = "$PSScriptRoot\2024.12.1\Config.ps1"
 
 		$items = $Global:WSToolsConfig | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name
 
