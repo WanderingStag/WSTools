@@ -3,7 +3,7 @@
     RootModule = 'WSTools.psm1'
 
     # Version number of this module.
-    ModuleVersion = '1.0.0' # This will be updated automatically upon new releases
+    ModuleVersion = '2024.12.1'
 
     # Author of this module
     Author = 'Skyler Hart'
@@ -12,7 +12,7 @@
     CompanyName = 'Skyler Hart'
 
     # ID used to uniquely identify this module
-    GUID = '00000000-0000-0000-0000-000000000000' # This will be regenerated on new releases
+    GUID = '9ec00217-7f1f-4a5f-b61b-d59843a8a18f'
 
     # Copyright statement for this module
     Copyright = '2024 Skyler Hart'
@@ -100,7 +100,7 @@
 
             # ReleaseNotes of this module
             ReleaseNotes = @(
-                "Updated for release on $(Get-Date -Format 'yyyy-MM-dd')"
+                "Updated for release on 2024-12-05"
             )
 
             # Prerelease string of this module
