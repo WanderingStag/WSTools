@@ -1,0 +1,29 @@
+name: Update WSTools.psd1 on Release
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  update-psd1:
+    name: Update WSTools.psd1
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Update WSTools.psd1
+        run: |
+          python update_psd1.py
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add WSTools.psd1
+          git commit -m "Update WSTools.psd1 version and date for new release"
+          git push

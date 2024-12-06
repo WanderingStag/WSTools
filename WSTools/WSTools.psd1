@@ -1,13 +1,14 @@
-#
-# Generated on: 5 December 2024
-#
+@{
+
+
+}
 
 @{
     # Script module or binary module file associated with this manifest.
     RootModule = 'WSTools.psm1'
 
     # Version number of this module.
-    ModuleVersion = '2024.12.1'
+    ModuleVersion = '1.0.0' # This will be updated automatically upon new releases
 
     # Author of this module
     Author = 'Skyler Hart'
@@ -16,7 +17,7 @@
     CompanyName = 'Skyler Hart'
 
     # ID used to uniquely identify this module
-    GUID = 'ceb3bb6b-dfdc-4f41-bab0-43624ff14605'
+    GUID = '00000000-0000-0000-0000-000000000000' # This will be regenerated on new releases
 
     # Copyright statement for this module
     Copyright = '2024 Skyler Hart'
@@ -103,7 +104,9 @@
             IconUri = 'https://wanderingstag.github.io/wp-content/uploads/2020/08/WSToolsLogo.png'
 
             # ReleaseNotes of this module
-            # ReleaseNotes = 'https://dev.azure.com/wanderingstag/_git/WSTools?path=%2FChangeLog.txt'
+            ReleaseNotes = @(
+                "Updated for release on $(Get-Date -Format 'yyyy-MM-dd')"
+            )
 
             # Prerelease string of this module
             # Prerelease = ''
