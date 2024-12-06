@@ -1,0 +1,28 @@
+name: Publish WSTools PowerShell Module
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up PowerShell
+        uses: actions/setup-powershell@v2
+
+      - name: Install PowerShellGet
+        run: Install-Module -Name PowerShellGet -Force -Scope CurrentUser -AllowClobber
+        shell: pwsh
+
+      - name: Publish Module to PowerShell Gallery
+        run: |
+          $apiKey = "${{ secrets.PSGALLERY_API_KEY }}"
+          Publish-Module -Path './WSTools' -NuGetApiKey $apiKey
+        shell: pwsh
