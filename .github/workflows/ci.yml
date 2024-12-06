@@ -20,7 +20,10 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Set up PowerShell
-        uses: actions/setup-powershell@v2
+        uses: Azure/powershell-action@v1
+        with:
+          azure-powershell-version: "latest"  # Or specify a version like "7.2.0"
+
 
       - name: Install PSScriptAnalyzer
         run: |
@@ -59,7 +62,10 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Set up PowerShell
-        uses: actions/setup-powershell@v2
+        uses: Azure/powershell-action@v1
+        with:
+          azure-powershell-version: "latest"  # Or specify a version like "7.2.0"
+
 
       - name: Install Pester
         run: |
@@ -82,7 +88,10 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Set up PowerShell
-        uses: actions/setup-powershell@v2
+        uses: Azure/powershell-action@v1
+        with:
+          azure-powershell-version: "latest"  # Or specify a version like "7.2.0"
+
 
       - name: Publish Module
         run: |
