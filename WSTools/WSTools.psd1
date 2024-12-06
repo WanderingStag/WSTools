@@ -1,9 +1,4 @@
 @{
-
-
-}
-
-@{
     # Script module or binary module file associated with this manifest.
     RootModule = 'WSTools.psm1'
 
