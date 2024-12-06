@@ -5,49 +5,49 @@
 )]
 
 $Global:WSToolsConfig = [PSCustomObject]@{
-    # WSTools config v2023.11
+    # WSTools config v2024.12
     # Remove the # symbol infront of a line to enable it
     ###########################################################################################################################################
-    # Application Service Names - used in Stop-AppService. Uses match to match the name of a service that is running and stops it.
+    #Application Service Names - used in Stop-AppService. Uses match to match the name of a service that is running and stops it.
     AppNames = @('Apache','BarTender','Cognos','Commvault','Dameware','Exchange','IBM','IDenticard','IIS','InstallRoot','LiveLink','Moodle','Oracle','Seagull','SharePoint','SolarWinds','Splunk','SQL','Tanium','Tomcat','Tumbleweed','World Wide Web','WSUS')
 
-    # Ignore list. Used in several functions. Computers, users, and groups to ignore that cause issues. Objects such as clustered object computer names, non-windows systems, and other such things. Uses -match in some places and -eq in others so be as precise as possible.
-    # Ignore = @('comp1','comp2','user1','user2','group1','group2')
+    #Ignore list. Used in several functions. Computers, users, and groups to ignore that cause issues. Objects such as clustered object computer names, non-windows systems, and other such things. Uses -match in some places and -eq in others so be as precise as possible.
+    #Ignore = @('comp1','comp2','user1','user2','group1','group2')
 
-    # Network speed test settings, paths are for folder where files will be created. File size can be entered in the format 100KB, 5MB, 1GB, etc.
+    #Network speed test settings, paths are for folder where files will be created. File size can be entered in the format 100KB, 5MB, 1GB, etc.
     NSLocal = "$env:Temp"
-    # NSRemote = "\\servername\Temp"
+    NSRemote = "\\servername\Temp"
     NSFileSize = 5MB
 
-    # Privileged groups list - used for some monitoring and reporting features. You should populate this with groups that grant admin permissions.
-    # PrivGroups = @('CompAdmins_AD','CompAdmins_Local','DHCP Administrators','UserAdmins_AD','Priv Role - Admins','Priv Role - Domain Admin')
+    #Privileged groups list - used for some monitoring and reporting features. You should populate this with groups that grant admin permissions.
+    PrivGroups = @('CompAdmins_AD','CompAdmins_Local','DHCP Administrators','UserAdmins_AD','Priv Role - Admins','Priv Role - Domain Admin')
 
-    # Default time of reboot when no time is specified in Set-Reboot. Must be entered in HHmm (24 hour/military time) format. Ex: For 7 PM enter 1900.
-    # RebootTime = "0030"
+    #Default time of reboot when no time is specified in Set-Reboot. Must be entered in HHmm (24 hour/military time) format. Ex: For 7 PM enter 1900.
+    RebootTime = "0030"
 
-    # Script Repository. Can be local or network. If network it needs to be the UNC.
-    # ScriptRepo = ""
+    #Script Repository. Can be local or network. If network it needs to be the UNC.
+    ScriptRepo = "D:\OneDrive\Scripts"
 
-    # Script Working Directory. Some functions use this directory to pull/save files from/to by default.
-    # ScriptWD = "C:\Scripts"
+    #Script Working Directory. Some functions use this directory to pull/save files from/to by default.
+    ScriptWD = "C:\Scripts"
 
-    # Default time of shutdown when no time is specified in Set-Shutdown. Must be entered in HHmm (24 hour/military time) format. Ex: For 7 PM enter 1900.
-    # ShutdownTime = "0040"
+    #Default time of shutdown when no time is specified in Set-Shutdown. Must be entered in HHmm (24 hour/military time) format. Ex: For 7 PM enter 1900.
+    ShutdownTime = "0040"
 
-    # Update computer. Used when you have a computer you modify the module on then push it out to the update path from that computers local repository (hardcoded to $env:ProgramFiles\WindowsPowerShell\Modules\WSTools).
-    # UpdateComp = "computername" #do not use the fqdn, only the shortname
+    #Update computer. Used when you have a computer you modify the module on then push it out to the update path from that computers local repository (hardcoded to $env:ProgramFiles\WindowsPowerShell\Modules\WSTools).
+    UpdateComp = "skyscomputer" #do not use the fqdn, only the shortname
 
-    # Path to where module files are stored on a central server. Used in Install-WSTools (aka Copy-WSTools) and Update-WSTools
-    # UpdatePath = ""
+    #Path to where module files are stored on a central server. Used in Install-WSTools (aka Copy-WSTools) and Update-WSTools
+    UpdatePath = "\\servername\Apps\Microsoft\PowerShell\Modules\WSTools"
 
-    # Additional paths is used for pushing out to folders in addtion to UpdatePath.
-    # AdditionalUpdatePaths = @()
+    #Additional paths is used for pushing out to folders in addtion to UpdatePath.
+    #AdditionalUpdatePaths = @('\\servername\apps\Microsoft\PowerShell\Modules\WSTools','D:\OneDrive\Scripts\Modules\WSTools')
 
-    # Old PowerShell Modules. Used in Remove-OldPowerShellModule.
+    #Old PowerShell Modules. Used in Remove-OldPowerShellModule.
     OldPSModule = @('SHTool','SHTools','SkysTool')
 
-    # Help folder location used by Update-HelpFromFile
-    # HelpFolder = ""
+    #Help folder location used by Update-HelpFromFile
+    HelpFolder = "\\servername\apps\Microsoft\PowerShell\OfflineHelp"
 
     # Used in Get-ADComplianceReport. OU's must be entered in distinguishedName format.
     # Ex for single OU: UserOUs = 'OU=Users,DC=wstools,DC=dev'
@@ -66,118 +66,116 @@ $Global:WSToolsConfig = [PSCustomObject]@{
     ################################
     ##    App/Patching settings   ##
     ################################
-    # Location on network where you store applications
-    # AppRepo = ""
+    #Location on network where you store applications
+    AppRepo = "\\servername\apps\"
 
-    # CMTrace application location on network (if can't be found on computer it looks here). Must be full file path to include the file extension.
-    # CMTrace = ""
+    #CMTrace application location on network (if can't be found on computer it looks here)
+    CMTrace = "\\servername\apps\Tools\CMTrace.exe"
 
-    # Java exception.sites file path. Only give path to the folder it's in.
-    # JException = ""
+    #Java exception.sites file path. Only give path to the folder it's in.
+    JException = "\\servername\apps\Java"
 
-    # Local Patches folder on machines.
-    # LocalPatches = ""
+    #Local Patches folder on machines - this does not change the copy and install functions under WS_Remediation. They will still try to copy to C:\Patches on the remote machine.
+    LocalPatches = "C:\Patches"
 
-    # Network Patch Repository
-    # PatchRepo = ""
+    #Network Patch Repository
+    PatchRepo = "\\servername\apps\Patches"
 
-    # Local/Network PowerShell Repository
-    # LocalPSRepo = ""
+    #Local/Network PowerShell Repository
+    LocalPSRepo = "\\servername\Apps\Microsoft\PowerShell\Modules"
 
-    # Visio Stencil Path
-    # Stencils = ""
+    #Visio Stencil Path
+    Stencils = "\\servername\apps\Tools\Visio Stencils"
 
-    # Save-UpdateHistory path also changes Save-MaintenanceReport path
-    # UHPath = ""
+    #Save-UpdateHistory path also changes Save-MaintenanceReport path
+    UHPath = "\\servername\apps\ComputerInfo\Updates"
 
-    # Visual Studio Code extensions path (network share or local path) used in Copy-VSCodeExtensions.
-    # VSCodeExtRepo = ""
+    #Visual Studio Code extensions path (network share or local path) used in Copy-VSCodeExtensions.
+    VSCodeExtRepo = "\\servername\apps\Patches\VisualStudioCode\Extensions"
 
-    # Visual Studio Code settings path (network share or local path) used in Copy-VSCodeSettingsToProfile. Needs to be a txt or JSON file.
-    # VSCodeSettingsPath = ""
+    #Visual Studio Code settings path (network share or local path) used in Copy-VSCodeSettingsToProfile. Needs to be a txt or JSON file.
+    VSCodeSettingsPath = "\\servername\apps\Patches\VisualStudioCode\Settings.txt"
 
     ################################
     ##            DRA             ##
     ################################
     #### only remove the # in front of these and modify them if you have DRA Host/REST servers
-    # DRADomain = ""
-    # DRAHostServer = ""
-    # DRAHostPort = 11192 #if not specified 11192 is used by default
-    # DRARESTServer = ""
-    # DRARESTPort = 8755 #if not specified 8755 is used by default
-    # DRAInstallLocation = "C:\Program Files (x86)\netiq\DRA Extensions\modules\NetIQ.DRA.PowerShellExtensions"
-    # DRAInstallFile = ""
+    #DRADomain = "wstools.dev"
+    #DRAHostServer = "server.wstools.dev"
+    #DRAHostPort = 11192 #if not specified 11192 is used by default
+    #DRARESTServer = "server.wstools.dev"
+    #DRARESTPort = 8755 #if not specified 8755 is used by default
+    #DRAInstallLocation = "C:\Program Files (x86)\netiq\DRA Extensions\modules\NetIQ.DRA.PowerShellExtensions"
+    #DRAInstallFile = "\\servername\apps\Microsoft\PowerShell\Modules\DRA"
 
     ################################
     ##         Email relay        ##
     ################################
-    # Settings for Test-EmailRelay
-    # Sender = ""
-    # SMTPServer = ""
-    # SMTPPort = 25
+    #Settings for Test-EmailRelay
+    #Sender = "noreply@wstools.dev"
+    #SMTPServer = "smtprelay.wstools.dev"
+    #SMTPPort = 25
 
     ################################
     ##      Mgmt/Suport URLs      ##
     ################################
-    # Open-CMLibrary
-    # CMLibrary = "https://servername"
+    #Open-CMLibrary
+    #CMLibrary = "https://cmlibrary.wstools.dev"
 
-    # Open-ECP/Open-EAC #exchange control panel aka exchange admin center (eac)
-    # EAC = "https://servername/ecp"
+    #Open-ECP/Open-EAC #exchange control panel aka exchange admin center (eac)
+    #EAC = "https://owa.wstools.dev/ecp"
 
-    # Open-HomeAssistant
-    # HomeAssistant = "http://servername:8123"
+    #Open-HomeAssistant
+    HomeAssistant = "https://homeassistant.wanderingstag.com"
 
-    # HP iLO management in the Open-iLO function
-    # iLO = "https://servername"
+    #HP iLO management in the WSTools\WS_DomainMgmt Open-iLO function
+    #iLO = "https://iloaddress.wstools.dev"
 
-    # Open-LexmarkManagementConsole and Open-PrintRelease
-    # LMC = "https://servername/lmc"
-    # PrintRelease = "https://servername/PrintRelease"
+    #Open-LexmarkManagementConsole and Open-PrintRelease
+    #LMC = "https://lmcserver.wstools.dev/lmc"
+    #PrintRelease = "https://lmcserver.wstools.dev/PrintRelease"
 
-    # Open diagrams (Open-NetworkDiagram and Open-RackElevation). Can be file/unc path or URL.
-    # NetDiagram = ""
-    # RackEl = ""
+    #Open diagrams (Open-NetworkDiagram and Open-RackElevation). Can be file/unc path or URL.
+    NetDiagram = "\\servername\apps\ComputerInfo\Diagram\networkdiagram.vsdx"
+    RackEl = "\\servername\apps\ComputerInfo\Diagram\rackelevation.vsdx"
 
-    # Open-OWA
-    # OWA = "https://servername"
+    #Open-OWA
+    #OWA = "https://owa.wstools.dev"
 
-    # Open-EITSM. Because of the aliases (Open-Remedy, EITSM, Open-ServiceNow) this can be used for any ticketing system
-    # Remedy = "https://servername"
+    #Open-Remedy. Because of the aliases (Open-EITSM, EITSM) this can be used for any ticketing system
+    #Remedy = "https://remedy.wstools.dev"
 
-    # Open-SharePoint
-    # SharePoint = "https://servername"
+    #Open-SharePoint
+    #SharePoint = "https://sharepoint.wstools.dev"
 
-    # Open-SDNManagement aka Open-Unifi
-    # SDNMgmt = "https://servername"
+    #Open-SDNManagement aka Open-Unifi
+    SDNMgmt = "https://unifi.wstools.dev"
 
-    # Open-SEIM
-    # SEIM = "https://servername"
+    #Open-SEIM
+    #SEIM = "https://seim.wstools.dev"
 
-    # Open-vCenter
-    # vCenter = "https://servername"
+    #Open-vCenter
+    #vCenter = "https://vcenter.wstools.dev/"
 
     ################################
     ##         Preferences        ##
     ################################
     # (will be set when using Set-Preferences)
 
-    # Set whether you want explorer to open to Quick Access or This PC. Windows defaults to QuickAccess ($false).
-    # We recommend setting this to This PC ($true) if you are an admin.
+    #Set whether you want explorer to open to Quick Access or This PC. Windows defaults to QuickAccess ($false). We recommend setting this to This PC ($true) if you are an admin.
     Explorer = $true
 
-    # Show file extensions ($true) or do not show file extensions ($false - Windows default.)
+    #Show file extensions ($true) or do not show file extensions ($false - Windows default.)
     FileExtensions = $true
 
-    # Show hidden files ($true) or do not show hidden files ($false - Windows default.)
+    #Show hidden files ($true) or do not show hidden files ($false - Windows default.)
     HiddenFiles = $true
 
-    # Add "Shortcut - " text to any new shortcut. Requires you to log off then log back on before changes take effect.
+    #Add "Shortcut - " text to any new shortcut. Requires you to log off then log back on before changes take effect.
     ShortcutText = $false
 
-    # When opening documents of unknown file types, recommend to lookup an App that can open them in the Windows
-    # Store ($true - Windows default) or not recommend an App in the Store ($false.)
-    # Doesn't always work
+    #When opening documents of unknown file types, recommend to lookup an App that can open them in the Windows Store ($true - Windows default) or not recommend an App in the Store ($false.)
+    #Doesn't always work
     StoreLookup = $false
 
     # PSReadline Options
@@ -187,54 +185,54 @@ $Global:WSToolsConfig = [PSCustomObject]@{
     ################################
     ##         Remediation        ##
     ################################
-    # Install file locations - for normal installation files.
-    # a7Zip = "" #64-bit only unless you change Copy-7Zip to use 32-bit
-    # EdgeVanilla = ""
-    # Git = ""
-    # IE11 = ""
-    # MECM = ""
-    # OneDrive = ""
-    # SplunkUF = ""
-    # SSMS = "" #sql server management studio
-    # SysInternals = ""
-    # VSCode = ""
-    # VLC = ""
-    # VMwareTools = ""
-    # Wireshark = ""
-    # WMF3 = ""
-    # WMF4 = ""
-    # WMF5 = ""
-    # Zoom = ""
+    #Install file locations - for normal installation files.
+    a7Zip = "\\servername\apps\Tools\7zip" #64-bit only unless you change Copy-7Zip to use 32-bit
+    EdgeVanilla = "\\servername\apps\Patches\Edge"
+    Git = "\\servername\apps\Patches\GitSCM"
+    IE11 = "\\servername\apps\Patches\IE\IE11"
+    MECM = "\\servername\apps\Microsoft\SCCM"
+    OneDrive = "\\servername\apps\Patches\OneDrive"
+    SplunkUF = "\\servername\apps\Patches\Splunk_Forwarder"
+    SSMS = "\\servername\apps\Patches\SQL\SSMS" #sql server management studio
+    SysInternals = "\\servername\apps\Tools\SysinternalsSuite"
+    VSCode = "\\servername\apps\Patches\VisualStudioCode\VSCode_Installer"
+    VLC = "\\servername\apps\Tools\VLC"
+    VMwareTools = "\\servername\apps\Patches\VMware_Tools"
+    Wireshark = "\\servername\apps\Tools\Wireshark"
+    WMF3 = "\\servername\apps\Microsoft\Windows Management Framework 3.0"
+    WMF4 = "\\servername\apps\Microsoft\Windows Management Framework 4.0"
+    WMF5 = "\\servername\apps\Microsoft\Windows Management Framework 5.1"
+    Zoom = "\\servername\apps\Approved\Zoom"
 
-    # Install file locations that use the PowerShell App Deployment Toolkit from https://psappdeploytoolkit.com/
-    # a90Meter = ""
-    # ActivClient = ""
-    # Acrobat = ""
-    # AEM = ""
-    # AxwayServer = ""
-    # AxwayClient = ""
-    # Chrome = ""
-    # DSET = ""
-    # Edge = ""
-    # Encase = ""
-    # Firefox = ""
-    # InfoPath = ""
-    # Java = ""
-    # JRSS = ""
-    # NetBanner = ""
-    # Office2016 = ""
-    # Silverlight = ""
-    # Tanium = ""
-    # Teams = ""
-    # Titus = ""
-    # VPN = ""
+    #Install file locations that use the PowerShell App Deployment Toolkit from https://psappdeploytoolkit.com/
+    a90Meter = "\\servername\apps\Patches\SDC-APPS\90Meter"
+    ActivClient = "\\servername\apps\Patches\SDC-APPS\ActivClient"
+    Acrobat = "\\servername\apps\Patches\SDC-APPS\Adobe\Acrobat NIPR"
+    AEM = "\\servername\apps\Patches\SDC-APPS\Adobe\AEM_FormsDesigner"
+    AxwayServer = "\\servername\apps\Patches\SDC-APPS\Axway\DSCC"
+    AxwayClient = "\\servername\apps\Patches\SDC-APPS\Axway\NIPR"
+    Chrome = "\\servername\apps\Patches\SDC-APPS\Chrome"
+    DSET = "\\servername\apps\Patches\SDC-APPS\DSET"
+    Edge = "\\servername\apps\Patches\SDC-APPS\Edge"
+    Encase = "\\servername\apps\Patches\SDC-APPS\Encase\NIPR"
+    Firefox = "\\servername\apps\Patches\SDC-APPS\Firefox"
+    InfoPath = "\\servername\apps\Patches\SDC-APPS\InfoPath"
+    Java = "\\servername\apps\Patches\SDC-APPS\Java\NIPR"
+    JRSS = "\\servername\apps\Patches\SDC-APPS\JRSS"
+    NetBanner = "\\servername\apps\Patches\SDC-APPS\NetBanner"
+    Office2016 = "\\servername\apps\Patches\SDC-APPS\Office2016"
+    Silverlight = "\\servername\apps\Patches\SDC-APPS\Silverlight"
+    Tanium = "\\servername\apps\Patches\SDC-APPS\Tanium\NIPR"
+    Teams = "\\servername\apps\Patches\SDC-APPS\Teams"
+    Titus = "\\servername\apps\Patches\SDC-APPS\Titus"
+    VPN = "\\servername\apps\Patches\SDC-APPS\VPN"
 
     ########################################
     ##         Remediation Settings       ##
     ##            not in use yet          ##
     ########################################
-    # Ciphers - changes take effect immediately after change
-    # Set to "ffffffff" to enable. Set to 0 to disable.
+    #Ciphers - changes take effect immediately after change
+    ##Set to "ffffffff" to enable. Set to 0 to disable.
     RC2_56_56Enabled = 0
     RC2_40_128Enabled = 0
     RC2_56_128Enabled = 0
@@ -250,18 +248,18 @@ $Global:WSToolsConfig = [PSCustomObject]@{
 
     NullEnabled = 0
 
-    # Hashes - changes take effect immediately after change
-    # Set to "ffffffff" to enable. Set to 0 to disable.
+    #Hashes - changes take effect immediately after change
+    ##Set to "ffffffff" to enable. Set to 0 to disable.
     MD5Enabled = 0 #DevSkim: ignore DS126858
     SHAEnabled = "ffffffff" #THIS DOES NOT WORK. There is a Microsoft bug that prevents it. Must be set manually or by importing a .reg file.
 
-    # KeyExchangeAlgorithms - changes take effect after reboot
-    # Set to "ffffffff" (aka 4294967295) to enable. Set to 0 to disable.
+    #KeyExchangeAlgorithms - changes take effect after reboot
+    ##Set to "ffffffff" (aka 4294967295) to enable. Set to 0 to disable.
     PKCSEnabled = "ffffffff" #THIS DOES NOT WORK. There is a Microsoft bug that prevents it. Must be set manually or by importing a .reg file.
     DiffieHellmanEnabled = 0
 
-    # Protocols - changes take effect after reboot
-    # Set to 0 to disable and 1 to enable.
+    #Protocols - changes take effect after reboot
+    ##Set to 0 to disable and 1 to enable.
     PCT1ClientEnabled = 0
     PCT1ClientDisabledByDefault = 1
     PCT1ServerEnabled = 0
@@ -293,35 +291,35 @@ $Global:WSToolsConfig = [PSCustomObject]@{
     TLS1_3ClientDisabledByDefault = 0 #DevSkim: ignore DS440000
     TLS1_3ServerEnabled = 1 #DevSkim: ignore DS440000
 
-    # SMB - only works when running against local computer
-    # Set to 0 to disable and 1 to enable.
+    #SMB - only works when running against local computer
+    ##Set to 0 to disable and 1 to enable.
     SMB1 = 0
     SMB2 = 1
 
     ################################
     ##        Server Config       ##
     ################################
-    # Used in Set-ServerConfig
+    #Used in Set-ServerConfig
 
-    # DHCP Enabled or Disabled. $true=Enable $false=Disable
+    #DHCP Enabled or Disabled. $true=Enable $false=Disable
     SCDHCP = $false
 
-    # IPv6 $true=Enable $false=Disable
+    #IPv6 $true=Enable $false=Disable
     SCIPv6 = $false
 
-    # Link-Layer Topology Discovery Mapper I/O Driver $true=Enable $false=Disable
-    # The Mapper I/O network protocol (LLTDIO) driver allows the discovery of the connected network and allows various options to be enabled. Disabling this helps protect the system from potentially discovering and connecting to unauthorized devices.
+    #Link-Layer Topology Discovery Mapper I/O Driver $true=Enable $false=Disable
+    #The Mapper I/O network protocol (LLTDIO) driver allows the discovery of the connected network and allows various options to be enabled. Disabling this helps protect the system from potentially discovering and connecting to unauthorized devices.
     SClltdio = $false
 
-    # Link-Layer Topology Discovery Responder $true=Enable $false=Disable
-    # The Responder network protocol driver allows a computer to be discovered and located on a network. Disabling this helps protect the system from potentially being discovered and connected to by unauthorized devices.
+    #Link-Layer Topology Discovery Responder $true=Enable $false=Disable
+    #The Responder network protocol driver allows a computer to be discovered and located on a network. Disabling this helps protect the system from potentially being discovered and connected to by unauthorized devices.
     SCllrspndr = $false
 
-    # NetBIOS over TCP/IP
+    #NetBIOS over TCP/IP
     # 0=use default from DHCP. If static enable NetBios over TCP/IP. 1=Enable NetBIOS over TCP/IP. 2=Disable NetBIOS over TCP/IP
     SCNetBios = 1
 
-    # Offloading of Checksums and Large Files to the NIC see more info at https://docs.microsoft.com/en-us/windows-server/networking/technologies/hpn/hpn-hardware-only-features
+    #Offloading of Checksums and Large Files to the NIC see more info at https://docs.microsoft.com/en-us/windows-server/networking/technologies/hpn/hpn-hardware-only-features
     <#Skyler speaking here, I personally and professionally recommend disabling these on older (2008 R2 and older) Operating Systems. I've ran into WAY to many issues over my 20 years in
     IT that have been caused by these being enabled. I've had several Premier Field Engineers from Microsoft also tell me to disable them and 10/10 times it will improve network performance.
     If you have a small site at a single location you might be able to get away with enabling these. But even on my small personal network at home I've noticed significant network
@@ -333,23 +331,23 @@ $Global:WSToolsConfig = [PSCustomObject]@{
     # $true=Enable $false=Disable
     SCOffload = $true
 
-    # RDP 0=Enable 1=Disable
+    #RDP 0=Enable 1=Disable
     SCRDP = 0
 
-    # Server Manager $true=Enable $false=Disable
+    #Server Manager $true=Enable $false=Disable
     SCServerMgr = $false
 
-    # WINS settings
-    # true = Domain Name System (DNS) is enabled for name resolution over WINS resolution.
+    #WINS settings
+    ##true = Domain Name System (DNS) is enabled for name resolution over WINS resolution.
     SCWDNS = $false
 
-    # $true = local lookup files are used. Lookup files will contain mappings of IP addresses to host names.
+    ##true = local lookup files are used. Lookup files will contain mappings of IP addresses to host names.
     SCLMHost = $false
 
     ################################
     ##      Federal Holidays      ##
     ################################
-    Holidays = @(# Used in Show-FederalHoliday and Convert-DaysToWorkDay. These are the observed holidays according to OPM (https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/)
+    Holidays = @(#Used in Show-FederalHoliday and Convert-DaysToWorkDay. These are the observed holidays according to OPM (https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/)
         (New-Object -TypeName PSObject -Property @{Year = 2018; Date = (Get-Date -Date '2018-01-01'); DayOfWeek = ((Get-Date -Date '2018-01-01').DayOfWeek); Name = "New Years"}),
         (New-Object -TypeName PSObject -Property @{Year = 2018; Date = (Get-Date -Date '2018-01-15'); DayOfWeek = ((Get-Date -Date '2018-01-15').DayOfWeek); Name = "Martin Luther King Day"}),
         (New-Object -TypeName PSObject -Property @{Year = 2018; Date = (Get-Date -Date '2018-02-19'); DayOfWeek = ((Get-Date -Date '2018-02-19').DayOfWeek); Name = "Washingtons Birthday"}),
@@ -504,4 +502,4 @@ $Global:WSToolsConfig = [PSCustomObject]@{
         (New-Object -TypeName PSObject -Property @{Year = 2030; Date = (Get-Date -Date '2030-12-25'); DayOfWeek = ((Get-Date -Date '2030-12-25').DayOfWeek); Name = "Christmas Day"})
     )
     ###########################################################################################################################################
-}
+}#new object
