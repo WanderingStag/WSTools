@@ -21,7 +21,8 @@ jobs:
 
       - name: Update WSTools.psd1
         run: |
-          python update_psd1.py
+          cd WSTools
+          python ../update_psd1.py
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add WSTools.psd1

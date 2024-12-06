@@ -2,7 +2,7 @@ import re
 import datetime
 
 # Path to WSTools.psd1
-psd1_file = "WSTools.psd1"
+psd1_file = "WSTools/WSTools.psd1"
 
 # Function to increment semantic version
 def increment_version(version):
