@@ -1,6 +1,24 @@
 Known issues:
 1. Get-NICInfo doesn't always run.
 2. There is a Microsoft bug that prevents setting some SCHANNEL values to 0xFFFFFFFF (enabled). The known items that are used at this time are SHA and PKCS. This causes some functions to throw errors and those values have to be manually set through the user interface. Bug has existed since at least 2006. The workaround for this is to import a .reg file (which has been implemented in this module).
+3. When installing from PowerShell Gallery to the CurrentUser profile, if OneDrive redirection is in use there may be errors.
+    a. I've heard that these commands will fix the issue but I have not had luck with it on my side:
+    $CustomModulePath = "$HOME\PowerShellModules"
+    New-Item -ItemType Directory -Path $CustomModulePath
+    $env:PSModulePath += ";$CustomModulePath"
+    Install-Module -Name WSTools -Scope CurrentUser -Force -Destination $CustomModulePath
+    b. Or you can disable redirection on the Documents folder for OneDrive, I do not recommend this though.
+
+######################
+#                    #
+#      2024.12       #
+#                    #
+######################
+New features and other changes:
+1. Split over 40 commands for managing applications to another module: WSTools-AppManagement.
+2. Put all functions into individual script files in the Functions folder.
+3. Reorganized repository to better align with best practices.
+4. Added a single basic Pester test, with plans to add more.
 
 ######################
 #                    #
